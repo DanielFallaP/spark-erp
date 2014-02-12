@@ -24,7 +24,7 @@ public class Cyber {
 	}
 	
 	public void metodo(){
-		
+		System.out.println("Prueba");
 		
 	}
 	
