@@ -4,6 +4,8 @@ public class Cyber {
   private String name;
   
   private long number;
+  
+  
 
 	public String getName() {
 		return name;
@@ -19,6 +21,10 @@ public class Cyber {
 
 	public void setNumber(long number) {
 		this.number = number;
+	}
+	
+	public void metodo(){
+		
 	}
   
 }
