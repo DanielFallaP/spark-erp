@@ -7,6 +7,7 @@ public class Cyber {
   
   
 
+  
 	public String getName() {
 		return name;
 	}
