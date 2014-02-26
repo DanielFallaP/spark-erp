@@ -20,7 +20,7 @@ public class ArticleSQLRepository implements ArticleRepository{
 	@Override
 	public Article save(Article article) {
 		
-		jdbcTemplate.update("insert into cybersoft.article (code) values (?)", article.getCode());
+		jdbcTemplate.update("insert into cybersoft.article (code, short_description, purchase_unit_of_measurement) values (?,?,?)", article.getCode(),article.getShortDescription(),article.getPurchaseUnitOfMeasurement());
 		
 		List<Integer> result = jdbcTemplate.query("select LAST_INSERT_ID()", new RowMapper<Integer>(){
 

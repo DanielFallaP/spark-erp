@@ -2,6 +2,9 @@ package co.com.cybersoft.persistence.domain;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.BeanUtils;
 
 import co.com.cybersoft.events.ArticleDetails;
@@ -10,8 +13,13 @@ public class Article {
 
 	private String id;
 	private String code;
-//	private String shortDescription;
-//	private String purchaseUnitOfMeasurement;
+
+	private String shortDescription;
+	
+	@NotNull
+	@NotEmpty
+	private String purchaseUnitOfMeasurement;
+	
 //	private Date dateOfCreation;
 //	private String partNumber;
 //	private String array;
@@ -32,55 +40,18 @@ public class Article {
 		this.code = code;
 	}
 	
-//	public String getShortDescription() {
-//		return shortDescription;
-//	}
-//	public void setShortDescription(String shortDescription) {
-//		this.shortDescription = shortDescription;
-//	}
-//	public String getPurchaseUnitOfMeasurement() {
-//		return purchaseUnitOfMeasurement;
-//	}
-//	public void setPurchaseUnitOfMeasurement(String purchaseUnitOfMeasurement) {
-//		this.purchaseUnitOfMeasurement = purchaseUnitOfMeasurement;
-//	}
-//	public Date getDateOfCreation() {
-//		return dateOfCreation;
-//	}
-//	public void setDateOfCreation(Date dateOfCreation) {
-//		this.dateOfCreation = dateOfCreation;
-//	}
-//	public String getPartNumber() {
-//		return partNumber;
-//	}
-//	public void setPartNumber(String partNumber) {
-//		this.partNumber = partNumber;
-//	}
-//	public String getArray() {
-//		return array;
-//	}
-//	public void setArray(String array) {
-//		this.array = array;
-//	}
-//	public String getGroupOfItems() {
-//		return groupOfItems;
-//	}
-//	public void setGroupOfItems(String groupOfItems) {
-//		this.groupOfItems = groupOfItems;
-//	}
-//	public boolean isActive() {
-//		return active;
-//	}
-//	public void setActive(boolean active) {
-//		this.active = active;
-//	}
-//	public boolean isBlocked() {
-//		return blocked;
-//	}
-//	public void setBlocked(boolean blocked) {
-//		this.blocked = blocked;
-//	}
-	
+	public String getShortDescription() {
+		return shortDescription;
+	}
+	public void setShortDescription(String shortDescription) {
+		this.shortDescription = shortDescription;
+	}
+	public String getPurchaseUnitOfMeasurement() {
+		return purchaseUnitOfMeasurement;
+	}
+	public void setPurchaseUnitOfMeasurement(String purchaseUnitOfMeasurement) {
+		this.purchaseUnitOfMeasurement = purchaseUnitOfMeasurement;
+	}
 	public static Article fromArticleDetails(ArticleDetails articleDetails){
 		Article article = new Article();
 		//article.setDateOfCreation(articleDetails.getDateOfCreation());
