@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Article Creation</title>
+    </head>
+    <body>
+        <form th:object="${articleInfo}" method="post">
+        	<table>
+        		<tr>
+        			<td>Code: </td>
+        			<td><input type="text" th:field="*{code}"/></td>
+        		</tr>
+<!--         		<tr> -->
+<!--         			<td>Short Description: </td> -->
+<!--         			<td><input type="text" th:field="*{shortDescription}"/></td> -->
+<!--         		</tr> -->
+        		<tr>
+        			<td>
+        				<input type="submit" value="Create article"/>
+        			</td>
+        		</tr>
+        	</table>
+        </form>
+    </body>
+</html>
