@@ -22,16 +22,16 @@ public class ItemInfo implements Serializable{
 	@NotNull
 	@NotEmpty
 	private String purchaseUnitOfMeasurement;
-//	
-//	private String partNumber;
-//	
-//	private String array;
-//	
-//	private String groupOfItems;
-//	
-//	private Boolean active;
-//	
-//	private Boolean blocked;
+	
+	private String partNumber;
+	
+	private String array;
+	
+	private String groupOfItems;
+	
+	private Boolean enabled;
+	
+	private Boolean blocked;
 
 	public String getCode() {
 		return code;
@@ -57,5 +57,44 @@ public class ItemInfo implements Serializable{
 		this.purchaseUnitOfMeasurement = purchaseUnitOfMeasurement;
 	}
 
+	public String getPartNumber() {
+		return partNumber;
+	}
+
+	public void setPartNumber(String partNumber) {
+		this.partNumber = partNumber;
+	}
+
+	public String getArray() {
+		return array;
+	}
+
+	public void setArray(String array) {
+		this.array = array;
+	}
+
+	public String getGroupOfItems() {
+		return groupOfItems;
+	}
+
+	public void setGroupOfItems(String groupOfItems) {
+		this.groupOfItems = groupOfItems;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Boolean getBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(Boolean blocked) {
+		this.blocked = blocked;
+	}
 	
 }

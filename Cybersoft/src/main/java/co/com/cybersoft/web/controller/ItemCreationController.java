@@ -44,7 +44,6 @@ public class ItemCreationController {
 		ItemDetails itemDetails = new ItemDetails();
 		LOG.debug(itemInfo.getCode());
 		BeanUtils.copyProperties(itemInfo, itemDetails);
-		//itemDetails.setDateOfCreation(new Date());
 		return itemDetails;
 	}
 	

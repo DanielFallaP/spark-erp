@@ -20,12 +20,12 @@ public class Item {
 	@NotEmpty
 	private String purchaseUnitOfMeasurement;
 	
-//	private Date dateOfCreation;
-//	private String partNumber;
-//	private String array;
-//	private String groupOfItems;
-//	private boolean active;
-//	private boolean blocked;
+	private String partNumber;
+	private String array;
+	private String groupOfItems;
+	private Boolean enabled;
+	private Boolean blocked;
+	private Date dateOfCreation;
 	
 	public String getId() {
 		return id;
@@ -52,6 +52,43 @@ public class Item {
 	public void setPurchaseUnitOfMeasurement(String purchaseUnitOfMeasurement) {
 		this.purchaseUnitOfMeasurement = purchaseUnitOfMeasurement;
 	}
+	
+	public String getPartNumber() {
+		return partNumber;
+	}
+	public void setPartNumber(String partNumber) {
+		this.partNumber = partNumber;
+	}
+	public String getArray() {
+		return array;
+	}
+	public void setArray(String array) {
+		this.array = array;
+	}
+	public String getGroupOfItems() {
+		return groupOfItems;
+	}
+	public void setGroupOfItems(String groupOfItems) {
+		this.groupOfItems = groupOfItems;
+	}
+	public Boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+	public Boolean getBlocked() {
+		return blocked;
+	}
+	public void setBlocked(Boolean blocked) {
+		this.blocked = blocked;
+	}
+	public Date getDateOfCreation() {
+		return dateOfCreation;
+	}
+	public void setDateOfCreation(Date dateOfCreation) {
+		this.dateOfCreation = dateOfCreation;
+	}
 	public static Item fromItemDetails(ItemDetails itemDetails){
 		Item item = new Item();
 		//item.setDateOfCreation(itemDetails.getDateOfCreation());
@@ -64,5 +101,5 @@ public class Item {
 		BeanUtils.copyProperties(this, details);
 		return details;
 	}
-	
+
 }

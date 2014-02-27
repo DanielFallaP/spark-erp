@@ -1,5 +1,7 @@
 package co.com.cybersoft.core.services;
 
+import java.util.Date;
+
 import co.com.cybersoft.events.ItemCreatedEvent;
 import co.com.cybersoft.events.CreateItemEvent;
 import co.com.cybersoft.persistence.services.ItemPersistenceService;
@@ -16,7 +18,9 @@ public class ItemServiceImpl implements ItemService{
 	 */
 	@Override
 	public ItemCreatedEvent createItem(CreateItemEvent createItemEvent) {
-		return itemPersistenceService.createItem(createItemEvent);
+		createItemEvent.getDetails().setDateOfCreation(new Date());
+		ItemCreatedEvent createItem = itemPersistenceService.createItem(createItemEvent);
+		return createItem;
 	}
 
 }
