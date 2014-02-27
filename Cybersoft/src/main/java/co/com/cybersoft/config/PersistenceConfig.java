@@ -7,14 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import co.com.cybersoft.persistence.repository.ArticleRepository;
-import co.com.cybersoft.persistence.repository.ArticleSQLRepository;
-import co.com.cybersoft.persistence.services.ArticlePersistenceService;
-import co.com.cybersoft.persistence.services.ArticlePersistenceServiceImpl;
+import co.com.cybersoft.persistence.repository.ItemRepository;
+import co.com.cybersoft.persistence.repository.ItemSQLRepository;
+import co.com.cybersoft.persistence.services.ItemPersistenceService;
+import co.com.cybersoft.persistence.services.ItemPersistenceServiceImpl;
 
 @Configuration
 @EnableTransactionManagement
@@ -22,9 +22,8 @@ public class PersistenceConfig {
 	
 	@Bean
     public DataSource dataSource() {
-		// FIXME Cambiar SimpleDriverDataSource para producción
-		SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-		dataSource.setDriverClass(com.mysql.jdbc.Driver.class);
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		dataSource.setUsername("daniel");
 		dataSource.setPassword("daniel");
 		dataSource.setUrl("jdbc:mysql://localhost/cybersoft");
@@ -38,13 +37,13 @@ public class PersistenceConfig {
     }
 
 	@Bean
-	public ArticleRepository articleRepository(){
-		return new ArticleSQLRepository();
+	public ItemRepository itemRepository(){
+		return new ItemSQLRepository();
 	}
 	
 	@Bean
-	public ArticlePersistenceService articlePersistenceService(){
-		return new ArticlePersistenceServiceImpl(articleRepository());
+	public ItemPersistenceService itemPersistenceService(){
+		return new ItemPersistenceServiceImpl(itemRepository());
 	}
 	
 	 @Bean

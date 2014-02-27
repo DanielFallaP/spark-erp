@@ -9,18 +9,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.com.cybersoft.persistence.domain.Article;
+import co.com.cybersoft.persistence.domain.Item;
 
-public class ArticleSQLRepository implements ArticleRepository{
+public class ItemSQLRepository implements ItemRepository{
 
 	@Autowired
     JdbcTemplate jdbcTemplate;
 	
 	@Transactional
 	@Override
-	public Article save(Article article) {
+	public Item save(Item item) {
 		
-		jdbcTemplate.update("insert into cybersoft.article (code, short_description, purchase_unit_of_measurement) values (?,?,?)", article.getCode(),article.getShortDescription(),article.getPurchaseUnitOfMeasurement());
+		jdbcTemplate.update("insert into cybersoft.item (code, short_description, purchase_unit_of_measurement) values (?,?,?)", item.getCode(),item.getShortDescription(),item.getPurchaseUnitOfMeasurement());
 		
 		List<Integer> result = jdbcTemplate.query("select LAST_INSERT_ID()", new RowMapper<Integer>(){
 
@@ -32,10 +32,8 @@ public class ArticleSQLRepository implements ArticleRepository{
 		});
 		
 		Integer integer = result.get(0);
-		article.setId(integer.toString());
-		return article;
+		item.setId(integer.toString());
+		return item;
 	}
-
-
 
 }

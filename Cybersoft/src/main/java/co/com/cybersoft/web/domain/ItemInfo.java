@@ -1,68 +1,61 @@
-package co.com.cybersoft.persistence.domain;
+package co.com.cybersoft.web.domain;
 
-import java.util.Date;
+import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
 
-import co.com.cybersoft.events.ArticleDetails;
+@Component
+@Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
+public class ItemInfo implements Serializable{
 
-public class Article {
-
-	private String id;
+	@NotNull
+	@NotEmpty
 	private String code;
 
 	private String shortDescription;
-	
+
 	@NotNull
 	@NotEmpty
 	private String purchaseUnitOfMeasurement;
-	
-//	private Date dateOfCreation;
+//	
 //	private String partNumber;
+//	
 //	private String array;
+//	
 //	private String groupOfItems;
-//	private boolean active;
-//	private boolean blocked;
-	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
+//	
+//	private Boolean active;
+//	
+//	private Boolean blocked;
+
 	public String getCode() {
 		return code;
 	}
+
 	public void setCode(String code) {
 		this.code = code;
 	}
-	
+
 	public String getShortDescription() {
 		return shortDescription;
 	}
+
 	public void setShortDescription(String shortDescription) {
 		this.shortDescription = shortDescription;
 	}
+
 	public String getPurchaseUnitOfMeasurement() {
 		return purchaseUnitOfMeasurement;
 	}
+
 	public void setPurchaseUnitOfMeasurement(String purchaseUnitOfMeasurement) {
 		this.purchaseUnitOfMeasurement = purchaseUnitOfMeasurement;
 	}
-	public static Article fromArticleDetails(ArticleDetails articleDetails){
-		Article article = new Article();
-		//article.setDateOfCreation(articleDetails.getDateOfCreation());
-		BeanUtils.copyProperties(articleDetails, article);
-		return article;
-	}
-	
-	public ArticleDetails toArticleDetails(){
-		ArticleDetails details = new ArticleDetails();
-		BeanUtils.copyProperties(this, details);
-		return details;
-	}
+
 	
 }
