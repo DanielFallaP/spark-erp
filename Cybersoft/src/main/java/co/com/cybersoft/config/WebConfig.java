@@ -11,9 +11,11 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.thymeleaf.spring3.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
@@ -23,11 +25,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @EnableWebMvc
 @ComponentScan(basePackages={"co.com.cybersoft.web.controller","co.com.cybersoft.web.domain"})
 public class WebConfig extends WebMvcConfigurerAdapter{
-
-//	@Override
-//	public void addResourceHandlers(ResourceHandlerRegistry registry){
-//		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-//	}
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry){
@@ -38,9 +35,9 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	
 	@Bean
 	public LocaleResolver localeResolver(){
-		SessionLocaleResolver result = new SessionLocaleResolver();
-        result.setDefaultLocale(Locale.ENGLISH);
-		return result;
+		CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+		localeResolver.setDefaultLocale(Locale.ENGLISH);
+		return localeResolver;
 	}
 	
 	@Bean
@@ -80,4 +77,11 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		return messageSource;
 	}
 	
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry){
+		registry.addViewController("/home").setViewName("home");
+		registry.addViewController("/").setViewName("items");
+		registry.addViewController("/configuration").setViewName("configuration");
+		registry.addViewController("/configuration/items").setViewName("items");
+	}
 }

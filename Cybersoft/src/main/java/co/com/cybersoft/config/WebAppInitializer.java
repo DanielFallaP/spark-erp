@@ -2,14 +2,16 @@ package co.com.cybersoft.config;
 
 import javax.servlet.Filter;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+@Order(2)
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer{
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[]{PersistenceConfig.class, CoreConfig.class};
+		return new Class<?>[]{SecurityConfig.class, PersistenceConfig.class, CoreConfig.class};
 	}
 
 	@Override

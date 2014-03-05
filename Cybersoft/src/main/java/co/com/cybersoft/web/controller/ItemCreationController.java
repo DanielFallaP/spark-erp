@@ -1,7 +1,5 @@
 package co.com.cybersoft.web.controller;
 
-import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -12,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import co.com.cybersoft.core.services.ItemService;
-import co.com.cybersoft.events.ItemDetails;
 import co.com.cybersoft.events.CreateItemEvent;
+import co.com.cybersoft.events.ItemDetails;
 import co.com.cybersoft.web.domain.ItemInfo;
 
 @Controller
-@RequestMapping("/itemCreation")
+@RequestMapping("/configuration/items/createItem")
 public class ItemCreationController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ItemCreationController.class);
@@ -27,17 +25,17 @@ public class ItemCreationController {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String itemCreation(){
-		return "/itemCreation";
+		return "/configuration/items/createItem";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String createItem(@ModelAttribute("itemInfo") ItemInfo itemInfo){
-		LOG.debug("Creation of an item");
+		LOG.debug("Creation of an item!!!");
 		
 		ItemDetails itemDetails = createItemDetails(itemInfo);
 		itemService.createItem(new CreateItemEvent(itemDetails));
 		
-		return "/itemCreation";
+		return "/configuration/items/createItem";
 	}
 	
 	private ItemDetails createItemDetails(ItemInfo itemInfo){
