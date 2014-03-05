@@ -3,9 +3,9 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:spring="http://www.springframework.org/tags" >
 <head>
-	<meta charset="ISO-8859-1"/>
-	<title  th:text="#{label.configurationTitle}"></title>
-	<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+<meta charset="ISO-8859-1"/>
+<title th:text="#{label.cybersoft}"></title>
+<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
 		<style type="text/css">
 	        body {
 	            padding-top: 60px;
@@ -22,8 +22,8 @@
 	<div th:include="layout :: header" ></div>
 	<div class="container-fluid">	
 			<div class="hero-unit span9">
-				<div><a th:href="@{/configuration/items}" th:text="#{label.itemConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/language}" th:text="#{label.languageConfiguration}"></a> </div>
+				<div><a href="?language=en" th:text="#{label.english}"></a> </div>
+				<div><a href="?language=es" th:text="#{label.spanish}"></a> </div>
 			</div>
 	</div>
 	<div th:include="layout :: footer"></div>

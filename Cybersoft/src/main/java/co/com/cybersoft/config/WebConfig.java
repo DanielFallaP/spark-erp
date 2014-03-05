@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.mobile.device.view.LiteDeviceDelegatingViewResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -25,6 +26,11 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @EnableWebMvc
 @ComponentScan(basePackages={"co.com.cybersoft.web.controller","co.com.cybersoft.web.domain"})
 public class WebConfig extends WebMvcConfigurerAdapter{
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry){
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	}
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry){
@@ -64,7 +70,9 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		viewResolver.setOrder(1);
 		viewResolver.setViewNames(new String[]{"*"});
 		viewResolver.setCache(false);
-		return viewResolver;
+		LiteDeviceDelegatingViewResolver delegatingViewResolver = new LiteDeviceDelegatingViewResolver(viewResolver);
+		delegatingViewResolver.setMobilePrefix("mobile/");
+		return delegatingViewResolver;
 	}
 	
 	@Bean
@@ -83,5 +91,6 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		registry.addViewController("/").setViewName("items");
 		registry.addViewController("/configuration").setViewName("configuration");
 		registry.addViewController("/configuration/items").setViewName("items");
+		registry.addViewController("/configuration/language").setViewName("language");
 	}
 }

@@ -42,6 +42,7 @@ dependencies {
     exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
   }
 
+  compile 'org.springframework.mobile:spring-mobile-device:1.1.0.RELEASE'
   compile 'javax.validation:validation-api:1.1.0.Final'
   compile 'org.hibernate:hibernate-validator:5.0.1.Final'
 
@@ -54,7 +55,7 @@ dependencies {
   compile 'org.springframework.security:spring-security-config:3.2.0.M2'
   //{!end deps}
 
-  compile("org.springframework:spring-tx")
+  compile 'org.springframework:spring-tx'
 
   compile 'org.slf4j:slf4j-api:1.7.5'
   runtime 'org.slf4j:slf4j-log4j12:1.7.5'

@@ -24,6 +24,7 @@
     	<div class="container-fluid">	
 			<div class="hero-unit span9">
 		        <form th:object="${itemInfo}" method="post">
+		        	<h3 th:text="#{label.itemCreationTitle}"></h3>
 		        	<table>
 		        		<tr>
 		        			<td th:text="#{label.code}"></td>
