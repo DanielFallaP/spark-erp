@@ -26,7 +26,7 @@
 				<div><a th:href="@{/configuration/items/createItem}" th:text="#{label.createItem}"></a></div>
 				<div th:text="#{label.deleteItem}"></div>
 				<div th:text="#{label.modifyItem}"></div>
-				<div th:text="#{label.queryItem}"></div>
+				<div><a th:href="@{/configuration/items/searchItem}" th:text="#{label.queryItem}"></a></div>
 		</div>
 	</div>
 	<div th:include="layout :: footer"></div>

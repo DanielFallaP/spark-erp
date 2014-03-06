@@ -1,4 +1,4 @@
-package co.com.cybersoft.events;
+package co.com.cybersoft.events.items;
 
 public class ItemCreatedEvent  {
 	

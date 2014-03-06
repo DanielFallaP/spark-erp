@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import co.com.cybersoft.core.services.ItemService;
-import co.com.cybersoft.events.CreateItemEvent;
-import co.com.cybersoft.events.ItemDetails;
+import co.com.cybersoft.events.items.CreateItemEvent;
+import co.com.cybersoft.events.items.ItemDetails;
 import co.com.cybersoft.web.domain.ItemInfo;
 
 @Controller

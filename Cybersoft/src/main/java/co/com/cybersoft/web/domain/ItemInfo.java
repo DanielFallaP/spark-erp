@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
 public class ItemInfo implements Serializable{
 
+	private String id;
+	
 	@NotNull
 	@NotEmpty
 	private String code;
@@ -96,5 +98,15 @@ public class ItemInfo implements Serializable{
 	public void setBlocked(Boolean blocked) {
 		this.blocked = blocked;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	
 	
 }

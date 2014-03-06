@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+	<meta charset="ISO-8859-1" />
+	<body>
+		<div th:fragment="header">
+		    <div class="navbar navbar-inverse navbar-fixed-top">
+		        <div class="navbar-inner">
+		            <div class="container-fluid">
+		                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                </a>
+		                <a class="brand" th:href="@{/}" th:text="#{label.cybersoft}"></a>
+		                <div class="nav-collapse collapse">
+		                    <p class="navbar-text pull-right">
+		
+		                    </p>
+		                    <ul class="nav">
+		                        <li><a th:href="@{/purchase}" th:text="#{label.purchaseOrders}"></a></li>
+		                        <li><a th:href="@{/configuration}" th:text="#{label.navbarConfiguration}"></a></li>
+		                    </ul>
+		                </div> <!--/.nav-collapse -->
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		
+	<div th:fragment="footer">
+	    <footer>
+	        <p>&nbsp;&nbsp;&nbsp;&copy; Cybersoft 2014</p>
+	    </footer>
+	</div>
+	</body>
+</html>

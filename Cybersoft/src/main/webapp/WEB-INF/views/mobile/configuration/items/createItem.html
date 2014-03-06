@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="ISO-8859-1" />
+        <title th:text="#{label.itemCreationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+    </head>
+    <body>
+    	<div th:include="layout :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="hero-unit span9">
+		        <form th:object="${itemInfo}" method="post">
+		        	<h3 th:text="Create MOBILE Item"></h3>
+		        	<table>
+		        		<tr>
+		        			<td th:text="#{label.code}"></td>
+		        			<td><input type="text" th:field="*{code}"/></td>
+		        		</tr>
+		        		<tr>
+		        			<td th:text="#{label.shortDescription}"></td>
+		        			<td><input type="text" th:field="*{shortDescription}"/></td>
+		        		</tr>
+		        		<tr>
+		        			<td th:text="#{label.purchaseUnitofMeasurement}"></td>
+		        			<td><input type="text" th:field="*{purchaseUnitOfMeasurement}"/></td>
+		        		</tr>
+		        		<tr>
+		        			<td th:text="#{label.partNumber}"></td>
+		        			<td><input type="text" th:field="*{partNumber}"/></td>
+		        		</tr>
+		        		<tr>
+		        			<td th:text="#{label.array}"></td>
+		        			<td><input type="text" th:field="*{array}"/></td>
+		        		</tr>
+		        		<tr>
+		        			<td th:text="#{label.group}"></td>
+		        			<td><input type="text" th:field="*{groupOfItems}"/></td>
+		        		</tr>
+		        		<tr>
+		        			<td th:text="#{label.enabled}"></td>
+		        			<td><input type="text" th:field="*{enabled}"/></td>
+		        		</tr>
+		        		<tr>
+		        			<td th:text="#{label.blocked}"></td>
+		        			<td><input type="text" th:field="*{blocked}"/></td>
+		        		</tr>
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.createItem}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		    </div>
+	    </div>
+		<div th:include="layout :: footer"></div>    
+    </body>
+</html>

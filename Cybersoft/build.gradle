@@ -45,6 +45,10 @@ dependencies {
   compile 'org.springframework.mobile:spring-mobile-device:1.1.0.RELEASE'
   compile 'javax.validation:validation-api:1.1.0.Final'
   compile 'org.hibernate:hibernate-validator:5.0.1.Final'
+  
+  //Mongo libs
+  compile 'org.springframework.data:spring-data-mongodb:1.2.3.RELEASE'
+  compile 'cglib:cglib:2.2.2' 
 
   compile 'org.springframework:spring-core:3.2.3.RELEASE'
   compile 'org.springframework:spring-webmvc:3.2.3.RELEASE'
@@ -62,8 +66,8 @@ dependencies {
 
   compile 'org.thymeleaf:thymeleaf-spring3:2.0.18'
   
+  //MySQL connectors
   compile 'mysql:mysql-connector-java:5.1.6'
-       
 
   testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
   testCompile 'junit:junit:4.11'

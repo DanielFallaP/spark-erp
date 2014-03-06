@@ -6,12 +6,21 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import co.com.cybersoft.events.ItemDetails;
+import co.com.cybersoft.events.items.ItemDetails;
 
+@Document(collection="items")
 public class Item {
 
+	@Id
 	private String id;
+	
+	@Field("code")
+	@Indexed
 	private String code;
 
 	private String shortDescription;

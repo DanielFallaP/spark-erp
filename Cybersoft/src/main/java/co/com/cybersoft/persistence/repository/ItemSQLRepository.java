@@ -14,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import co.com.cybersoft.persistence.domain.Item;
 import co.com.cybersoft.web.controller.ItemCreationController;
 
-public class ItemSQLRepository implements ItemRepository{
+public class ItemSQLRepository{ 
+//implements ItemRepository{
 
 	private static final Logger LOG = LoggerFactory.getLogger(ItemCreationController.class);
 	
@@ -22,7 +23,6 @@ public class ItemSQLRepository implements ItemRepository{
     JdbcTemplate jdbcTemplate;
 	
 	@Transactional
-	@Override
 	public Item save(Item item) {
 		
 		jdbcTemplate.update("insert into cybersoft.item (code, short_description, purchase_unit_of_measurement, date_of_creation, part_number, group_of_items, enabled, blocked, array) "
