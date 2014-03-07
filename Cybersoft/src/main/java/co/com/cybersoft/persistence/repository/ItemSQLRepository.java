@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.com.cybersoft.persistence.domain.Item;
-import co.com.cybersoft.web.controller.ItemCreationController;
+import co.com.cybersoft.web.controller.items.ItemCreationController;
 
 public class ItemSQLRepository{ 
 //implements ItemRepository{

@@ -19,7 +19,7 @@
 	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
 </head>
 <body>
-	<div th:include="layout :: header" ></div>
+	<div th:include="/normal/layout :: header" ></div>
 	<div class="container-fluid">	
 		<div class="hero-unit span9">
 				<h3 th:text="#{label.itemConfiguration}"></h3>
@@ -29,6 +29,6 @@
 				<div><a th:href="@{/configuration/items/searchItem}" th:text="#{label.queryItem}"></a></div>
 		</div>
 	</div>
-	<div th:include="layout :: footer"></div>
+	<div th:include="/normal/layout :: footer"></div>
 </body>
 </html>

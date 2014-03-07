@@ -2,14 +2,15 @@ package co.com.cybersoft.config;
 
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.mobile.device.DeviceResolverHandlerInterceptor;
 import org.springframework.mobile.device.view.LiteDeviceDelegatingViewResolver;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -64,14 +65,16 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	}
 	
 	@Bean
-	public ViewResolver viewResolver(){
+	public LiteDeviceDelegatingViewResolver viewResolver(){
 		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
 		viewResolver.setTemplateEngine(templateEngine());
-		viewResolver.setOrder(1);
-		viewResolver.setViewNames(new String[]{"*"});
+//		viewResolver.setOrder(1);
+//		viewResolver.setViewNames(new String[]{"*"});
+		//In a production environment, cache should be enabled
 		viewResolver.setCache(false);
 		LiteDeviceDelegatingViewResolver delegatingViewResolver = new LiteDeviceDelegatingViewResolver(viewResolver);
 		delegatingViewResolver.setMobilePrefix("mobile/");
+		delegatingViewResolver.setNormalPrefix("normal/");
 		return delegatingViewResolver;
 	}
 	
