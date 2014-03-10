@@ -66,9 +66,6 @@ dependencies {
 
   compile 'org.thymeleaf:thymeleaf-spring3:2.0.18'
   
-  //MySQL connectors
-  compile 'mysql:mysql-connector-java:5.1.6'
-
   testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
   testCompile 'junit:junit:4.11'
   testCompile "org.mockito:mockito-core:1.9.5"

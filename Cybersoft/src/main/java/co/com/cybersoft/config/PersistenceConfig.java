@@ -17,15 +17,18 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import co.com.cybersoft.persistence.repository.AFERepository;
 import co.com.cybersoft.persistence.repository.ItemRepository;
 import co.com.cybersoft.persistence.services.ItemPersistenceService;
 import co.com.cybersoft.persistence.services.ItemPersistenceServiceImpl;
+import co.com.cybersoft.persistence.services.afe.AFEPersistenceService;
+import co.com.cybersoft.persistence.services.afe.AFEPersistenceServiceImpl;
 
 import com.mongodb.Mongo;
 
 @Configuration
 @EnableMongoRepositories(basePackages="co.com.cybersoft.persistence.repository",
-includeFilters=@ComponentScan.Filter(value={ItemRepository.class},type=FilterType.ASSIGNABLE_TYPE))
+includeFilters=@ComponentScan.Filter(value={ItemRepository.class,AFERepository.class},type=FilterType.ASSIGNABLE_TYPE))
 public class PersistenceConfig {
 	
 	@Bean
@@ -38,8 +41,17 @@ public class PersistenceConfig {
 		return new Mongo("localhost");
 	}
 	
+	/**
+	 * Item repository
+	 */
 	@Autowired
 	private ItemRepository itemRepository;
+	
+	/**
+	 * Repository for approval for expenses
+	 */
+	@Autowired
+	private AFERepository afeRepository;
 	
 	@Bean
     public DataSource dataSource() {
@@ -65,6 +77,11 @@ public class PersistenceConfig {
 	@Bean
 	public ItemPersistenceService itemPersistenceService(){
 		return new ItemPersistenceServiceImpl(itemRepository);
+	}
+	
+	@Bean
+	public AFEPersistenceService afePersistenceService(){
+		return new AFEPersistenceServiceImpl(afeRepository);
 	}
 	
 	 @Bean
