@@ -46,7 +46,7 @@ public class ItemCreationController {
 	}
 	
 	@ModelAttribute("itemInfo")
-	private ItemInfo getItemInfo(){
+	private ItemInfo getItemssInfo(){
 		return new ItemInfo();
 	}
 }

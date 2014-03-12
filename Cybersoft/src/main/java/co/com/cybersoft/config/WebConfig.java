@@ -2,13 +2,11 @@ package co.com.cybersoft.config;
 
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.mobile.device.DeviceResolverHandlerInterceptor;
 import org.springframework.mobile.device.view.LiteDeviceDelegatingViewResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -91,10 +89,10 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry){
 		registry.addViewController("/home").setViewName("home");
-		registry.addViewController("/").setViewName("items");
+		registry.addViewController("/").setViewName("configuration/items/items");
 		registry.addViewController("/configuration").setViewName("configuration");
-		registry.addViewController("/configuration/items").setViewName("items");
+		registry.addViewController("/configuration/items").setViewName("configuration/items/items");
 		registry.addViewController("/configuration/language").setViewName("language");
-		registry.addViewController("/configuration/afe").setViewName("configuration/afe/createAFE");
+		registry.addViewController("/configuration/afe").setViewName("configuration/afe/afe");
 	}
 }

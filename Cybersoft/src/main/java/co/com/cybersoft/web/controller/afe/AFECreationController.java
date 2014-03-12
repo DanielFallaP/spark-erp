@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,7 +26,7 @@ public class AFECreationController {
 	private AFEService afeService;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String afeCreation(){
+	public String afeCreation(Model model){
 		return "/configuration/afe/createAFE";
 	}
 	
@@ -44,7 +45,7 @@ public class AFECreationController {
 	}
 	
 	@ModelAttribute("afeInfo")
-	private AFEInfo getAfeInfo(){
+	private AFEInfo getAFEInfo(){
 		return new AFEInfo();
 	}
 	
