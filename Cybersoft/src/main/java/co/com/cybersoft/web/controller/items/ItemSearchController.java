@@ -2,16 +2,19 @@ package co.com.cybersoft.web.controller.items;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import co.com.cybersoft.core.services.ItemService;
+import co.com.cybersoft.core.util.PageWrapper;
 import co.com.cybersoft.events.items.ItemDetailsEvent;
 import co.com.cybersoft.events.items.RequestItemDetailsEvent;
+import co.com.cybersoft.persistence.domain.Item;
 import co.com.cybersoft.web.domain.ItemInfo;
 
 @Controller
@@ -24,15 +27,13 @@ public class ItemSearchController {
 	private ItemService itemService;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String searchItem(){
-		return "/configuration/items/searchItem";
-	}
-	
-	@RequestMapping(method=RequestMethod.POST)
-	public String searchItemDetails(@ModelAttribute("itemInfo") ItemInfo itemInfo){
-		LOG.debug("Searching item ");
-		ItemDetailsEvent requestItemDetails = itemService.requestItemDetails(new RequestItemDetailsEvent(itemInfo.getCode()));
-		BeanUtils.copyProperties(requestItemDetails.getItemDetails(), itemInfo);
+	public String searchItemDetails(Model model, Pageable pageable){
+		LOG.debug("Retrieving  items ");
+		ItemDetailsEvent requestItemDetails = itemService.requestItemDetails(new RequestItemDetailsEvent(pageable));
+		
+		PageWrapper<Item> page=new PageWrapper<Item>(requestItemDetails.getItems(),"/configuration/items/searchItem");
+		model.addAttribute("page", page);
+		model.addAttribute("list",page.getContent());
 		return "/configuration/items/searchItem";
 	}
 	

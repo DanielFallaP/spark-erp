@@ -22,33 +22,62 @@
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 		<div class="hero-unit span9">
-	<form th:object="${itemInfo}" method="post">
-			<input type="text" th:field="*{code}"/>
-			<input type="submit" th:value="#{label.searchItem}" />
+	<form th:object="${page}" method="post">
 	</form>
 			<h3 th:text="#{label.itemInfo}"></h3>
 			<table>
-				<tr>
-					<td th:text="#{label.code}"></td>
-					<td th:text="#{label.shortDescription}"></td>
-					<td th:text="#{label.purchaseUnitofMeasurement}"></td>
-					<td th:text="#{label.partNumber}"></td>
-					<td th:text="#{label.array}"></td>
-					<td th:text="#{label.group}"></td>
-					<td th:text="#{label.enabled}"></td>
-					<td th:text="#{label.blocked}"></td>
-				</tr>
-				<tr>
-					<td th:text="${itemInfo.code}"></td>
-					<td th:text="${itemInfo.shortDescription}"></td>
-					<td th:text="${itemInfo.purchaseUnitOfMeasurement}"></td>
-					<td th:text="${itemInfo.partNumber}"></td>
-					<td th:text="${itemInfo.array}"></td>
-					<td th:text="${itemInfo.groupOfItems}"></td>
-					<td th:text="${itemInfo.enabled}"></td>
-					<td th:text="${itemInfo.blocked}"></td>
-				</tr>
+				<thead>
+					<tr>
+						<td th:text="#{label.code}"></td>
+						<td th:text="#{label.shortDescription}"></td>
+						<td th:text="#{label.purchaseUnitofMeasurement}"></td>
+						<td th:text="#{label.partNumber}"></td>
+						<td th:text="#{label.array}"></td>
+						<td th:text="#{label.group}"></td>
+						<td th:text="#{label.enabled}"></td>
+						<td th:text="#{label.blocked}"></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="object: ${list}">
+						<td th:text="${object.code}"></td>
+						<td th:text="${object.shortDescription}"></td>
+						<td th:text="${object.purchaseUnitOfMeasurement}"></td>
+						<td th:text="${object.partNumber}"></td>
+						<td th:text="${object.array}"></td>
+						<td th:text="${object.groupOfItems}"></td>
+						<td th:text="${object.enabled}"></td>
+						<td th:text="${object.blocked}"></td>
+					</tr>
+				</tbody>
 			</table>
+						<!-- Pagination Bar -->
+			<div th:fragment='paginationbar'>
+			  <div class='pagination pagination-centered'>
+			    <ul>
+			      <li>
+			        <span th:if='${page.firstPage}' th:text='#{label.firstPage}'>First</span>
+			        <a th:if='${not page.firstPage}' th:href='@{${page.url}(page.page=1,page.size=${page.size})}' th:text='#{label.firstPage}'>First</a>
+			      </li>
+			      <li>
+			        <span th:if='${not page.hasPreviousPage}'>«</span>
+			        <a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page.page=${page.number-1})}' title='Go to previous page'>«</a>
+			      </li>
+			      <li>
+<!-- 			        <span th:if='${item.current}' th:text='${item.number}'>1</span> -->
+			        <span th:text="${page.number}+'/'+${page.totalPages}">1</span>
+			      </li>
+			      <li>
+			        <span th:if='${not page.hasNextPage}'>»</span>
+			        <a th:if='${page.hasNextPage}' th:href='@{${page.url}(page.page=${page.number+1})}' title='Go to next page'>»</a>
+			      </li>
+			      <li>
+			        <span th:if='${page.lastPage}' th:text='#{label.lastPage}'>Last</span>
+			        <a th:if='${not page.lastPage}' th:href='@{${page.url}(page.page=${page.totalPages})}' th:text='#{label.lastPage}'>Last</a>
+			      </li>
+			    </ul>
+			  </div>
+			</div>
 		</div>
 	</div>
 </body>

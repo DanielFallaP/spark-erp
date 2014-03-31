@@ -1,20 +1,18 @@
 package co.com.cybersoft.events.items;
 
+import org.springframework.data.domain.Page;
+
+import co.com.cybersoft.persistence.domain.Item;
+
 public class ItemDetailsEvent {
-	private String id;
-	private ItemDetails itemDetails;
+	private Page<Item> items;
 	
-	public ItemDetailsEvent(String id, ItemDetails itemDetails){
-		this.id=id;
-		this.itemDetails=itemDetails;
+	public ItemDetailsEvent(Page<Item> items){
+		this.items=items;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public ItemDetails getItemDetails() {
-		return itemDetails;
+	public Page<Item> getItems() {
+		return items;
 	}
 	
 }

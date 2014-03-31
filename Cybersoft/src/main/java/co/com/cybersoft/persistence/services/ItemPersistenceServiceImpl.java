@@ -1,7 +1,14 @@
 package co.com.cybersoft.persistence.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import co.com.cybersoft.events.items.CreateItemEvent;
 import co.com.cybersoft.events.items.ItemCreatedEvent;
+import co.com.cybersoft.events.items.ItemDetails;
 import co.com.cybersoft.events.items.ItemDetailsEvent;
 import co.com.cybersoft.events.items.RequestItemDetailsEvent;
 import co.com.cybersoft.persistence.domain.Item;
@@ -24,8 +31,8 @@ public class ItemPersistenceServiceImpl implements ItemPersistenceService{
 
 	@Override
 	public ItemDetailsEvent requestItemDetails(RequestItemDetailsEvent event) {
-		Item item = itemRepository.findByCode(event.getCode());
-		return new ItemDetailsEvent(item.getId(), item.toItemDetails());
+		Page<Item> items = itemRepository.findAll(event.getPageable());
+		return new ItemDetailsEvent(items);
 	}
 
 }

@@ -1,5 +1,7 @@
 package co.com.cybersoft.events.items;
 
+import org.springframework.data.domain.Pageable;
+
 /**
  * 
  * @author daniel
@@ -7,14 +9,13 @@ package co.com.cybersoft.events.items;
  */
 public class RequestItemDetailsEvent {
 
-	private String code;
+	private Pageable pageable;
 	
-	public RequestItemDetailsEvent(String code){
-		this.code=code;
+	public RequestItemDetailsEvent(Pageable pageable){
+		this.pageable=pageable;
 	}
 
-	public String getCode() {
-		return code;
+	public Pageable getPageable() {
+		return pageable;
 	}
-
 }

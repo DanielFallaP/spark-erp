@@ -1,5 +1,6 @@
 package co.com.cybersoft.config;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.context.MessageSource;
@@ -7,7 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PageableArgumentResolver;
 import org.springframework.mobile.device.view.LiteDeviceDelegatingViewResolver;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -16,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.mvc.method.annotation.ServletWebArgumentResolverAdapter;
 import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.thymeleaf.spring3.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
@@ -94,5 +99,12 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		registry.addViewController("/configuration/items").setViewName("configuration/items/items");
 		registry.addViewController("/configuration/language").setViewName("language");
 		registry.addViewController("/configuration/afe").setViewName("configuration/afe/afe");
+	}
+	
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
+		PageableArgumentResolver resolver = new PageableArgumentResolver();
+		resolver.setFallbackPageable(new PageRequest(1, 5));
+		argumentResolvers.add(new ServletWebArgumentResolverAdapter(resolver));
 	}
 }
