@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import co.com.cybersoft.core.services.ItemService;
 import co.com.cybersoft.events.items.CreateItemEvent;
 import co.com.cybersoft.events.items.ItemDetails;
-import co.com.cybersoft.web.domain.ItemInfo;
+import co.com.cybersoft.web.domain.items.ItemInfo;
 
 @Controller
 @RequestMapping("/configuration/items/createItem")

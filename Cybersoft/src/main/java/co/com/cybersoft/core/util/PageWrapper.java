@@ -3,7 +3,10 @@ package co.com.cybersoft.core.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
 
 /**
  * 
@@ -11,12 +14,15 @@ import org.springframework.data.domain.Page;
  *
  * @param <T>
  */
+@Component
+@Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
 public class PageWrapper<T> {
     public static final int MAX_PAGE_ITEM_DISPLAY = 3;
     private Page<T> page;
     private List<PageItem> items;
     private int number;
     private String url;
+    private Boolean ascending;
 
     public String getUrl() {
         return url;
@@ -25,8 +31,18 @@ public class PageWrapper<T> {
     public void setUrl(String url) {
         this.url = url;
     }
+    
+    
 
-    public PageWrapper(Page<T> page, String url){
+    public Boolean getAscending() {
+		return ascending;
+	}
+
+	public void setAscending(Boolean ascending) {
+		this.ascending = ascending;
+	}
+
+	public PageWrapper(Page<T> page, String url){
         this.page = page;
         this.url = url;
         items = new ArrayList<PageItem>();

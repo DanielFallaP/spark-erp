@@ -26,6 +26,12 @@ import org.thymeleaf.spring3.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+
+/**
+ * Web configuration class for Spring MVC and other web-related features
+ * @author Daniel Falla
+ *
+ */
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages={"co.com.cybersoft.web.controller","co.com.cybersoft.web.domain"})
@@ -56,6 +62,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".html");
 		resolver.setTemplateMode(StandardTemplateModeHandlers.HTML5.getTemplateModeName());
+		//FIXME In a production environment, caching should be enabled
 		resolver.setCacheable(false);
 		return resolver;
 	}
@@ -73,7 +80,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		viewResolver.setTemplateEngine(templateEngine());
 //		viewResolver.setOrder(1);
 //		viewResolver.setViewNames(new String[]{"*"});
-		//In a production environment, cache should be enabled
+		//FIXME In a production environment, caching should be enabled
 		viewResolver.setCache(false);
 		LiteDeviceDelegatingViewResolver delegatingViewResolver = new LiteDeviceDelegatingViewResolver(viewResolver);
 		delegatingViewResolver.setMobilePrefix("mobile/");
@@ -104,7 +111,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
 		PageableArgumentResolver resolver = new PageableArgumentResolver();
-		resolver.setFallbackPageable(new PageRequest(1, 5));
+		resolver.setFallbackPageable(new PageRequest(1, 10));
 		argumentResolvers.add(new ServletWebArgumentResolverAdapter(resolver));
 	}
 }

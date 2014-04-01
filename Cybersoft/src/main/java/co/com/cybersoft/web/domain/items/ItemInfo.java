@@ -1,4 +1,4 @@
-package co.com.cybersoft.web.domain;
+package co.com.cybersoft.web.domain.items;
 
 import java.io.Serializable;
 

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:spring="http://www.springframework.org/tags" >
+      xmlns:spring="http://www.springframework.org/tags" xmlns:dt="http://github.com/dandelion/datatables">
  <head>
 <meta charset="ISO-8859-1"/>
 <title th:text="#{label.itemTitle}"></title>
+
 <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
 		<style type="text/css">
 	        body {
@@ -21,21 +22,19 @@
 <body>
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
-		<div class="hero-unit span9">
-	<form th:object="${page}" method="post">
-	</form>
+		<div class="row-fluid">
 			<h3 th:text="#{label.itemInfo}"></h3>
-			<table>
+			<table class="table table-striped" >
 				<thead>
 					<tr>
-						<td th:text="#{label.code}"></td>
-						<td th:text="#{label.shortDescription}"></td>
-						<td th:text="#{label.purchaseUnitofMeasurement}"></td>
-						<td th:text="#{label.partNumber}"></td>
-						<td th:text="#{label.array}"></td>
-						<td th:text="#{label.group}"></td>
-						<td th:text="#{label.enabled}"></td>
-						<td th:text="#{label.blocked}"></td>
+						<th ><a th:href="@{${page.url}+'?field=code'}" th:text="#{label.code}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=shortDescription'}" th:text="#{label.shortDescription}"></a></th>
+						<th th:href="@{${page.url}+'?field=purchaseUnitOfMeasurement'}" th:text="#{label.purchaseUnitofMeasurement}"></th>
+						<th th:href='@{${page.url}(page.page=${page.number+1})}' th:text="#{label.partNumber}"></th>
+						<th th:text="#{label.array}"></th>
+						<th th:text="#{label.group}"></th>
+						<th th:text="#{label.enabled}"></th>
+						<th th:text="#{label.blocked}"></th>
 					</tr>
 				</thead>
 				<tbody>
