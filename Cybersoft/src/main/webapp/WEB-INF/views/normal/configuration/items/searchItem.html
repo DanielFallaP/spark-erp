@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:spring="http://www.springframework.org/tags" xmlns:dt="http://github.com/dandelion/datatables">
+      xmlns:spring="http://www.springframework.org/tags">
  <head>
 <meta charset="ISO-8859-1"/>
 <title th:text="#{label.itemTitle}"></title>
@@ -23,7 +23,14 @@
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 		<div class="row-fluid">
-			<h3 th:text="#{label.itemInfo}"></h3>
+			<h3 th:text="#{label.itemInfo}"> </h3>
+			<table width="100%">
+				<tr>
+					<td width="33%"><div class='pagination pagination-left'><ul><li><a th:href="@{/configuration/items/createItem}" th:title='#{label.createItem}'>+</a></li></ul></div></td>
+					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
+					<td width="34%"><div></div></td>
+				</tr>
+			</table>
 			<table class="table table-striped" >
 				<thead>
 					<tr>
@@ -35,11 +42,12 @@
 						<th th:text="#{label.group}"></th>
 						<th th:text="#{label.enabled}"></th>
 						<th th:text="#{label.blocked}"></th>
+						<th th:text="#{label.itemDateOfCreation}"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="object: ${list}">
-						<td th:text="${object.code}"></td>
+						<td><a th:href="@{/configuration/items/modifyItem/}+${object.code}" th:text="${object.code}"></a></td>
 						<td th:text="${object.shortDescription}"></td>
 						<td th:text="${object.purchaseUnitOfMeasurement}"></td>
 						<td th:text="${object.partNumber}"></td>
@@ -47,36 +55,17 @@
 						<td th:text="${object.groupOfItems}"></td>
 						<td th:text="${object.enabled}"></td>
 						<td th:text="${object.blocked}"></td>
+						<td th:text="${object.dateOfCreation}"></td>
 					</tr>
 				</tbody>
 			</table>
-						<!-- Pagination Bar -->
-			<div th:fragment='paginationbar'>
-			  <div class='pagination pagination-centered'>
-			    <ul>
-			      <li>
-			        <span th:if='${page.firstPage}' th:text='#{label.firstPage}'>First</span>
-			        <a th:if='${not page.firstPage}' th:href='@{${page.url}(page.page=1,page.size=${page.size})}' th:text='#{label.firstPage}'>First</a>
-			      </li>
-			      <li>
-			        <span th:if='${not page.hasPreviousPage}'>«</span>
-			        <a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page.page=${page.number-1})}' title='Go to previous page'>«</a>
-			      </li>
-			      <li>
-<!-- 			        <span th:if='${item.current}' th:text='${item.number}'>1</span> -->
-			        <span th:text="${page.number}+'/'+${page.totalPages}">1</span>
-			      </li>
-			      <li>
-			        <span th:if='${not page.hasNextPage}'>»</span>
-			        <a th:if='${page.hasNextPage}' th:href='@{${page.url}(page.page=${page.number+1})}' title='Go to next page'>»</a>
-			      </li>
-			      <li>
-			        <span th:if='${page.lastPage}' th:text='#{label.lastPage}'>Last</span>
-			        <a th:if='${not page.lastPage}' th:href='@{${page.url}(page.page=${page.totalPages})}' th:text='#{label.lastPage}'>Last</a>
-			      </li>
-			    </ul>
-			  </div>
-			</div>
+			<table width="100%">
+				<tr>
+					<td width="33%"></td>
+					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
+					<td width="34%"><div></div></td>
+				</tr>
+			</table>
 		</div>
 	</div>
 </body>

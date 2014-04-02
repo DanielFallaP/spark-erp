@@ -21,7 +21,7 @@
 <body>
 	<div th:include="/normal/layout :: header" ></div>
 	<div class="container-fluid">	
-		<div class="hero-unit span9">
+		<div class="row-fluid">
 				<h3 th:text="#{label.itemConfiguration}"></h3>
 				<div><a th:href="@{/configuration/items/createItem}" th:text="#{label.createItem}"></a></div>
 				<div th:text="#{label.deleteItem}"></div>

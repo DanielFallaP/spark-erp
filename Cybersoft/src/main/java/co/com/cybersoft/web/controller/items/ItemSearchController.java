@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import co.com.cybersoft.core.services.ItemService;
 import co.com.cybersoft.core.util.PageWrapper;
-import co.com.cybersoft.events.items.ItemDetailsEvent;
-import co.com.cybersoft.events.items.RequestItemDetailsEvent;
+import co.com.cybersoft.events.items.ItemsEvent;
+import co.com.cybersoft.events.items.RequestItemsEvent;
 import co.com.cybersoft.persistence.domain.Item;
 
 @Controller
@@ -31,7 +31,7 @@ public class ItemSearchController {
 	@RequestMapping(method=RequestMethod.GET)
 	public String searchItemDetails(Model model, Pageable pageable, String field, HttpServletRequest request){
 		LOG.debug("Retrieving  items ");
-		ItemDetailsEvent requestItemDetails;
+		ItemsEvent requestItemDetails;
 		if (field!=null){
 			request.getSession().setAttribute("itemField", field);
 			Boolean direction=(Boolean) request.getSession().getAttribute("itemAscending");
@@ -44,7 +44,7 @@ public class ItemSearchController {
 		}
 		PageRequest pageRequest=null;
 		if (field==null && request.getSession().getAttribute("itemField")==null){
-			requestItemDetails = itemService.requestItemDetails(new RequestItemDetailsEvent(pageable));
+			requestItemDetails = itemService.requestItems(new RequestItemsEvent(pageable));
 		}
 		else{
 			boolean direction;
@@ -53,7 +53,7 @@ public class ItemSearchController {
 				direction=(boolean) request.getSession().getAttribute("itemAscending");
 				pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("itemField"):field));
 			}
-			requestItemDetails = itemService.requestItemDetails(new RequestItemDetailsEvent(pageRequest));
+			requestItemDetails = itemService.requestItems(new RequestItemsEvent(pageRequest));
 		}
 		
 		PageWrapper<Item> page=new PageWrapper<Item>(requestItemDetails.getItems(),"/configuration/items/searchItem");

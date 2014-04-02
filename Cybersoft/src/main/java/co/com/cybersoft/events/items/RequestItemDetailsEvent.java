@@ -1,21 +1,19 @@
 package co.com.cybersoft.events.items;
 
-import org.springframework.data.domain.Pageable;
-
 /**
  * 
- * @author daniel
+ * @author Daniel Falla
  *
  */
 public class RequestItemDetailsEvent {
 
-	private Pageable pageable;
+	private String id;
 	
-	public RequestItemDetailsEvent(Pageable pageable){
-		this.pageable=pageable;
+	public RequestItemDetailsEvent(String id){
+		this.id=id;
 	}
 
-	public Pageable getPageable() {
-		return pageable;
+	public String getId() {
+		return id;
 	}
 }

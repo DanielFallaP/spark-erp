@@ -34,6 +34,18 @@ public class ItemInfo implements Serializable{
 	private Boolean enabled;
 	
 	private Boolean blocked;
+	
+	private Boolean itemCreated;
+	
+	
+
+	public Boolean getItemCreated() {
+		return itemCreated;
+	}
+
+	public void setItemCreated(Boolean itemCreated) {
+		this.itemCreated = itemCreated;
+	}
 
 	public String getCode() {
 		return code;

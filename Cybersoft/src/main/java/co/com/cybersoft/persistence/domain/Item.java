@@ -2,9 +2,6 @@ package co.com.cybersoft.persistence.domain;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -25,8 +22,6 @@ public class Item {
 
 	private String shortDescription;
 	
-	@NotNull
-	@NotEmpty
 	private String purchaseUnitOfMeasurement;
 	
 	private String partNumber;

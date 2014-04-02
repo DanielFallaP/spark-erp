@@ -1,10 +1,13 @@
 package co.com.cybersoft.web.controller.items;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,12 +32,14 @@ public class ItemCreationController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public String createItem(@ModelAttribute("itemInfo") ItemInfo itemInfo){
+	public String createItem(@Valid @ModelAttribute("itemInfo") ItemInfo itemInfo, Model model){
 		LOG.debug("Creation of an item!!!");
-		
+		itemInfo.setItemCreated(false);
 		ItemDetails itemDetails = createItemDetails(itemInfo);
 		itemService.createItem(new CreateItemEvent(itemDetails));
-		
+		itemInfo=new ItemInfo();
+		itemInfo.setItemCreated(true);
+		model.addAttribute("itemInfo", itemInfo);
 		return "/configuration/items/createItem";
 	}
 	

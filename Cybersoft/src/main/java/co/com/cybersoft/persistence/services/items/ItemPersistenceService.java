@@ -1,4 +1,4 @@
-package co.com.cybersoft.core.services;
+package co.com.cybersoft.persistence.services.items;
 
 import co.com.cybersoft.events.items.CreateItemEvent;
 import co.com.cybersoft.events.items.ItemCreatedEvent;
@@ -8,12 +8,13 @@ import co.com.cybersoft.events.items.ModifyItemEvent;
 import co.com.cybersoft.events.items.RequestItemDetailsEvent;
 import co.com.cybersoft.events.items.RequestItemsEvent;
 
-public interface ItemService {
-	ItemCreatedEvent createItem(CreateItemEvent createItemEvent);
+public interface ItemPersistenceService {
+
+	ItemCreatedEvent createItem(CreateItemEvent event);
+
+	ItemsEvent requestItems(RequestItemsEvent event);
+
+	ItemDetailsEvent requestItemDetails(RequestItemDetailsEvent event);
 	
-	ItemsEvent requestItems(RequestItemsEvent requestOrderDetailsEvent);
-
-	ItemDetailsEvent requestItemDetails(RequestItemDetailsEvent requestItemDetailsEvent);
-
 	ItemDetailsEvent modifyItem(ModifyItemEvent event);
 }

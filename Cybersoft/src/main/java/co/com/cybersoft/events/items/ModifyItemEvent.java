@@ -1,15 +1,15 @@
 package co.com.cybersoft.events.items;
 
-public class ItemDetailsEvent {
-	
+public class ModifyItemEvent {
+
 	private ItemDetails itemDetails;
 	
-	public ItemDetailsEvent(ItemDetails itemDetails){
+	public ModifyItemEvent(ItemDetails itemDetails){
 		this.itemDetails=itemDetails;
 	}
 
 	public ItemDetails getItemDetails() {
 		return itemDetails;
 	}
-
+	
 }

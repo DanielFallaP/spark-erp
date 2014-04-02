@@ -19,10 +19,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import co.com.cybersoft.persistence.repository.AFERepository;
 import co.com.cybersoft.persistence.repository.ItemRepository;
-import co.com.cybersoft.persistence.services.ItemPersistenceService;
-import co.com.cybersoft.persistence.services.ItemPersistenceServiceImpl;
 import co.com.cybersoft.persistence.services.afe.AFEPersistenceService;
 import co.com.cybersoft.persistence.services.afe.AFEPersistenceServiceImpl;
+import co.com.cybersoft.persistence.services.items.ItemPersistenceService;
+import co.com.cybersoft.persistence.services.items.ItemPersistenceServiceImpl;
 
 import com.mongodb.Mongo;
 

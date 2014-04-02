@@ -7,8 +7,8 @@ import co.com.cybersoft.core.services.ItemService;
 import co.com.cybersoft.core.services.ItemServiceImpl;
 import co.com.cybersoft.core.services.afe.AFEService;
 import co.com.cybersoft.core.services.afe.AFEServiceImpl;
-import co.com.cybersoft.persistence.services.ItemPersistenceService;
 import co.com.cybersoft.persistence.services.afe.AFEPersistenceService;
+import co.com.cybersoft.persistence.services.items.ItemPersistenceService;
 
 @Configuration
 public class CoreConfig {
