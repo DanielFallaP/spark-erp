@@ -24,6 +24,7 @@
     	<div class="container-fluid">	
 			<div class="row-fluid">
 		        <form th:object="${itemInfo}" method="post">
+		        	<a th:if="${itemInfo.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/configuration/items/searchItem}"></a>
 		        	<h3 th:text="#{label.itemCreationTitle}"></h3>
 		        	<table>
 		        		<tr>
@@ -67,6 +68,8 @@
 		        </form>
 		    </div>
 		    <div th:if='${itemInfo.itemCreated}' class="alert alert-info" th:text="#{label.itemCreated}">
+            </div>
+            <div th:if='${itemCreateException}' class="alert alert-error" th:text="#{label.itemCreationError}">
             </div>
 	    </div>
 		<div th:include="normal/layout :: footer"></div>    

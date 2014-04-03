@@ -1,6 +1,5 @@
 package co.com.cybersoft.core.services;
 
-import java.awt.event.ItemEvent;
 import java.util.Date;
 
 import co.com.cybersoft.events.items.CreateItemEvent;
@@ -23,14 +22,14 @@ public class ItemServiceImpl implements ItemService{
 	/**
 	 */
 	@Override
-	public ItemCreatedEvent createItem(CreateItemEvent createItemEvent) {
+	public ItemCreatedEvent createItem(CreateItemEvent createItemEvent) throws Exception{
 		createItemEvent.getDetails().setDateOfCreation(new Date());
 		ItemCreatedEvent createItem = itemPersistenceService.createItem(createItemEvent);
 		return createItem;
 	}
 
 	/**
-	 * Returns a list of items that satisfy the criteria in the request
+	 * Returns all the items of the page requested
 	 */
 	@Override
 	public ItemsEvent requestItems(

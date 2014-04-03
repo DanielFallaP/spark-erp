@@ -26,7 +26,7 @@
 			<h3 th:text="#{label.itemInfo}"> </h3>
 			<table width="100%">
 				<tr>
-					<td width="33%"><div class='pagination pagination-left'><ul><li><a th:href="@{/configuration/items/createItem}" th:title='#{label.createItem}'>+</a></li></ul></div></td>
+					<td width="33%"><div class='pagination pagination-left'><ul><li><a th:href="@{/configuration/items/createItem/fromList}" th:title='#{label.createItem}'>+</a></li></ul></div></td>
 					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
 					<td width="34%"><div></div></td>
 				</tr>
@@ -68,5 +68,6 @@
 			</table>
 		</div>
 	</div>
+	<div th:include="normal/layout :: footer"></div>
 </body>
 </html>

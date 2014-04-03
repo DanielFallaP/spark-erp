@@ -37,7 +37,17 @@ public class ItemInfo implements Serializable{
 	
 	private Boolean itemCreated;
 	
+	private String calledFrom;
 	
+	
+
+	public String getCalledFrom() {
+		return calledFrom;
+	}
+
+	public void setCalledFrom(String calledFrom) {
+		this.calledFrom = calledFrom;
+	}
 
 	public Boolean getItemCreated() {
 		return itemCreated;

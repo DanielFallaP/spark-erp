@@ -9,7 +9,7 @@ import co.com.cybersoft.events.items.RequestItemDetailsEvent;
 import co.com.cybersoft.events.items.RequestItemsEvent;
 
 public interface ItemService {
-	ItemCreatedEvent createItem(CreateItemEvent createItemEvent);
+	ItemCreatedEvent createItem(CreateItemEvent createItemEvent) throws Exception;
 	
 	ItemsEvent requestItems(RequestItemsEvent requestOrderDetailsEvent);
 

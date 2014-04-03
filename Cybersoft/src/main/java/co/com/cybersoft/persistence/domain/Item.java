@@ -17,9 +17,10 @@ public class Item {
 	private String id;
 	
 	@Field("code")
-	@Indexed
+	@Indexed(unique=true)
 	private String code;
 
+	@Indexed(unique=true)
 	private String shortDescription;
 	
 	private String purchaseUnitOfMeasurement;

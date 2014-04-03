@@ -11,7 +11,7 @@ import co.com.cybersoft.events.items.ModifyItemEvent;
 import co.com.cybersoft.events.items.RequestItemDetailsEvent;
 import co.com.cybersoft.events.items.RequestItemsEvent;
 import co.com.cybersoft.persistence.domain.Item;
-import co.com.cybersoft.persistence.repository.ItemRepository;
+import co.com.cybersoft.persistence.repository.items.ItemRepository;
 
 public class ItemPersistenceServiceImpl implements ItemPersistenceService{
 

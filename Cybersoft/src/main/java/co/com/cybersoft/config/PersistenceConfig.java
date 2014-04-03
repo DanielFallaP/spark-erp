@@ -18,7 +18,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import co.com.cybersoft.persistence.repository.AFERepository;
-import co.com.cybersoft.persistence.repository.ItemRepository;
+import co.com.cybersoft.persistence.repository.items.ItemRepository;
 import co.com.cybersoft.persistence.services.afe.AFEPersistenceService;
 import co.com.cybersoft.persistence.services.afe.AFEPersistenceServiceImpl;
 import co.com.cybersoft.persistence.services.items.ItemPersistenceService;

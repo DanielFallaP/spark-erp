@@ -10,7 +10,7 @@ import co.com.cybersoft.events.items.RequestItemsEvent;
 
 public interface ItemPersistenceService {
 
-	ItemCreatedEvent createItem(CreateItemEvent event);
+	ItemCreatedEvent createItem(CreateItemEvent event) throws Exception;
 
 	ItemsEvent requestItems(RequestItemsEvent event);
 

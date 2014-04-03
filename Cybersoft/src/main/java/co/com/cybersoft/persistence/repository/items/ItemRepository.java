@@ -1,4 +1,4 @@
-package co.com.cybersoft.persistence.repository;
+package co.com.cybersoft.persistence.repository.items;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
