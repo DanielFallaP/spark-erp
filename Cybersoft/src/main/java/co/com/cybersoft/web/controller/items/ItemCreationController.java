@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import co.com.cybersoft.core.services.ItemService;
+import co.com.cybersoft.core.services.items.ItemService;
 import co.com.cybersoft.events.items.CreateItemEvent;
 import co.com.cybersoft.events.items.ItemDetails;
 import co.com.cybersoft.web.domain.items.ItemInfo;

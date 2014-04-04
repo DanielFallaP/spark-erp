@@ -1,4 +1,4 @@
-package co.com.cybersoft.core.services;
+package co.com.cybersoft.core.services.items;
 
 import co.com.cybersoft.events.items.CreateItemEvent;
 import co.com.cybersoft.events.items.ItemCreatedEvent;

@@ -13,7 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import co.com.cybersoft.core.services.ItemService;
+import co.com.cybersoft.core.services.items.ItemService;
 import co.com.cybersoft.core.util.PageWrapper;
 import co.com.cybersoft.events.items.ItemsEvent;
 import co.com.cybersoft.events.items.RequestItemsEvent;

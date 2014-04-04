@@ -18,17 +18,20 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import co.com.cybersoft.persistence.repository.AFERepository;
+import co.com.cybersoft.persistence.repository.MeasurementUnitRepository;
 import co.com.cybersoft.persistence.repository.items.ItemRepository;
 import co.com.cybersoft.persistence.services.afe.AFEPersistenceService;
 import co.com.cybersoft.persistence.services.afe.AFEPersistenceServiceImpl;
 import co.com.cybersoft.persistence.services.items.ItemPersistenceService;
 import co.com.cybersoft.persistence.services.items.ItemPersistenceServiceImpl;
+import co.com.cybersoft.persistence.services.units.UnitPersistenceService;
+import co.com.cybersoft.persistence.services.units.UnitPersistenceServiceImpl;
 
 import com.mongodb.Mongo;
 
 @Configuration
 @EnableMongoRepositories(basePackages="co.com.cybersoft.persistence.repository",
-includeFilters=@ComponentScan.Filter(value={ItemRepository.class,AFERepository.class},type=FilterType.ASSIGNABLE_TYPE))
+includeFilters=@ComponentScan.Filter(value={ItemRepository.class,AFERepository.class,MeasurementUnitRepository.class},type=FilterType.ASSIGNABLE_TYPE))
 public class PersistenceConfig {
 	
 	@Bean
@@ -52,6 +55,9 @@ public class PersistenceConfig {
 	 */
 	@Autowired
 	private AFERepository afeRepository;
+	
+	@Autowired
+	private MeasurementUnitRepository measurementUnitRepository;
 	
 	@Bean
     public DataSource dataSource() {
@@ -82,6 +88,10 @@ public class PersistenceConfig {
 	@Bean
 	public AFEPersistenceService afePersistenceService(){
 		return new AFEPersistenceServiceImpl(afeRepository);
+	}
+	
+	@Bean UnitPersistenceService unitPersistenceService(){
+		return new UnitPersistenceServiceImpl(measurementUnitRepository);
 	}
 	
 	 @Bean

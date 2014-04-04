@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import co.com.cybersoft.core.services.ItemService;
+import co.com.cybersoft.core.services.items.ItemService;
 import co.com.cybersoft.events.items.ItemDetails;
 import co.com.cybersoft.events.items.ItemDetailsEvent;
 import co.com.cybersoft.events.items.ModifyItemEvent;
