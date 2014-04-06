@@ -16,6 +16,13 @@
 											  {"name":"code", "type":"String", "unique":"true"},
 											  {"name":"shortDescription", "type":"String", "unique":"true"}
 										  ]
+		 },
+		 {	
+								"name":"item",		
+								"fields":[
+											  {"name":"code", "type":"String", "unique":"true"},
+											  {"name":"shortDescription", "type":"String", "unique":"true"}
+										  ]
 		 }
 	 ]
 }

@@ -6,7 +6,9 @@ public class Cybersoft {
 	
 	private List<Table> tables;
 	
-	public final static String codePath="src/co/com/cybersoft/generator/code/";
+	public final static String codePath="src\\co\\com\\cybersoft\\generator\\code\\";
+	
+	public final static String targetPath="build";
 
 	public List<Table> getTables() {
 		return tables;

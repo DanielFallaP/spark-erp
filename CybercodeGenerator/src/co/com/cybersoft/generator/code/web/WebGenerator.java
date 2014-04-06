@@ -26,7 +26,20 @@ public class WebGenerator {
 	}
 	
 	public void generateSearchController(Table table){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybersoft.codePath+"web");
+		StringTemplate template = templateGroup.getInstanceOf("searchController");
+		template.setAttribute("entityName", table.getName());
+		template.setAttribute("coreService", CodeUtil.toCamelCase(table.getName())+"Service");
+		template.setAttribute("responseEvent", CodeUtil.toCamelCase(table.getName())+"Event");
+		template.setAttribute("requestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"Event");
+		template.setAttribute("domain", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("url", "/configuration/"+table.getName()+"/search"+CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("searchControllerName",CodeUtil.toCamelCase(table.getName())+"SearchController" );
+		template.setAttribute("getListMethod", "getPageContent");
+		template.setAttribute("requestMethodName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("viewURL", "/configuration/"+table.getName()+"/search"+CodeUtil.toCamelCase(table.getName()));
 		
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchController.java");
 	}
 	
 	public void generateCreateController(Table table){
@@ -39,20 +52,38 @@ public class WebGenerator {
 	
 	public void generateDomain(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersoft.codePath+"web");
-		StringTemplate template = templateGroup.getInstanceOf("domainHeader");
-		template.setAttribute("domainClassName", CodeUtil.toCamelCase(table.getName()+"Info"));
+		StringTemplate template = templateGroup.getInstanceOf("domainClasses");
+		String className = CodeUtil.toCamelCase(table.getName()+"Info");
+		template.setAttribute("domainClassName", className);
 		template.setAttribute("bodyDomainClass", generateDomainBody(table));
-		System.out.println(template.toString());
+		template.setAttribute("tableName", table.getName());
+		CodeUtil.writeClass(template.toString(),Cybersoft.targetPath+"/web/domain/"+table.getName(), className+".java");
 	}
 	
 	public String generateDomainBody(Table table){
 		String body="";
-		StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+		
 		List<Field> fields = table.getFields();
+		
+		//Attributes
 		for (Field field : fields) {
+			StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
 			fieldTemplate.setAttribute("type", field.getType());
 			fieldTemplate.setAttribute("name", field.getName());
 			body+=fieldTemplate.toString();
+			body+="\n";
+		}
+		
+		//Getters and setters
+		for (Field field : fields) {
+			StringTemplate gettersSettersTemplate = new StringTemplate("public $type$ get$fieldName$() {\n"
+					+ "		return $name$;	}	\n\n"
+					+ "public void set$fieldName$($type$ $name$) {		\n"
+					+ "this.$name$ = $name$;	}\n");
+			gettersSettersTemplate.setAttribute("type", field.getType());
+			gettersSettersTemplate.setAttribute("name", field.getName());
+			gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+			body+=gettersSettersTemplate.toString();
 		}
 		return body;
 	}
