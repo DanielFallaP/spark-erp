@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import co.com.cybersoft.events.items.ItemDetails;
+import co.com.cybersoft.core.domain.ItemDetails;
 
 @Document(collection="items")
 public class Item {
@@ -26,12 +26,25 @@ public class Item {
 	private String purchaseUnitOfMeasurement;
 	
 	private String partNumber;
+	
 	private String array;
+	
 	private String groupOfItems;
+	
 	private Boolean enabled;
+	
 	private Boolean blocked;
+	
 	private Date dateOfCreation;
 	
+	private String userName;
+	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public String getId() {
 		return id;
 	}
@@ -96,7 +109,6 @@ public class Item {
 	}
 	public static Item fromItemDetails(ItemDetails itemDetails){
 		Item item = new Item();
-		//item.setDateOfCreation(itemDetails.getDateOfCreation());
 		BeanUtils.copyProperties(itemDetails, item);
 		return item;
 	}

@@ -23,7 +23,7 @@ import co.com.cybersoft.persistence.domain.Item;
 @RequestMapping("/configuration/items/searchItem")
 public class ItemSearchController {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ItemCreationController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ItemSearchController.class);
 
 	@Autowired
 	private ItemService itemService;

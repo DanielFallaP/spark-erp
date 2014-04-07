@@ -35,11 +35,20 @@ public class ItemInfo implements Serializable{
 	
 	private Boolean blocked;
 	
+	private String userName;
+	
 	private Boolean itemCreated;
 	
 	private String calledFrom;
 	
-	
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 	public String getCalledFrom() {
 		return calledFrom;

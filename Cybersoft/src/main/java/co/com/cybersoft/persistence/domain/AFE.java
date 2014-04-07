@@ -4,7 +4,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import co.com.cybersoft.events.afe.AFEDetails;
+import co.com.cybersoft.core.domain.AFEDetails;
 
 @Document(collection="afe")
 public class AFE {

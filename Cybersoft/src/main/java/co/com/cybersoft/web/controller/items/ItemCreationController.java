@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,11 +17,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import co.com.cybersoft.core.domain.ItemDetails;
 import co.com.cybersoft.core.services.items.ItemService;
 import co.com.cybersoft.events.items.CreateItemEvent;
-import co.com.cybersoft.events.items.ItemDetails;
 import co.com.cybersoft.web.domain.items.ItemInfo;
 
+/**
+ * 
+ * @author Daniel Falla
+ *
+ */
 @Controller
 @RequestMapping("/configuration/items/createItem/{from}")
 public class ItemCreationController {
@@ -40,6 +46,7 @@ public class ItemCreationController {
 		LOG.debug("Creation of an item!!!");
 		itemInfo.setItemCreated(false);
 		ItemDetails itemDetails = createItemDetails(itemInfo);
+		itemDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		request.getSession().setAttribute("itemInfo", itemInfo);
 		itemService.createItem(new CreateItemEvent(itemDetails));
 		String calledFrom = itemInfo.getCalledFrom();

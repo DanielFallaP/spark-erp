@@ -1,4 +1,4 @@
-package co.com.cybersoft.events.afe;
+package co.com.cybersoft.core.domain;
 
 public class AFEDetails {
 

@@ -1,4 +1,4 @@
-package co.com.cybersoft.events.items;
+package co.com.cybersoft.core.domain;
 
 import java.util.Date;
 
@@ -15,7 +15,15 @@ public class ItemDetails {
 	private Boolean enabled;
 	private Boolean blocked;
 	private Date dateOfCreation;
+	private String userName;
+	
 
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public String getId() {
 		return id;
 	}

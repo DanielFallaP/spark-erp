@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import co.com.cybersoft.core.domain.AFEDetails;
 import co.com.cybersoft.core.services.afe.AFEService;
-import co.com.cybersoft.events.afe.AFEDetails;
 import co.com.cybersoft.events.afe.CreateAFEEvent;
 import co.com.cybersoft.web.controller.items.ItemCreationController;
 import co.com.cybersoft.web.domain.AFEInfo;

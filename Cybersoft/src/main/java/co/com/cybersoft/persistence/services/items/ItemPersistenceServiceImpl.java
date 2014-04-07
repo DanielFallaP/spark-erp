@@ -2,9 +2,9 @@ package co.com.cybersoft.persistence.services.items;
 
 import org.springframework.data.domain.Page;
 
+import co.com.cybersoft.core.domain.ItemDetails;
 import co.com.cybersoft.events.items.CreateItemEvent;
 import co.com.cybersoft.events.items.ItemCreatedEvent;
-import co.com.cybersoft.events.items.ItemDetails;
 import co.com.cybersoft.events.items.ItemDetailsEvent;
 import co.com.cybersoft.events.items.ItemsEvent;
 import co.com.cybersoft.events.items.ModifyItemEvent;

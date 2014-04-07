@@ -1,5 +1,7 @@
 package co.com.cybersoft.events.items;
 
+import co.com.cybersoft.core.domain.ItemDetails;
+
 public class ItemCreatedEvent  {
 	
 	private final String code;
