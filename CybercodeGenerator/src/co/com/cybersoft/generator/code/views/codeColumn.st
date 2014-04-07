@@ -1,0 +1,1 @@
+<td><a th:href="@{/configuration/$tableName$/modify$entityName$/}+\${object.code}" th:text="\${object.code}"></a></td>

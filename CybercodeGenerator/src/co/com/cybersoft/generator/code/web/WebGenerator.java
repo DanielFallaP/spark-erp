@@ -60,7 +60,7 @@ public class WebGenerator {
 		CodeUtil.writeClass(template.toString(),Cybersoft.targetPath+"/web/domain/"+table.getName(), className+".java");
 	}
 	
-	public String generateDomainBody(Table table){
+	private String generateDomainBody(Table table){
 		String body="";
 		
 		List<Field> fields = table.getFields();
@@ -76,14 +76,12 @@ public class WebGenerator {
 		
 		//Getters and setters
 		for (Field field : fields) {
-			StringTemplate gettersSettersTemplate = new StringTemplate("public $type$ get$fieldName$() {\n"
-					+ "		return $name$;	}	\n\n"
-					+ "public void set$fieldName$($type$ $name$) {		\n"
-					+ "this.$name$ = $name$;	}\n");
+			StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersoft.codePath+"util");
+			StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
 			gettersSettersTemplate.setAttribute("type", field.getType());
 			gettersSettersTemplate.setAttribute("name", field.getName());
 			gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
-			body+=gettersSettersTemplate.toString();
+			body+=gettersSettersTemplate.toString()+"\n\n";
 		}
 		return body;
 	}

@@ -19,6 +19,11 @@ import co.com.cybersoft.events.$entityName$.$responseEvent$;
 import co.com.cybersoft.events.$entityName$.$requestEvent$;
 import co.com.cybersoft.persistence.$entityName$.$domain$;
 
+/**
+ * Search controller class for $entityName$
+ * @author Cybersoft 2014. All rights reserved.
+ *
+ */
 @Controller
 @RequestMapping("$url$")
 public class $searchControllerName$ {
