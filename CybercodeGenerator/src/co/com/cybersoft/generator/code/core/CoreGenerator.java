@@ -25,17 +25,16 @@ public class CoreGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("coreServiceInterface");
 		String className=CodeUtil.toCamelCase(table.getName())+"Service";
 		template.setAttribute("entityName", table.getName());
-		template.setAttribute("createdEvent", CodeUtil.toCamelCase(table.getName())+"CreatedEvent");
 		template.setAttribute("createEvent", "Create"+CodeUtil.toCamelCase(table.getName())+"Event");
 		template.setAttribute("singleResponseEvent", CodeUtil.toCamelCase(table.getName())+"DetailsEvent");
-		template.setAttribute("allResponseEvent", CodeUtil.toCamelCase(table.getName())+"Event");
-		template.setAttribute("modifyEvent", "Modify"+CodeUtil.toCamelCase(table.getName())+"Event");
+		template.setAttribute("allResponseEvent", CodeUtil.toCamelCase(table.getName())+"PageEvent");
+		template.setAttribute("modifyEvent", CodeUtil.toCamelCase(table.getName())+"ModificationEvent");
 		template.setAttribute("singleRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"DetailsEvent");
-		template.setAttribute("allRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"Event");
+		template.setAttribute("allRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent");
 		template.setAttribute("className", className);
 		template.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetPath+"/core/"+table.getName()+"/services", className+".java");
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/core/services/"+table.getName(), className+".java");
 	}
 	
 	private void generateCoreServiceImplementation(Table table){
@@ -46,13 +45,13 @@ public class CoreGenerator {
 		template.setAttribute("createdEvent", CodeUtil.toCamelCase(table.getName())+"CreatedEvent");
 		template.setAttribute("createEvent", "Create"+CodeUtil.toCamelCase(table.getName())+"Event");
 		template.setAttribute("singleResponseEvent", CodeUtil.toCamelCase(table.getName())+"DetailsEvent");
-		template.setAttribute("allResponseEvent", CodeUtil.toCamelCase(table.getName())+"Event");
-		template.setAttribute("modifyEvent", "Modify"+CodeUtil.toCamelCase(table.getName())+"Event");
+		template.setAttribute("allResponseEvent", CodeUtil.toCamelCase(table.getName())+"PageEvent");
+		template.setAttribute("modifyEvent", CodeUtil.toCamelCase(table.getName())+"ModificationEvent");
 		template.setAttribute("singleRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"DetailsEvent");
-		template.setAttribute("allRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"Event");
+		template.setAttribute("allRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent");
 		template.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetPath+"/core/"+table.getName()+"/services", className+"Impl.java");
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/core/services/"+table.getName(), className+"Impl.java");
 	}
 	
 	private void generateCoreDomainClass(Table table){
@@ -62,6 +61,6 @@ public class CoreGenerator {
 		template.setAttribute("gettersAndSetters", CodeUtil.getGettersAndSetters(table));
 		template.setAttribute("coreDomainClass", CodeUtil.toCamelCase(table.getName())+"Details");
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetPath+"/core/domain", CodeUtil.toCamelCase(table.getName())+"Details.java");
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/core/domain", CodeUtil.toCamelCase(table.getName())+"Details.java");
 	}
 }

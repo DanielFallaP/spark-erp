@@ -36,7 +36,7 @@
 		        	</table>
 		        </form>
 		    </div>
-		    <div th:if='\${$tableName$Info.$tableName$Created}' class="alert alert-info" th:text="#{label.$tableName$Created}">
+		    <div th:if='\${$tableName$Info.created}' class="alert alert-info" th:text="#{label.created}">
             </div>
             <div th:if='\${$tableName$CreateException}' class="alert alert-error" th:text="#{label.$tableName$CreationError}">
             </div>

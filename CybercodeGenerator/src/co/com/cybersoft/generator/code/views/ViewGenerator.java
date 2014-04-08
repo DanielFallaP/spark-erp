@@ -23,33 +23,33 @@ public class ViewGenerator {
 	
 	private void generateCreateView(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersoft.codePath+"views");
-		StringTemplate template = templateGroup.getInstanceOf("create");
+		StringTemplate template = templateGroup.getInstanceOf("createView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("editableTableRows", generateEditableRows(table));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetPath+"/views/normal/configuration/"+table.getName(), "create"+CodeUtil.toCamelCase(table.getName())+".html");
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetViewPath+"/normal/configuration/"+table.getName(), "create"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
 	
 	private void generateModifyView(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersoft.codePath+"views");
-		StringTemplate template = templateGroup.getInstanceOf("modify");
+		StringTemplate template = templateGroup.getInstanceOf("modifyView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("editableTableRows", generateEditableRows(table));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetPath+"/views/normal/configuration/"+table.getName(), "modify"+CodeUtil.toCamelCase(table.getName())+".html");
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetViewPath+"/normal/configuration/"+table.getName(), "modify"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
 	
 	private void generateSearchView(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersoft.codePath+"views");
-		StringTemplate template = templateGroup.getInstanceOf("search");
+		StringTemplate template = templateGroup.getInstanceOf("searchView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("codeColumn", getCodeColumn(table));
 		template.setAttribute("otherColumns", getOtherColumns(table));
 		template.setAttribute("columnHeaders", getHeaderColumns(table));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetPath+"/views/normal/configuration/"+table.getName(), "search"+CodeUtil.toCamelCase(table.getName())+".html");
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetViewPath+"/normal/configuration/"+table.getName(), "search"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
 	
 	private String generateEditableRows(Table table){

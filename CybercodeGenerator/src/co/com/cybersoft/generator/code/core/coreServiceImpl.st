@@ -1,51 +1,51 @@
-package co.com.cybersoft.core.services.$tableName$;
+package co.com.cybersoft.core.services.$entityName$;
 
 import java.util.Date;
 
-import co.com.cybersoft.events.$tableName$.$createEvent$;
-import co.com.cybersoft.events.$tableName$.$createdEvent$;
-import co.com.cybersoft.events.$tableName$.$singleResponseEvent$;
-import co.com.cybersoft.events.$tableName$.$allResponseEvent$;
-import co.com.cybersoft.events.$tableName$.$modifyEvent$;
-import co.com.cybersoft.events.$tableName$.$singleRequestEvent$;
-import co.com.cybersoft.events.$tableName$.$allRequestEvent$;
+import co.com.cybersoft.events.$entityName$.$createEvent$;
+import co.com.cybersoft.events.$entityName$.$singleResponseEvent$;
+import co.com.cybersoft.events.$entityName$.$allResponseEvent$;
+import co.com.cybersoft.events.$entityName$.$modifyEvent$;
+import co.com.cybersoft.events.$entityName$.$singleRequestEvent$;
+import co.com.cybersoft.events.$entityName$.$allRequestEvent$;
+import co.com.cybersoft.persistence.services.$entityName$.$entityUppercaseName$PersistenceService;
 
 /**
  * 
- * @author Cybersoft 2014. All rights reserved.
+ * @author Cybersystems 2014. All rights reserved.
  *
  */
-public class $entityName$ServiceImpl implements $entityName$Service{
+public class $entityUppercaseName$ServiceImpl implements $entityUppercaseName$Service{
 
-	private final $entityName$PersistenceService $entityName$PersistenceService;
+	private final $entityUppercaseName$PersistenceService $entityName$PersistenceService;
 	
-	public $entityName$ServiceImpl(final $entityName$PersistenceService $tableName$PersistenceService){
-		this.itemPersistenceService=itemPersistenceService;
+	public $entityUppercaseName$ServiceImpl(final $entityUppercaseName$PersistenceService $entityName$PersistenceService){
+		this.$entityName$PersistenceService=$entityName$PersistenceService;
 	}
 	
 	/**
 	 */
 	@Override
-	$createdEvent$ create$entityUppercaseName$($createEvent$ event ) throws Exception{
-		event.getDetails().setDateOfCreation(new Date());
-		return $entityName$PersistenceService.create$entityUppercaseName$(createItemEvent);
+	public $singleResponseEvent$ create$entityUppercaseName$($createEvent$ event ) throws Exception{
+		event.get$entityUppercaseName$Details().setDateOfCreation(new Date());
+		return $entityName$PersistenceService.create$entityUppercaseName$(event);
 	}
 
 	/**
-	 * Returns all the items of the page requested
+	 * Returns all the rows of the page requested
 	 */
 	@Override
-	$allResponseEvent$ requestPage($allRequestEvent$ event) throws Exception{
-		return $entityName$PersistenceService.requestPage(event);
+	public $allResponseEvent$ request$entityUppercaseName$Page($allRequestEvent$ event) throws Exception{
+		return $entityName$PersistenceService.request$entityUppercaseName$Page(event);
 	}
 
 	@Override
-	$singleResponseEvent$ request$entityUppercaseName$Details($singleRequestEvent$ event ) throws Exception{
+	public $singleResponseEvent$ request$entityUppercaseName$Details($singleRequestEvent$ event ) throws Exception{
 		return $entityName$PersistenceService.request$entityUppercaseName$Details(event);
 	}
 
 	@Override
-	$singleResponseEvent$ modify$entityUppercaseName$($modifyEvent$ event) throws Exception {
+	public $singleResponseEvent$ modify$entityUppercaseName$($modifyEvent$ event) throws Exception {
 		return $entityName$PersistenceService.modify$entityUppercaseName$(event);
 	}
 

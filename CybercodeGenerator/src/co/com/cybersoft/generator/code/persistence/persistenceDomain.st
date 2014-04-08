@@ -6,7 +6,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import co.com.cybersoft.core.domain.$coreDomainClass$;
 
@@ -26,9 +25,16 @@ public class $entityName$ {
 		this.dateOfCreation = dateOfCreation;
 	}
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	$gettersAndSetters$
 	
-	public static Item from$coreDomainClass$($coreDomainClass$ details){
+	public static $entityName$ from$coreDomainClass$($coreDomainClass$ details){
 		$entityName$ $variableName$ = new $entityName$();
 		BeanUtils.copyProperties(details, $variableName$);
 		return $variableName$;

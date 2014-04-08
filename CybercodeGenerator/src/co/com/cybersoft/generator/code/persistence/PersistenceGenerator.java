@@ -16,6 +16,9 @@ public class PersistenceGenerator {
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			generateDomainClass(table);
+			generatePersistenceInterface(table);
+			generatePersistenceImpl(table);
+			generateRepository(table);
 		}
 	}
 	
@@ -28,7 +31,7 @@ public class PersistenceGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("variableName", table.getName());
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetPath+"/persistence/domain", CodeUtil.toCamelCase(table.getName())+".java");
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/persistence/domain", CodeUtil.toCamelCase(table.getName())+".java");
 	}
 	
 	private String generateDomainClassFieldDeclaration(Table table){
@@ -41,7 +44,7 @@ public class PersistenceGenerator {
 				body+="@Indexed(unique=true)\n";
 			}
 			StringTemplate template = new StringTemplate("private $type$ $name$;\n");
-			template.setAttribute("type", field.getName());
+			template.setAttribute("type", field.getType());
 			template.setAttribute("name", field.getName());
 			body+=template.toString();
 			body+="\n";
@@ -58,10 +61,41 @@ public class PersistenceGenerator {
 			StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 			template.setAttribute("type", field.getType());
 			template.setAttribute("name", field.getName());
+			template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 			text+=template.toString()+"\n";
 		}
 		
 		return text;
+	}
+	
+	private void generatePersistenceInterface(Table table){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybersoft.codePath+"persistence");
+		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceInterface");
+		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("tableName", table.getName());
+		
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceService.java");
+	
+	}
+	
+	private void generatePersistenceImpl(Table table){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybersoft.codePath+"persistence");
+		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceImplementation");
+		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("tableName", table.getName());
+		
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceServiceImpl.java");
+		
+	}
+	
+	private void generateRepository(Table table){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybersoft.codePath+"persistence");
+		StringTemplate template = templateGroup.getInstanceOf("repository");
+		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("tableName", table.getName());
+		
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/persistence/repository", CodeUtil.toCamelCase(table.getName())+"Repository.java");
+		
 	}
 
 }

@@ -17,11 +17,11 @@ import co.com.cybersoft.core.services.$entityName$.$coreService$;
 import co.com.cybersoft.core.util.PageWrapper;
 import co.com.cybersoft.events.$entityName$.$responseEvent$;
 import co.com.cybersoft.events.$entityName$.$requestEvent$;
-import co.com.cybersoft.persistence.$entityName$.$domain$;
+import co.com.cybersoft.persistence.domain.$entityUpperCaseName$;
 
 /**
  * Search controller class for $entityName$
- * @author Cybersoft 2014. All rights reserved.
+ * @author Cybersystems 2014. All rights reserved.
  *
  */
 @Controller
@@ -34,7 +34,7 @@ public class $searchControllerName$ {
 	private $coreService$ $entityName$Service;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String search(Model model, Pageable pageable, String field, HttpServletRequest request){
+	public String search(Model model, Pageable pageable, String field, HttpServletRequest request) throws Exception{
 		LOG.debug("Retrieving  $entityName$ ");
 		$responseEvent$ details;
 		if (field!=null){
@@ -49,7 +49,7 @@ public class $searchControllerName$ {
 		}
 		PageRequest pageRequest=null;
 		if (field==null && request.getSession().getAttribute("$entityName$Field")==null){
-			details = $entityName$Service.requestItems(new $requestEvent$(pageable));
+			details = $entityName$Service.request$entityUpperCaseName$Page(new $requestEvent$(pageable));
 		}
 		else{
 			boolean direction;
@@ -58,10 +58,10 @@ public class $searchControllerName$ {
 				direction=(boolean) request.getSession().getAttribute("$entityName$Ascending");
 				pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("$entityName$Field"):field));
 			}
-			details = $entityName$Service.request$requestMethodName$(new $requestEvent$(pageRequest));
+			details = $entityName$Service.request$requestMethodName$Page(new $requestEvent$(pageRequest));
 		}
 		
-		PageWrapper<Item> page=new PageWrapper<Item>(details.$getListMethod$(),"$url$");
+		PageWrapper<$entityUpperCaseName$> page=new PageWrapper<$entityUpperCaseName$>(details.$getListMethod$(),"$url$");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
 		return "$viewURL$";

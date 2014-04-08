@@ -1,7 +1,6 @@
 package co.com.cybersoft.core.services.$entityName$;
 
 import co.com.cybersoft.events.$entityName$.$createEvent$;
-import co.com.cybersoft.events.$entityName$.$createdEvent$;
 import co.com.cybersoft.events.$entityName$.$singleResponseEvent$;
 import co.com.cybersoft.events.$entityName$.$allResponseEvent$;
 import co.com.cybersoft.events.$entityName$.$modifyEvent$;
@@ -14,9 +13,9 @@ import co.com.cybersoft.events.$entityName$.$allRequestEvent$;
  *
  */
 public interface $className$ {
-	$createdEvent$ create$entityUppercaseName$($createEvent$ event ) throws Exception;
+	$singleResponseEvent$ create$entityUppercaseName$($createEvent$ event ) throws Exception;
 	
-	$allResponseEvent$ requestPage($allRequestEvent$ event) throws Exception;
+	$allResponseEvent$ request$entityUppercaseName$Page($allRequestEvent$ event) throws Exception;
 
 	$singleResponseEvent$ request$entityUppercaseName$Details($singleRequestEvent$ event ) throws Exception;
 

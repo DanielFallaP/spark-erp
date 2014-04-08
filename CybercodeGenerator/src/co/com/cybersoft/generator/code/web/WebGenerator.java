@@ -21,6 +21,8 @@ public class WebGenerator {
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			generateSearchController(table);
+			generateModifyController(table);
+			generateCreateController(table);
 			generateDomain(table);
 		}
 	}
@@ -30,24 +32,34 @@ public class WebGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("searchController");
 		template.setAttribute("entityName", table.getName());
 		template.setAttribute("coreService", CodeUtil.toCamelCase(table.getName())+"Service");
-		template.setAttribute("responseEvent", CodeUtil.toCamelCase(table.getName())+"Event");
-		template.setAttribute("requestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"Event");
-		template.setAttribute("domain", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("responseEvent", CodeUtil.toCamelCase(table.getName())+"PageEvent");
+		template.setAttribute("requestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent");
+		template.setAttribute("entityUpperCaseName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("url", "/configuration/"+table.getName()+"/search"+CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("searchControllerName",CodeUtil.toCamelCase(table.getName())+"SearchController" );
-		template.setAttribute("getListMethod", "getPageContent");
+		template.setAttribute("getListMethod", "get"+CodeUtil.toCamelCase(table.getName())+"Page");
 		template.setAttribute("requestMethodName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("viewURL", "/configuration/"+table.getName()+"/search"+CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchController.java");
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchController.java");
 	}
 	
 	public void generateCreateController(Table table){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybersoft.codePath+"web");
+		StringTemplate template = templateGroup.getInstanceOf("creationController");
+		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
+		template.setAttribute("tableName", table.getName());
 		
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CreationController.java");
 	}
 	
 	public void generateModifyController(Table table){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybersoft.codePath+"web");
+		StringTemplate template = templateGroup.getInstanceOf("modificationController");
+		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
+		template.setAttribute("tableName", table.getName());
 		
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationController.java");
 	}
 	
 	public void generateDomain(Table table){
@@ -57,7 +69,7 @@ public class WebGenerator {
 		template.setAttribute("domainClassName", className);
 		template.setAttribute("bodyDomainClass", generateDomainBody(table));
 		template.setAttribute("tableName", table.getName());
-		CodeUtil.writeClass(template.toString(),Cybersoft.targetPath+"/web/domain/"+table.getName(), className+".java");
+		CodeUtil.writeClass(template.toString(),Cybersoft.targetClassPath+"/web/domain/"+table.getName(), className+".java");
 	}
 	
 	private String generateDomainBody(Table table){
