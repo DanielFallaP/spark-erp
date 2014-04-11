@@ -1,27 +1,22 @@
 {	
 	"tables":[
-			
 		{	
-			"name":"measurementUnit",		
+			"name":"articulo",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"name", "type":"String", "unique":"true"}
+					],
+			"references":
+					[
+						{"name":"unidadMedida", "refType":"unidadMedida", "displayField":"name"}
+					]
+		 },
+		{	
+			"name":"unidadMedida",		
 			"fields":[
 						{"name":"code", "type":"String", "unique":"true"},
 						{"name":"name", "type":"String", "unique":"true"},
 						{"name":"description", "type":"String"}
-					]
-		 },
-		 {	
-			"name":"afe",		
-			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"description", "type":"String", "unique":"true"}
-					]
-		 }
-		 ,
-		 {
-		 	"name":"paymentType",		
-			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"description", "type":"String", "unique":"true"}
 					]
 		 }
 	 ]
