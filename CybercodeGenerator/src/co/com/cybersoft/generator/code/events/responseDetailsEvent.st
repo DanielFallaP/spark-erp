@@ -4,7 +4,7 @@ import co.com.cybersoft.core.domain.$entityName$Details;
 
 /**
  * Event class for $entityName$
- * @author Cybersoft 2014. All rights reserved.
+ * @author Cybersystems 2014. All rights reserved.
  *
  */
 public class $entityName$DetailsEvent {

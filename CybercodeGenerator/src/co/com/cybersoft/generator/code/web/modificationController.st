@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import co.com.cybersoft.core.domain.$entityName$Details;
 import co.com.cybersoft.core.services.$tableName$.$entityName$Service;
@@ -16,6 +17,7 @@ import co.com.cybersoft.events.$tableName$.$entityName$DetailsEvent;
 import co.com.cybersoft.events.$tableName$.$entityName$ModificationEvent;
 import co.com.cybersoft.events.$tableName$.Request$entityName$DetailsEvent;
 import co.com.cybersoft.web.domain.$tableName$.$entityName$Info;
+
 
 /**
  * Event class for $entityName$
@@ -39,6 +41,7 @@ public class $entityName$ModificationController {
 	public String modify$entityName$(@ModelAttribute("$tableName$Info") $entityName$Info $tableName$Info) throws Exception {
 		LOG.debug("Modification of $tableName$ "+$tableName$Info.getCode());
 		$entityName$Details $tableName$Details = create$entityName$Details($tableName$Info);
+		$tableName$Details.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		$tableName$Service.modify$entityName$(new $entityName$ModificationEvent($tableName$Details));
 		return "redirect:/configuration/$tableName$/search$entityName$";
 	}

@@ -24,7 +24,7 @@ import co.com.cybersoft.web.domain.$tableName$.$entityName$Info;
 
 /**
  * Controller for $tableName$
- * @author Cybersoft 2014. All rights reserved.
+ * @author Cybersystems 2014. All rights reserved.
  *
  */
 @Controller

@@ -10,6 +10,11 @@ import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
+/**
+ * Generates all the views
+ * @author Daniel Falla
+ *
+ */
 public class ViewGenerator {
 
 	public void generate(Cybersoft cybersoft){
@@ -19,6 +24,8 @@ public class ViewGenerator {
 			generateModifyView(table);
 			generateSearchView(table);
 		}
+		
+		generateLinksView(cybersoft);
 	}
 	
 	private void generateCreateView(Table table){
@@ -91,6 +98,17 @@ public class ViewGenerator {
 			}
 			i++;
 		}
+		
+		//Generation of audit fields columns (date of last modification and user of last modification)
+		StringTemplate template = templateGroup.getInstanceOf("otherColumn");
+		template.setAttribute("fieldName", "dateOfModification");
+		text+=template.toString()+"\n";
+		
+		template = templateGroup.getInstanceOf("otherColumn");
+		template.setAttribute("fieldName", "userName");
+		text+=template.toString()+"\n";
+
+		
 		return text;
 	}
 	
@@ -106,7 +124,39 @@ public class ViewGenerator {
 			text+=template.toString()+"\n";
 		}
 		
+		//Generation of audit fields columns (date of last modification and user of last modification)
+		StringTemplate template = templateGroup.getInstanceOf("columnHeader");
+		template.setAttribute("fieldName", "dateOfModification");
+		template.setAttribute("tableName", "");
+		template.setAttribute("upperFieldName", "dateOfModification");
+		text+=template.toString()+"\n";
+		
+		template = templateGroup.getInstanceOf("columnHeader");
+		template.setAttribute("fieldName", "userName");
+		template.setAttribute("tableName", "");
+		template.setAttribute("upperFieldName", "userOfModification");
+		text+=template.toString()+"\n";
+		
 		return text;
 	}
 	
+	private void generateLinksView(Cybersoft cybersoft){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybersoft.codePath+"views");
+		StringTemplate template = templateGroup.getInstanceOf("viewConfiguration");
+		
+		List<Table> tables = cybersoft.getTables();
+		String links="";
+		
+		for (Table table : tables) {
+			StringTemplate linkTemplate = templateGroup.getInstanceOf("configurationLink");
+			
+			linkTemplate.setAttribute("tableName",table.getName());
+			linkTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+			links+=linkTemplate.toString()+"\n";
+		}
+		
+		template.setAttribute("links", links);
+		
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetViewPath+"normal", "configuration.html");
+	}
 }

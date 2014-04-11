@@ -12,6 +12,11 @@ import co.com.cybersoft.events.$tableName$.Request$entityName$PageEvent;
 import co.com.cybersoft.persistence.domain.$entityName$;
 import co.com.cybersoft.persistence.repository.$entityName$Repository;
 
+/**
+ * 
+ * @author Cybersystems 2014. All rights reserved.
+ *
+ */
 public class $entityName$PersistenceServiceImpl implements $entityName$PersistenceService{
 
 	private final $entityName$Repository $tableName$Repository;

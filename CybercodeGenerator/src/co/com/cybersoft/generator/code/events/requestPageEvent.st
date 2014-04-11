@@ -4,7 +4,7 @@ import org.springframework.data.domain.Pageable;
 
 /**
  * Event class for $entityName$
- * @author Cybersoft 2014. All rights reserved.
+ * @author Cybersystems 2014. All rights reserved.
  *
  */
 public class Request$entityName$PageEvent {

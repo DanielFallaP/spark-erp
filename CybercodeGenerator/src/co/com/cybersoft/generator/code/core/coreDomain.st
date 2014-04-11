@@ -2,10 +2,15 @@ package co.com.cybersoft.core.domain;
 
 import java.util.Date;
 
+/**
+ * 
+ * @author Cybersystems 2014. All rights reserved.
+ *
+ */
 public class $coreDomainClass$ {
 	
 	$fieldDeclaration$		
-	private Date dateOfCreation;
+	private Date dateOfModification;
 	
 	private String id;
 	
@@ -26,11 +31,11 @@ public class $coreDomainClass$ {
 		this.userName = userName;
 	}
 
-	public Date getDateOfCreation() {
-		return dateOfCreation;
+	public Date getDateOfModification() {
+		return dateOfModification;
 	}
-	public void setDateOfCreation(Date dateOfCreation) {
-		this.dateOfCreation = dateOfCreation;
+	public void setDateOfModification(Date dateOfModification) {
+		this.dateOfModification = dateOfModification;
 	}
 	
 	$gettersAndSetters$

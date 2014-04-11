@@ -2,12 +2,27 @@
 	"tables":[
 			
 		{	
-								"name":"measurementUnit",		
-								"fields":[
-											  {"name":"code", "type":"String", "unique":"true"},
-											  {"name":"name", "type":"String", "unique":"true"},
-											  {"name":"description", "type":"String"}
-										  ]
+			"name":"measurementUnit",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"name", "type":"String", "unique":"true"},
+						{"name":"description", "type":"String"}
+					]
+		 },
+		 {	
+			"name":"afe",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"description", "type":"String", "unique":"true"}
+					]
+		 }
+		 ,
+		 {
+		 	"name":"paymentType",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"description", "type":"String", "unique":"true"}
+					]
 		 }
 	 ]
 }

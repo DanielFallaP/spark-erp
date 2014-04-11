@@ -1,0 +1,1 @@
+<div><a th:href="@{/configuration/$tableName$/search$entityName$}" th:text="#{label.$tableName$Configuration}"></a> </div>

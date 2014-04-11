@@ -27,7 +27,7 @@ public class $entityUppercaseName$ServiceImpl implements $entityUppercaseName$Se
 	 */
 	@Override
 	public $singleResponseEvent$ create$entityUppercaseName$($createEvent$ event ) throws Exception{
-		event.get$entityUppercaseName$Details().setDateOfCreation(new Date());
+		event.get$entityUppercaseName$Details().setDateOfModification(new Date());
 		return $entityName$PersistenceService.create$entityUppercaseName$(event);
 	}
 
@@ -46,6 +46,7 @@ public class $entityUppercaseName$ServiceImpl implements $entityUppercaseName$Se
 
 	@Override
 	public $singleResponseEvent$ modify$entityUppercaseName$($modifyEvent$ event) throws Exception {
+		event.get$entityUppercaseName$Details().setDateOfModification(new Date());
 		return $entityName$PersistenceService.modify$entityUppercaseName$(event);
 	}
 

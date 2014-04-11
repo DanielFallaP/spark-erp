@@ -9,6 +9,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import co.com.cybersoft.core.domain.$coreDomainClass$;
 
+/**
+ * 
+ * @author Cybersystems 2014. All rights reserved.
+ *
+ */
 @Document(collection="$variableName$")
 public class $entityName$ {
 
@@ -16,13 +21,15 @@ public class $entityName$ {
 	private String id;
 	
 	$fieldDeclaration$
-	private Date dateOfCreation;
+	private Date dateOfModification;
 	
-	public Date getDateOfCreation() {
-		return dateOfCreation;
+	private String userName;
+	
+	public Date getDateOfModification() {
+		return dateOfModification;
 	}
-	public void setDateOfCreation(Date dateOfCreation) {
-		this.dateOfCreation = dateOfCreation;
+	public void setDateOfModification(Date dateOfModification) {
+		this.dateOfModification = dateOfModification;
 	}
 	
 	public String getId() {
@@ -31,6 +38,14 @@ public class $entityName$ {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
 	
 	$gettersAndSetters$
 	

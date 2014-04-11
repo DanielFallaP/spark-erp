@@ -6,7 +6,7 @@ import co.com.cybersoft.persistence.domain.$entityName$;
 
 /**
  * Event class for $entityName$
- * @author Cybersoft 2014. All rights reserved.
+ * @author Cybersystems 2014. All rights reserved.
  *
  */
 public class $entityName$PageEvent {

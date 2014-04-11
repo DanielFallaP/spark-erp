@@ -9,7 +9,7 @@ import co.com.cybersoft.events.$entityName$.$allRequestEvent$;
 
 /**
  * 
- * @author Cybersoft 2014. All rights reserved.
+ * @author Cybersystems 2014. All rights reserved.
  *
  */
 public interface $className$ {

@@ -40,14 +40,8 @@ dependencies {
   compile 'org.antlr:stringtemplate:3.2'
   //JACKSON
   compile 'org.codehaus.jackson:jackson-mapper-asl:1.8.5'
-
-}
-
-test {
-  testLogging {
-    // Show that tests are run in the command-line output
-    events 'started', 'passed'
-  }
+  //Mysql
+  compile 'mysql:mysql-connector-java:5.1.6'  
 }
 
 task wrapper(type: Wrapper) { gradleVersion = '1.6' }
