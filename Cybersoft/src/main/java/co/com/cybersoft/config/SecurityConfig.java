@@ -16,14 +16,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void registerAuthentication(AuthenticationManagerBuilder auth) throws Exception{
+		auth.inMemoryAuthentication().withUser("raul").password("raul").roles("USER");
+		auth.inMemoryAuthentication().withUser("daniel").password("daniel").roles("USER");
 		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("USER");
 //		LdapAuthenticationProviderConfigurer<AuthenticationManagerBuilder> ldapAuthentication = auth.ldapAuthentication();
-		
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
-		http.authorizeUrls().antMatchers("/**").hasRole("USER").anyRequest().anonymous().and().formLogin();
+//		http.authorizeUrls().antMatchers("/**").hasRole("USER").anyRequest().anonymous().and().formLogin();
 	}
 	
 	@Bean

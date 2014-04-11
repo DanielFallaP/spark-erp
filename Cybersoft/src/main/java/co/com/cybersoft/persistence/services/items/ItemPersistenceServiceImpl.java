@@ -4,7 +4,6 @@ import org.springframework.data.domain.Page;
 
 import co.com.cybersoft.core.domain.ItemDetails;
 import co.com.cybersoft.events.items.CreateItemEvent;
-import co.com.cybersoft.events.items.ItemCreatedEvent;
 import co.com.cybersoft.events.items.ItemDetailsEvent;
 import co.com.cybersoft.events.items.ItemsEvent;
 import co.com.cybersoft.events.items.ModifyItemEvent;
@@ -22,10 +21,10 @@ public class ItemPersistenceServiceImpl implements ItemPersistenceService{
 	}
 	
 	@Override
-	public ItemCreatedEvent createItem(CreateItemEvent event) {
+	public ItemDetailsEvent createItem(CreateItemEvent event) {
 		Item item = Item.fromItemDetails(event.getDetails());
 		item = itemRepository.save(item);
-		return new ItemCreatedEvent(item.getId(), item.toItemDetails());
+		return new ItemDetailsEvent(item.toItemDetails());
 	}
 
 	@Override

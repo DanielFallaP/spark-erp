@@ -36,10 +36,6 @@
 		        			<td><input type="text" th:field="*{shortDescription}"/></td>
 		        		</tr>
 		        		<tr>
-		        			<td th:text="#{label.purchaseUnitofMeasurement}+': '"></td>
-		        			<td><input type="text" th:field="*{purchaseUnitOfMeasurement}"/></td>
-		        		</tr>
-		        		<tr>
 		        			<td th:text="#{label.partNumber}+': '"></td>
 		        			<td><input type="text" th:field="*{partNumber}"/></td>
 		        		</tr>
@@ -58,6 +54,10 @@
 		        		<tr>
 		        			<td th:text="#{label.blocked}+': '"></td>
 		        			<td><input type="text" th:field="*{blocked}"/></td>
+		        		</tr>
+		        		<tr>
+		        			<td th:text="#{label.purchaseUnitofMeasurement}+': '"></td>
+		        			<td><select th:field="*{purchaseUnitOfMeasurement}"><option th:each="measurementUnit : ${itemInfo.measurementUnitList}" th:value="${measurementUnit.name}" th:text="${measurementUnit.name}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td>

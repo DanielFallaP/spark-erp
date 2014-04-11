@@ -1,6 +1,8 @@
 package co.com.cybersoft.web.domain.items;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
@@ -8,6 +10,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+
+import co.com.cybersoft.core.domain.MeasurementUnitDetails;
 
 @Component
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
@@ -41,6 +45,16 @@ public class ItemInfo implements Serializable{
 	
 	private String calledFrom;
 	
+	private List<MeasurementUnitDetails> measurementUnitList;
+	
+	public List<MeasurementUnitDetails> getMeasurementUnitList() {
+		return measurementUnitList;
+	}
+
+	public void setMeasurementUnitList(
+			List<MeasurementUnitDetails> measurementUnitList) {
+		this.measurementUnitList = measurementUnitList;
+	}
 
 	public String getUserName() {
 		return userName;
@@ -138,6 +152,20 @@ public class ItemInfo implements Serializable{
 		this.id = id;
 	}
 	
+	public void rearrangeMeasurementDetailsList(String selected){
+		MeasurementUnitDetails selectedMeasurementDetails=null;
+		ArrayList<MeasurementUnitDetails> newList = new ArrayList<MeasurementUnitDetails>();
+		for(MeasurementUnitDetails measurementUnit:measurementUnitList){
+			if (measurementUnit.getName().equals(selected)){
+				selectedMeasurementDetails=measurementUnit;
+				newList.add(0, selectedMeasurementDetails);
+			}
+			else{
+				newList.add(measurementUnit);
+			}
+		}
+		measurementUnitList=newList;
 	
+	}
 	
 }

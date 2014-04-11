@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import co.com.cybersoft.core.domain.ItemDetails;
 import co.com.cybersoft.core.services.items.ItemService;
+import co.com.cybersoft.core.services.measurementUnit.MeasurementUnitService;
 import co.com.cybersoft.events.items.ItemDetailsEvent;
 import co.com.cybersoft.events.items.ModifyItemEvent;
 import co.com.cybersoft.events.items.RequestItemDetailsEvent;
+import co.com.cybersoft.events.measurementUnit.MeasurementUnitPageEvent;
 import co.com.cybersoft.web.domain.items.ItemInfo;
 
 @Controller
@@ -25,6 +27,9 @@ public class ItemModificationController {
 	@Autowired
 	private ItemService itemService;
 	
+	@Autowired
+	private MeasurementUnitService measurementUnitService;
+
 	@RequestMapping(method=RequestMethod.GET)
 	public String itemModification(){
 		return "/configuration/items/modifyItem";
@@ -46,11 +51,16 @@ public class ItemModificationController {
 	}
 
 	@ModelAttribute("itemInfo")
-	private ItemInfo getItemInfo(@PathVariable("itemId") String itemId){
+	private ItemInfo getItemInfo(@PathVariable("itemId") String itemId) throws Exception{
 		LOG.debug("Retrieving the item "+itemId);
 		ItemDetailsEvent requestItemDetails = itemService.requestItemDetails(new RequestItemDetailsEvent(itemId));
+		MeasurementUnitPageEvent allMeasurementUnitEvent = measurementUnitService.requestAll();
+	
 		ItemInfo itemInfo = new ItemInfo();
 		BeanUtils.copyProperties(requestItemDetails.getItemDetails(), itemInfo);
+		itemInfo.setMeasurementUnitList(allMeasurementUnitEvent.getMeasurementUnitList());
+		itemInfo.rearrangeMeasurementDetailsList(itemInfo.getPurchaseUnitOfMeasurement());
+		
 		return itemInfo;
 	}
 }

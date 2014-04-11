@@ -3,7 +3,6 @@ package co.com.cybersoft.core.services.items;
 import java.util.Date;
 
 import co.com.cybersoft.events.items.CreateItemEvent;
-import co.com.cybersoft.events.items.ItemCreatedEvent;
 import co.com.cybersoft.events.items.ItemDetailsEvent;
 import co.com.cybersoft.events.items.ItemsEvent;
 import co.com.cybersoft.events.items.ModifyItemEvent;
@@ -22,9 +21,9 @@ public class ItemServiceImpl implements ItemService{
 	/**
 	 */
 	@Override
-	public ItemCreatedEvent createItem(CreateItemEvent createItemEvent) throws Exception{
+	public ItemDetailsEvent createItem(CreateItemEvent createItemEvent) throws Exception{
 		createItemEvent.getDetails().setDateOfCreation(new Date());
-		ItemCreatedEvent createItem = itemPersistenceService.createItem(createItemEvent);
+		ItemDetailsEvent createItem = itemPersistenceService.createItem(createItemEvent);
 		return createItem;
 	}
 

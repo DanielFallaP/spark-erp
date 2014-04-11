@@ -19,6 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import co.com.cybersoft.core.domain.ItemDetails;
 import co.com.cybersoft.core.services.items.ItemService;
+import co.com.cybersoft.core.services.measurementUnit.MeasurementUnitService;
+import co.com.cybersoft.events.measurementUnit.MeasurementUnitPageEvent;
 import co.com.cybersoft.events.items.CreateItemEvent;
 import co.com.cybersoft.web.domain.items.ItemInfo;
 
@@ -36,8 +38,11 @@ public class ItemCreationController {
 	@Autowired
 	private ItemService itemService;
 	
+	@Autowired
+	private MeasurementUnitService measurementUnitService;
+	
 	@RequestMapping(method=RequestMethod.GET)
-	public String itemCreation(){
+	public String itemCreation() throws Exception {
 		return "/configuration/items/createItem";
 	}
 	
@@ -65,8 +70,10 @@ public class ItemCreationController {
 	}
 	
 	@ModelAttribute("itemInfo")
-	private ItemInfo getItemInfo(@PathVariable("from") String calledFrom){
+	private ItemInfo getItemInfo(@PathVariable("from") String calledFrom) throws Exception{
 		ItemInfo itemInfo = new ItemInfo();
+		MeasurementUnitPageEvent allMeasurementUnitEvent = measurementUnitService.requestAll();
+		itemInfo.setMeasurementUnitList(allMeasurementUnitEvent.getMeasurementUnitList());
 		itemInfo.setCalledFrom(calledFrom);
 		return itemInfo;
 	}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags">
+ <head>
+<meta charset="ISO-8859-1"/>
+<title th:text="#{label.afeTitle}"></title>
+
+<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+</head>
+<body>
+	<div th:include="normal/layout :: header" ></div>
+	<div class="container-fluid">	
+		<div class="row-fluid">
+			<h3 th:text="#{label.afeInfo}"> </h3>
+			<table width="100%">
+				<tr>
+					<td width="33%"><div class='pagination pagination-left'><ul><li><a th:href="@{/configuration/afe/createAfe/fromList}" th:title='#{label.afe}'>+</a></li></ul></div></td>
+					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
+					<td width="34%"><div></div></td>
+				</tr>
+			</table>
+			<table class="table table-striped" >
+				<thead>
+					<tr>
+						<th ><a th:href="@{${page.url}+'?field=code'}" th:text="#{label.afeCode}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=description'}" th:text="#{label.afeDescription}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a></th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="object: ${list}">
+						<td><a th:href="@{/configuration/afe/modifyAfe/}+${object.code}" th:text="${object.code}"></a></td>
+						<td th:text="${object.description}"></td>
+						<td th:text="${object.dateOfModification}"></td>
+						<td th:text="${object.userName}"></td>
+						
+					</tr>
+				</tbody>
+			</table>
+			<table width="100%">
+				<tr>
+					<td width="33%"></td>
+					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
+					<td width="34%"><div></div></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div th:include="normal/layout :: footer"></div>
+</body>
+</html>
