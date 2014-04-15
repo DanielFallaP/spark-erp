@@ -40,7 +40,7 @@
 				<tbody>
 					<tr th:each="object: \${list}">
 						$codeColumn$
-						$otherColumns$						
+						$otherColumns$
 					</tr>
 				</tbody>
 			</table>

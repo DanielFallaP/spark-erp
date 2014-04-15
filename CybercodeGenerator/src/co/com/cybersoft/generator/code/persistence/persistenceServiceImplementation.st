@@ -12,6 +12,9 @@ import co.com.cybersoft.events.$tableName$.Request$entityName$PageEvent;
 import co.com.cybersoft.persistence.domain.$entityName$;
 import co.com.cybersoft.persistence.repository.$entityName$Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 
  * @author Cybersystems 2014. All rights reserved.
@@ -50,6 +53,16 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 		$entityName$ $tableName$ = $entityName$.from$entityName$Details(event.get$entityName$Details());
 		$tableName$ = $tableName$Repository.save($tableName$);
 		return new $entityName$DetailsEvent($tableName$.to$entityName$Details());
+	}
+	
+	@Override
+	public $entityName$PageEvent requestAll() throws Exception {
+		List<$entityName$> all = $tableName$Repository.findAll();
+		List<$entityName$Details> list = new ArrayList<$entityName$Details>();
+		for ($entityName$ $tableName$ : all) {
+			list.add($tableName$.to$entityName$Details());
+		}
+		return new $entityName$PageEvent(list);
 	}
 
 }

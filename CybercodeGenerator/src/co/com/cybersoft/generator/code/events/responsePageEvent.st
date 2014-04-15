@@ -3,6 +3,7 @@ package co.com.cybersoft.events.$tableName$;
 import org.springframework.data.domain.Page;
 
 import co.com.cybersoft.persistence.domain.$entityName$;
+$referencesImports$
 
 /**
  * Event class for $entityName$
@@ -11,6 +12,12 @@ import co.com.cybersoft.persistence.domain.$entityName$;
  */
 public class $entityName$PageEvent {
 	private Page<$entityName$> $tableName$Page;
+	
+	$referencesDeclarations$
+	
+	$referencesConstructors$
+	
+	$referencesGettersSetters$
 	
 	public $entityName$PageEvent(Page<$entityName$>  $tableName$Page){
 		this.$tableName$Page= $tableName$Page;

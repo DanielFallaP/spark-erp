@@ -4,14 +4,25 @@
 			"name":"articulo",		
 			"fields":[
 						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"name", "type":"String", "unique":"true"}
+						{"name":"description", "type":"String", "unique":"true"},
+						{ "name":"branch", "type":"String", "visible":"false"},
+						{"name":"activationDate", "type":"Date","required":"false"}
 					],
 			"references":
 					[
-						{"name":"unidadMedida", "refType":"unidadMedida", "displayField":"name"}
+						{"name":"unidadMedida", "refType":"unidadMedida", "displayField":"name"},
+						{"name":"grupo", "refType":"grupo", "displayField":"description"}
 					]
 		 },
 		{	
+			"name":"grupo",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"number","type":"Integer", "length":"2"}
+					]
+		 },
+		 {	
 			"name":"unidadMedida",		
 			"fields":[
 						{"name":"code", "type":"String", "unique":"true"},
@@ -19,5 +30,6 @@
 						{"name":"description", "type":"String"}
 					]
 		 }
+		 
 	 ]
 }

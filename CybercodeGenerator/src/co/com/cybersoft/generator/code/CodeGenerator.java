@@ -12,7 +12,6 @@ import co.com.cybersoft.generator.code.core.CoreGenerator;
 import co.com.cybersoft.generator.code.events.EventGenerator;
 import co.com.cybersoft.generator.code.model.Cybersoft;
 import co.com.cybersoft.generator.code.persistence.PersistenceGenerator;
-import co.com.cybersoft.generator.code.views.ResourceGenerator;
 import co.com.cybersoft.generator.code.views.ViewGenerator;
 import co.com.cybersoft.generator.code.web.WebGenerator;
 
@@ -31,7 +30,7 @@ public class CodeGenerator {
 			new ViewGenerator().generate(cybersoft);
 			new EventGenerator().generate(cybersoft);
 			new ConfigGenerator().generate(cybersoft);
-			new ResourceGenerator(cybersoft).insertMessageLabels();
+//			new ResourceGenerator(cybersoft).insertMessageLabels();
 		}
 	}
 }

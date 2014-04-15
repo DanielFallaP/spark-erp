@@ -7,6 +7,7 @@ import org.antlr.stringtemplate.StringTemplateGroup;
 
 import co.com.cybersoft.generator.code.model.Cybersoft;
 import co.com.cybersoft.generator.code.model.Field;
+import co.com.cybersoft.generator.code.model.ReferenceField;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
@@ -38,7 +39,9 @@ public class PersistenceGenerator {
 		String body="";
 		
 		List<Field> fields = table.getFields();
+		List<ReferenceField> references = table.getReferences();
 		
+		//For every field
 		for (Field field : fields) {
 			if (field.getUnique()!=null && field.getUnique()){
 				body+="@Indexed(unique=true)\n";
@@ -50,16 +53,38 @@ public class PersistenceGenerator {
 			body+="\n";
 			
 		}
+		
+		//For every field referencing an external table
+		for (ReferenceField field : references) {
+			StringTemplate template = new StringTemplate("private $type$ $name$;\n");
+			template.setAttribute("type", "String");
+			template.setAttribute("name", field.getName());
+			body+=template.toString();
+			body+="\n";
+		}
 		return body;
 	}
 	
 	private String generateGettersSetters(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybersoft.codePath+"util");
 		List<Field> fields = table.getFields();
+		List<ReferenceField> references = table.getReferences();
+		
 		String text="";
+		
+		//For every field
 		for (Field field : fields) {
 			StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 			template.setAttribute("type", field.getType());
+			template.setAttribute("name", field.getName());
+			template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+			text+=template.toString()+"\n";
+		}
+		
+		//For every field referencing an external table
+		for (ReferenceField field : references) {
+			StringTemplate template = templateGroup.getInstanceOf("getterSetter");
+			template.setAttribute("type", "String");
 			template.setAttribute("name", field.getName());
 			template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 			text+=template.toString()+"\n";

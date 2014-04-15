@@ -2,10 +2,12 @@ package co.com.cybersoft.web.domain.$tableName$;
 
 import java.io.Serializable;
 
+import java.util.Date;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+$referencesImports$
 
 /**
  * Controller for $tableName$
@@ -25,6 +27,16 @@ public class $domainClassName$ implements Serializable{
 	private String userName;
 
 	$bodyDomainClass$
+	
+	private Date dateOfCreation;
+	
+	public Date getDateOfCreation() {
+		return dateOfCreation;
+	}
+	
+	public void setDateOfCreation(Date dateOfCreation) {
+		this.dateOfCreation = dateOfCreation;
+	}
 		
 	public String getUserName() {
 		return userName;

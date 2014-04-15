@@ -17,7 +17,13 @@
 	            padding: 9px 0;
 	        }
 	    </style>
-	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    
+	    $datePickerConfig$
     </head>
     <body>
     	<div th:include="normal/layout :: header" ></div>
@@ -28,6 +34,7 @@
 		        	<h3 th:text="#{label.$tableName$CreationTitle}"></h3>
 		        	<table>		        			        			
 		        		$editableTableRows$
+		        		$editableReferenceRows$
 		        		<tr>
 		        			<td>
 		        				<input type="submit" th:value="#{label.save}" />

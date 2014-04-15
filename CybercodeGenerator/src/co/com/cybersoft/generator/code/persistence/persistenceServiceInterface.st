@@ -21,4 +21,7 @@ public interface $entityName$PersistenceService {
 	$entityName$DetailsEvent request$entityName$Details(Request$entityName$DetailsEvent event) throws Exception;
 	
 	$entityName$DetailsEvent modify$entityName$($entityName$ModificationEvent event) throws Exception;
+	
+	$entityName$PageEvent requestAll() throws Exception;
+	
 }

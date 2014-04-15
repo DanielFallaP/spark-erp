@@ -10,6 +10,7 @@ import co.com.cybersoft.events.$entityName$.$singleRequestEvent$;
 import co.com.cybersoft.events.$entityName$.$allRequestEvent$;
 import co.com.cybersoft.persistence.services.$entityName$.$entityUppercaseName$PersistenceService;
 
+
 /**
  * 
  * @author Cybersystems 2014. All rights reserved.
@@ -27,7 +28,6 @@ public class $entityUppercaseName$ServiceImpl implements $entityUppercaseName$Se
 	 */
 	@Override
 	public $singleResponseEvent$ create$entityUppercaseName$($createEvent$ event ) throws Exception{
-		event.get$entityUppercaseName$Details().setDateOfModification(new Date());
 		return $entityName$PersistenceService.create$entityUppercaseName$(event);
 	}
 
@@ -46,8 +46,12 @@ public class $entityUppercaseName$ServiceImpl implements $entityUppercaseName$Se
 
 	@Override
 	public $singleResponseEvent$ modify$entityUppercaseName$($modifyEvent$ event) throws Exception {
-		event.get$entityUppercaseName$Details().setDateOfModification(new Date());
 		return $entityName$PersistenceService.modify$entityUppercaseName$(event);
+	}
+	
+	@Override
+	public $entityUppercaseName$PageEvent requestAll() throws Exception {
+		return $entityName$PersistenceService.requestAll();
 	}
 
 }

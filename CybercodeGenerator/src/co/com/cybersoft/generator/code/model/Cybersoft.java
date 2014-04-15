@@ -12,6 +12,8 @@ public class Cybersoft {
 	
 	public final static String targetViewPath="build/webapp/WEB-INF/views/";
 
+	public final static String dateType="Date";
+	
 	public List<Table> getTables() {
 		return tables;
 	}

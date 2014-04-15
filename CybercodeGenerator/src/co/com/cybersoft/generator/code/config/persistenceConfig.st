@@ -20,13 +20,16 @@ import org.springframework.transaction.PlatformTransactionManager;
 import co.com.cybersoft.persistence.repository.items.ItemRepository;
 import co.com.cybersoft.persistence.services.items.ItemPersistenceService;
 import co.com.cybersoft.persistence.services.items.ItemPersistenceServiceImpl;
+import co.com.cybersoft.persistence.services.measurementUnit.MeasurementUnitPersistenceService;
+import co.com.cybersoft.persistence.services.measurementUnit.MeasurementUnitPersistenceServiceImpl;
+import co.com.cybersoft.persistence.repository.MeasurementUnitRepository;
 $imports$
 
 import com.mongodb.Mongo;
 
 @Configuration
 @EnableMongoRepositories(basePackages="co.com.cybersoft.persistence.repository",
-includeFilters=@ComponentScan.Filter(value={ItemRepository.class$repos$},type=FilterType.ASSIGNABLE_TYPE))
+includeFilters=@ComponentScan.Filter(value={ItemRepository.class, MeasurementUnitRepository.class$repos$},type=FilterType.ASSIGNABLE_TYPE))
 public class PersistenceConfig {
 	
 	@Bean
@@ -44,6 +47,9 @@ public class PersistenceConfig {
 	 */
 	@Autowired
 	private ItemRepository itemRepository;
+	
+	@Autowired
+	private MeasurementUnitRepository measurementUnitRepository;
 	
 	$repoFields$
 		
@@ -66,6 +72,11 @@ public class PersistenceConfig {
 	@Bean
 	public ItemPersistenceService itemPersistenceService(){
 		return new ItemPersistenceServiceImpl(itemRepository);
+	}
+	
+	@Bean 
+	public MeasurementUnitPersistenceService measurementUnitPersistenceService(){
+		return new MeasurementUnitPersistenceServiceImpl(measurementUnitRepository);
 	}
 	
 	$beans$

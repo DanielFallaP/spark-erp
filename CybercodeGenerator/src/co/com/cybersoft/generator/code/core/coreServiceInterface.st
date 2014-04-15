@@ -20,4 +20,7 @@ public interface $className$ {
 	$singleResponseEvent$ request$entityUppercaseName$Details($singleRequestEvent$ event ) throws Exception;
 
 	$singleResponseEvent$ modify$entityUppercaseName$($modifyEvent$ event) throws Exception;
+	
+	$entityUppercaseName$PageEvent requestAll() throws Exception;
+	
 }

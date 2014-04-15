@@ -23,13 +23,24 @@ public class $entityName$ {
 	$fieldDeclaration$
 	private Date dateOfModification;
 	
+	private Date dateOfCreation;
+	
 	private String userName;
+	
+	private String createdBy;
 	
 	public Date getDateOfModification() {
 		return dateOfModification;
 	}
 	public void setDateOfModification(Date dateOfModification) {
 		this.dateOfModification = dateOfModification;
+	}
+	
+	public Date getDateOfCreation() {
+		return dateOfCreation;
+	}
+	public void setDateOfCreation(Date dateOfCreation) {
+		this.dateOfCreation = dateOfCreation;
 	}
 	
 	public String getId() {
@@ -46,6 +57,12 @@ public class $entityName$ {
 		this.userName = userName;
 	}
 	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 	
 	$gettersAndSetters$
 	
