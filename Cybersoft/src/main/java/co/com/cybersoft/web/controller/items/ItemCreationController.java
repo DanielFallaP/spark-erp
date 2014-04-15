@@ -58,8 +58,11 @@ public class ItemCreationController {
 		itemInfo=new ItemInfo();
 		itemInfo.setItemCreated(true);
 		itemInfo.setCalledFrom(calledFrom);
+		MeasurementUnitPageEvent allMeasurementUnitEvent = measurementUnitService.requestAll();
+		itemInfo.setMeasurementUnitList(allMeasurementUnitEvent.getMeasurementUnitList());
+		
 		model.addAttribute("itemInfo", itemInfo);
-		return "/configuration/items/createItem";
+		return "redirect:/configuration/items/createItem";
 	}
 	
 	private ItemDetails createItemDetails(ItemInfo itemInfo){

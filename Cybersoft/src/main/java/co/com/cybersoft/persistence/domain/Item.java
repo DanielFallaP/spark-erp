@@ -39,6 +39,14 @@ public class Item {
 	
 	private String userName;
 	
+	private Date activationDate;	
+
+	public Date getActivationDate() {
+		return activationDate;
+	}
+	public void setActivationDate(Date activationDate) {
+		this.activationDate = activationDate;
+	}
 	public String getUserName() {
 		return userName;
 	}

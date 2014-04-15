@@ -2,6 +2,7 @@ package co.com.cybersoft.web.domain.items;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -45,8 +46,18 @@ public class ItemInfo implements Serializable{
 	
 	private String calledFrom;
 	
+	private Date activationDate;	
+	
 	private List<MeasurementUnitDetails> measurementUnitList;
 	
+	public Date getActivationDate() {
+		return activationDate;
+	}
+
+	public void setActivationDate(Date activationDate) {
+		this.activationDate = activationDate;
+	}
+
 	public List<MeasurementUnitDetails> getMeasurementUnitList() {
 		return measurementUnitList;
 	}

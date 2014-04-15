@@ -9,14 +9,17 @@ import co.com.cybersoft.persistence.services.items.ItemPersistenceService;
 import co.com.cybersoft.core.services.measurementUnit.MeasurementUnitService;
 import co.com.cybersoft.core.services.measurementUnit.MeasurementUnitServiceImpl;
 import co.com.cybersoft.persistence.services.measurementUnit.MeasurementUnitPersistenceService;
+import co.com.cybersoft.core.services.articulo.ArticuloService;
+import co.com.cybersoft.core.services.articulo.ArticuloServiceImpl;
+import co.com.cybersoft.persistence.services.articulo.ArticuloPersistenceService;
 
-import co.com.cybersoft.core.services.afe.AfeService;
-import co.com.cybersoft.core.services.afe.AfeServiceImpl;
-import co.com.cybersoft.persistence.services.afe.AfePersistenceService;
+import co.com.cybersoft.core.services.grupo.GrupoService;
+import co.com.cybersoft.core.services.grupo.GrupoServiceImpl;
+import co.com.cybersoft.persistence.services.grupo.GrupoPersistenceService;
 
-import co.com.cybersoft.core.services.paymentType.PaymentTypeService;
-import co.com.cybersoft.core.services.paymentType.PaymentTypeServiceImpl;
-import co.com.cybersoft.persistence.services.paymentType.PaymentTypePersistenceService;
+import co.com.cybersoft.core.services.unidadMedida.UnidadMedidaService;
+import co.com.cybersoft.core.services.unidadMedida.UnidadMedidaServiceImpl;
+import co.com.cybersoft.persistence.services.unidadMedida.UnidadMedidaPersistenceService;
 
 
 
@@ -32,15 +35,20 @@ public class CoreConfig {
 	public MeasurementUnitService measurementUnitService(MeasurementUnitPersistenceService measurementUnitPersistenceService){
 		return new MeasurementUnitServiceImpl(measurementUnitPersistenceService);
 	}
-
+	
 	@Bean
-	public AfeService afeService(AfePersistenceService afePersistenceService){
-		return new AfeServiceImpl(afePersistenceService);
+	public ArticuloService articuloService(ArticuloPersistenceService articuloPersistenceService){
+		return new ArticuloServiceImpl(articuloPersistenceService);
 	}
 
 	@Bean
-	public PaymentTypeService paymentTypeService(PaymentTypePersistenceService paymentTypePersistenceService){
-		return new PaymentTypeServiceImpl(paymentTypePersistenceService);
+	public GrupoService grupoService(GrupoPersistenceService grupoPersistenceService){
+		return new GrupoServiceImpl(grupoPersistenceService);
+	}
+
+	@Bean
+	public UnidadMedidaService unidadMedidaService(UnidadMedidaPersistenceService unidadMedidaPersistenceService){
+		return new UnidadMedidaServiceImpl(unidadMedidaPersistenceService);
 	}
 
 

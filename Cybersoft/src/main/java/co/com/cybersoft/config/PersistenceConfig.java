@@ -20,17 +20,20 @@ import org.springframework.transaction.PlatformTransactionManager;
 import co.com.cybersoft.persistence.repository.items.ItemRepository;
 import co.com.cybersoft.persistence.services.items.ItemPersistenceService;
 import co.com.cybersoft.persistence.services.items.ItemPersistenceServiceImpl;
-import co.com.cybersoft.persistence.repository.MeasurementUnitRepository;
 import co.com.cybersoft.persistence.services.measurementUnit.MeasurementUnitPersistenceService;
 import co.com.cybersoft.persistence.services.measurementUnit.MeasurementUnitPersistenceServiceImpl;
+import co.com.cybersoft.persistence.repository.MeasurementUnitRepository;
+import co.com.cybersoft.persistence.repository.ArticuloRepository;
+import co.com.cybersoft.persistence.services.articulo.ArticuloPersistenceService;
+import co.com.cybersoft.persistence.services.articulo.ArticuloPersistenceServiceImpl;
 
-import co.com.cybersoft.persistence.repository.AfeRepository;
-import co.com.cybersoft.persistence.services.afe.AfePersistenceService;
-import co.com.cybersoft.persistence.services.afe.AfePersistenceServiceImpl;
+import co.com.cybersoft.persistence.repository.GrupoRepository;
+import co.com.cybersoft.persistence.services.grupo.GrupoPersistenceService;
+import co.com.cybersoft.persistence.services.grupo.GrupoPersistenceServiceImpl;
 
-import co.com.cybersoft.persistence.repository.PaymentTypeRepository;
-import co.com.cybersoft.persistence.services.paymentType.PaymentTypePersistenceService;
-import co.com.cybersoft.persistence.services.paymentType.PaymentTypePersistenceServiceImpl;
+import co.com.cybersoft.persistence.repository.UnidadMedidaRepository;
+import co.com.cybersoft.persistence.services.unidadMedida.UnidadMedidaPersistenceService;
+import co.com.cybersoft.persistence.services.unidadMedida.UnidadMedidaPersistenceServiceImpl;
 
 
 
@@ -38,7 +41,7 @@ import com.mongodb.Mongo;
 
 @Configuration
 @EnableMongoRepositories(basePackages="co.com.cybersoft.persistence.repository",
-includeFilters=@ComponentScan.Filter(value={ItemRepository.class,MeasurementUnitRepository.class,AfeRepository.class,PaymentTypeRepository.class},type=FilterType.ASSIGNABLE_TYPE))
+includeFilters=@ComponentScan.Filter(value={ItemRepository.class, MeasurementUnitRepository.class,ArticuloRepository.class,GrupoRepository.class,UnidadMedidaRepository.class},type=FilterType.ASSIGNABLE_TYPE))
 public class PersistenceConfig {
 	
 	@Bean
@@ -59,12 +62,15 @@ public class PersistenceConfig {
 	
 	@Autowired
 	private MeasurementUnitRepository measurementUnitRepository;
+	
+	@Autowired
+	private ArticuloRepository articuloRepository;
 
 	@Autowired
-	private AfeRepository afeRepository;
+	private GrupoRepository grupoRepository;
 
 	@Autowired
-	private PaymentTypeRepository paymentTypeRepository;
+	private UnidadMedidaRepository unidadMedidaRepository;
 
 
 		
@@ -93,15 +99,20 @@ public class PersistenceConfig {
 	public MeasurementUnitPersistenceService measurementUnitPersistenceService(){
 		return new MeasurementUnitPersistenceServiceImpl(measurementUnitRepository);
 	}
-
+	
 	@Bean 
-	public AfePersistenceService afePersistenceService(){
-		return new AfePersistenceServiceImpl(afeRepository);
+	public ArticuloPersistenceService articuloPersistenceService(){
+		return new ArticuloPersistenceServiceImpl(articuloRepository);
 	}
 
 	@Bean 
-	public PaymentTypePersistenceService paymentTypePersistenceService(){
-		return new PaymentTypePersistenceServiceImpl(paymentTypeRepository);
+	public GrupoPersistenceService grupoPersistenceService(){
+		return new GrupoPersistenceServiceImpl(grupoRepository);
+	}
+
+	@Bean 
+	public UnidadMedidaPersistenceService unidadMedidaPersistenceService(){
+		return new UnidadMedidaPersistenceServiceImpl(unidadMedidaRepository);
 	}
 
 
