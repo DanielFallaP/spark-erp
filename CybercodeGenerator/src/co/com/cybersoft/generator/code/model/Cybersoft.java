@@ -14,6 +14,14 @@ public class Cybersoft {
 
 	public final static String dateType="Date";
 	
+	public final static String stringType="String";
+	
+	public final static String integerType="Integer";
+
+	public final static String longType="Long";
+	
+	public final static String doubleType="Double";
+	
 	public List<Table> getTables() {
 		return tables;
 	}

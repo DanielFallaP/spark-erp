@@ -100,14 +100,33 @@ public class WebGenerator {
 		
 		//Check for validation constraints
 		for (Field field : fields) {
-			if (field.getLength()!=null){
+			if (field.getLength()!=null && field.getType().equals(Cybersoft.stringType)){
 				imports+="import org.hibernate.validator.constraints.Length;\n";
-			}
-			if (field.getRequired()){
-				imports+="import org.hibernate.validator.constraints.NotEmpty;\n";
 				break;
 			}
 				
+		}
+		
+		for (Field field : fields) {
+			if (field.getRequired() && field.getVisible() && field.getType().equals(Cybersoft.stringType)){
+				imports+="import org.hibernate.validator.constraints.NotEmpty;\n";
+				break;
+			}
+		}
+		
+		for (Field field : fields) {
+			if(field.getRequired() && field.getVisible() && (field.getType().equals(Cybersoft.integerType) || 
+					field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.stringType))){
+				imports+="import javax.validation.constraints.NotNull;\n";
+				break;
+			}
+		}
+		
+		for (Field field : fields) {
+			if (field.getLength()!=null && (field.getType().equals(Cybersoft.integerType)
+					||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
+				imports+="import import org.hibernate.validator.constraints.Range;\n";
+			}
 		}
 		
 		for (ReferenceField field : references) {
@@ -212,12 +231,23 @@ List<ReferenceField> references = table.getReferences();
 		
 		//Attributes
 		for (Field field : fields) {
-			if (field.getLength()!=null){
+			if (field.getLength()!=null && field.getType().equals(Cybersoft.stringType)){
 				body+="@Length(max="+field.getLength()+")\n";
 			}
-			if (field.getRequired()){
+			if (field.getRequired()&&field.getVisible()&&field.getType().equals(Cybersoft.stringType)){
 				body+="@NotEmpty\n";
 			}
+			
+			if (field.getRequired()&&field.getVisible()&&(field.getType().equals(Cybersoft.integerType)
+					||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
+				body+="@NotNull\n";
+			}
+			
+			if (field.getLength()!=null && (field.getType().equals(Cybersoft.integerType)
+					||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
+				body+="@Range(max="+CodeUtil.getMaxNumber(field.getLength())+")\n";
+			}
+			
 			StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
 			fieldTemplate.setAttribute("type", field.getType());
 			fieldTemplate.setAttribute("name", field.getName());
@@ -234,7 +264,7 @@ List<ReferenceField> references = table.getReferences();
 			body+="\n";
 			
 			template = new StringTemplate("private $type$ $name$;\n\n");
-			template.setAttribute("type", "String");
+			template.setAttribute("type", Cybersoft.stringType);
 			template.setAttribute("name", field.getName());
 			body+=template.toString();
 			body+="\n";
@@ -257,7 +287,7 @@ List<ReferenceField> references = table.getReferences();
 			body+=gettersSettersTemplate.toString()+"\n\n";			
 			
 			StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-			template.setAttribute("type", "String");
+			template.setAttribute("type", Cybersoft.stringType);
 			template.setAttribute("name", field.getName());
 			template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getRefType()));
 			body+=template.toString()+"\n\n";			

@@ -85,13 +85,19 @@ public class ViewGenerator {
 	
 		String text="";
 		for (Field field : fields) {
-				StringTemplate template = stringTemplateGroup.getInstanceOf("editableTableRow");
+			if (field.getVisible()){
+				StringTemplate template;
+				if (!field.getLargeText())
+					template = stringTemplateGroup.getInstanceOf("editableTableRow");
+				else
+					template = stringTemplateGroup.getInstanceOf("editableTextAreaRow");
 				template.setAttribute("tableName", table.getName());
 				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
 				if (field.getType().equals(Cybersoft.dateType))
 					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
 				text+=template.toString()+"\n";
+			}
 		}
 		
 		return text;
@@ -131,7 +137,7 @@ public class ViewGenerator {
 		int i=0;
 		for (Field field : fields) {
 			if (i!=0){
-				if (field.getVisible()){
+				if (field.getVisible() && !field.getLargeText()){
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
 					template.setAttribute("fieldName", field.getName());
 					text+=template.toString()+"\n";
@@ -174,7 +180,7 @@ public class ViewGenerator {
 		
 		String text="";
 		for (Field field : fields) {
-			if (field.getVisible()){
+			if (field.getVisible() && !field.getLargeText()){
 				StringTemplate template = templateGroup.getInstanceOf("columnHeader");
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("tableName", table.getName());

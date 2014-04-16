@@ -5,8 +5,10 @@
 			"fields":[
 						{"name":"code", "type":"String", "unique":"true"},
 						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"longDescription", "type":"String", "unique":"true", "largeText":"true"},
 						{ "name":"branch", "type":"String", "visible":"false"},
-						{"name":"activationDate", "type":"Date","required":"false"}
+						{"name":"activationDate", "type":"Date","required":"false"},
+						{"name":"expirationDate", "type":"Date","required":"false"}
 					],
 			"references":
 					[
@@ -19,7 +21,7 @@
 			"fields":[
 						{"name":"code", "type":"String", "unique":"true", "length":"2"},
 						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"number","type":"Integer", "length":"2"}
+						{"name":"number","type":"Double", "length":"2"}
 					]
 		 },
 		 {	

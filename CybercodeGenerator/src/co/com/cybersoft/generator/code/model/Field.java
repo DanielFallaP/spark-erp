@@ -7,7 +7,14 @@ public class Field {
 	private Integer length;
 	private Boolean required=Boolean.TRUE;
 	private Boolean visible=Boolean.TRUE;
+	private Boolean largeText=Boolean.FALSE;
 	
+	public Boolean getLargeText() {
+		return largeText;
+	}
+	public void setLargeText(Boolean largeText) {
+		this.largeText = largeText;
+	}
 	public String getName() {
 		return name;
 	}

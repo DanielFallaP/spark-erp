@@ -62,7 +62,7 @@ public class CodeUtil {
 		
 		for (ReferenceField field : references) {
 			StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-			template.setAttribute("type", "String");
+			template.setAttribute("type", Cybersoft.stringType);
 			template.setAttribute("name", field.getName());
 			template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 			text+=template.toString()+"\n";
@@ -84,6 +84,10 @@ public class CodeUtil {
 		return text;
 	}
 	
+	public static Long getMaxNumber(Integer digitNumber){
+		return (long) Math.pow(10, 3);
+	}
+	
 	public static String getFieldDeclarations(Table table){
 		String text="";
 		List<Field> fields = table.getFields();
@@ -99,7 +103,7 @@ public class CodeUtil {
 		
 		for (ReferenceField field : references) {
 			StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-			fieldTemplate.setAttribute("type", "String");
+			fieldTemplate.setAttribute("type", Cybersoft.stringType);
 			fieldTemplate.setAttribute("name", field.getName());
 			text+=fieldTemplate.toString();
 			text+="\n";
