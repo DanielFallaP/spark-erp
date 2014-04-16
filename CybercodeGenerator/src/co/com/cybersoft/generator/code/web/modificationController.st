@@ -50,7 +50,6 @@ public class $entityName$ModificationController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String modify$entityName$(@Valid @ModelAttribute("$tableName$Info") $entityName$Info $tableName$Info, HttpServletRequest request) throws Exception {
-		LOG.debug("Modification of $tableName$ "+$tableName$Info.getCode());
 		$entityName$Details $tableName$Details = create$entityName$Details($tableName$Info);
 		$tableName$Details.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		$tableName$Details.setDateOfModification(new Date());
@@ -62,7 +61,6 @@ public class $entityName$ModificationController {
 	
 	private $entityName$Details create$entityName$Details($entityName$Info $tableName$Info){
 		$entityName$Details $tableName$Details = new $entityName$Details();
-		LOG.debug($tableName$Info.getCode());
 		BeanUtils.copyProperties($tableName$Info, $tableName$Details);
 		return $tableName$Details;
 	}

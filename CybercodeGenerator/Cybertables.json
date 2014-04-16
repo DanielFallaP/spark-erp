@@ -54,7 +54,7 @@
 					]
 		 },
 	     {	
-			"name":"measurementUnit",		
+			"name":"measurementUnits",		
 			"fields":[
 						{"name":"code", "type":"String", "unique":"true"},
 						{"name":"name", "type":"String", "unique":"true"}
@@ -64,7 +64,7 @@
 					 ]
 		 },
 		 {	
-			"name":"item",		
+			"name":"items",		
 			"fields":
 					[
 						{"name":"code", "type":"String", "unique":"true"},
@@ -125,7 +125,7 @@
 			"references":
 					[
 						{"name":"company", "refType":"company", "displayField":"name"},
-						{"name":"afeType", "refType":"afetype", "displayField":"name"},
+						{"name":"afeType", "refType":"afeType", "displayField":"name"},
 						{"name":"contract", "refType":"contract", "displayField":"name"},
 						{"name":"bill", "refType":"bill", "displayField":"name"}
 					]

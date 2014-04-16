@@ -49,7 +49,6 @@ public class $entityName$CreationController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String create$entityName$(@Valid @ModelAttribute("$tableName$Info") $entityName$Info $tableName$Info, Model model, HttpServletRequest request) throws Exception{
-		LOG.debug("Creation of $tableName$!!!");
 		$tableName$Info.setCreated(false);
 		$entityName$Details $tableName$Details = create$entityName$Details($tableName$Info);
 		$tableName$Details.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -71,7 +70,6 @@ public class $entityName$CreationController {
 	
 	private $entityName$Details create$entityName$Details($entityName$Info $tableName$Info){
 		$entityName$Details $tableName$Details = new $entityName$Details();
-		LOG.debug($tableName$Info.getCode());
 		BeanUtils.copyProperties($tableName$Info, $tableName$Details);
 		return $tableName$Details;
 	}

@@ -1,37 +1,177 @@
-{	
+{
 	"tables":[
-		{	
-			"name":"articulo",		
-			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"longDescription", "type":"String", "unique":"true", "largeText":"true"},
-						{ "name":"branch", "type":"String", "visible":"false"},
-						{"name":"activationDate", "type":"Date","required":"false"},
-						{"name":"expirationDate", "type":"Date","required":"false"}
-					],
-			"references":
+		 {  
+			"name":"active",		
+			"fields":
 					[
-						{"name":"unidadMedida", "refType":"unidadMedida", "displayField":"name"},
-						{"name":"grupo", "refType":"grupo", "displayField":"description"}
-					]
-		 },
-		{	
-			"name":"grupo",		
-			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"number","type":"Double", "length":"2"}
+						{"name":"code", "type":"String", "unique":"true", "length":"1"},
+						{"name":"name", "type":"String", "unique":"true", "length":"12"}
 					]
 		 },
 		 {	
-			"name":"unidadMedida",		
+			"name":"partner",
+			"fields":[
+						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
+						{"name":"name", "type":"String", "unique":"true"},
+						{"name":"nit", "type":"String", "unique":"true"},
+						{"name":"active", "type":"Boolean"}
+					]
+		 },
+		 {	
+			"name":"corporation",
+			"fields":[
+						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"name", "type":"String", "unique":"true"},
+						{"name":"nit", "type":"String", "unique":"true", "length":"15"},
+						{"name":"active", "type":"Boolean"}
+					]
+		 },
+		 {	
+			"name":"company",
+			"references":
+					[
+						{"name":"corporation", "refType":"corporation", "displayField":"name"},
+						{"name":"active", "refType":"active", "displayField":"name"}
+					],
+			"fields":[
+						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"name", "type":"String", "unique":"true"},
+						{"name":"letter", "type":"String", "unique":"true"},
+						{"name":"nit", "type":"String", "unique":"true", "length":"15"}
+					]
+		 },
+		 {	
+			"name":"branch",
+			"references":
+			 		[
+						{"name":"corporation", "refType":"corporation", "displayField":"name"},
+						{"name":"company", "refType":"company", "displayField":"name"},
+						{"name":"active", "refType":"active", "displayField":"name"}
+					],
+			"fields":[
+						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},
+						{"name":"name", "type":"String", "unique":"true"}
+					]
+		 },
+	     {	
+			"name":"measurementUnits",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"name", "type":"String", "unique":"true"}
+					 ],
+			"references":[
+						{"name":"active", "refType":"active", "displayField":"name"}
+					 ]
+		 },
+		 {	
+			"name":"items",		
+			"fields":
+					[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"name", "type":"String", "unique":"true"}
+		             ],
+			"references":[
+						{"name":"measurementUnit", "refType":"measurementUnit", "displayField":"name"},
+						{"name":"active", "refType":"active", "displayField":"name"}
+					 ]
+		 },
+		 {
+			"name":"bill",	
+						"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"name", "type":"String", "unique":"true"}
+					],
+						"references":[
+						{"name":"active", "refType":"active", "displayField":"name"}
+					]
+		 },
+		 {	
+			"name":"jointVenture",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"4"},
+						{"name":"fromDate", "type":"Date"},
+						{"name":"toDate", "type":"Date"}
+					],
+			"references":[
+						{"name":"bill", "refType":"bill", "displayField":"name"},
+						{"name":"partner", "refType":"partner", "displayField":"name"},
+						{"name":"active", "refType":"active", "displayField":"name"}
+					]
+		 },
+		 { 	
+			"name":"contract",
 			"fields":[
 						{"name":"code", "type":"String", "unique":"true"},
 						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"description", "type":"String"}
+						{"name":"active", "type":"Boolean"}  
+					 ] 
+		 },
+		 {	
+			"name":"afeType",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"name", "type":"String", "unique":"true"},
+						{"name":"active", "type":"Boolean"}
+					]
+		 },
+		 {	
+			"name":"afe",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"name", "type":"String", "unique":"true"},
+						{"name":"number", "type":"Integer", "unique":"true"},
+						{"name":"active", "type":"Boolean"}
+					],
+			"references":
+					[
+						{"name":"company", "refType":"company", "displayField":"name"},
+						{"name":"afeType", "refType":"afeType", "displayField":"name"},
+						{"name":"contract", "refType":"contract", "displayField":"name"},
+						{"name":"bill", "refType":"bill", "displayField":"name"}
+					]
+		 },
+		 {	
+			"name":"costCenter",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"company", "type":"String", "unique":"true"},
+						{"name":"contract", "type":"String", "unique":"true"},
+						{"name":"number", "type":"Integer", "unique":"true"},
+						{"name":"active", "type":"Boolean"}
+					]
+		 },
+		 {	
+			"name":"calculusType",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"name", "type":"String", "unique":"true"},
+						{"name":"active", "type":"Boolean"}
+					]
+		 },
+		 {	
+			"name":"operationType",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"name", "type":"String", "unique":"true"},
+						{"name":"active", "type":"Boolean"}
+					]
+		 },
+		 {	
+			"name":"wareHouse",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"name", "type":"String", "unique":"true"},
+					    {"name":"accountCode", "type":"String"},
+					    {"name":"accountConceptCode", "type":"String"},
+					    {"name":"active", "type":"Boolean"}
+					],
+			"references":
+					[
+					    {"name":"calculusType", "refType":"calculusType", "displayField":"name"},
+						{"name":"operationType", "refType":"operationType", "displayField":"name"},
+						{"name":"afe", "refType":"afe", "displayField":"name"},
+					    {"name":"contract", "refType":"contract", "displayField":"name"}
 					]
 		 }
-		 
 	 ]
 }

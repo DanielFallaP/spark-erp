@@ -141,17 +141,6 @@ public class WebGenerator {
 			imports+="import java.util.ArrayList;\n";
 		}
 		
-		boolean containsDate=false;
-		for (Field field : fields) {
-			if (field.getType().equals(Cybersoft.dateType)){
-				containsDate=true;
-			}
-		}
-		
-		if (containsDate){
-			imports+="import java.util.Date;\n";
-		}
-		
 		return imports;
 	}
 	
