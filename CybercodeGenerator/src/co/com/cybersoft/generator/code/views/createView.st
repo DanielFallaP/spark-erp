@@ -47,6 +47,8 @@
             </div>
             <div th:if='\${$tableName$CreateException}' class="alert alert-error" th:text="#{label.$tableName$CreationError}">
             </div>
+            <div th:if='\${$tableName$ValidationException}' class="alert alert-error" th:text="#{label.grupoValidationError}">
+            </div>
 	    </div>
 		<div th:include="normal/layout :: footer"></div>    
     </body>

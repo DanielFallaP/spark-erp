@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.validation.BindException;
 
 import co.com.cybersoft.core.domain.$entityName$Details;
 import co.com.cybersoft.core.services.$tableName$.$entityName$Service;
@@ -76,22 +77,30 @@ public class $entityName$CreationController {
 	}
 	
 	@ModelAttribute("$tableName$Info")
-	private $entityName$Info get$entityName$Info(@PathVariable("from") String calledFrom)  throws Exception {
+	private $entityName$Info get$entityName$Info(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		$entityName$Info $tableName$Info = new $entityName$Info();
 		
 		$setReferencesLists$
 		
 		$tableName$Info.setCalledFrom(calledFrom);
+		request.getSession().setAttribute("$tableName$Info", $tableName$Info);
+		
 		return $tableName$Info;
 	}
 	
 	@ExceptionHandler(Exception.class)
 	public ModelAndView constraintError(HttpServletRequest req, Exception exception){
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("$tableName$Info", req.getSession().getAttribute("$tableName$Info"));
-		modelAndView.addObject("$tableName$CreateException",true);
-		modelAndView.setViewName("/configuration/$tableName$/create$entityName$");
-		exception.printStackTrace();
+		if (exception instanceof BindException){
+			modelAndView.addObject("$tableName$Info", req.getSession().getAttribute("$tableName$Info"));
+			modelAndView.addObject("$tableName$ValidationException",true);
+			modelAndView.setViewName("/configuration/$tableName$/create$entityName$");
+		}
+		else{
+			modelAndView.addObject("$tableName$Info", req.getSession().getAttribute("$tableName$Info"));
+			modelAndView.addObject("$tableName$CreateException",true);
+			modelAndView.setViewName("/configuration/$tableName$/create$entityName$");
+		}
 		return modelAndView;
 	}
 	

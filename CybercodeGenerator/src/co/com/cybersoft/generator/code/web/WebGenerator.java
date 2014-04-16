@@ -125,7 +125,7 @@ public class WebGenerator {
 		for (Field field : fields) {
 			if (field.getLength()!=null && (field.getType().equals(Cybersoft.integerType)
 					||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
-				imports+="import import org.hibernate.validator.constraints.Range;\n";
+				imports+="import org.hibernate.validator.constraints.Range;\n";
 			}
 		}
 		

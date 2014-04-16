@@ -26,9 +26,18 @@ public class $domainClassName$ implements Serializable{
 	
 	private String userName;
 
+	private Date dateOfCreation;
+	
+	private String createdBy;
+	
 	$bodyDomainClass$
 	
-	private Date dateOfCreation;
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
 	
 	public Date getDateOfCreation() {
 		return dateOfCreation;
