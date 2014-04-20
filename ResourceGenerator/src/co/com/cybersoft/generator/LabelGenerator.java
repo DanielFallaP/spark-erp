@@ -13,7 +13,7 @@ import java.util.List;
 
 public class LabelGenerator {
 
-	public static final String absoluteViewRootPath="C:\\Users\\daniel\\git\\co.com.cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views";
+	public static final String viewsAbsolutePath="C:\\Users\\daniel\\git\\co.com.cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views";
 	
 	public static Connection con;
 	
@@ -26,11 +26,10 @@ public class LabelGenerator {
 					+ "user=cybersoft&password=petronube");
 			pst = con.prepareStatement("insert into cybersoft.dictionary (message) values (?)");
 			
-			File rootDirectory = new File(absoluteViewRootPath);
+			File rootDirectory = new File(viewsAbsolutePath);
 
 			LabelGenerator.insertLabels(rootDirectory);
 			
-			con.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
