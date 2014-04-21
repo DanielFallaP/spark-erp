@@ -1,6 +1,7 @@
 {
 	"tables":[
 		 {  
+			"labelTable":"true",		 	
 			"name":"active",		
 			"fields":
 					[
@@ -13,8 +14,11 @@
 			"fields":[
 						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
 						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"nit", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"nit", "type":"String", "unique":"true"}
+					],
+			"references":
+					[
+						{"name":"active", "refType":"active", "displayField":"name"}
 					]
 		 },
 		 {	
@@ -22,8 +26,11 @@
 			"fields":[
 						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
 						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"nit", "type":"String", "unique":"true", "length":"15"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"nit", "type":"String", "unique":"true", "length":"15"}
+					],
+			"references":
+					[
+						{"name":"active", "refType":"active", "displayField":"name"}
 					]
 		 },
 		 {	
@@ -72,7 +79,7 @@
 		             ],
 			"references":[
 						{"name":"measurementUnit", "refType":"measurementUnit", "displayField":"name"},
-						{"name":"active", "refType":"active", "displayFieldd":"name"}
+						{"name":"active", "refType":"active", "displayField":"name"}
 					 ]
 		 },
 		 {
@@ -83,17 +90,17 @@
 					],
 						"references":[
 						{"name":"active", "refType":"active", "displayField":"name"}
-						]
 					]
 		 },
 		 {	
 			"name":"jointVenture",		
 			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"4"},
 						{"name":"fromDate", "type":"Date"},
 						{"name":"toDate", "type":"Date"}
 					],
 			"references":[
-						{"name":"bill", "refType":"String", "displayField":"name"},
+						{"name":"bill", "refType":"bill", "displayField":"name"},
 						{"name":"partner", "refType":"partner", "displayField":"name"},
 						{"name":"active", "refType":"active", "displayField":"name"}
 					]
@@ -120,7 +127,7 @@
 						{"name":"code", "type":"String", "unique":"true"},
 						{"name":"name", "type":"String", "unique":"true"},
 						{"name":"number", "type":"Integer", "unique":"true"},
-						{"name":"active", "type":"Boolean", "displayField":"name"}
+						{"name":"active", "type":"Boolean"}
 					],
 			"references":
 					[
@@ -133,6 +140,7 @@
 		 {	
 			"name":"costCenter",
 			"fields":[
+						{"name":"code", "type":"String", "unique":"true"},
 						{"name":"company", "type":"String", "unique":"true"},
 						{"name":"contract", "type":"String", "unique":"true"},
 						{"name":"number", "type":"Integer", "unique":"true"},
@@ -161,15 +169,15 @@
 						{"name":"code", "type":"String", "unique":"true"},
 						{"name":"name", "type":"String", "unique":"true"},
 					    {"name":"accountCode", "type":"String"},
-					    {"name":"accountConceptCode", "type":"String"},
-					    {"name":"active", "type":"Boolean"}
+					    {"name":"accountConceptCode", "type":"String"}
 					],
 			"references":
 					[
 					    {"name":"calculusType", "refType":"calculusType", "displayField":"name"},
 						{"name":"operationType", "refType":"operationType", "displayField":"name"},
 						{"name":"afe", "refType":"afe", "displayField":"name"},
-					    {"name":"contract", "refType":"contract", "displayField":"name"}
+					    {"name":"contract", "refType":"contract", "displayField":"name"},
+					    {"name":"active", "refType":"active", "displayField":"name"}
 					]
 		 }
 	 ]
