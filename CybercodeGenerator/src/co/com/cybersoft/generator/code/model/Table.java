@@ -9,7 +9,14 @@ public class Table {
 	private String name;
 	private List<Field> fields;
 	private List<ReferenceField> references=new ArrayList<ReferenceField>();
+	private Boolean labelTable=Boolean.FALSE;
 	
+	public Boolean getLabelTable() {
+		return labelTable;
+	}
+	public void setLabelTable(Boolean labelTable) {
+		this.labelTable = labelTable;
+	}
 	public String getName() {
 		return name;
 	}

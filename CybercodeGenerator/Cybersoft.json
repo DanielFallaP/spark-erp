@@ -1,6 +1,7 @@
 {
 	"tables":[
 		 {  
+			"labelTable":"true",		 	
 			"name":"active",		
 			"fields":
 					[
@@ -13,8 +14,11 @@
 			"fields":[
 						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
 						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"nit", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"nit", "type":"String", "unique":"true"}
+					],
+			"references":
+					[
+						{"name":"active", "refType":"active", "displayField":"name"}
 					]
 		 },
 		 {	
@@ -22,8 +26,11 @@
 			"fields":[
 						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
 						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"nit", "type":"String", "unique":"true", "length":"15"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"nit", "type":"String", "unique":"true", "length":"15"}
+					],
+			"references":
+					[
+						{"name":"active", "refType":"active", "displayField":"name"}
 					]
 		 },
 		 {	
@@ -162,15 +169,15 @@
 						{"name":"code", "type":"String", "unique":"true"},
 						{"name":"name", "type":"String", "unique":"true"},
 					    {"name":"accountCode", "type":"String"},
-					    {"name":"accountConceptCode", "type":"String"},
-					    {"name":"active", "type":"Boolean"}
+					    {"name":"accountConceptCode", "type":"String"}
 					],
 			"references":
 					[
 					    {"name":"calculusType", "refType":"calculusType", "displayField":"name"},
 						{"name":"operationType", "refType":"operationType", "displayField":"name"},
 						{"name":"afe", "refType":"afe", "displayField":"name"},
-					    {"name":"contract", "refType":"contract", "displayField":"name"}
+					    {"name":"contract", "refType":"contract", "displayField":"name"},
+					    {"name":"active", "refType":"active", "displayField":"name"}
 					]
 		 }
 	 ]

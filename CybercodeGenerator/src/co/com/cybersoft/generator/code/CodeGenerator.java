@@ -21,13 +21,13 @@ public class CodeGenerator {
 	private ObjectMapper mapper=new ObjectMapper();
 	
 	public void generate() throws JsonParseException, JsonMappingException, IOException{
-		Cybersoft cybersoft = mapper.readValue(new File("Cybersoft.json"), Cybersoft.class);
+		Cybersoft cybersoft = mapper.readValue(new File("Cybertables.json"), Cybersoft.class);
 		System.out.println("Finish reading file");
 		if (!cybersoft.getTables().isEmpty()){
 			new WebGenerator().generate(cybersoft);
 			new CoreGenerator().generate(cybersoft);
 			new PersistenceGenerator().generate(cybersoft);
-			new ViewGenerator().generate(cybersoft);
+			new ViewGenerator(cybersoft).generate();
 			new EventGenerator().generate(cybersoft);
 			new ConfigGenerator().generate(cybersoft);
 //			new ResourceGenerator(cybersoft).insertMessageLabels();

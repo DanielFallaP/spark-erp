@@ -111,4 +111,38 @@ public class CodeUtil {
 		
 		return text;
 	}
+	
+	public static boolean referencesLabelTable(String tableName, Cybersoft cybersoft){
+		List<Table> tables = cybersoft.getTables();
+		for (Table table : tables) {
+			if (table.getName().equals(tableName)){
+				if (table.getLabelTable())
+					return true;
+				else
+					return false;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Gets the name of the label field in a label table
+	 * @param table
+	 * @return
+	 */
+	public static String getLabelField(Table table){
+		List<Field> fields = table.getFields();
+		String labelField="";
+		int i=0;
+		for (Field field : fields) {
+			if (i!=0){
+				if (field.getType().equals(Cybersoft.stringType)){
+					labelField=field.getName();
+					break;
+				}
+			}
+			i++;
+		}
+		return labelField;
+	}
 }

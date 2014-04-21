@@ -17,8 +17,14 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
  *
  */
 public class ViewGenerator {
+	
+	private final Cybersoft cybersoft;
+	
+	public ViewGenerator(Cybersoft cybersoft){
+		this.cybersoft=cybersoft;
+	}
 
-	public void generate(Cybersoft cybersoft){
+	public void generate(){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			generateCreateView(table);
@@ -109,7 +115,13 @@ public class ViewGenerator {
 		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views", Cybersoft.codePath+"views");
 		List<ReferenceField> fields = table.getReferences();
 		for (ReferenceField field : fields) {
-			StringTemplate template = stringTemplateGroup.getInstanceOf("referenceTableRow");
+			StringTemplate template;
+			if (CodeUtil.referencesLabelTable(field.getRefType(), cybersoft)){
+				template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
+			}
+			else{
+				template = stringTemplateGroup.getInstanceOf("referenceTableRow");
+			}
 			template.setAttribute("tableName", table.getName());
 			template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 			template.setAttribute("fieldName", field.getName());
@@ -148,6 +160,13 @@ public class ViewGenerator {
 		
 		for (ReferenceField field : references) {
 			StringTemplate template = templateGroup.getInstanceOf("otherColumn");
+			if (CodeUtil.referencesLabelTable(field.getRefType(), cybersoft)){
+				template = templateGroup.getInstanceOf("otherLabelTableColumn");
+			}
+			else{
+				template = templateGroup.getInstanceOf("otherColumn");
+			}
+				
 			template.setAttribute("fieldName", field.getName());
 			text+=template.toString()+"\n";
 		}

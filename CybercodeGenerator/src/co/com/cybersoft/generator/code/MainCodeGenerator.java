@@ -7,7 +7,7 @@ package co.com.cybersoft.generator.code;
  * @author Daniel Falla, Cybersoft 
  *
  */
-public class RootGenerator {
+public class MainCodeGenerator {
 
 	public static void main(String[] args) {
 		CodeGenerator codeGenerator = new CodeGenerator();
