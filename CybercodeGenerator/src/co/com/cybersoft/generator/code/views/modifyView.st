@@ -24,6 +24,29 @@
 		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
 	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
     
+    	<script type="text/javascript">
+	     \$(document).on("click", "a", function(event){
+	    	  var link = \$(this);
+	    	  var target = link.attr("target");
+	    	  if(\$.trim(target).length > 0)
+	    	  {
+	    	    window.open(link.attr("href"), target);
+	    	  }
+	    	  else
+	    	  {
+	    	     window.location = link.attr("href");
+	    	  }
+
+	    	  event.preventDefault();
+	    	});
+	     
+	     \$(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  \$('#back a').trigger('click');
+	    	  }
+	    	});
+	     </script>
+    
     	$datePickerConfig$
     </head>
     <body>
@@ -31,6 +54,7 @@
     	<div class="container-fluid">	
 			<div class="row-fluid">
 		        <form th:object="\${$tableName$Info}" method="post">
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/configuration/$tableName$/search$entityName$}"></a></div>
 		        	<h3 th:text="#{label.$tableName$ModificationTitle}"></h3>
 		        	<table>
 		        		$editableTableRows$

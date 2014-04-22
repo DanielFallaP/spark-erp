@@ -66,6 +66,7 @@ public class ViewGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersoft.codePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("modifyView");
 		template.setAttribute("tableName", table.getName());
+		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("editableTableRows", generateEditableRows(table));
 		template.setAttribute("editableReferenceRows", generateReferenceRows(table));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));

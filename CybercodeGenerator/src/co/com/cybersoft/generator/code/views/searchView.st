@@ -18,6 +18,31 @@
 	        }
 	    </style>
 	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+		 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	     <script type="text/javascript">
+	     \$(document).on("click", "a", function(event){
+	    	  var link = \$(this);
+	    	  var target = link.attr("target");
+	    	  if(\$.trim(target).length > 0)
+	    	  {
+	    	    window.open(link.attr("href"), target);
+	    	  }
+	    	  else
+	    	  {
+	    	     window.location = link.attr("href");
+	    	  }
+
+	    	  event.preventDefault();
+	    	});
+	     
+	     \$(document).keyup(function(e) {
+	    	  if(e.which == 13) {
+	     		  \$('#new a').trigger('click');
+	    	  }
+	    	});
+	     </script>
+	    
 </head>
 <body>
 	<div th:include="normal/layout :: header" ></div>
@@ -26,7 +51,7 @@
 			<h3 th:text="#{label.$tableName$Info}"> </h3>
 			<table width="100%">
 				<tr>
-					<td width="33%"><div class='pagination pagination-left'><ul><li><a th:href="@{/configuration/$tableName$/create$entityName$/fromList}" th:title='#{label.$tableName$}'>+</a></li></ul></div></td>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/configuration/$tableName$/create$entityName$/fromList}" th:title='#{label.$tableName$}'>+</a></li></ul></div></td>
 					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
 					<td width="34%"><div></div></td>
 				</tr>
