@@ -28,6 +28,11 @@
 	    			    $( "#activationDate" ).datepicker();
 	    			  });
 	    </script>
+	    <script>
+	    			  $(function() {
+	    			    $( "#expirationDate" ).datepicker();
+	    			  });
+	    </script>
 
     </head>
     <body>
@@ -47,12 +52,16 @@
 		        				<td><input type="text" th:field="*{description}"  /></td>
 		        		</tr>
 		        		<tr>
-		        				<td th:text="#{label.articuloBranch}+': '"></td>
-		        				<td><input type="text" th:field="*{branch}"  /></td>
+		        				        				<td th:text="#{label.articuloLongDescription}+': '"></td>
+		        				        				<td><textarea th:field="*{longDescription}" ></textarea></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.articuloActivationDate}+': '"></td>
 		        				<td><input type="text" th:field="*{activationDate}" id="activationDate" /></td>
+		        		</tr>
+		        		<tr>
+		        				<td th:text="#{label.articuloExpirationDate}+': '"></td>
+		        				<td><input type="text" th:field="*{expirationDate}" id="expirationDate" /></td>
 		        		</tr>
 
 		        		<tr>
@@ -75,6 +84,8 @@
 		    <div th:if='${articuloInfo.created}' class="alert alert-info" th:text="#{label.created}">
             </div>
             <div th:if='${articuloCreateException}' class="alert alert-error" th:text="#{label.articuloCreationError}">
+            </div>
+            <div th:if='${articuloValidationException}' class="alert alert-error" th:text="#{label.grupoValidationError}">
             </div>
 	    </div>
 		<div th:include="normal/layout :: footer"></div>    

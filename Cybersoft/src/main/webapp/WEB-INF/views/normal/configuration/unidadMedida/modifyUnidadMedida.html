@@ -53,6 +53,10 @@
 		        	</table>
 		        </form>
 		    </div>
+		    <div th:if='${unidadMedidaModificationException}' class="alert alert-error" th:text="#{label.unidadMedidaModificationError}">
+            </div>
+            <div th:if='${unidadMedidaValidationException}' class="alert alert-error" th:text="#{label.unidadMedidaValidationError}">
+            </div>
 	    </div>
 		<div th:include="normal/layout :: footer"></div>    
     </body>

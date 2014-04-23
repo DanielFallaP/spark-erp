@@ -57,6 +57,8 @@
             </div>
             <div th:if='${unidadMedidaCreateException}' class="alert alert-error" th:text="#{label.unidadMedidaCreationError}">
             </div>
+            <div th:if='${unidadMedidaValidationException}' class="alert alert-error" th:text="#{label.grupoValidationError}">
+            </div>
 	    </div>
 		<div th:include="normal/layout :: footer"></div>    
     </body>

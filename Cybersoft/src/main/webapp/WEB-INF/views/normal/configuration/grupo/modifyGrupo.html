@@ -53,6 +53,10 @@
 		        	</table>
 		        </form>
 		    </div>
+		    <div th:if='${grupoModificationException}' class="alert alert-error" th:text="#{label.grupoModificationError}">
+            </div>
+            <div th:if='${grupoValidationException}' class="alert alert-error" th:text="#{label.grupoValidationError}">
+            </div>
 	    </div>
 		<div th:include="normal/layout :: footer"></div>    
     </body>

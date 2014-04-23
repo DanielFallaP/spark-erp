@@ -17,22 +17,77 @@
 	            padding: 9px 0;
 	        }
 	    </style>
+	    
+	    <link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
 	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+    
+    	<script type="text/javascript">
+	     $(document).on("click", "a", function(event){
+	    	  var link = $(this);
+	    	  var target = link.attr("target");
+	    	  if($.trim(target).length > 0)
+	    	  {
+	    	    window.open(link.attr("href"), target);
+	    	  }
+	    	  else
+	    	  {
+	    	     window.location = link.attr("href");
+	    	  }
+
+	    	  event.preventDefault();
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  $('#back a').trigger('click');
+	    	  }
+	    	});
+	     </script>
+    
     </head>
     <body>
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
 		        <form th:object="${afeInfo}" method="post">
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/configuration/afe/searchAfe}"></a></div>
 		        	<h3 th:text="#{label.afeModificationTitle}"></h3>
 		        	<table>
 		        		<tr>
 		        				<td th:text="#{label.afeCode}+': '"></td>
-		        				<td><input type="text" th:field="*{code}"/></td>
+		        				<td><input type="text" th:field="*{code}"  /></td>
 		        		</tr>
 		        		<tr>
-		        				<td th:text="#{label.afeDescription}+': '"></td>
-		        				<td><input type="text" th:field="*{description}"/></td>
+		        				<td th:text="#{label.afeName}+': '"></td>
+		        				<td><input type="text" th:field="*{name}"  /></td>
+		        		</tr>
+		        		<tr>
+		        				<td th:text="#{label.afeNumber}+': '"></td>
+		        				<td><input type="text" th:field="*{number}"  /></td>
+		        		</tr>
+		        		<tr>
+		        				<td th:text="#{label.afeActive}+': '"></td>
+		        				<td><input type="text" th:field="*{active}"  /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td th:text="#{label.afeCompany}+': '"></td>
+		        			<td><select th:field="*{company}"><option th:each="reference : ${afeInfo.companyList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        		</tr>
+		        		<tr>
+		        			<td th:text="#{label.afeAfeType}+': '"></td>
+		        			<td><select th:field="*{afeType}"><option th:each="reference : ${afeInfo.afeTypeList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        		</tr>
+		        		<tr>
+		        			<td th:text="#{label.afeContract}+': '"></td>
+		        			<td><select th:field="*{contract}"><option th:each="reference : ${afeInfo.contractList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        		</tr>
+		        		<tr>
+		        			<td th:text="#{label.afeBill}+': '"></td>
+		        			<td><select th:field="*{bill}"><option th:each="reference : ${afeInfo.billList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
 		        		</tr>
 
 		        		<tr>
@@ -43,6 +98,10 @@
 		        	</table>
 		        </form>
 		    </div>
+		    <div th:if='${afeModificationException}' class="alert alert-error" th:text="#{label.afeModificationError}">
+            </div>
+            <div th:if='${afeValidationException}' class="alert alert-error" th:text="#{label.afeValidationError}">
+            </div>
 	    </div>
 		<div th:include="normal/layout :: footer"></div>    
     </body>
