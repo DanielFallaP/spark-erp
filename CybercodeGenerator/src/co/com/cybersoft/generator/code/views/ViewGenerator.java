@@ -43,6 +43,9 @@ public class ViewGenerator {
 		template.setAttribute("editableTableRows", generateEditableRows(table));
 		template.setAttribute("editableReferenceRows", generateReferenceRows(table));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
+		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
+		template.setAttribute("arraySeparator", Cybersoft.arraySeparator);
+
 		
 		CodeUtil.writeClass(template.toString(), Cybersoft.targetViewPath+"/normal/configuration/"+table.getName(), "create"+CodeUtil.toCamelCase(table.getName())+".html");
 	}

@@ -23,4 +23,8 @@ public interface $className$ {
 	
 	$entityUppercaseName$PageEvent requestAll() throws Exception;
 	
+	$entityUppercaseName$PageEvent requestByCodePrefix(String code) throws Exception;
+	
+	$entityUppercaseName$PageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

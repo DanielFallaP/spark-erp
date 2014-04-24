@@ -7,13 +7,23 @@ package co.com.cybersoft.events.$tableName$;
  */
 public class Request$entityName$DetailsEvent {
 
-	private String id;
+	private $codeType$ id;
 	
-	public Request$entityName$DetailsEvent(String id){
+	private String description;
+	
+	public Request$entityName$DetailsEvent($codeType$ id){
 		this.id=id;
 	}
 
-	public String getId() {
+	public $codeType$ getId() {
 		return id;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

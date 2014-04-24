@@ -1,4 +1,4 @@
-package co.com.cybersoft.persistence.repository;
+package co.com.cybersoft.persistence.repository.$tableName$;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -10,5 +10,6 @@ import co.com.cybersoft.persistence.domain.$entityName$;
  *
  */
 public interface $entityName$Repository extends MongoRepository<$entityName$, String>{
-	$entityName$ findByCode(String code);
+	$entityName$ findByCode($codeType$ code);
+	$description$	
 }

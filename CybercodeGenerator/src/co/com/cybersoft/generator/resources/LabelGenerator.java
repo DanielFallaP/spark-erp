@@ -103,12 +103,10 @@ public class LabelGenerator {
 			String label = (String) object.get(labelField);
 			if (label.startsWith(labelPrefix+".")){
 				label=label.replace(labelPrefix+".", "");
-				pst.setString(1, label);
 			}
-			else{
-				pst.setString(1, label);
-			}
-			pst.execute();
+			ArrayList<String> messages = new ArrayList<String>();
+			messages.add(label);
+			insertMessages(messages);
 		}
 	}
 

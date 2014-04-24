@@ -52,7 +52,7 @@ public class PersistenceConfig {
 	private MeasurementUnitRepository measurementUnitRepository;
 	
 	$repoFields$
-		
+	
 	@Bean
     public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();

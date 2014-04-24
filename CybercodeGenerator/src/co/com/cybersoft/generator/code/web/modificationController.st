@@ -66,7 +66,7 @@ public class $entityName$ModificationController {
 	}
 
 	@ModelAttribute("$tableName$Info")
-	private $entityName$Info get$entityName$Info(@PathVariable("code") String code, HttpServletRequest request) throws Exception {
+	private $entityName$Info get$entityName$Info(@PathVariable("code") $codeType$ code, HttpServletRequest request) throws Exception {
 		LOG.debug("Retrieving the $tableName$ "+code);
 		$entityName$Info $tableName$Info = new $entityName$Info();
 		

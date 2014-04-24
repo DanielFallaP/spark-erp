@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.$entityName$;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.$entityName$.$createEvent$;
 import co.com.cybersoft.events.$entityName$.$singleResponseEvent$;
 import co.com.cybersoft.events.$entityName$.$allResponseEvent$;
@@ -53,5 +51,15 @@ public class $entityUppercaseName$ServiceImpl implements $entityUppercaseName$Se
 	public $entityUppercaseName$PageEvent requestAll() throws Exception {
 		return $entityName$PersistenceService.requestAll();
 	}
+	
+	@Override
+	public $entityUppercaseName$PageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return $entityName$PersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public $entityUppercaseName$PageEvent requestByContainingDescription(String description) throws Exception {
+		return $entityName$PersistenceService.requestByContainingDescription(description);
+	}
+	
 }

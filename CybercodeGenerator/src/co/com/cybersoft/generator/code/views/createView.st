@@ -23,30 +23,88 @@
 		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
 	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
 	    <script type="text/javascript">
-	     \$(document).on("click", "a", function(event){
-	    	  var link = \$(this);
-	    	  var target = link.attr("target");
-	    	  if(\$.trim(target).length > 0)
-	    	  {
-	    	    window.open(link.attr("href"), target);
-	    	  }
-	    	  else
-	    	  {
-	    	     window.location = link.attr("href");
-	    	  }
-
-	    	  event.preventDefault();
-	    	});
 	     
-	     \$(document).keyup(function(e) {
+	      \$(document).keyup(function(e) {
 	    	  if(e.which == 27) {
-	     		  \$('#back a').trigger('click');
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("configuration")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/configuration/$tableName$/search$entityName$","_self");
 	    	  }
 	    	});
+	    	
+	     \$(function(){
+	     \$("#code").autocomplete({
+	    	    source: function (request, response) {
+	    	    		var path=window.location.pathname.split("/");
+	    	    		var prefix="";
+	    	    		if (path[1].localeCompare("configuration")!=0){
+	    	    			prefix="/"+path[1];	
+	    	    		}
+	    	    		
+						\$.get(prefix+"/configuration/$tableName$/getCodeList/"+request.term, {}, function (data) {
+	    	            var array=data.split("$arraySeparator$");
+	    	            if (data!="")
+	    	            	response(array);
+	    	            else
+	    	            	response(null);
+	    	        });
+	    	    },
+	    	    minLength: 3,
+	    	    select: function(a, b){
+	    	    		\$(this).val(b.item.value);
+	    	    		var path=window.location.pathname.split("/");
+	    	    		var prefix="";
+	    	    		if (path[1].localeCompare("configuration")!=0){
+	    	    			prefix="/"+path[1];	
+	    	    		}
+	    	    		window.open(prefix+"/configuration/$tableName$/create$entityName$/fromList?id="+b.item.value,"_self");
+	    	    	}
+	    	});
+	    	 
+	     });
+	     
+	     \$(function(){
+		     \$("#description").autocomplete({
+		    	    source: function (request, response) {
+		    	    		var path=window.location.pathname.split("/");
+		    	    		var prefix="";
+		    	    		if (path[1].localeCompare("configuration")!=0){
+		    	    			prefix="/"+path[1];	
+		    	    		}
+		    	    		
+							\$.get(prefix+"/configuration/$tableName$/getDescriptionList/"+request.term, {}, function (data) {
+		    	            var array=data.split("$arraySeparator$");
+		    	            if (data!="")
+		    	            	response(array);
+		    	            else
+		    	            	response(null);
+		    	        });
+		    	    },
+		    	    minLength: 3,
+	    	    		select: function(a, b){
+	    	    		\$(this).val(b.item.value);
+	    	    		var path=window.location.pathname.split("/");
+	    	    		var prefix="";
+	    	    		if (path[1].localeCompare("configuration")!=0){
+	    	    			prefix="/"+path[1];	
+	    	    		}
+	    	    		window.open(prefix+"/configuration/$tableName$/create$entityName$/fromList?desc="+b.item.value,"_self");
+	    	    	}
+		    	});
+		    	 
+		     });
+		     
+		   function setFocus(){
+		   		document.getElementById("code").focus();
+		   } 
+	     
 	     </script>
 	    $datePickerConfig$
     </head>
-    <body>
+    <body onload="setFocus()">
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
@@ -68,7 +126,7 @@
             </div>
             <div th:if='\${$tableName$CreateException}' class="alert alert-error" th:text="#{label.$tableName$CreationError}">
             </div>
-            <div th:if='\${$tableName$ValidationException}' class="alert alert-error" th:text="#{label.grupoValidationError}">
+            <div th:if='\${$tableName$ValidationException}' class="alert alert-error" th:text="#{label.$tableName$ValidationError}">
             </div>
 	    </div>
 		<div th:include="normal/layout :: footer"></div>    

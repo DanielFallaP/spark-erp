@@ -85,7 +85,7 @@ public class CodeUtil {
 	}
 	
 	public static Long getMaxNumber(Integer digitNumber){
-		return (long) Math.pow(10, 3);
+		return (long) Math.pow(10, digitNumber)-1;
 	}
 	
 	public static String getFieldDeclarations(Table table){
@@ -144,5 +144,18 @@ public class CodeUtil {
 			i++;
 		}
 		return labelField;
+	}
+	
+	public static boolean containsDescriptionField(Table table){
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (field.getName().equals("description"))
+				return true;
+		}
+		return false;
+	}
+	
+	public static String getCodeType(Table table){
+		return table.getFields().get(0).getType();
 	}
 }

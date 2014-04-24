@@ -47,7 +47,7 @@ public class EventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("requestDetailsEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		
+		template.setAttribute("codeType", CodeUtil.getCodeType(table));
 		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/events/"+table.getName(), "Request"+CodeUtil.toCamelCase(table.getName())+"DetailsEvent.java");
 	}
 	

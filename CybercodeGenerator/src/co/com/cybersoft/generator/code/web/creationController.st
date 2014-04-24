@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.$entityName$Details;
 import co.com.cybersoft.core.services.$tableName$.$entityName$Service;
 import co.com.cybersoft.events.$tableName$.Create$entityName$Event;
 import co.com.cybersoft.web.domain.$tableName$.$entityName$Info;
+import co.com.cybersoft.events.$tableName$.$entityName$DetailsEvent;
+import co.com.cybersoft.events.$tableName$.Request$entityName$DetailsEvent;
+
+
 $referenceServicesImports$
 
 /**
@@ -77,6 +81,24 @@ public class $entityName$CreationController {
 	@ModelAttribute("$tableName$Info")
 	private $entityName$Info get$entityName$Info(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		$entityName$Info $tableName$Info = new $entityName$Info();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			$entityName$DetailsEvent responseEvent = $tableName$Service.request$entityName$Details(new Request$entityName$DetailsEvent($code$));
+			if (responseEvent.get$entityName$Details()!=null)
+				BeanUtils.copyProperties(responseEvent.get$entityName$Details(), $tableName$Info);
+		}
+		
+		if (description!=null){
+			Request$entityName$DetailsEvent event = new Request$entityName$DetailsEvent(null);
+			event.setDescription(description);
+			$entityName$DetailsEvent responseEvent = $tableName$Service.request$entityName$Details(event);
+			if (responseEvent.get$entityName$Details()!=null)
+				BeanUtils.copyProperties(responseEvent.get$entityName$Details(), $tableName$Info);
+		}
+		
+		$tableName$Info.setId(null);
 		
 		$setReferencesLists$
 		

@@ -22,6 +22,8 @@ public class Cybersoft {
 	
 	public final static String doubleType="Double";
 	
+	public static final String arraySeparator="/////";
+	
 	public List<Table> getTables() {
 		return tables;
 	}

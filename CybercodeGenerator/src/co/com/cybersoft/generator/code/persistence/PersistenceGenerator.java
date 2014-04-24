@@ -19,7 +19,7 @@ public class PersistenceGenerator {
 			generateDomainClass(table);
 			generatePersistenceInterface(table);
 			generatePersistenceImpl(table);
-			generateRepository(table);
+			generateRepositories(table);
 		}
 	}
 	
@@ -109,18 +109,68 @@ public class PersistenceGenerator {
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
+		StringTemplateGroup subTemplateGroup=new StringTemplateGroup("persistence",Cybersoft.codePath+"persistence");
+		StringTemplate subTemplate = subTemplateGroup.getInstanceOf("descriptionPersistenceServiceImpl");
+		subTemplate.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+		subTemplate.setAttribute("tableName", table.getName());
+		
+		if(CodeUtil.containsDescriptionField(table))
+			template.setAttribute("description", subTemplate.toString());
+		
 		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceServiceImpl.java");
 		
 	}
 	
-	private void generateRepository(Table table){
+	private void generateRepositories(Table table){
+		
+		//Repository interface generation
 		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybersoft.codePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("repository");
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
+		template.setAttribute("codeType", CodeUtil.getCodeType(table));
+		StringTemplate subTemplate=new StringTemplate("$entityName$ findByDescription(String description);\n");
+		subTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+		if (CodeUtil.containsDescriptionField(table))
+			template.setAttribute("description", subTemplate.toString());
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"Repository.java");
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/persistence/repository", CodeUtil.toCamelCase(table.getName())+"Repository.java");
+		//Custom repository interface generation
+		template = templateGroup.getInstanceOf("customRepositoryInterface");
+		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("tableName", table.getName());
 		
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepo.java");
+		
+		//Custom repository implementation generation
+		template = templateGroup.getInstanceOf("customRepositoryImplementation");
+		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("tableName", table.getName());
+		template.setAttribute("fieldType", CodeUtil.getCodeType(table));
+		template.setAttribute("byContainingDescription", generateSearchByDescription(table));
+		
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepoImpl.java");
+		
+	}
+	
+	private String generateSearchByDescription(Table table){
+		StringTemplate template;
+		if (CodeUtil.containsDescriptionField(table)){
+			
+			StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybersoft.codePath+"persistence");
+			template = templateGroup.getInstanceOf("byContainingDescription");
+			template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+			template.setAttribute("tableName", table.getName());
+		}
+		else{
+			template=new StringTemplate("@Override "+
+					"public List<$entityName$> findByContainingDescription(String descriptionSubstring) {"+
+				"return null;}");
+			template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+		}
+			
+		
+		return template.toString();
 	}
 
 }
