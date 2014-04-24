@@ -23,12 +23,12 @@ public class Items {
 	@Indexed(unique=true)
 	private String code;
 
-	@Indexed(unique=true)
-	private String description;
-
 	private String measurementUnit;
 
 	private String active;
+
+	@Indexed(unique=true)
+	private String description;
 
 
 	private Date dateOfModification;
@@ -81,13 +81,6 @@ public class Items {
 	public void setCode(String code) {
 		this.code = code;	
 	}
-	public String getDescription() {
-		return description;	
-	}
-		
-	public void setDescription(String description) {
-		this.description = description;	
-	}
 	public String getMeasurementUnit() {
 		return measurementUnit;	
 	}
@@ -101,6 +94,13 @@ public class Items {
 		
 	public void setActive(String active) {
 		this.active = active;	
+	}
+	public String getDescription() {
+		return description;	
+	}
+		
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	

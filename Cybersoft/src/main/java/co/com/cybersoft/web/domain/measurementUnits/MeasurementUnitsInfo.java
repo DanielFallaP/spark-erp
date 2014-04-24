@@ -43,10 +43,11 @@ public class MeasurementUnitsInfo implements Serializable{
 	private String description;
 
 
-	private List<ActiveDetails> activeList;
+	@NotEmpty
 	private String active;
 
 
+	private List<ActiveDetails> activeList;
 	public String getCode() {
 		return code;	
 	}

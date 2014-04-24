@@ -12,12 +12,6 @@ public class JointVentureDetails {
 	private String code;
 
 
-	private Date fromDate;
-
-
-	private Date toDate;
-
-
 	private String bill;
 
 
@@ -25,6 +19,12 @@ public class JointVentureDetails {
 
 
 	private String active;
+
+
+	private Date fromDate;
+
+
+	private Date toDate;
 
 
 		
@@ -82,20 +82,6 @@ public class JointVentureDetails {
 	public void setCode(String code) {
 		this.code = code;	
 	}
-	public Date getFromDate() {
-		return fromDate;	
-	}
-		
-	public void setFromDate(Date fromDate) {
-		this.fromDate = fromDate;	
-	}
-	public Date getToDate() {
-		return toDate;	
-	}
-		
-	public void setToDate(Date toDate) {
-		this.toDate = toDate;	
-	}
 	public String getBill() {
 		return bill;	
 	}
@@ -116,6 +102,20 @@ public class JointVentureDetails {
 		
 	public void setActive(String active) {
 		this.active = active;	
+	}
+	public Date getFromDate() {
+		return fromDate;	
+	}
+		
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;	
+	}
+	public Date getToDate() {
+		return toDate;	
+	}
+		
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;	
 	}
 
 	

@@ -49,10 +49,11 @@ public class PartnerInfo implements Serializable{
 	private String nit;
 
 
-	private List<ActiveDetails> activeList;
+	@NotEmpty
 	private String active;
 
 
+	private List<ActiveDetails> activeList;
 	public Integer getCode() {
 		return code;	
 	}

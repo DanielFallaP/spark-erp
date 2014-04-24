@@ -12,6 +12,12 @@ public class CompanyDetails {
 	private Integer code;
 
 
+	private String corporation;
+
+
+	private String active;
+
+
 	private String description;
 
 
@@ -19,12 +25,6 @@ public class CompanyDetails {
 
 
 	private String nit;
-
-
-	private String corporation;
-
-
-	private String active;
 
 
 		
@@ -82,6 +82,20 @@ public class CompanyDetails {
 	public void setCode(Integer code) {
 		this.code = code;	
 	}
+	public String getCorporation() {
+		return corporation;	
+	}
+		
+	public void setCorporation(String corporation) {
+		this.corporation = corporation;	
+	}
+	public String getActive() {
+		return active;	
+	}
+		
+	public void setActive(String active) {
+		this.active = active;	
+	}
 	public String getDescription() {
 		return description;	
 	}
@@ -102,20 +116,6 @@ public class CompanyDetails {
 		
 	public void setNit(String nit) {
 		this.nit = nit;	
-	}
-	public String getCorporation() {
-		return corporation;	
-	}
-		
-	public void setCorporation(String corporation) {
-		this.corporation = corporation;	
-	}
-	public String getActive() {
-		return active;	
-	}
-		
-	public void setActive(String active) {
-		this.active = active;	
 	}
 
 	

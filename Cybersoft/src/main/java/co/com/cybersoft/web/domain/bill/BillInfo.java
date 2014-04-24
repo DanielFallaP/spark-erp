@@ -40,11 +40,12 @@ public class BillInfo implements Serializable{
 
 
 	@NotEmpty
-	private String description;
+	private String active;
 
 
 	private List<ActiveDetails> activeList;
-	private String active;
+	@NotEmpty
+	private String description;
 
 
 	public String getCode() {
@@ -53,14 +54,6 @@ public class BillInfo implements Serializable{
 		
 	public void setCode(String code) {
 		this.code = code;	
-	}
-
-	public String getDescription() {
-		return description;	
-	}
-		
-	public void setDescription(String description) {
-		this.description = description;	
 	}
 
 	public List<ActiveDetails> getActiveList() {
@@ -78,6 +71,14 @@ public class BillInfo implements Serializable{
 		
 	public void setActive(String active) {
 		this.active = active;	
+	}
+
+	public String getDescription() {
+		return description;	
+	}
+		
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	public void rearrangeActiveList(String selected){

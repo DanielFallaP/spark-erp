@@ -23,6 +23,10 @@ public class Company {
 	@Indexed(unique=true)
 	private Integer code;
 
+	private String corporation;
+
+	private String active;
+
 	@Indexed(unique=true)
 	private String description;
 
@@ -31,10 +35,6 @@ public class Company {
 
 	@Indexed(unique=true)
 	private String nit;
-
-	private String corporation;
-
-	private String active;
 
 
 	private Date dateOfModification;
@@ -87,6 +87,20 @@ public class Company {
 	public void setCode(Integer code) {
 		this.code = code;	
 	}
+	public String getCorporation() {
+		return corporation;	
+	}
+		
+	public void setCorporation(String corporation) {
+		this.corporation = corporation;	
+	}
+	public String getActive() {
+		return active;	
+	}
+		
+	public void setActive(String active) {
+		this.active = active;	
+	}
 	public String getDescription() {
 		return description;	
 	}
@@ -107,20 +121,6 @@ public class Company {
 		
 	public void setNit(String nit) {
 		this.nit = nit;	
-	}
-	public String getCorporation() {
-		return corporation;	
-	}
-		
-	public void setCorporation(String corporation) {
-		this.corporation = corporation;	
-	}
-	public String getActive() {
-		return active;	
-	}
-		
-	public void setActive(String active) {
-		this.active = active;	
 	}
 
 	

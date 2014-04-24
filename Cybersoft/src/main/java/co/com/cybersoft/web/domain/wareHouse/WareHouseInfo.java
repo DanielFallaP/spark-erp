@@ -55,26 +55,31 @@ public class WareHouseInfo implements Serializable{
 	private String accountConceptCode;
 
 
-	private List<CalculusTypeDetails> calculusTypeList;
+	@NotEmpty
 	private String calculusType;
 
 
-	private List<OperationTypeDetails> operationTypeList;
+	private List<CalculusTypeDetails> calculusTypeList;
+	@NotEmpty
 	private String operationType;
 
 
-	private List<AfeDetails> afeList;
+	private List<OperationTypeDetails> operationTypeList;
+	@NotEmpty
 	private String afe;
 
 
-	private List<ContractDetails> contractList;
+	private List<AfeDetails> afeList;
+	@NotEmpty
 	private String contract;
 
 
-	private List<ActiveDetails> activeList;
+	private List<ContractDetails> contractList;
+	@NotEmpty
 	private String active;
 
 
+	private List<ActiveDetails> activeList;
 	public String getCode() {
 		return code;	
 	}

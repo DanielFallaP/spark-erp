@@ -12,9 +12,6 @@ public class BranchDetails {
 	private Integer code;
 
 
-	private String description;
-
-
 	private String corporation;
 
 
@@ -22,6 +19,9 @@ public class BranchDetails {
 
 
 	private String active;
+
+
+	private String description;
 
 
 		
@@ -79,13 +79,6 @@ public class BranchDetails {
 	public void setCode(Integer code) {
 		this.code = code;	
 	}
-	public String getDescription() {
-		return description;	
-	}
-		
-	public void setDescription(String description) {
-		this.description = description;	
-	}
 	public String getCorporation() {
 		return corporation;	
 	}
@@ -106,6 +99,13 @@ public class BranchDetails {
 		
 	public void setActive(String active) {
 		this.active = active;	
+	}
+	public String getDescription() {
+		return description;	
+	}
+		
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	

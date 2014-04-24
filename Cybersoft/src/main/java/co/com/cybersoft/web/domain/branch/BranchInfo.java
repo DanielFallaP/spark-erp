@@ -44,19 +44,22 @@ public class BranchInfo implements Serializable{
 
 
 	@NotEmpty
-	private String description;
-
-
-	private List<CorporationDetails> corporationList;
 	private String corporation;
 
 
-	private List<CompanyDetails> companyList;
+	private List<CorporationDetails> corporationList;
+	@NotEmpty
 	private String company;
 
 
-	private List<ActiveDetails> activeList;
+	private List<CompanyDetails> companyList;
+	@NotEmpty
 	private String active;
+
+
+	private List<ActiveDetails> activeList;
+	@NotEmpty
+	private String description;
 
 
 	public Integer getCode() {
@@ -65,14 +68,6 @@ public class BranchInfo implements Serializable{
 		
 	public void setCode(Integer code) {
 		this.code = code;	
-	}
-
-	public String getDescription() {
-		return description;	
-	}
-		
-	public void setDescription(String description) {
-		this.description = description;	
 	}
 
 	public List<CorporationDetails> getCorporationList() {
@@ -124,6 +119,14 @@ public class BranchInfo implements Serializable{
 		
 	public void setActive(String active) {
 		this.active = active;	
+	}
+
+	public String getDescription() {
+		return description;	
+	}
+		
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	public void rearrangeCorporationList(String selected){

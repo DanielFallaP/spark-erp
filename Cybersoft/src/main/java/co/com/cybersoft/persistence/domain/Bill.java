@@ -23,10 +23,10 @@ public class Bill {
 	@Indexed(unique=true)
 	private String code;
 
+	private String active;
+
 	@Indexed(unique=true)
 	private String description;
-
-	private String active;
 
 
 	private Date dateOfModification;
@@ -79,19 +79,19 @@ public class Bill {
 	public void setCode(String code) {
 		this.code = code;	
 	}
-	public String getDescription() {
-		return description;	
-	}
-		
-	public void setDescription(String description) {
-		this.description = description;	
-	}
 	public String getActive() {
 		return active;	
 	}
 		
 	public void setActive(String active) {
 		this.active = active;	
+	}
+	public String getDescription() {
+		return description;	
+	}
+		
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	

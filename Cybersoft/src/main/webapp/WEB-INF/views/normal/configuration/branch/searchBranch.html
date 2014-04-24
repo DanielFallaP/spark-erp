@@ -37,7 +37,7 @@
 	    	});
 	     
 	     $(document).keyup(function(e) {
-	    	  if(e.which == 13) {
+	    	  if(e.which == 13 || e.which == 107) {
 	     		  $('#new a').trigger('click');
 	    	  }
 	    	});
@@ -60,10 +60,10 @@
 				<thead>
 					<tr>
 						<th ><a th:href="@{${page.url}+'?field=code'}" th:text="#{label.branchCode}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=description'}" th:text="#{label.branchDescription}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=corporation'}" th:text="#{label.branchCorporation}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=company'}" th:text="#{label.branchCompany}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=active'}" th:text="#{label.branchActive}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=description'}" th:text="#{label.branchDescription}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a></th>
@@ -74,10 +74,10 @@
 				<tbody>
 					<tr th:each="object: ${list}">
 						<td><a th:href="@{/configuration/branch/modifyBranch/}+${object.code}" th:text="${object.code}"></a></td>
-						<td th:text="${object.description}"></td>
 						<td th:text="${object.corporation}"></td>
 						<td th:text="${object.company}"></td>
 						<td th:text="#{${object.active}}"></td>
+						<td th:text="${object.description}"></td>
 						<td th:text="${object.dateOfModification}"></td>
 						<td th:text="${object.userName}"></td>
 						<td th:text="${object.dateOfCreation}"></td>

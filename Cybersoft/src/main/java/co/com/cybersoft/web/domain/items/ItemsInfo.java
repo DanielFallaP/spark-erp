@@ -41,15 +41,17 @@ public class ItemsInfo implements Serializable{
 
 
 	@NotEmpty
-	private String description;
-
-
-	private List<MeasurementUnitDetails> measurementUnitList;
 	private String measurementUnit;
 
 
-	private List<ActiveDetails> activeList;
+	private List<MeasurementUnitDetails> measurementUnitList;
+	@NotEmpty
 	private String active;
+
+
+	private List<ActiveDetails> activeList;
+	@NotEmpty
+	private String description;
 
 
 	public String getCode() {
@@ -58,14 +60,6 @@ public class ItemsInfo implements Serializable{
 		
 	public void setCode(String code) {
 		this.code = code;	
-	}
-
-	public String getDescription() {
-		return description;	
-	}
-		
-	public void setDescription(String description) {
-		this.description = description;	
 	}
 
 	public List<MeasurementUnitDetails> getMeasurementUnitList() {
@@ -100,6 +94,14 @@ public class ItemsInfo implements Serializable{
 		
 	public void setActive(String active) {
 		this.active = active;	
+	}
+
+	public String getDescription() {
+		return description;	
+	}
+		
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	public void rearrangeMeasurementUnitList(String selected){

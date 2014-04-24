@@ -43,22 +43,25 @@ public class JointVentureInfo implements Serializable{
 	private String code;
 
 
+	@NotEmpty
+	private String bill;
+
+
+	private List<BillDetails> billList;
+	@NotEmpty
+	private String partner;
+
+
+	private List<PartnerDetails> partnerList;
+	@NotEmpty
+	private String active;
+
+
+	private List<ActiveDetails> activeList;
 	private Date fromDate;
 
 
 	private Date toDate;
-
-
-	private List<BillDetails> billList;
-	private String bill;
-
-
-	private List<PartnerDetails> partnerList;
-	private String partner;
-
-
-	private List<ActiveDetails> activeList;
-	private String active;
 
 
 	public String getCode() {
@@ -67,22 +70,6 @@ public class JointVentureInfo implements Serializable{
 		
 	public void setCode(String code) {
 		this.code = code;	
-	}
-
-	public Date getFromDate() {
-		return fromDate;	
-	}
-		
-	public void setFromDate(Date fromDate) {
-		this.fromDate = fromDate;	
-	}
-
-	public Date getToDate() {
-		return toDate;	
-	}
-		
-	public void setToDate(Date toDate) {
-		this.toDate = toDate;	
 	}
 
 	public List<BillDetails> getBillList() {
@@ -134,6 +121,22 @@ public class JointVentureInfo implements Serializable{
 		
 	public void setActive(String active) {
 		this.active = active;	
+	}
+
+	public Date getFromDate() {
+		return fromDate;	
+	}
+		
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;	
+	}
+
+	public Date getToDate() {
+		return toDate;	
+	}
+		
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;	
 	}
 
 	public void rearrangeBillList(String selected){

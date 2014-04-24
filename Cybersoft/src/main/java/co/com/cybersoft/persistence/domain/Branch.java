@@ -23,14 +23,14 @@ public class Branch {
 	@Indexed(unique=true)
 	private Integer code;
 
-	@Indexed(unique=true)
-	private String description;
-
 	private String corporation;
 
 	private String company;
 
 	private String active;
+
+	@Indexed(unique=true)
+	private String description;
 
 
 	private Date dateOfModification;
@@ -83,13 +83,6 @@ public class Branch {
 	public void setCode(Integer code) {
 		this.code = code;	
 	}
-	public String getDescription() {
-		return description;	
-	}
-		
-	public void setDescription(String description) {
-		this.description = description;	
-	}
 	public String getCorporation() {
 		return corporation;	
 	}
@@ -110,6 +103,13 @@ public class Branch {
 		
 	public void setActive(String active) {
 		this.active = active;	
+	}
+	public String getDescription() {
+		return description;	
+	}
+		
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	

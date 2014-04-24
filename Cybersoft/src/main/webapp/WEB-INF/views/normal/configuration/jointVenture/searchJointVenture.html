@@ -37,7 +37,7 @@
 	    	});
 	     
 	     $(document).keyup(function(e) {
-	    	  if(e.which == 13) {
+	    	  if(e.which == 13 || e.which == 107) {
 	     		  $('#new a').trigger('click');
 	    	  }
 	    	});
@@ -60,11 +60,11 @@
 				<thead>
 					<tr>
 						<th ><a th:href="@{${page.url}+'?field=code'}" th:text="#{label.jointVentureCode}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=fromDate'}" th:text="#{label.jointVentureFromDate}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=toDate'}" th:text="#{label.jointVentureToDate}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=bill'}" th:text="#{label.jointVentureBill}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=partner'}" th:text="#{label.jointVenturePartner}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=active'}" th:text="#{label.jointVentureActive}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=fromDate'}" th:text="#{label.jointVentureFromDate}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=toDate'}" th:text="#{label.jointVentureToDate}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a></th>
@@ -75,11 +75,11 @@
 				<tbody>
 					<tr th:each="object: ${list}">
 						<td><a th:href="@{/configuration/jointVenture/modifyJointVenture/}+${object.code}" th:text="${object.code}"></a></td>
-						<td th:text="${object.fromDate}"></td>
-						<td th:text="${object.toDate}"></td>
 						<td th:text="${object.bill}"></td>
 						<td th:text="${object.partner}"></td>
 						<td th:text="#{${object.active}}"></td>
+						<td th:text="${object.fromDate}"></td>
+						<td th:text="${object.toDate}"></td>
 						<td th:text="${object.dateOfModification}"></td>
 						<td th:text="${object.userName}"></td>
 						<td th:text="${object.dateOfCreation}"></td>

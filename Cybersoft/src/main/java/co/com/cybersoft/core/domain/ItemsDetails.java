@@ -12,13 +12,13 @@ public class ItemsDetails {
 	private String code;
 
 
-	private String description;
-
-
 	private String measurementUnit;
 
 
 	private String active;
+
+
+	private String description;
 
 
 		
@@ -76,13 +76,6 @@ public class ItemsDetails {
 	public void setCode(String code) {
 		this.code = code;	
 	}
-	public String getDescription() {
-		return description;	
-	}
-		
-	public void setDescription(String description) {
-		this.description = description;	
-	}
 	public String getMeasurementUnit() {
 		return measurementUnit;	
 	}
@@ -96,6 +89,13 @@ public class ItemsDetails {
 		
 	public void setActive(String active) {
 		this.active = active;	
+	}
+	public String getDescription() {
+		return description;	
+	}
+		
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	

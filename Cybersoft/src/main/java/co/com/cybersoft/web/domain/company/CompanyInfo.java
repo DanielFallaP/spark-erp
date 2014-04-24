@@ -44,6 +44,16 @@ public class CompanyInfo implements Serializable{
 
 
 	@NotEmpty
+	private String corporation;
+
+
+	private List<CorporationDetails> corporationList;
+	@NotEmpty
+	private String active;
+
+
+	private List<ActiveDetails> activeList;
+	@NotEmpty
 	private String description;
 
 
@@ -56,44 +66,12 @@ public class CompanyInfo implements Serializable{
 	private String nit;
 
 
-	private List<CorporationDetails> corporationList;
-	private String corporation;
-
-
-	private List<ActiveDetails> activeList;
-	private String active;
-
-
 	public Integer getCode() {
 		return code;	
 	}
 		
 	public void setCode(Integer code) {
 		this.code = code;	
-	}
-
-	public String getDescription() {
-		return description;	
-	}
-		
-	public void setDescription(String description) {
-		this.description = description;	
-	}
-
-	public String getLetter() {
-		return letter;	
-	}
-		
-	public void setLetter(String letter) {
-		this.letter = letter;	
-	}
-
-	public String getNit() {
-		return nit;	
-	}
-		
-	public void setNit(String nit) {
-		this.nit = nit;	
 	}
 
 	public List<CorporationDetails> getCorporationList() {
@@ -128,6 +106,30 @@ public class CompanyInfo implements Serializable{
 		
 	public void setActive(String active) {
 		this.active = active;	
+	}
+
+	public String getDescription() {
+		return description;	
+	}
+		
+	public void setDescription(String description) {
+		this.description = description;	
+	}
+
+	public String getLetter() {
+		return letter;	
+	}
+		
+	public void setLetter(String letter) {
+		this.letter = letter;	
+	}
+
+	public String getNit() {
+		return nit;	
+	}
+		
+	public void setNit(String nit) {
+		this.nit = nit;	
 	}
 
 	public void rearrangeCorporationList(String selected){

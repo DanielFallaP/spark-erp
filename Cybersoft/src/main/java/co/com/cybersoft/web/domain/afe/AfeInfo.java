@@ -53,22 +53,26 @@ public class AfeInfo implements Serializable{
 	private Boolean active;
 
 
-	private List<CompanyDetails> companyList;
+	@NotEmpty
 	private String company;
 
 
-	private List<AfeTypeDetails> afeTypeList;
+	private List<CompanyDetails> companyList;
+	@NotEmpty
 	private String afeType;
 
 
-	private List<ContractDetails> contractList;
+	private List<AfeTypeDetails> afeTypeList;
+	@NotEmpty
 	private String contract;
 
 
-	private List<BillDetails> billList;
+	private List<ContractDetails> contractList;
+	@NotEmpty
 	private String bill;
 
 
+	private List<BillDetails> billList;
 	public String getCode() {
 		return code;	
 	}
