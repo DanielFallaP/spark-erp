@@ -23,4 +23,8 @@ public interface ActiveService {
 	
 	ActivePageEvent requestAll() throws Exception;
 	
+	ActivePageEvent requestByCodePrefix(String code) throws Exception;
+	
+	ActivePageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

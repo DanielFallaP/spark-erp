@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.operationType;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.operationType.CreateOperationTypeEvent;
 import co.com.cybersoft.events.operationType.OperationTypeDetailsEvent;
 import co.com.cybersoft.events.operationType.OperationTypePageEvent;
@@ -53,5 +51,15 @@ public class OperationTypeServiceImpl implements OperationTypeService{
 	public OperationTypePageEvent requestAll() throws Exception {
 		return operationTypePersistenceService.requestAll();
 	}
+	
+	@Override
+	public OperationTypePageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return operationTypePersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public OperationTypePageEvent requestByContainingDescription(String description) throws Exception {
+		return operationTypePersistenceService.requestByContainingDescription(description);
+	}
+	
 }

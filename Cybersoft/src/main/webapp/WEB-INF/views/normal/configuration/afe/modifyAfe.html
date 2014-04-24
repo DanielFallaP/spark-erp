@@ -45,10 +45,14 @@
 	     		  $('#back a').trigger('click');
 	    	  }
 	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("code").focus();
+		   }
 	     </script>
     
     </head>
-    <body>
+    <body onload="setFocus()">
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
@@ -58,36 +62,36 @@
 		        	<table>
 		        		<tr>
 		        				<td th:text="#{label.afeCode}+': '"></td>
-		        				<td><input type="text" th:field="*{code}"  /></td>
+		        				<td><input id="code" type="text" th:field="*{code}"  /></td>
 		        		</tr>
 		        		<tr>
-		        				<td th:text="#{label.afeName}+': '"></td>
-		        				<td><input type="text" th:field="*{name}"  /></td>
+		        				<td th:text="#{label.afeDescription}+': '"></td>
+		        				<td><input id="description" type="text" th:field="*{description}"  /></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.afeNumber}+': '"></td>
-		        				<td><input type="text" th:field="*{number}"  /></td>
+		        				<td><input id="number" type="text" th:field="*{number}"  /></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.afeActive}+': '"></td>
-		        				<td><input type="text" th:field="*{active}"  /></td>
+		        				<td><input id="active" type="text" th:field="*{active}"  /></td>
 		        		</tr>
 
 		        		<tr>
 		        			<td th:text="#{label.afeCompany}+': '"></td>
-		        			<td><select th:field="*{company}"><option th:each="reference : ${afeInfo.companyList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{company}"><option th:each="reference : ${afeInfo.companyList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.afeAfeType}+': '"></td>
-		        			<td><select th:field="*{afeType}"><option th:each="reference : ${afeInfo.afeTypeList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{afeType}"><option th:each="reference : ${afeInfo.afeTypeList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.afeContract}+': '"></td>
-		        			<td><select th:field="*{contract}"><option th:each="reference : ${afeInfo.contractList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{contract}"><option th:each="reference : ${afeInfo.contractList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.afeBill}+': '"></td>
-		        			<td><select th:field="*{bill}"><option th:each="reference : ${afeInfo.billList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{bill}"><option th:each="reference : ${afeInfo.billList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 
 		        		<tr>

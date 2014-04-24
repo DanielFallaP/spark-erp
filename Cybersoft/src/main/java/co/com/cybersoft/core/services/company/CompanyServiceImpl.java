@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.company;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.company.CreateCompanyEvent;
 import co.com.cybersoft.events.company.CompanyDetailsEvent;
 import co.com.cybersoft.events.company.CompanyPageEvent;
@@ -53,5 +51,15 @@ public class CompanyServiceImpl implements CompanyService{
 	public CompanyPageEvent requestAll() throws Exception {
 		return companyPersistenceService.requestAll();
 	}
+	
+	@Override
+	public CompanyPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return companyPersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public CompanyPageEvent requestByContainingDescription(String description) throws Exception {
+		return companyPersistenceService.requestByContainingDescription(description);
+	}
+	
 }

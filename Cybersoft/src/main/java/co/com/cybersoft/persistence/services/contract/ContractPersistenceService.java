@@ -24,4 +24,8 @@ public interface ContractPersistenceService {
 	
 	ContractPageEvent requestAll() throws Exception;
 	
+	ContractPageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	ContractPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

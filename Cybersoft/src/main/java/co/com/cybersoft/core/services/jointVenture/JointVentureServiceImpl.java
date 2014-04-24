@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.jointVenture;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.jointVenture.CreateJointVentureEvent;
 import co.com.cybersoft.events.jointVenture.JointVentureDetailsEvent;
 import co.com.cybersoft.events.jointVenture.JointVenturePageEvent;
@@ -53,5 +51,15 @@ public class JointVentureServiceImpl implements JointVentureService{
 	public JointVenturePageEvent requestAll() throws Exception {
 		return jointVenturePersistenceService.requestAll();
 	}
+	
+	@Override
+	public JointVenturePageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return jointVenturePersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public JointVenturePageEvent requestByContainingDescription(String description) throws Exception {
+		return jointVenturePersistenceService.requestByContainingDescription(description);
+	}
+	
 }

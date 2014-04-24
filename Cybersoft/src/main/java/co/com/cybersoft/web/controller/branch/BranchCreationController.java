@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.BranchDetails;
 import co.com.cybersoft.core.services.branch.BranchService;
 import co.com.cybersoft.events.branch.CreateBranchEvent;
 import co.com.cybersoft.web.domain.branch.BranchInfo;
+import co.com.cybersoft.events.branch.BranchDetailsEvent;
+import co.com.cybersoft.events.branch.RequestBranchDetailsEvent;
+
+
 import co.com.cybersoft.core.services.corporation.CorporationService;
 import co.com.cybersoft.events.corporation.CorporationPageEvent;
 import co.com.cybersoft.core.services.company.CompanyService;
@@ -98,6 +102,24 @@ public class BranchCreationController {
 	@ModelAttribute("branchInfo")
 	private BranchInfo getBranchInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		BranchInfo branchInfo = new BranchInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			BranchDetailsEvent responseEvent = branchService.requestBranchDetails(new RequestBranchDetailsEvent(Integer.parseInt(code)));
+			if (responseEvent.getBranchDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getBranchDetails(), branchInfo);
+		}
+		
+		if (description!=null){
+			RequestBranchDetailsEvent event = new RequestBranchDetailsEvent(null);
+			event.setDescription(description);
+			BranchDetailsEvent responseEvent = branchService.requestBranchDetails(event);
+			if (responseEvent.getBranchDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getBranchDetails(), branchInfo);
+		}
+		
+		branchInfo.setId(null);
 		
 		CorporationPageEvent allCorporationEvent = corporationService.requestAll();
 		branchInfo.setCorporationList(allCorporationEvent.getCorporationList());

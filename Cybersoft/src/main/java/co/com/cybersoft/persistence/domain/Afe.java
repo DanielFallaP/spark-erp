@@ -24,7 +24,7 @@ public class Afe {
 	private String code;
 
 	@Indexed(unique=true)
-	private String name;
+	private String description;
 
 	@Indexed(unique=true)
 	private Integer number;
@@ -90,12 +90,12 @@ public class Afe {
 	public void setCode(String code) {
 		this.code = code;	
 	}
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 	public Integer getNumber() {
 		return number;	

@@ -10,7 +10,8 @@ import co.com.cybersoft.events.afeType.AfeTypeModificationEvent;
 import co.com.cybersoft.events.afeType.RequestAfeTypeDetailsEvent;
 import co.com.cybersoft.events.afeType.RequestAfeTypePageEvent;
 import co.com.cybersoft.persistence.domain.AfeType;
-import co.com.cybersoft.persistence.repository.AfeTypeRepository;
+import co.com.cybersoft.persistence.repository.afeType.AfeTypeRepository;
+import co.com.cybersoft.persistence.repository.afeType.AfeTypeCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,11 @@ public class AfeTypePersistenceServiceImpl implements AfeTypePersistenceService{
 
 	private final AfeTypeRepository afeTypeRepository;
 	
-	public AfeTypePersistenceServiceImpl(final AfeTypeRepository afeTypeRepository) {
+	private final AfeTypeCustomRepo afeTypeCustomRepo;
+	
+	public AfeTypePersistenceServiceImpl(final AfeTypeRepository afeTypeRepository, final AfeTypeCustomRepo afeTypeCustomRepo) {
 		this.afeTypeRepository=afeTypeRepository;
+		this.afeTypeCustomRepo=afeTypeCustomRepo;
 	}
 	
 	@Override
@@ -43,9 +47,19 @@ public class AfeTypePersistenceServiceImpl implements AfeTypePersistenceService{
 
 	@Override
 	public AfeTypeDetailsEvent requestAfeTypeDetails(RequestAfeTypeDetailsEvent event) throws Exception {
-		AfeType afeType = afeTypeRepository.findByCode(event.getId());
-		AfeTypeDetails afeTypeDetails = afeType.toAfeTypeDetails();
+		AfeTypeDetails afeTypeDetails=null;
+		if (event.getId()!=null){
+			AfeType afeType = afeTypeRepository.findByCode(event.getId());
+			if (afeType!=null)
+				afeTypeDetails = afeType.toAfeTypeDetails();
+		}
+		else{
+					AfeType afeType = afeTypeRepository.findByDescription(event.getDescription());
+					if (afeType!=null)
+						afeTypeDetails = afeType.toAfeTypeDetails();
+				}
 		return new AfeTypeDetailsEvent(afeTypeDetails);
+		
 	}
 
 	@Override
@@ -60,6 +74,26 @@ public class AfeTypePersistenceServiceImpl implements AfeTypePersistenceService{
 		List<AfeType> all = afeTypeRepository.findAll();
 		List<AfeTypeDetails> list = new ArrayList<AfeTypeDetails>();
 		for (AfeType afeType : all) {
+			list.add(afeType.toAfeTypeDetails());
+		}
+		return new AfeTypePageEvent(list);
+	}
+	
+	@Override
+	public AfeTypePageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		List<AfeType> codes = afeTypeCustomRepo.findByStartingCodeNumber(codePrefix);
+		ArrayList<AfeTypeDetails> list = new ArrayList<AfeTypeDetails>();
+		for (AfeType afeType : codes) {
+			list.add(afeType.toAfeTypeDetails());
+		}
+		return new AfeTypePageEvent(list);
+	}
+
+	@Override
+	public AfeTypePageEvent requestByContainingDescription(String description) throws Exception {
+		ArrayList<AfeTypeDetails> list = new ArrayList<AfeTypeDetails>();
+		List<AfeType> descriptions = afeTypeCustomRepo.findByContainingDescription(description);
+		for (AfeType afeType : descriptions) {
 			list.add(afeType.toAfeTypeDetails());
 		}
 		return new AfeTypePageEvent(list);

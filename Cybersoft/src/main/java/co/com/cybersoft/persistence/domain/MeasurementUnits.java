@@ -24,7 +24,7 @@ public class MeasurementUnits {
 	private String code;
 
 	@Indexed(unique=true)
-	private String name;
+	private String description;
 
 	private String active;
 
@@ -79,12 +79,12 @@ public class MeasurementUnits {
 	public void setCode(String code) {
 		this.code = code;	
 	}
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 	public String getActive() {
 		return active;	

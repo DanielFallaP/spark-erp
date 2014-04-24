@@ -12,7 +12,7 @@ public class PartnerDetails {
 	private Integer code;
 
 
-	private String name;
+	private String description;
 
 
 	private String nit;
@@ -76,12 +76,12 @@ public class PartnerDetails {
 	public void setCode(Integer code) {
 		this.code = code;	
 	}
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 	public String getNit() {
 		return nit;	

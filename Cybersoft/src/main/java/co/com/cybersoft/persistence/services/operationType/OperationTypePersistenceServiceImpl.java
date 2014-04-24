@@ -10,7 +10,8 @@ import co.com.cybersoft.events.operationType.OperationTypeModificationEvent;
 import co.com.cybersoft.events.operationType.RequestOperationTypeDetailsEvent;
 import co.com.cybersoft.events.operationType.RequestOperationTypePageEvent;
 import co.com.cybersoft.persistence.domain.OperationType;
-import co.com.cybersoft.persistence.repository.OperationTypeRepository;
+import co.com.cybersoft.persistence.repository.operationType.OperationTypeRepository;
+import co.com.cybersoft.persistence.repository.operationType.OperationTypeCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,11 @@ public class OperationTypePersistenceServiceImpl implements OperationTypePersist
 
 	private final OperationTypeRepository operationTypeRepository;
 	
-	public OperationTypePersistenceServiceImpl(final OperationTypeRepository operationTypeRepository) {
+	private final OperationTypeCustomRepo operationTypeCustomRepo;
+	
+	public OperationTypePersistenceServiceImpl(final OperationTypeRepository operationTypeRepository, final OperationTypeCustomRepo operationTypeCustomRepo) {
 		this.operationTypeRepository=operationTypeRepository;
+		this.operationTypeCustomRepo=operationTypeCustomRepo;
 	}
 	
 	@Override
@@ -43,9 +47,19 @@ public class OperationTypePersistenceServiceImpl implements OperationTypePersist
 
 	@Override
 	public OperationTypeDetailsEvent requestOperationTypeDetails(RequestOperationTypeDetailsEvent event) throws Exception {
-		OperationType operationType = operationTypeRepository.findByCode(event.getId());
-		OperationTypeDetails operationTypeDetails = operationType.toOperationTypeDetails();
+		OperationTypeDetails operationTypeDetails=null;
+		if (event.getId()!=null){
+			OperationType operationType = operationTypeRepository.findByCode(event.getId());
+			if (operationType!=null)
+				operationTypeDetails = operationType.toOperationTypeDetails();
+		}
+		else{
+					OperationType operationType = operationTypeRepository.findByDescription(event.getDescription());
+					if (operationType!=null)
+						operationTypeDetails = operationType.toOperationTypeDetails();
+				}
 		return new OperationTypeDetailsEvent(operationTypeDetails);
+		
 	}
 
 	@Override
@@ -60,6 +74,26 @@ public class OperationTypePersistenceServiceImpl implements OperationTypePersist
 		List<OperationType> all = operationTypeRepository.findAll();
 		List<OperationTypeDetails> list = new ArrayList<OperationTypeDetails>();
 		for (OperationType operationType : all) {
+			list.add(operationType.toOperationTypeDetails());
+		}
+		return new OperationTypePageEvent(list);
+	}
+	
+	@Override
+	public OperationTypePageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		List<OperationType> codes = operationTypeCustomRepo.findByStartingCodeNumber(codePrefix);
+		ArrayList<OperationTypeDetails> list = new ArrayList<OperationTypeDetails>();
+		for (OperationType operationType : codes) {
+			list.add(operationType.toOperationTypeDetails());
+		}
+		return new OperationTypePageEvent(list);
+	}
+
+	@Override
+	public OperationTypePageEvent requestByContainingDescription(String description) throws Exception {
+		ArrayList<OperationTypeDetails> list = new ArrayList<OperationTypeDetails>();
+		List<OperationType> descriptions = operationTypeCustomRepo.findByContainingDescription(description);
+		for (OperationType operationType : descriptions) {
 			list.add(operationType.toOperationTypeDetails());
 		}
 		return new OperationTypePageEvent(list);

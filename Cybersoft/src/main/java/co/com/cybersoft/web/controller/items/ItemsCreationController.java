@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.ItemsDetails;
 import co.com.cybersoft.core.services.items.ItemsService;
 import co.com.cybersoft.events.items.CreateItemsEvent;
 import co.com.cybersoft.web.domain.items.ItemsInfo;
+import co.com.cybersoft.events.items.ItemsDetailsEvent;
+import co.com.cybersoft.events.items.RequestItemsDetailsEvent;
+
+
 import co.com.cybersoft.core.services.measurementUnit.MeasurementUnitService;
 import co.com.cybersoft.events.measurementUnit.MeasurementUnitPageEvent;
 import co.com.cybersoft.core.services.active.ActiveService;
@@ -91,6 +95,24 @@ public class ItemsCreationController {
 	@ModelAttribute("itemsInfo")
 	private ItemsInfo getItemsInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		ItemsInfo itemsInfo = new ItemsInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			ItemsDetailsEvent responseEvent = itemsService.requestItemsDetails(new RequestItemsDetailsEvent(code));
+			if (responseEvent.getItemsDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getItemsDetails(), itemsInfo);
+		}
+		
+		if (description!=null){
+			RequestItemsDetailsEvent event = new RequestItemsDetailsEvent(null);
+			event.setDescription(description);
+			ItemsDetailsEvent responseEvent = itemsService.requestItemsDetails(event);
+			if (responseEvent.getItemsDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getItemsDetails(), itemsInfo);
+		}
+		
+		itemsInfo.setId(null);
 		
 		MeasurementUnitPageEvent allMeasurementUnitEvent = measurementUnitService.requestAll();
 		itemsInfo.setMeasurementUnitList(allMeasurementUnitEvent.getMeasurementUnitList());

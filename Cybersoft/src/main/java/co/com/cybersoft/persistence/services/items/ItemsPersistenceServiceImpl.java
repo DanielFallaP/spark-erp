@@ -10,7 +10,8 @@ import co.com.cybersoft.events.items.ItemsModificationEvent;
 import co.com.cybersoft.events.items.RequestItemsDetailsEvent;
 import co.com.cybersoft.events.items.RequestItemsPageEvent;
 import co.com.cybersoft.persistence.domain.Items;
-import co.com.cybersoft.persistence.repository.ItemsRepository;
+import co.com.cybersoft.persistence.repository.items.ItemsRepository;
+import co.com.cybersoft.persistence.repository.items.ItemsCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,11 @@ public class ItemsPersistenceServiceImpl implements ItemsPersistenceService{
 
 	private final ItemsRepository itemsRepository;
 	
-	public ItemsPersistenceServiceImpl(final ItemsRepository itemsRepository) {
+	private final ItemsCustomRepo itemsCustomRepo;
+	
+	public ItemsPersistenceServiceImpl(final ItemsRepository itemsRepository, final ItemsCustomRepo itemsCustomRepo) {
 		this.itemsRepository=itemsRepository;
+		this.itemsCustomRepo=itemsCustomRepo;
 	}
 	
 	@Override
@@ -43,9 +47,19 @@ public class ItemsPersistenceServiceImpl implements ItemsPersistenceService{
 
 	@Override
 	public ItemsDetailsEvent requestItemsDetails(RequestItemsDetailsEvent event) throws Exception {
-		Items items = itemsRepository.findByCode(event.getId());
-		ItemsDetails itemsDetails = items.toItemsDetails();
+		ItemsDetails itemsDetails=null;
+		if (event.getId()!=null){
+			Items items = itemsRepository.findByCode(event.getId());
+			if (items!=null)
+				itemsDetails = items.toItemsDetails();
+		}
+		else{
+					Items items = itemsRepository.findByDescription(event.getDescription());
+					if (items!=null)
+						itemsDetails = items.toItemsDetails();
+				}
 		return new ItemsDetailsEvent(itemsDetails);
+		
 	}
 
 	@Override
@@ -60,6 +74,26 @@ public class ItemsPersistenceServiceImpl implements ItemsPersistenceService{
 		List<Items> all = itemsRepository.findAll();
 		List<ItemsDetails> list = new ArrayList<ItemsDetails>();
 		for (Items items : all) {
+			list.add(items.toItemsDetails());
+		}
+		return new ItemsPageEvent(list);
+	}
+	
+	@Override
+	public ItemsPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		List<Items> codes = itemsCustomRepo.findByStartingCodeNumber(codePrefix);
+		ArrayList<ItemsDetails> list = new ArrayList<ItemsDetails>();
+		for (Items items : codes) {
+			list.add(items.toItemsDetails());
+		}
+		return new ItemsPageEvent(list);
+	}
+
+	@Override
+	public ItemsPageEvent requestByContainingDescription(String description) throws Exception {
+		ArrayList<ItemsDetails> list = new ArrayList<ItemsDetails>();
+		List<Items> descriptions = itemsCustomRepo.findByContainingDescription(description);
+		for (Items items : descriptions) {
 			list.add(items.toItemsDetails());
 		}
 		return new ItemsPageEvent(list);

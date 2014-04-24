@@ -10,7 +10,8 @@ import co.com.cybersoft.events.costCenter.CostCenterModificationEvent;
 import co.com.cybersoft.events.costCenter.RequestCostCenterDetailsEvent;
 import co.com.cybersoft.events.costCenter.RequestCostCenterPageEvent;
 import co.com.cybersoft.persistence.domain.CostCenter;
-import co.com.cybersoft.persistence.repository.CostCenterRepository;
+import co.com.cybersoft.persistence.repository.costCenter.CostCenterRepository;
+import co.com.cybersoft.persistence.repository.costCenter.CostCenterCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,11 @@ public class CostCenterPersistenceServiceImpl implements CostCenterPersistenceSe
 
 	private final CostCenterRepository costCenterRepository;
 	
-	public CostCenterPersistenceServiceImpl(final CostCenterRepository costCenterRepository) {
+	private final CostCenterCustomRepo costCenterCustomRepo;
+	
+	public CostCenterPersistenceServiceImpl(final CostCenterRepository costCenterRepository, final CostCenterCustomRepo costCenterCustomRepo) {
 		this.costCenterRepository=costCenterRepository;
+		this.costCenterCustomRepo=costCenterCustomRepo;
 	}
 	
 	@Override
@@ -43,9 +47,14 @@ public class CostCenterPersistenceServiceImpl implements CostCenterPersistenceSe
 
 	@Override
 	public CostCenterDetailsEvent requestCostCenterDetails(RequestCostCenterDetailsEvent event) throws Exception {
-		CostCenter costCenter = costCenterRepository.findByCode(event.getId());
-		CostCenterDetails costCenterDetails = costCenter.toCostCenterDetails();
+		CostCenterDetails costCenterDetails=null;
+		if (event.getId()!=null){
+			CostCenter costCenter = costCenterRepository.findByCode(event.getId());
+			if (costCenter!=null)
+				costCenterDetails = costCenter.toCostCenterDetails();
+		}
 		return new CostCenterDetailsEvent(costCenterDetails);
+		
 	}
 
 	@Override
@@ -60,6 +69,26 @@ public class CostCenterPersistenceServiceImpl implements CostCenterPersistenceSe
 		List<CostCenter> all = costCenterRepository.findAll();
 		List<CostCenterDetails> list = new ArrayList<CostCenterDetails>();
 		for (CostCenter costCenter : all) {
+			list.add(costCenter.toCostCenterDetails());
+		}
+		return new CostCenterPageEvent(list);
+	}
+	
+	@Override
+	public CostCenterPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		List<CostCenter> codes = costCenterCustomRepo.findByStartingCodeNumber(codePrefix);
+		ArrayList<CostCenterDetails> list = new ArrayList<CostCenterDetails>();
+		for (CostCenter costCenter : codes) {
+			list.add(costCenter.toCostCenterDetails());
+		}
+		return new CostCenterPageEvent(list);
+	}
+
+	@Override
+	public CostCenterPageEvent requestByContainingDescription(String description) throws Exception {
+		ArrayList<CostCenterDetails> list = new ArrayList<CostCenterDetails>();
+		List<CostCenter> descriptions = costCenterCustomRepo.findByContainingDescription(description);
+		for (CostCenter costCenter : descriptions) {
 			list.add(costCenter.toCostCenterDetails());
 		}
 		return new CostCenterPageEvent(list);

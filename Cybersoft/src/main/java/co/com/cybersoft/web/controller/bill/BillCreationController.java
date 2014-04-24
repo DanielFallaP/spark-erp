@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.BillDetails;
 import co.com.cybersoft.core.services.bill.BillService;
 import co.com.cybersoft.events.bill.CreateBillEvent;
 import co.com.cybersoft.web.domain.bill.BillInfo;
+import co.com.cybersoft.events.bill.BillDetailsEvent;
+import co.com.cybersoft.events.bill.RequestBillDetailsEvent;
+
+
 import co.com.cybersoft.core.services.active.ActiveService;
 import co.com.cybersoft.events.active.ActivePageEvent;
 
@@ -84,6 +88,24 @@ public class BillCreationController {
 	@ModelAttribute("billInfo")
 	private BillInfo getBillInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		BillInfo billInfo = new BillInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			BillDetailsEvent responseEvent = billService.requestBillDetails(new RequestBillDetailsEvent(code));
+			if (responseEvent.getBillDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getBillDetails(), billInfo);
+		}
+		
+		if (description!=null){
+			RequestBillDetailsEvent event = new RequestBillDetailsEvent(null);
+			event.setDescription(description);
+			BillDetailsEvent responseEvent = billService.requestBillDetails(event);
+			if (responseEvent.getBillDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getBillDetails(), billInfo);
+		}
+		
+		billInfo.setId(null);
 		
 		ActivePageEvent allActiveEvent = activeService.requestAll();
 		billInfo.setActiveList(allActiveEvent.getActiveList());

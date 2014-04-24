@@ -24,4 +24,8 @@ public interface CostCenterPersistenceService {
 	
 	CostCenterPageEvent requestAll() throws Exception;
 	
+	CostCenterPageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	CostCenterPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

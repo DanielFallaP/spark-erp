@@ -24,4 +24,8 @@ public interface CompanyPersistenceService {
 	
 	CompanyPageEvent requestAll() throws Exception;
 	
+	CompanyPageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	CompanyPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

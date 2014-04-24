@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.ContractDetails;
 import co.com.cybersoft.core.services.contract.ContractService;
 import co.com.cybersoft.events.contract.CreateContractEvent;
 import co.com.cybersoft.web.domain.contract.ContractInfo;
+import co.com.cybersoft.events.contract.ContractDetailsEvent;
+import co.com.cybersoft.events.contract.RequestContractDetailsEvent;
+
+
 
 /**
  * Controller for contract
@@ -74,6 +78,24 @@ public class ContractCreationController {
 	@ModelAttribute("contractInfo")
 	private ContractInfo getContractInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		ContractInfo contractInfo = new ContractInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			ContractDetailsEvent responseEvent = contractService.requestContractDetails(new RequestContractDetailsEvent(code));
+			if (responseEvent.getContractDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getContractDetails(), contractInfo);
+		}
+		
+		if (description!=null){
+			RequestContractDetailsEvent event = new RequestContractDetailsEvent(null);
+			event.setDescription(description);
+			ContractDetailsEvent responseEvent = contractService.requestContractDetails(event);
+			if (responseEvent.getContractDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getContractDetails(), contractInfo);
+		}
+		
+		contractInfo.setId(null);
 		
 		
 		contractInfo.setCalledFrom(calledFrom);

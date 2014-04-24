@@ -60,7 +60,7 @@
 				<thead>
 					<tr>
 						<th ><a th:href="@{${page.url}+'?field=code'}" th:text="#{label.companyCode}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=name'}" th:text="#{label.companyName}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=description'}" th:text="#{label.companyDescription}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=letter'}" th:text="#{label.companyLetter}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=nit'}" th:text="#{label.companyNit}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=corporation'}" th:text="#{label.companyCorporation}"></a></th>
@@ -75,7 +75,7 @@
 				<tbody>
 					<tr th:each="object: ${list}">
 						<td><a th:href="@{/configuration/company/modifyCompany/}+${object.code}" th:text="${object.code}"></a></td>
-						<td th:text="${object.name}"></td>
+						<td th:text="${object.description}"></td>
 						<td th:text="${object.letter}"></td>
 						<td th:text="${object.nit}"></td>
 						<td th:text="${object.corporation}"></td>

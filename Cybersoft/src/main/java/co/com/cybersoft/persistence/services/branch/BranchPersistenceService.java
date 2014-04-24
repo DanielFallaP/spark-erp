@@ -24,4 +24,8 @@ public interface BranchPersistenceService {
 	
 	BranchPageEvent requestAll() throws Exception;
 	
+	BranchPageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	BranchPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

@@ -23,4 +23,8 @@ public interface PartnerService {
 	
 	PartnerPageEvent requestAll() throws Exception;
 	
+	PartnerPageEvent requestByCodePrefix(String code) throws Exception;
+	
+	PartnerPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

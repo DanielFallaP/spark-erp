@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.partner;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.partner.CreatePartnerEvent;
 import co.com.cybersoft.events.partner.PartnerDetailsEvent;
 import co.com.cybersoft.events.partner.PartnerPageEvent;
@@ -53,5 +51,15 @@ public class PartnerServiceImpl implements PartnerService{
 	public PartnerPageEvent requestAll() throws Exception {
 		return partnerPersistenceService.requestAll();
 	}
+	
+	@Override
+	public PartnerPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return partnerPersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public PartnerPageEvent requestByContainingDescription(String description) throws Exception {
+		return partnerPersistenceService.requestByContainingDescription(description);
+	}
+	
 }

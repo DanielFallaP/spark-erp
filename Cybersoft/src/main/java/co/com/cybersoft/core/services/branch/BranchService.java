@@ -23,4 +23,8 @@ public interface BranchService {
 	
 	BranchPageEvent requestAll() throws Exception;
 	
+	BranchPageEvent requestByCodePrefix(String code) throws Exception;
+	
+	BranchPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

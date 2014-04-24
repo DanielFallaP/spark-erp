@@ -23,4 +23,8 @@ public interface ItemsService {
 	
 	ItemsPageEvent requestAll() throws Exception;
 	
+	ItemsPageEvent requestByCodePrefix(String code) throws Exception;
+	
+	ItemsPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

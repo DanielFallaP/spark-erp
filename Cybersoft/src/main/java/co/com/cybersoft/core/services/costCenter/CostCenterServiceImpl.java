@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.costCenter;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.costCenter.CreateCostCenterEvent;
 import co.com.cybersoft.events.costCenter.CostCenterDetailsEvent;
 import co.com.cybersoft.events.costCenter.CostCenterPageEvent;
@@ -53,5 +51,15 @@ public class CostCenterServiceImpl implements CostCenterService{
 	public CostCenterPageEvent requestAll() throws Exception {
 		return costCenterPersistenceService.requestAll();
 	}
+	
+	@Override
+	public CostCenterPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return costCenterPersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public CostCenterPageEvent requestByContainingDescription(String description) throws Exception {
+		return costCenterPersistenceService.requestByContainingDescription(description);
+	}
+	
 }

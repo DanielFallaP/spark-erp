@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.PartnerDetails;
 import co.com.cybersoft.core.services.partner.PartnerService;
 import co.com.cybersoft.events.partner.CreatePartnerEvent;
 import co.com.cybersoft.web.domain.partner.PartnerInfo;
+import co.com.cybersoft.events.partner.PartnerDetailsEvent;
+import co.com.cybersoft.events.partner.RequestPartnerDetailsEvent;
+
+
 import co.com.cybersoft.core.services.active.ActiveService;
 import co.com.cybersoft.events.active.ActivePageEvent;
 
@@ -84,6 +88,24 @@ public class PartnerCreationController {
 	@ModelAttribute("partnerInfo")
 	private PartnerInfo getPartnerInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		PartnerInfo partnerInfo = new PartnerInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			PartnerDetailsEvent responseEvent = partnerService.requestPartnerDetails(new RequestPartnerDetailsEvent(Integer.parseInt(code)));
+			if (responseEvent.getPartnerDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getPartnerDetails(), partnerInfo);
+		}
+		
+		if (description!=null){
+			RequestPartnerDetailsEvent event = new RequestPartnerDetailsEvent(null);
+			event.setDescription(description);
+			PartnerDetailsEvent responseEvent = partnerService.requestPartnerDetails(event);
+			if (responseEvent.getPartnerDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getPartnerDetails(), partnerInfo);
+		}
+		
+		partnerInfo.setId(null);
 		
 		ActivePageEvent allActiveEvent = activeService.requestAll();
 		partnerInfo.setActiveList(allActiveEvent.getActiveList());

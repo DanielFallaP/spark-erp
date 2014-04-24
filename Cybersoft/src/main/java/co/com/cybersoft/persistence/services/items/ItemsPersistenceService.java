@@ -24,4 +24,8 @@ public interface ItemsPersistenceService {
 	
 	ItemsPageEvent requestAll() throws Exception;
 	
+	ItemsPageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	ItemsPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

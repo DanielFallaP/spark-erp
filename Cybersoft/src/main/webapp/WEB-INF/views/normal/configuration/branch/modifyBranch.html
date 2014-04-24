@@ -45,10 +45,14 @@
 	     		  $('#back a').trigger('click');
 	    	  }
 	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("code").focus();
+		   }
 	     </script>
     
     </head>
-    <body>
+    <body onload="setFocus()">
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
@@ -58,20 +62,20 @@
 		        	<table>
 		        		<tr>
 		        				<td th:text="#{label.branchCode}+': '"></td>
-		        				<td><input type="text" th:field="*{code}"  /></td>
+		        				<td><input id="code" type="text" th:field="*{code}"  /></td>
 		        		</tr>
 		        		<tr>
-		        				<td th:text="#{label.branchName}+': '"></td>
-		        				<td><input type="text" th:field="*{name}"  /></td>
+		        				<td th:text="#{label.branchDescription}+': '"></td>
+		        				<td><input id="description" type="text" th:field="*{description}"  /></td>
 		        		</tr>
 
 		        		<tr>
 		        			<td th:text="#{label.branchCorporation}+': '"></td>
-		        			<td><select th:field="*{corporation}"><option th:each="reference : ${branchInfo.corporationList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{corporation}"><option th:each="reference : ${branchInfo.corporationList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.branchCompany}+': '"></td>
-		        			<td><select th:field="*{company}"><option th:each="reference : ${branchInfo.companyList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{company}"><option th:each="reference : ${branchInfo.companyList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.branchActive}+': '"></td>

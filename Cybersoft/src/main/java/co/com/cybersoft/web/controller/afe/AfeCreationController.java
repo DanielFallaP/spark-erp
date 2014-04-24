@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.AfeDetails;
 import co.com.cybersoft.core.services.afe.AfeService;
 import co.com.cybersoft.events.afe.CreateAfeEvent;
 import co.com.cybersoft.web.domain.afe.AfeInfo;
+import co.com.cybersoft.events.afe.AfeDetailsEvent;
+import co.com.cybersoft.events.afe.RequestAfeDetailsEvent;
+
+
 import co.com.cybersoft.core.services.company.CompanyService;
 import co.com.cybersoft.events.company.CompanyPageEvent;
 import co.com.cybersoft.core.services.afeType.AfeTypeService;
@@ -105,6 +109,24 @@ public class AfeCreationController {
 	@ModelAttribute("afeInfo")
 	private AfeInfo getAfeInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		AfeInfo afeInfo = new AfeInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			AfeDetailsEvent responseEvent = afeService.requestAfeDetails(new RequestAfeDetailsEvent(code));
+			if (responseEvent.getAfeDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getAfeDetails(), afeInfo);
+		}
+		
+		if (description!=null){
+			RequestAfeDetailsEvent event = new RequestAfeDetailsEvent(null);
+			event.setDescription(description);
+			AfeDetailsEvent responseEvent = afeService.requestAfeDetails(event);
+			if (responseEvent.getAfeDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getAfeDetails(), afeInfo);
+		}
+		
+		afeInfo.setId(null);
 		
 		CompanyPageEvent allCompanyEvent = companyService.requestAll();
 		afeInfo.setCompanyList(allCompanyEvent.getCompanyList());

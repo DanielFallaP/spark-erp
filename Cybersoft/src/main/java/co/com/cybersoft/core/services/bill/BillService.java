@@ -23,4 +23,8 @@ public interface BillService {
 	
 	BillPageEvent requestAll() throws Exception;
 	
+	BillPageEvent requestByCodePrefix(String code) throws Exception;
+	
+	BillPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

@@ -140,7 +140,7 @@ public class JointVentureInfo implements Serializable{
 			BillDetails selectedBill=null;
 			ArrayList<BillDetails> newList = new ArrayList<BillDetails>();
 			for(BillDetails bill:billList){
-				if (bill.getName().equals(selected)){
+				if (bill.getDescription().equals(selected)){
 					selectedBill=bill;
 					newList.add(0, selectedBill);
 				}
@@ -155,7 +155,7 @@ public class JointVentureInfo implements Serializable{
 			PartnerDetails selectedPartner=null;
 			ArrayList<PartnerDetails> newList = new ArrayList<PartnerDetails>();
 			for(PartnerDetails partner:partnerList){
-				if (partner.getName().equals(selected)){
+				if (partner.getDescription().equals(selected)){
 					selectedPartner=partner;
 					newList.add(0, selectedPartner);
 				}

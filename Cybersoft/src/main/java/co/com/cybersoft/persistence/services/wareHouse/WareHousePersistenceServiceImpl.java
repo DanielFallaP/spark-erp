@@ -10,8 +10,8 @@ import co.com.cybersoft.events.wareHouse.WareHouseModificationEvent;
 import co.com.cybersoft.events.wareHouse.RequestWareHouseDetailsEvent;
 import co.com.cybersoft.events.wareHouse.RequestWareHousePageEvent;
 import co.com.cybersoft.persistence.domain.WareHouse;
-import co.com.cybersoft.persistence.repository.WareHouseCustomRepo;
-import co.com.cybersoft.persistence.repository.WareHouseRepository;
+import co.com.cybersoft.persistence.repository.wareHouse.WareHouseRepository;
+import co.com.cybersoft.persistence.repository.wareHouse.WareHouseCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,11 +54,12 @@ public class WareHousePersistenceServiceImpl implements WareHousePersistenceServ
 				wareHouseDetails = wareHouse.toWareHouseDetails();
 		}
 		else{
-			WareHouse wareHouse = wareHouseRepository.findByName(event.getDescription());
-			if (wareHouse!=null)
-				wareHouseDetails = wareHouse.toWareHouseDetails();
-		}
+					WareHouse wareHouse = wareHouseRepository.findByDescription(event.getDescription());
+					if (wareHouse!=null)
+						wareHouseDetails = wareHouse.toWareHouseDetails();
+				}
 		return new WareHouseDetailsEvent(wareHouseDetails);
+		
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class WareHousePersistenceServiceImpl implements WareHousePersistenceServ
 		}
 		return new WareHousePageEvent(list);
 	}
-
+	
 	@Override
 	public WareHousePageEvent requestByCodePrefix(String codePrefix) throws Exception {
 		List<WareHouse> codes = wareHouseCustomRepo.findByStartingCodeNumber(codePrefix);
@@ -89,8 +90,7 @@ public class WareHousePersistenceServiceImpl implements WareHousePersistenceServ
 	}
 
 	@Override
-	public WareHousePageEvent requestByContainingDescription(String description)
-			throws Exception {
+	public WareHousePageEvent requestByContainingDescription(String description) throws Exception {
 		ArrayList<WareHouseDetails> list = new ArrayList<WareHouseDetails>();
 		List<WareHouse> descriptions = wareHouseCustomRepo.findByContainingDescription(description);
 		for (WareHouse wareHouse : descriptions) {

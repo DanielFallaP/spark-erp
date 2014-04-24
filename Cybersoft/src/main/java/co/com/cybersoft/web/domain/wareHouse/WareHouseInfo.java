@@ -44,7 +44,7 @@ public class WareHouseInfo implements Serializable{
 
 
 	@NotEmpty
-	private String name;
+	private String description;
 
 
 	@NotEmpty
@@ -83,12 +83,12 @@ public class WareHouseInfo implements Serializable{
 		this.code = code;	
 	}
 
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	public String getAccountCode() {
@@ -196,7 +196,7 @@ public class WareHouseInfo implements Serializable{
 			CalculusTypeDetails selectedCalculusType=null;
 			ArrayList<CalculusTypeDetails> newList = new ArrayList<CalculusTypeDetails>();
 			for(CalculusTypeDetails calculusType:calculusTypeList){
-				if (calculusType.getName().equals(selected)){
+				if (calculusType.getDescription().equals(selected)){
 					selectedCalculusType=calculusType;
 					newList.add(0, selectedCalculusType);
 				}
@@ -211,7 +211,7 @@ public class WareHouseInfo implements Serializable{
 			OperationTypeDetails selectedOperationType=null;
 			ArrayList<OperationTypeDetails> newList = new ArrayList<OperationTypeDetails>();
 			for(OperationTypeDetails operationType:operationTypeList){
-				if (operationType.getName().equals(selected)){
+				if (operationType.getDescription().equals(selected)){
 					selectedOperationType=operationType;
 					newList.add(0, selectedOperationType);
 				}
@@ -226,7 +226,7 @@ public class WareHouseInfo implements Serializable{
 			AfeDetails selectedAfe=null;
 			ArrayList<AfeDetails> newList = new ArrayList<AfeDetails>();
 			for(AfeDetails afe:afeList){
-				if (afe.getName().equals(selected)){
+				if (afe.getDescription().equals(selected)){
 					selectedAfe=afe;
 					newList.add(0, selectedAfe);
 				}
@@ -241,7 +241,7 @@ public class WareHouseInfo implements Serializable{
 			ContractDetails selectedContract=null;
 			ArrayList<ContractDetails> newList = new ArrayList<ContractDetails>();
 			for(ContractDetails contract:contractList){
-				if (contract.getName().equals(selected)){
+				if (contract.getDescription().equals(selected)){
 					selectedContract=contract;
 					newList.add(0, selectedContract);
 				}

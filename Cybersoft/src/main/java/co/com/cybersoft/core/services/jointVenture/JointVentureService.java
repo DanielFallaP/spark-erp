@@ -23,4 +23,8 @@ public interface JointVentureService {
 	
 	JointVenturePageEvent requestAll() throws Exception;
 	
+	JointVenturePageEvent requestByCodePrefix(String code) throws Exception;
+	
+	JointVenturePageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

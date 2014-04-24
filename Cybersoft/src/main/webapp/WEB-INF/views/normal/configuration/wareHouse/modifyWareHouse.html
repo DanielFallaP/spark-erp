@@ -45,10 +45,14 @@
 	     		  $('#back a').trigger('click');
 	    	  }
 	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("code").focus();
+		   }
 	     </script>
     
     </head>
-    <body>
+    <body onload="setFocus()">
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
@@ -58,36 +62,36 @@
 		        	<table>
 		        		<tr>
 		        				<td th:text="#{label.wareHouseCode}+': '"></td>
-		        				<td><input type="text" th:field="*{code}"  /></td>
+		        				<td><input id="code" type="text" th:field="*{code}"  /></td>
 		        		</tr>
 		        		<tr>
-		        				<td th:text="#{label.wareHouseName}+': '"></td>
-		        				<td><input type="text" th:field="*{name}"  /></td>
+		        				<td th:text="#{label.wareHouseDescription}+': '"></td>
+		        				<td><input id="description" type="text" th:field="*{description}"  /></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.wareHouseAccountCode}+': '"></td>
-		        				<td><input type="text" th:field="*{accountCode}"  /></td>
+		        				<td><input id="accountCode" type="text" th:field="*{accountCode}"  /></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.wareHouseAccountConceptCode}+': '"></td>
-		        				<td><input type="text" th:field="*{accountConceptCode}"  /></td>
+		        				<td><input id="accountConceptCode" type="text" th:field="*{accountConceptCode}"  /></td>
 		        		</tr>
 
 		        		<tr>
 		        			<td th:text="#{label.wareHouseCalculusType}+': '"></td>
-		        			<td><select th:field="*{calculusType}"><option th:each="reference : ${wareHouseInfo.calculusTypeList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{calculusType}"><option th:each="reference : ${wareHouseInfo.calculusTypeList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.wareHouseOperationType}+': '"></td>
-		        			<td><select th:field="*{operationType}"><option th:each="reference : ${wareHouseInfo.operationTypeList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{operationType}"><option th:each="reference : ${wareHouseInfo.operationTypeList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.wareHouseAfe}+': '"></td>
-		        			<td><select th:field="*{afe}"><option th:each="reference : ${wareHouseInfo.afeList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{afe}"><option th:each="reference : ${wareHouseInfo.afeList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.wareHouseContract}+': '"></td>
-		        			<td><select th:field="*{contract}"><option th:each="reference : ${wareHouseInfo.contractList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{contract}"><option th:each="reference : ${wareHouseInfo.contractList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.wareHouseActive}+': '"></td>

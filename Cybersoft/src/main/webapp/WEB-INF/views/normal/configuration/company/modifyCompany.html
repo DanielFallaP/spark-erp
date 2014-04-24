@@ -45,10 +45,14 @@
 	     		  $('#back a').trigger('click');
 	    	  }
 	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("code").focus();
+		   }
 	     </script>
     
     </head>
-    <body>
+    <body onload="setFocus()">
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
@@ -58,24 +62,24 @@
 		        	<table>
 		        		<tr>
 		        				<td th:text="#{label.companyCode}+': '"></td>
-		        				<td><input type="text" th:field="*{code}"  /></td>
+		        				<td><input id="code" type="text" th:field="*{code}"  /></td>
 		        		</tr>
 		        		<tr>
-		        				<td th:text="#{label.companyName}+': '"></td>
-		        				<td><input type="text" th:field="*{name}"  /></td>
+		        				<td th:text="#{label.companyDescription}+': '"></td>
+		        				<td><input id="description" type="text" th:field="*{description}"  /></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.companyLetter}+': '"></td>
-		        				<td><input type="text" th:field="*{letter}"  /></td>
+		        				<td><input id="letter" type="text" th:field="*{letter}"  /></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.companyNit}+': '"></td>
-		        				<td><input type="text" th:field="*{nit}"  /></td>
+		        				<td><input id="nit" type="text" th:field="*{nit}"  /></td>
 		        		</tr>
 
 		        		<tr>
 		        			<td th:text="#{label.companyCorporation}+': '"></td>
-		        			<td><select th:field="*{corporation}"><option th:each="reference : ${companyInfo.corporationList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{corporation}"><option th:each="reference : ${companyInfo.corporationList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.companyActive}+': '"></td>

@@ -21,7 +21,6 @@
 		 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
 		 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
 	     <script type="text/javascript">
-	     
 	     $(document).on("click", "a", function(event){
 	    	  var link = $(this);
 	    	  var target = link.attr("target");
@@ -38,7 +37,7 @@
 	    	});
 	     
 	     $(document).keyup(function(e) {
-	    	  if(e.which == 13 || e.which == 107) {
+	    	  if(e.which == 13) {
 	     		  $('#new a').trigger('click');
 	    	  }
 	    	});
@@ -61,7 +60,7 @@
 				<thead>
 					<tr>
 						<th ><a th:href="@{${page.url}+'?field=code'}" th:text="#{label.wareHouseCode}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=name'}" th:text="#{label.wareHouseName}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=description'}" th:text="#{label.wareHouseDescription}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=accountCode'}" th:text="#{label.wareHouseAccountCode}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=accountConceptCode'}" th:text="#{label.wareHouseAccountConceptCode}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=calculusType'}" th:text="#{label.wareHouseCalculusType}"></a></th>
@@ -79,7 +78,7 @@
 				<tbody>
 					<tr th:each="object: ${list}">
 						<td><a th:href="@{/configuration/wareHouse/modifyWareHouse/}+${object.code}" th:text="${object.code}"></a></td>
-						<td th:text="${object.name}"></td>
+						<td th:text="${object.description}"></td>
 						<td th:text="${object.accountCode}"></td>
 						<td th:text="${object.accountConceptCode}"></td>
 						<td th:text="${object.calculusType}"></td>

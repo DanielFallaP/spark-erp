@@ -7,13 +7,23 @@ package co.com.cybersoft.events.company;
  */
 public class RequestCompanyDetailsEvent {
 
-	private String id;
+	private Integer id;
 	
-	public RequestCompanyDetailsEvent(String id){
+	private String description;
+	
+	public RequestCompanyDetailsEvent(Integer id){
 		this.id=id;
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return id;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

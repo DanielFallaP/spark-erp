@@ -40,7 +40,7 @@ public class MeasurementUnitsInfo implements Serializable{
 
 
 	@NotEmpty
-	private String name;
+	private String description;
 
 
 	private List<ActiveDetails> activeList;
@@ -55,12 +55,12 @@ public class MeasurementUnitsInfo implements Serializable{
 		this.code = code;	
 	}
 
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	public List<ActiveDetails> getActiveList() {

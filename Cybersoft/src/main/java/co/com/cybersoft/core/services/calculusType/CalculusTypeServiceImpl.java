@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.calculusType;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.calculusType.CreateCalculusTypeEvent;
 import co.com.cybersoft.events.calculusType.CalculusTypeDetailsEvent;
 import co.com.cybersoft.events.calculusType.CalculusTypePageEvent;
@@ -53,5 +51,15 @@ public class CalculusTypeServiceImpl implements CalculusTypeService{
 	public CalculusTypePageEvent requestAll() throws Exception {
 		return calculusTypePersistenceService.requestAll();
 	}
+	
+	@Override
+	public CalculusTypePageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return calculusTypePersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public CalculusTypePageEvent requestByContainingDescription(String description) throws Exception {
+		return calculusTypePersistenceService.requestByContainingDescription(description);
+	}
+	
 }

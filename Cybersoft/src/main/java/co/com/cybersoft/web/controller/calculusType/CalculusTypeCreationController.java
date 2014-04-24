@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.CalculusTypeDetails;
 import co.com.cybersoft.core.services.calculusType.CalculusTypeService;
 import co.com.cybersoft.events.calculusType.CreateCalculusTypeEvent;
 import co.com.cybersoft.web.domain.calculusType.CalculusTypeInfo;
+import co.com.cybersoft.events.calculusType.CalculusTypeDetailsEvent;
+import co.com.cybersoft.events.calculusType.RequestCalculusTypeDetailsEvent;
+
+
 
 /**
  * Controller for calculusType
@@ -74,6 +78,24 @@ public class CalculusTypeCreationController {
 	@ModelAttribute("calculusTypeInfo")
 	private CalculusTypeInfo getCalculusTypeInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		CalculusTypeInfo calculusTypeInfo = new CalculusTypeInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			CalculusTypeDetailsEvent responseEvent = calculusTypeService.requestCalculusTypeDetails(new RequestCalculusTypeDetailsEvent(code));
+			if (responseEvent.getCalculusTypeDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getCalculusTypeDetails(), calculusTypeInfo);
+		}
+		
+		if (description!=null){
+			RequestCalculusTypeDetailsEvent event = new RequestCalculusTypeDetailsEvent(null);
+			event.setDescription(description);
+			CalculusTypeDetailsEvent responseEvent = calculusTypeService.requestCalculusTypeDetails(event);
+			if (responseEvent.getCalculusTypeDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getCalculusTypeDetails(), calculusTypeInfo);
+		}
+		
+		calculusTypeInfo.setId(null);
 		
 		
 		calculusTypeInfo.setCalledFrom(calledFrom);

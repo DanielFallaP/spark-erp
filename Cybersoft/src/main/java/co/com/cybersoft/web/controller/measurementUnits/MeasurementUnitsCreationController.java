@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.MeasurementUnitsDetails;
 import co.com.cybersoft.core.services.measurementUnits.MeasurementUnitsService;
 import co.com.cybersoft.events.measurementUnits.CreateMeasurementUnitsEvent;
 import co.com.cybersoft.web.domain.measurementUnits.MeasurementUnitsInfo;
+import co.com.cybersoft.events.measurementUnits.MeasurementUnitsDetailsEvent;
+import co.com.cybersoft.events.measurementUnits.RequestMeasurementUnitsDetailsEvent;
+
+
 import co.com.cybersoft.core.services.active.ActiveService;
 import co.com.cybersoft.events.active.ActivePageEvent;
 
@@ -84,6 +88,24 @@ public class MeasurementUnitsCreationController {
 	@ModelAttribute("measurementUnitsInfo")
 	private MeasurementUnitsInfo getMeasurementUnitsInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		MeasurementUnitsInfo measurementUnitsInfo = new MeasurementUnitsInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			MeasurementUnitsDetailsEvent responseEvent = measurementUnitsService.requestMeasurementUnitsDetails(new RequestMeasurementUnitsDetailsEvent(code));
+			if (responseEvent.getMeasurementUnitsDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getMeasurementUnitsDetails(), measurementUnitsInfo);
+		}
+		
+		if (description!=null){
+			RequestMeasurementUnitsDetailsEvent event = new RequestMeasurementUnitsDetailsEvent(null);
+			event.setDescription(description);
+			MeasurementUnitsDetailsEvent responseEvent = measurementUnitsService.requestMeasurementUnitsDetails(event);
+			if (responseEvent.getMeasurementUnitsDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getMeasurementUnitsDetails(), measurementUnitsInfo);
+		}
+		
+		measurementUnitsInfo.setId(null);
 		
 		ActivePageEvent allActiveEvent = activeService.requestAll();
 		measurementUnitsInfo.setActiveList(allActiveEvent.getActiveList());

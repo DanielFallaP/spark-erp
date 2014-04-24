@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.afe;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.afe.CreateAfeEvent;
 import co.com.cybersoft.events.afe.AfeDetailsEvent;
 import co.com.cybersoft.events.afe.AfePageEvent;
@@ -53,5 +51,15 @@ public class AfeServiceImpl implements AfeService{
 	public AfePageEvent requestAll() throws Exception {
 		return afePersistenceService.requestAll();
 	}
+	
+	@Override
+	public AfePageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return afePersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public AfePageEvent requestByContainingDescription(String description) throws Exception {
+		return afePersistenceService.requestByContainingDescription(description);
+	}
+	
 }

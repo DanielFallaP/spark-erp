@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.bill;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.bill.CreateBillEvent;
 import co.com.cybersoft.events.bill.BillDetailsEvent;
 import co.com.cybersoft.events.bill.BillPageEvent;
@@ -53,5 +51,15 @@ public class BillServiceImpl implements BillService{
 	public BillPageEvent requestAll() throws Exception {
 		return billPersistenceService.requestAll();
 	}
+	
+	@Override
+	public BillPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return billPersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public BillPageEvent requestByContainingDescription(String description) throws Exception {
+		return billPersistenceService.requestByContainingDescription(description);
+	}
+	
 }

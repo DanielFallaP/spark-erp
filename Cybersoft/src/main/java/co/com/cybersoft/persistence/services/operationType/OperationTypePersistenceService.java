@@ -24,4 +24,8 @@ public interface OperationTypePersistenceService {
 	
 	OperationTypePageEvent requestAll() throws Exception;
 	
+	OperationTypePageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	OperationTypePageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

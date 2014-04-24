@@ -37,7 +37,7 @@ public class OperationTypeInfo implements Serializable{
 
 
 	@NotEmpty
-	private String name;
+	private String description;
 
 
 	private Boolean active;
@@ -51,12 +51,12 @@ public class OperationTypeInfo implements Serializable{
 		this.code = code;	
 	}
 
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	public Boolean getActive() {

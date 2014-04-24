@@ -1,9 +1,9 @@
 package co.com.cybersoft.web.controller.wareHouse;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,30 +12,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.validation.BindException;
 
 import co.com.cybersoft.core.domain.WareHouseDetails;
-import co.com.cybersoft.core.services.active.ActiveService;
-import co.com.cybersoft.core.services.afe.AfeService;
-import co.com.cybersoft.core.services.calculusType.CalculusTypeService;
-import co.com.cybersoft.core.services.contract.ContractService;
-import co.com.cybersoft.core.services.operationType.OperationTypeService;
 import co.com.cybersoft.core.services.wareHouse.WareHouseService;
-import co.com.cybersoft.events.active.ActivePageEvent;
-import co.com.cybersoft.events.afe.AfePageEvent;
-import co.com.cybersoft.events.calculusType.CalculusTypePageEvent;
-import co.com.cybersoft.events.contract.ContractPageEvent;
-import co.com.cybersoft.events.operationType.OperationTypePageEvent;
 import co.com.cybersoft.events.wareHouse.CreateWareHouseEvent;
-import co.com.cybersoft.events.wareHouse.RequestWareHouseDetailsEvent;
-import co.com.cybersoft.events.wareHouse.WareHouseDetailsEvent;
 import co.com.cybersoft.web.domain.wareHouse.WareHouseInfo;
+import co.com.cybersoft.events.wareHouse.WareHouseDetailsEvent;
+import co.com.cybersoft.events.wareHouse.RequestWareHouseDetailsEvent;
+
+
+import co.com.cybersoft.core.services.calculusType.CalculusTypeService;
+import co.com.cybersoft.events.calculusType.CalculusTypePageEvent;
+import co.com.cybersoft.core.services.operationType.OperationTypeService;
+import co.com.cybersoft.events.operationType.OperationTypePageEvent;
+import co.com.cybersoft.core.services.afe.AfeService;
+import co.com.cybersoft.events.afe.AfePageEvent;
+import co.com.cybersoft.core.services.contract.ContractService;
+import co.com.cybersoft.events.contract.ContractPageEvent;
+import co.com.cybersoft.core.services.active.ActiveService;
+import co.com.cybersoft.events.active.ActivePageEvent;
 
 
 /**
@@ -114,6 +116,7 @@ public class WareHouseCreationController {
 	@ModelAttribute("wareHouseInfo")
 	private WareHouseInfo getWareHouseInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		WareHouseInfo wareHouseInfo = new WareHouseInfo();
+		
 		String code = request.getParameter("id");
 		String description = request.getParameter("desc");
 		if (code!=null){
@@ -123,7 +126,7 @@ public class WareHouseCreationController {
 		}
 		
 		if (description!=null){
-			RequestWareHouseDetailsEvent event = new RequestWareHouseDetailsEvent(code);
+			RequestWareHouseDetailsEvent event = new RequestWareHouseDetailsEvent(null);
 			event.setDescription(description);
 			WareHouseDetailsEvent responseEvent = wareHouseService.requestWareHouseDetails(event);
 			if (responseEvent.getWareHouseDetails()!=null)
@@ -131,6 +134,7 @@ public class WareHouseCreationController {
 		}
 		
 		wareHouseInfo.setId(null);
+		
 		CalculusTypePageEvent allCalculusTypeEvent = calculusTypeService.requestAll();
 		wareHouseInfo.setCalculusTypeList(allCalculusTypeEvent.getCalculusTypeList());
 		OperationTypePageEvent allOperationTypeEvent = operationTypeService.requestAll();

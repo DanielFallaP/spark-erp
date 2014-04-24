@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.measurementUnits;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.measurementUnits.CreateMeasurementUnitsEvent;
 import co.com.cybersoft.events.measurementUnits.MeasurementUnitsDetailsEvent;
 import co.com.cybersoft.events.measurementUnits.MeasurementUnitsPageEvent;
@@ -53,5 +51,15 @@ public class MeasurementUnitsServiceImpl implements MeasurementUnitsService{
 	public MeasurementUnitsPageEvent requestAll() throws Exception {
 		return measurementUnitsPersistenceService.requestAll();
 	}
+	
+	@Override
+	public MeasurementUnitsPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return measurementUnitsPersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public MeasurementUnitsPageEvent requestByContainingDescription(String description) throws Exception {
+		return measurementUnitsPersistenceService.requestByContainingDescription(description);
+	}
+	
 }

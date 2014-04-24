@@ -45,10 +45,14 @@
 	     		  $('#back a').trigger('click');
 	    	  }
 	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("code").focus();
+		   }
 	     </script>
     
     </head>
-    <body>
+    <body onload="setFocus()">
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
@@ -58,15 +62,15 @@
 		        	<table>
 		        		<tr>
 		        				<td th:text="#{label.contractCode}+': '"></td>
-		        				<td><input type="text" th:field="*{code}"  /></td>
+		        				<td><input id="code" type="text" th:field="*{code}"  /></td>
 		        		</tr>
 		        		<tr>
-		        				<td th:text="#{label.contractName}+': '"></td>
-		        				<td><input type="text" th:field="*{name}"  /></td>
+		        				<td th:text="#{label.contractDescription}+': '"></td>
+		        				<td><input id="description" type="text" th:field="*{description}"  /></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.contractActive}+': '"></td>
-		        				<td><input type="text" th:field="*{active}"  /></td>
+		        				<td><input id="active" type="text" th:field="*{active}"  /></td>
 		        		</tr>
 
 		        		<tr>

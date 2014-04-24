@@ -10,7 +10,8 @@ import co.com.cybersoft.events.bill.BillModificationEvent;
 import co.com.cybersoft.events.bill.RequestBillDetailsEvent;
 import co.com.cybersoft.events.bill.RequestBillPageEvent;
 import co.com.cybersoft.persistence.domain.Bill;
-import co.com.cybersoft.persistence.repository.BillRepository;
+import co.com.cybersoft.persistence.repository.bill.BillRepository;
+import co.com.cybersoft.persistence.repository.bill.BillCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,11 @@ public class BillPersistenceServiceImpl implements BillPersistenceService{
 
 	private final BillRepository billRepository;
 	
-	public BillPersistenceServiceImpl(final BillRepository billRepository) {
+	private final BillCustomRepo billCustomRepo;
+	
+	public BillPersistenceServiceImpl(final BillRepository billRepository, final BillCustomRepo billCustomRepo) {
 		this.billRepository=billRepository;
+		this.billCustomRepo=billCustomRepo;
 	}
 	
 	@Override
@@ -43,9 +47,19 @@ public class BillPersistenceServiceImpl implements BillPersistenceService{
 
 	@Override
 	public BillDetailsEvent requestBillDetails(RequestBillDetailsEvent event) throws Exception {
-		Bill bill = billRepository.findByCode(event.getId());
-		BillDetails billDetails = bill.toBillDetails();
+		BillDetails billDetails=null;
+		if (event.getId()!=null){
+			Bill bill = billRepository.findByCode(event.getId());
+			if (bill!=null)
+				billDetails = bill.toBillDetails();
+		}
+		else{
+					Bill bill = billRepository.findByDescription(event.getDescription());
+					if (bill!=null)
+						billDetails = bill.toBillDetails();
+				}
 		return new BillDetailsEvent(billDetails);
+		
 	}
 
 	@Override
@@ -60,6 +74,26 @@ public class BillPersistenceServiceImpl implements BillPersistenceService{
 		List<Bill> all = billRepository.findAll();
 		List<BillDetails> list = new ArrayList<BillDetails>();
 		for (Bill bill : all) {
+			list.add(bill.toBillDetails());
+		}
+		return new BillPageEvent(list);
+	}
+	
+	@Override
+	public BillPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		List<Bill> codes = billCustomRepo.findByStartingCodeNumber(codePrefix);
+		ArrayList<BillDetails> list = new ArrayList<BillDetails>();
+		for (Bill bill : codes) {
+			list.add(bill.toBillDetails());
+		}
+		return new BillPageEvent(list);
+	}
+
+	@Override
+	public BillPageEvent requestByContainingDescription(String description) throws Exception {
+		ArrayList<BillDetails> list = new ArrayList<BillDetails>();
+		List<Bill> descriptions = billCustomRepo.findByContainingDescription(description);
+		for (Bill bill : descriptions) {
 			list.add(bill.toBillDetails());
 		}
 		return new BillPageEvent(list);

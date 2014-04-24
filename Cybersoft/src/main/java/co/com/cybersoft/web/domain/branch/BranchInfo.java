@@ -39,12 +39,12 @@ public class BranchInfo implements Serializable{
 	private String createdBy;
 	
 	@NotNull
-	@Range(max=1000)
+	@Range(max=999)
 	private Integer code;
 
 
 	@NotEmpty
-	private String name;
+	private String description;
 
 
 	private List<CorporationDetails> corporationList;
@@ -67,12 +67,12 @@ public class BranchInfo implements Serializable{
 		this.code = code;	
 	}
 
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	public List<CorporationDetails> getCorporationList() {
@@ -130,7 +130,7 @@ public class BranchInfo implements Serializable{
 			CorporationDetails selectedCorporation=null;
 			ArrayList<CorporationDetails> newList = new ArrayList<CorporationDetails>();
 			for(CorporationDetails corporation:corporationList){
-				if (corporation.getName().equals(selected)){
+				if (corporation.getDescription().equals(selected)){
 					selectedCorporation=corporation;
 					newList.add(0, selectedCorporation);
 				}
@@ -145,7 +145,7 @@ public class BranchInfo implements Serializable{
 			CompanyDetails selectedCompany=null;
 			ArrayList<CompanyDetails> newList = new ArrayList<CompanyDetails>();
 			for(CompanyDetails company:companyList){
-				if (company.getName().equals(selected)){
+				if (company.getDescription().equals(selected)){
 					selectedCompany=company;
 					newList.add(0, selectedCompany);
 				}

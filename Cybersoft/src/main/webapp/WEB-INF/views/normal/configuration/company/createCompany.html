@@ -23,29 +23,87 @@
 		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
 	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
 	    <script type="text/javascript">
-	     $(document).on("click", "a", function(event){
-	    	  var link = $(this);
-	    	  var target = link.attr("target");
-	    	  if($.trim(target).length > 0)
-	    	  {
-	    	    window.open(link.attr("href"), target);
-	    	  }
-	    	  else
-	    	  {
-	    	     window.location = link.attr("href");
-	    	  }
-
-	    	  event.preventDefault();
-	    	});
 	     
-	     $(document).keyup(function(e) {
+	      $(document).keyup(function(e) {
 	    	  if(e.which == 27) {
-	     		  $('#back a').trigger('click');
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("configuration")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/configuration/company/searchCompany","_self");
 	    	  }
 	    	});
+	    	
+	     $(function(){
+	     $("#code").autocomplete({
+	    	    source: function (request, response) {
+	    	    		var path=window.location.pathname.split("/");
+	    	    		var prefix="";
+	    	    		if (path[1].localeCompare("configuration")!=0){
+	    	    			prefix="/"+path[1];	
+	    	    		}
+	    	    		
+						$.get(prefix+"/configuration/company/getCodeList/"+request.term, {}, function (data) {
+	    	            var array=data.split("/////");
+	    	            if (data!="")
+	    	            	response(array);
+	    	            else
+	    	            	response(null);
+	    	        });
+	    	    },
+	    	    minLength: 3,
+	    	    select: function(a, b){
+	    	    		$(this).val(b.item.value);
+	    	    		var path=window.location.pathname.split("/");
+	    	    		var prefix="";
+	    	    		if (path[1].localeCompare("configuration")!=0){
+	    	    			prefix="/"+path[1];	
+	    	    		}
+	    	    		window.open(prefix+"/configuration/company/createCompany/fromList?id="+b.item.value,"_self");
+	    	    	}
+	    	});
+	    	 
+	     });
+	     
+	     $(function(){
+		     $("#description").autocomplete({
+		    	    source: function (request, response) {
+		    	    		var path=window.location.pathname.split("/");
+		    	    		var prefix="";
+		    	    		if (path[1].localeCompare("configuration")!=0){
+		    	    			prefix="/"+path[1];	
+		    	    		}
+		    	    		
+							$.get(prefix+"/configuration/company/getDescriptionList/"+request.term, {}, function (data) {
+		    	            var array=data.split("/////");
+		    	            if (data!="")
+		    	            	response(array);
+		    	            else
+		    	            	response(null);
+		    	        });
+		    	    },
+		    	    minLength: 3,
+	    	    		select: function(a, b){
+	    	    		$(this).val(b.item.value);
+	    	    		var path=window.location.pathname.split("/");
+	    	    		var prefix="";
+	    	    		if (path[1].localeCompare("configuration")!=0){
+	    	    			prefix="/"+path[1];	
+	    	    		}
+	    	    		window.open(prefix+"/configuration/company/createCompany/fromList?desc="+b.item.value,"_self");
+	    	    	}
+		    	});
+		    	 
+		     });
+		     
+		   function setFocus(){
+		   		document.getElementById("code").focus();
+		   } 
+	     
 	     </script>
     </head>
-    <body>
+    <body onload="setFocus()">
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
@@ -55,24 +113,24 @@
 		        	<table>		        			        			
 		        		<tr>
 		        				<td th:text="#{label.companyCode}+': '"></td>
-		        				<td><input type="text" th:field="*{code}"  /></td>
+		        				<td><input id="code" type="text" th:field="*{code}"  /></td>
 		        		</tr>
 		        		<tr>
-		        				<td th:text="#{label.companyName}+': '"></td>
-		        				<td><input type="text" th:field="*{name}"  /></td>
+		        				<td th:text="#{label.companyDescription}+': '"></td>
+		        				<td><input id="description" type="text" th:field="*{description}"  /></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.companyLetter}+': '"></td>
-		        				<td><input type="text" th:field="*{letter}"  /></td>
+		        				<td><input id="letter" type="text" th:field="*{letter}"  /></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.companyNit}+': '"></td>
-		        				<td><input type="text" th:field="*{nit}"  /></td>
+		        				<td><input id="nit" type="text" th:field="*{nit}"  /></td>
 		        		</tr>
 
 		        		<tr>
 		        			<td th:text="#{label.companyCorporation}+': '"></td>
-		        			<td><select th:field="*{corporation}"><option th:each="reference : ${companyInfo.corporationList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{corporation}"><option th:each="reference : ${companyInfo.corporationList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.companyActive}+': '"></td>
@@ -91,7 +149,7 @@
             </div>
             <div th:if='${companyCreateException}' class="alert alert-error" th:text="#{label.companyCreationError}">
             </div>
-            <div th:if='${companyValidationException}' class="alert alert-error" th:text="#{label.grupoValidationError}">
+            <div th:if='${companyValidationException}' class="alert alert-error" th:text="#{label.companyValidationError}">
             </div>
 	    </div>
 		<div th:include="normal/layout :: footer"></div>    

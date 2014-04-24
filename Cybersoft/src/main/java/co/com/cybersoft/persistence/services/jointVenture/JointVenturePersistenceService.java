@@ -24,4 +24,8 @@ public interface JointVenturePersistenceService {
 	
 	JointVenturePageEvent requestAll() throws Exception;
 	
+	JointVenturePageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	JointVenturePageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

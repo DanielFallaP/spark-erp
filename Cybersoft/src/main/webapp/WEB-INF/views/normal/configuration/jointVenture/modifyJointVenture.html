@@ -45,6 +45,10 @@
 	     		  $('#back a').trigger('click');
 	    	  }
 	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("code").focus();
+		   }
 	     </script>
     
     	<script>
@@ -59,7 +63,7 @@
     	</script>
 
     </head>
-    <body>
+    <body onload="setFocus()">
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
@@ -69,24 +73,24 @@
 		        	<table>
 		        		<tr>
 		        				<td th:text="#{label.jointVentureCode}+': '"></td>
-		        				<td><input type="text" th:field="*{code}"  /></td>
+		        				<td><input id="code" type="text" th:field="*{code}"  /></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.jointVentureFromDate}+': '"></td>
-		        				<td><input type="text" th:field="*{fromDate}" id="fromDate" /></td>
+		        				<td><input id="fromDate" type="text" th:field="*{fromDate}" id="fromDate" /></td>
 		        		</tr>
 		        		<tr>
 		        				<td th:text="#{label.jointVentureToDate}+': '"></td>
-		        				<td><input type="text" th:field="*{toDate}" id="toDate" /></td>
+		        				<td><input id="toDate" type="text" th:field="*{toDate}" id="toDate" /></td>
 		        		</tr>
 
 		        		<tr>
 		        			<td th:text="#{label.jointVentureBill}+': '"></td>
-		        			<td><select th:field="*{bill}"><option th:each="reference : ${jointVentureInfo.billList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{bill}"><option th:each="reference : ${jointVentureInfo.billList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.jointVenturePartner}+': '"></td>
-		        			<td><select th:field="*{partner}"><option th:each="reference : ${jointVentureInfo.partnerList}" th:value="${reference.name}" th:text="${reference.name}"></option></select></td>
+		        			<td><select th:field="*{partner}"><option th:each="reference : ${jointVentureInfo.partnerList}" th:value="${reference.description}" th:text="${reference.description}"></option></select></td>
 		        		</tr>
 		        		<tr>
 		        			<td th:text="#{label.jointVentureActive}+': '"></td>

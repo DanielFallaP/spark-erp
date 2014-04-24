@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.CostCenterDetails;
 import co.com.cybersoft.core.services.costCenter.CostCenterService;
 import co.com.cybersoft.events.costCenter.CreateCostCenterEvent;
 import co.com.cybersoft.web.domain.costCenter.CostCenterInfo;
+import co.com.cybersoft.events.costCenter.CostCenterDetailsEvent;
+import co.com.cybersoft.events.costCenter.RequestCostCenterDetailsEvent;
+
+
 
 /**
  * Controller for costCenter
@@ -74,6 +78,24 @@ public class CostCenterCreationController {
 	@ModelAttribute("costCenterInfo")
 	private CostCenterInfo getCostCenterInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		CostCenterInfo costCenterInfo = new CostCenterInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			CostCenterDetailsEvent responseEvent = costCenterService.requestCostCenterDetails(new RequestCostCenterDetailsEvent(code));
+			if (responseEvent.getCostCenterDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getCostCenterDetails(), costCenterInfo);
+		}
+		
+		if (description!=null){
+			RequestCostCenterDetailsEvent event = new RequestCostCenterDetailsEvent(null);
+			event.setDescription(description);
+			CostCenterDetailsEvent responseEvent = costCenterService.requestCostCenterDetails(event);
+			if (responseEvent.getCostCenterDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getCostCenterDetails(), costCenterInfo);
+		}
+		
+		costCenterInfo.setId(null);
 		
 		
 		costCenterInfo.setCalledFrom(calledFrom);

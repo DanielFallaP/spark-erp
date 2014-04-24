@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.AfeTypeDetails;
 import co.com.cybersoft.core.services.afeType.AfeTypeService;
 import co.com.cybersoft.events.afeType.CreateAfeTypeEvent;
 import co.com.cybersoft.web.domain.afeType.AfeTypeInfo;
+import co.com.cybersoft.events.afeType.AfeTypeDetailsEvent;
+import co.com.cybersoft.events.afeType.RequestAfeTypeDetailsEvent;
+
+
 
 /**
  * Controller for afeType
@@ -74,6 +78,24 @@ public class AfeTypeCreationController {
 	@ModelAttribute("afeTypeInfo")
 	private AfeTypeInfo getAfeTypeInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		AfeTypeInfo afeTypeInfo = new AfeTypeInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			AfeTypeDetailsEvent responseEvent = afeTypeService.requestAfeTypeDetails(new RequestAfeTypeDetailsEvent(code));
+			if (responseEvent.getAfeTypeDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getAfeTypeDetails(), afeTypeInfo);
+		}
+		
+		if (description!=null){
+			RequestAfeTypeDetailsEvent event = new RequestAfeTypeDetailsEvent(null);
+			event.setDescription(description);
+			AfeTypeDetailsEvent responseEvent = afeTypeService.requestAfeTypeDetails(event);
+			if (responseEvent.getAfeTypeDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getAfeTypeDetails(), afeTypeInfo);
+		}
+		
+		afeTypeInfo.setId(null);
 		
 		
 		afeTypeInfo.setCalledFrom(calledFrom);

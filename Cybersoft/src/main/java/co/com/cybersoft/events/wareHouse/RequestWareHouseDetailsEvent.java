@@ -18,7 +18,7 @@ public class RequestWareHouseDetailsEvent {
 	public String getId() {
 		return id;
 	}
-
+	
 	public String getDescription() {
 		return description;
 	}
@@ -26,6 +26,4 @@ public class RequestWareHouseDetailsEvent {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
 }

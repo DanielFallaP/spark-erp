@@ -38,12 +38,12 @@ public class CorporationInfo implements Serializable{
 	private String createdBy;
 	
 	@NotNull
-	@Range(max=1000)
+	@Range(max=99)
 	private Integer code;
 
 
 	@NotEmpty
-	private String name;
+	private String description;
 
 
 	@Length(max=15)
@@ -63,12 +63,12 @@ public class CorporationInfo implements Serializable{
 		this.code = code;	
 	}
 
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	public String getNit() {

@@ -7,13 +7,23 @@ package co.com.cybersoft.events.branch;
  */
 public class RequestBranchDetailsEvent {
 
-	private String id;
+	private Integer id;
 	
-	public RequestBranchDetailsEvent(String id){
+	private String description;
+	
+	public RequestBranchDetailsEvent(Integer id){
 		this.id=id;
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return id;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

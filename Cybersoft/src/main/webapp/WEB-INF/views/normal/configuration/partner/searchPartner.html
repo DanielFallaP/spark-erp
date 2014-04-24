@@ -60,7 +60,7 @@
 				<thead>
 					<tr>
 						<th ><a th:href="@{${page.url}+'?field=code'}" th:text="#{label.partnerCode}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=name'}" th:text="#{label.partnerName}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=description'}" th:text="#{label.partnerDescription}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=nit'}" th:text="#{label.partnerNit}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=active'}" th:text="#{label.partnerActive}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a></th>
@@ -73,7 +73,7 @@
 				<tbody>
 					<tr th:each="object: ${list}">
 						<td><a th:href="@{/configuration/partner/modifyPartner/}+${object.code}" th:text="${object.code}"></a></td>
-						<td th:text="${object.name}"></td>
+						<td th:text="${object.description}"></td>
 						<td th:text="${object.nit}"></td>
 						<td th:text="#{${object.active}}"></td>
 						<td th:text="${object.dateOfModification}"></td>

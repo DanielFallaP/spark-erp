@@ -10,7 +10,8 @@ import co.com.cybersoft.events.company.CompanyModificationEvent;
 import co.com.cybersoft.events.company.RequestCompanyDetailsEvent;
 import co.com.cybersoft.events.company.RequestCompanyPageEvent;
 import co.com.cybersoft.persistence.domain.Company;
-import co.com.cybersoft.persistence.repository.CompanyRepository;
+import co.com.cybersoft.persistence.repository.company.CompanyRepository;
+import co.com.cybersoft.persistence.repository.company.CompanyCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,11 @@ public class CompanyPersistenceServiceImpl implements CompanyPersistenceService{
 
 	private final CompanyRepository companyRepository;
 	
-	public CompanyPersistenceServiceImpl(final CompanyRepository companyRepository) {
+	private final CompanyCustomRepo companyCustomRepo;
+	
+	public CompanyPersistenceServiceImpl(final CompanyRepository companyRepository, final CompanyCustomRepo companyCustomRepo) {
 		this.companyRepository=companyRepository;
+		this.companyCustomRepo=companyCustomRepo;
 	}
 	
 	@Override
@@ -43,9 +47,19 @@ public class CompanyPersistenceServiceImpl implements CompanyPersistenceService{
 
 	@Override
 	public CompanyDetailsEvent requestCompanyDetails(RequestCompanyDetailsEvent event) throws Exception {
-		Company company = companyRepository.findByCode(event.getId());
-		CompanyDetails companyDetails = company.toCompanyDetails();
+		CompanyDetails companyDetails=null;
+		if (event.getId()!=null){
+			Company company = companyRepository.findByCode(event.getId());
+			if (company!=null)
+				companyDetails = company.toCompanyDetails();
+		}
+		else{
+					Company company = companyRepository.findByDescription(event.getDescription());
+					if (company!=null)
+						companyDetails = company.toCompanyDetails();
+				}
 		return new CompanyDetailsEvent(companyDetails);
+		
 	}
 
 	@Override
@@ -60,6 +74,26 @@ public class CompanyPersistenceServiceImpl implements CompanyPersistenceService{
 		List<Company> all = companyRepository.findAll();
 		List<CompanyDetails> list = new ArrayList<CompanyDetails>();
 		for (Company company : all) {
+			list.add(company.toCompanyDetails());
+		}
+		return new CompanyPageEvent(list);
+	}
+	
+	@Override
+	public CompanyPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		List<Company> codes = companyCustomRepo.findByStartingCodeNumber(codePrefix);
+		ArrayList<CompanyDetails> list = new ArrayList<CompanyDetails>();
+		for (Company company : codes) {
+			list.add(company.toCompanyDetails());
+		}
+		return new CompanyPageEvent(list);
+	}
+
+	@Override
+	public CompanyPageEvent requestByContainingDescription(String description) throws Exception {
+		ArrayList<CompanyDetails> list = new ArrayList<CompanyDetails>();
+		List<Company> descriptions = companyCustomRepo.findByContainingDescription(description);
+		for (Company company : descriptions) {
 			list.add(company.toCompanyDetails());
 		}
 		return new CompanyPageEvent(list);

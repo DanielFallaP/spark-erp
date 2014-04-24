@@ -1,11 +1,11 @@
 package co.com.cybersoft.events.wareHouse;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 
+import co.com.cybersoft.persistence.domain.WareHouse;
 import co.com.cybersoft.core.domain.WareHouseDetails;
 import co.com.cybersoft.persistence.domain.WareHouse;
+import java.util.List;
 
 /**
  * Event class for WareHouse
@@ -17,13 +17,22 @@ public class WareHousePageEvent {
 	
 	private List<WareHouseDetails> wareHouseList;
 
+
+
+	
 	public WareHousePageEvent(List<WareHouseDetails>  wareHouseList){
 			this.wareHouseList= wareHouseList;
 	}
 
+
+
+	
 	public List<WareHouseDetails> getWareHouseList() {
 	return wareHouseList;
 	}
+
+
+
 	
 	public WareHousePageEvent(Page<WareHouse>  wareHousePage){
 		this.wareHousePage= wareHousePage;

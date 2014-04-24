@@ -24,4 +24,8 @@ public interface AfeTypePersistenceService {
 	
 	AfeTypePageEvent requestAll() throws Exception;
 	
+	AfeTypePageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	AfeTypePageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

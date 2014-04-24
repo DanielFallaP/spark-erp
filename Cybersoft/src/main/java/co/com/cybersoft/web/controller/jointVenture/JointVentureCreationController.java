@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.JointVentureDetails;
 import co.com.cybersoft.core.services.jointVenture.JointVentureService;
 import co.com.cybersoft.events.jointVenture.CreateJointVentureEvent;
 import co.com.cybersoft.web.domain.jointVenture.JointVentureInfo;
+import co.com.cybersoft.events.jointVenture.JointVentureDetailsEvent;
+import co.com.cybersoft.events.jointVenture.RequestJointVentureDetailsEvent;
+
+
 import co.com.cybersoft.core.services.bill.BillService;
 import co.com.cybersoft.events.bill.BillPageEvent;
 import co.com.cybersoft.core.services.partner.PartnerService;
@@ -98,6 +102,24 @@ public class JointVentureCreationController {
 	@ModelAttribute("jointVentureInfo")
 	private JointVentureInfo getJointVentureInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		JointVentureInfo jointVentureInfo = new JointVentureInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			JointVentureDetailsEvent responseEvent = jointVentureService.requestJointVentureDetails(new RequestJointVentureDetailsEvent(code));
+			if (responseEvent.getJointVentureDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getJointVentureDetails(), jointVentureInfo);
+		}
+		
+		if (description!=null){
+			RequestJointVentureDetailsEvent event = new RequestJointVentureDetailsEvent(null);
+			event.setDescription(description);
+			JointVentureDetailsEvent responseEvent = jointVentureService.requestJointVentureDetails(event);
+			if (responseEvent.getJointVentureDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getJointVentureDetails(), jointVentureInfo);
+		}
+		
+		jointVentureInfo.setId(null);
 		
 		BillPageEvent allBillEvent = billService.requestAll();
 		jointVentureInfo.setBillList(allBillEvent.getBillList());

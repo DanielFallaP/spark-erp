@@ -10,7 +10,8 @@ import co.com.cybersoft.events.corporation.CorporationModificationEvent;
 import co.com.cybersoft.events.corporation.RequestCorporationDetailsEvent;
 import co.com.cybersoft.events.corporation.RequestCorporationPageEvent;
 import co.com.cybersoft.persistence.domain.Corporation;
-import co.com.cybersoft.persistence.repository.CorporationRepository;
+import co.com.cybersoft.persistence.repository.corporation.CorporationRepository;
+import co.com.cybersoft.persistence.repository.corporation.CorporationCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,11 @@ public class CorporationPersistenceServiceImpl implements CorporationPersistence
 
 	private final CorporationRepository corporationRepository;
 	
-	public CorporationPersistenceServiceImpl(final CorporationRepository corporationRepository) {
+	private final CorporationCustomRepo corporationCustomRepo;
+	
+	public CorporationPersistenceServiceImpl(final CorporationRepository corporationRepository, final CorporationCustomRepo corporationCustomRepo) {
 		this.corporationRepository=corporationRepository;
+		this.corporationCustomRepo=corporationCustomRepo;
 	}
 	
 	@Override
@@ -43,9 +47,19 @@ public class CorporationPersistenceServiceImpl implements CorporationPersistence
 
 	@Override
 	public CorporationDetailsEvent requestCorporationDetails(RequestCorporationDetailsEvent event) throws Exception {
-		Corporation corporation = corporationRepository.findByCode(event.getId());
-		CorporationDetails corporationDetails = corporation.toCorporationDetails();
+		CorporationDetails corporationDetails=null;
+		if (event.getId()!=null){
+			Corporation corporation = corporationRepository.findByCode(event.getId());
+			if (corporation!=null)
+				corporationDetails = corporation.toCorporationDetails();
+		}
+		else{
+					Corporation corporation = corporationRepository.findByDescription(event.getDescription());
+					if (corporation!=null)
+						corporationDetails = corporation.toCorporationDetails();
+				}
 		return new CorporationDetailsEvent(corporationDetails);
+		
 	}
 
 	@Override
@@ -60,6 +74,26 @@ public class CorporationPersistenceServiceImpl implements CorporationPersistence
 		List<Corporation> all = corporationRepository.findAll();
 		List<CorporationDetails> list = new ArrayList<CorporationDetails>();
 		for (Corporation corporation : all) {
+			list.add(corporation.toCorporationDetails());
+		}
+		return new CorporationPageEvent(list);
+	}
+	
+	@Override
+	public CorporationPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		List<Corporation> codes = corporationCustomRepo.findByStartingCodeNumber(codePrefix);
+		ArrayList<CorporationDetails> list = new ArrayList<CorporationDetails>();
+		for (Corporation corporation : codes) {
+			list.add(corporation.toCorporationDetails());
+		}
+		return new CorporationPageEvent(list);
+	}
+
+	@Override
+	public CorporationPageEvent requestByContainingDescription(String description) throws Exception {
+		ArrayList<CorporationDetails> list = new ArrayList<CorporationDetails>();
+		List<Corporation> descriptions = corporationCustomRepo.findByContainingDescription(description);
+		for (Corporation corporation : descriptions) {
 			list.add(corporation.toCorporationDetails());
 		}
 		return new CorporationPageEvent(list);

@@ -23,4 +23,8 @@ public interface OperationTypeService {
 	
 	OperationTypePageEvent requestAll() throws Exception;
 	
+	OperationTypePageEvent requestByCodePrefix(String code) throws Exception;
+	
+	OperationTypePageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.CorporationDetails;
 import co.com.cybersoft.core.services.corporation.CorporationService;
 import co.com.cybersoft.events.corporation.CreateCorporationEvent;
 import co.com.cybersoft.web.domain.corporation.CorporationInfo;
+import co.com.cybersoft.events.corporation.CorporationDetailsEvent;
+import co.com.cybersoft.events.corporation.RequestCorporationDetailsEvent;
+
+
 import co.com.cybersoft.core.services.active.ActiveService;
 import co.com.cybersoft.events.active.ActivePageEvent;
 
@@ -84,6 +88,24 @@ public class CorporationCreationController {
 	@ModelAttribute("corporationInfo")
 	private CorporationInfo getCorporationInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		CorporationInfo corporationInfo = new CorporationInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			CorporationDetailsEvent responseEvent = corporationService.requestCorporationDetails(new RequestCorporationDetailsEvent(Integer.parseInt(code)));
+			if (responseEvent.getCorporationDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getCorporationDetails(), corporationInfo);
+		}
+		
+		if (description!=null){
+			RequestCorporationDetailsEvent event = new RequestCorporationDetailsEvent(null);
+			event.setDescription(description);
+			CorporationDetailsEvent responseEvent = corporationService.requestCorporationDetails(event);
+			if (responseEvent.getCorporationDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getCorporationDetails(), corporationInfo);
+		}
+		
+		corporationInfo.setId(null);
 		
 		ActivePageEvent allActiveEvent = activeService.requestAll();
 		corporationInfo.setActiveList(allActiveEvent.getActiveList());

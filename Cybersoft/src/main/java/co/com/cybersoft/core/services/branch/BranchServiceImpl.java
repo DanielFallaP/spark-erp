@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.branch;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.branch.CreateBranchEvent;
 import co.com.cybersoft.events.branch.BranchDetailsEvent;
 import co.com.cybersoft.events.branch.BranchPageEvent;
@@ -53,5 +51,15 @@ public class BranchServiceImpl implements BranchService{
 	public BranchPageEvent requestAll() throws Exception {
 		return branchPersistenceService.requestAll();
 	}
+	
+	@Override
+	public BranchPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return branchPersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public BranchPageEvent requestByContainingDescription(String description) throws Exception {
+		return branchPersistenceService.requestByContainingDescription(description);
+	}
+	
 }

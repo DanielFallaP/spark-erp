@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.OperationTypeDetails;
 import co.com.cybersoft.core.services.operationType.OperationTypeService;
 import co.com.cybersoft.events.operationType.CreateOperationTypeEvent;
 import co.com.cybersoft.web.domain.operationType.OperationTypeInfo;
+import co.com.cybersoft.events.operationType.OperationTypeDetailsEvent;
+import co.com.cybersoft.events.operationType.RequestOperationTypeDetailsEvent;
+
+
 
 /**
  * Controller for operationType
@@ -74,6 +78,24 @@ public class OperationTypeCreationController {
 	@ModelAttribute("operationTypeInfo")
 	private OperationTypeInfo getOperationTypeInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		OperationTypeInfo operationTypeInfo = new OperationTypeInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			OperationTypeDetailsEvent responseEvent = operationTypeService.requestOperationTypeDetails(new RequestOperationTypeDetailsEvent(code));
+			if (responseEvent.getOperationTypeDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getOperationTypeDetails(), operationTypeInfo);
+		}
+		
+		if (description!=null){
+			RequestOperationTypeDetailsEvent event = new RequestOperationTypeDetailsEvent(null);
+			event.setDescription(description);
+			OperationTypeDetailsEvent responseEvent = operationTypeService.requestOperationTypeDetails(event);
+			if (responseEvent.getOperationTypeDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getOperationTypeDetails(), operationTypeInfo);
+		}
+		
+		operationTypeInfo.setId(null);
 		
 		
 		operationTypeInfo.setCalledFrom(calledFrom);

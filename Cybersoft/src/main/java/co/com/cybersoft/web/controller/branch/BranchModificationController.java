@@ -81,7 +81,7 @@ public class BranchModificationController {
 	}
 
 	@ModelAttribute("branchInfo")
-	private BranchInfo getBranchInfo(@PathVariable("code") String code, HttpServletRequest request) throws Exception {
+	private BranchInfo getBranchInfo(@PathVariable("code") Integer code, HttpServletRequest request) throws Exception {
 		LOG.debug("Retrieving the branch "+code);
 		BranchInfo branchInfo = new BranchInfo();
 		

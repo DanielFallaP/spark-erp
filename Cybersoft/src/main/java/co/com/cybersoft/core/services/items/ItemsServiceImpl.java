@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.items;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.items.CreateItemsEvent;
 import co.com.cybersoft.events.items.ItemsDetailsEvent;
 import co.com.cybersoft.events.items.ItemsPageEvent;
@@ -53,5 +51,15 @@ public class ItemsServiceImpl implements ItemsService{
 	public ItemsPageEvent requestAll() throws Exception {
 		return itemsPersistenceService.requestAll();
 	}
+	
+	@Override
+	public ItemsPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return itemsPersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public ItemsPageEvent requestByContainingDescription(String description) throws Exception {
+		return itemsPersistenceService.requestByContainingDescription(description);
+	}
+	
 }

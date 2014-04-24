@@ -24,4 +24,8 @@ public interface MeasurementUnitsPersistenceService {
 	
 	MeasurementUnitsPageEvent requestAll() throws Exception;
 	
+	MeasurementUnitsPageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	MeasurementUnitsPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

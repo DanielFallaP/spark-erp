@@ -24,4 +24,8 @@ public interface CalculusTypePersistenceService {
 	
 	CalculusTypePageEvent requestAll() throws Exception;
 	
+	CalculusTypePageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	CalculusTypePageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

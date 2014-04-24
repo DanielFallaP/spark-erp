@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.contract;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.contract.CreateContractEvent;
 import co.com.cybersoft.events.contract.ContractDetailsEvent;
 import co.com.cybersoft.events.contract.ContractPageEvent;
@@ -53,5 +51,15 @@ public class ContractServiceImpl implements ContractService{
 	public ContractPageEvent requestAll() throws Exception {
 		return contractPersistenceService.requestAll();
 	}
+	
+	@Override
+	public ContractPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return contractPersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public ContractPageEvent requestByContainingDescription(String description) throws Exception {
+		return contractPersistenceService.requestByContainingDescription(description);
+	}
+	
 }

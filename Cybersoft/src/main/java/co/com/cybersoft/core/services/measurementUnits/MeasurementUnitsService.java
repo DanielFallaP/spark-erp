@@ -23,4 +23,8 @@ public interface MeasurementUnitsService {
 	
 	MeasurementUnitsPageEvent requestAll() throws Exception;
 	
+	MeasurementUnitsPageEvent requestByCodePrefix(String code) throws Exception;
+	
+	MeasurementUnitsPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

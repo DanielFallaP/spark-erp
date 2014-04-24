@@ -12,7 +12,7 @@ public class CompanyDetails {
 	private Integer code;
 
 
-	private String name;
+	private String description;
 
 
 	private String letter;
@@ -82,12 +82,12 @@ public class CompanyDetails {
 	public void setCode(Integer code) {
 		this.code = code;	
 	}
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 	public String getLetter() {
 		return letter;	

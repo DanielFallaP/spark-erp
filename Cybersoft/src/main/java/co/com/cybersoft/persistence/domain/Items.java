@@ -24,7 +24,7 @@ public class Items {
 	private String code;
 
 	@Indexed(unique=true)
-	private String name;
+	private String description;
 
 	private String measurementUnit;
 
@@ -81,12 +81,12 @@ public class Items {
 	public void setCode(String code) {
 		this.code = code;	
 	}
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 	public String getMeasurementUnit() {
 		return measurementUnit;	

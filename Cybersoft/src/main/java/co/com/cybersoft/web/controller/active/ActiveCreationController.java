@@ -24,6 +24,10 @@ import co.com.cybersoft.core.domain.ActiveDetails;
 import co.com.cybersoft.core.services.active.ActiveService;
 import co.com.cybersoft.events.active.CreateActiveEvent;
 import co.com.cybersoft.web.domain.active.ActiveInfo;
+import co.com.cybersoft.events.active.ActiveDetailsEvent;
+import co.com.cybersoft.events.active.RequestActiveDetailsEvent;
+
+
 
 /**
  * Controller for active
@@ -74,6 +78,24 @@ public class ActiveCreationController {
 	@ModelAttribute("activeInfo")
 	private ActiveInfo getActiveInfo(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		ActiveInfo activeInfo = new ActiveInfo();
+		
+		String code = request.getParameter("id");
+		String description = request.getParameter("desc");
+		if (code!=null){
+			ActiveDetailsEvent responseEvent = activeService.requestActiveDetails(new RequestActiveDetailsEvent(code));
+			if (responseEvent.getActiveDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getActiveDetails(), activeInfo);
+		}
+		
+		if (description!=null){
+			RequestActiveDetailsEvent event = new RequestActiveDetailsEvent(null);
+			event.setDescription(description);
+			ActiveDetailsEvent responseEvent = activeService.requestActiveDetails(event);
+			if (responseEvent.getActiveDetails()!=null)
+				BeanUtils.copyProperties(responseEvent.getActiveDetails(), activeInfo);
+		}
+		
+		activeInfo.setId(null);
 		
 		
 		activeInfo.setCalledFrom(calledFrom);

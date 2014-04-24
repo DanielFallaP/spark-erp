@@ -1,7 +1,5 @@
 package co.com.cybersoft.core.services.active;
 
-import java.util.Date;
-
 import co.com.cybersoft.events.active.CreateActiveEvent;
 import co.com.cybersoft.events.active.ActiveDetailsEvent;
 import co.com.cybersoft.events.active.ActivePageEvent;
@@ -53,5 +51,15 @@ public class ActiveServiceImpl implements ActiveService{
 	public ActivePageEvent requestAll() throws Exception {
 		return activePersistenceService.requestAll();
 	}
+	
+	@Override
+	public ActivePageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		return activePersistenceService.requestByCodePrefix(codePrefix);
+	}
 
+	@Override
+	public ActivePageEvent requestByContainingDescription(String description) throws Exception {
+		return activePersistenceService.requestByContainingDescription(description);
+	}
+	
 }

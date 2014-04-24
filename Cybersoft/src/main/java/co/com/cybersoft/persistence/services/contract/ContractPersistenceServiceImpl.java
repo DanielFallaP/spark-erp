@@ -10,7 +10,8 @@ import co.com.cybersoft.events.contract.ContractModificationEvent;
 import co.com.cybersoft.events.contract.RequestContractDetailsEvent;
 import co.com.cybersoft.events.contract.RequestContractPageEvent;
 import co.com.cybersoft.persistence.domain.Contract;
-import co.com.cybersoft.persistence.repository.ContractRepository;
+import co.com.cybersoft.persistence.repository.contract.ContractRepository;
+import co.com.cybersoft.persistence.repository.contract.ContractCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,11 @@ public class ContractPersistenceServiceImpl implements ContractPersistenceServic
 
 	private final ContractRepository contractRepository;
 	
-	public ContractPersistenceServiceImpl(final ContractRepository contractRepository) {
+	private final ContractCustomRepo contractCustomRepo;
+	
+	public ContractPersistenceServiceImpl(final ContractRepository contractRepository, final ContractCustomRepo contractCustomRepo) {
 		this.contractRepository=contractRepository;
+		this.contractCustomRepo=contractCustomRepo;
 	}
 	
 	@Override
@@ -43,9 +47,19 @@ public class ContractPersistenceServiceImpl implements ContractPersistenceServic
 
 	@Override
 	public ContractDetailsEvent requestContractDetails(RequestContractDetailsEvent event) throws Exception {
-		Contract contract = contractRepository.findByCode(event.getId());
-		ContractDetails contractDetails = contract.toContractDetails();
+		ContractDetails contractDetails=null;
+		if (event.getId()!=null){
+			Contract contract = contractRepository.findByCode(event.getId());
+			if (contract!=null)
+				contractDetails = contract.toContractDetails();
+		}
+		else{
+					Contract contract = contractRepository.findByDescription(event.getDescription());
+					if (contract!=null)
+						contractDetails = contract.toContractDetails();
+				}
 		return new ContractDetailsEvent(contractDetails);
+		
 	}
 
 	@Override
@@ -60,6 +74,26 @@ public class ContractPersistenceServiceImpl implements ContractPersistenceServic
 		List<Contract> all = contractRepository.findAll();
 		List<ContractDetails> list = new ArrayList<ContractDetails>();
 		for (Contract contract : all) {
+			list.add(contract.toContractDetails());
+		}
+		return new ContractPageEvent(list);
+	}
+	
+	@Override
+	public ContractPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		List<Contract> codes = contractCustomRepo.findByStartingCodeNumber(codePrefix);
+		ArrayList<ContractDetails> list = new ArrayList<ContractDetails>();
+		for (Contract contract : codes) {
+			list.add(contract.toContractDetails());
+		}
+		return new ContractPageEvent(list);
+	}
+
+	@Override
+	public ContractPageEvent requestByContainingDescription(String description) throws Exception {
+		ArrayList<ContractDetails> list = new ArrayList<ContractDetails>();
+		List<Contract> descriptions = contractCustomRepo.findByContainingDescription(description);
+		for (Contract contract : descriptions) {
 			list.add(contract.toContractDetails());
 		}
 		return new ContractPageEvent(list);

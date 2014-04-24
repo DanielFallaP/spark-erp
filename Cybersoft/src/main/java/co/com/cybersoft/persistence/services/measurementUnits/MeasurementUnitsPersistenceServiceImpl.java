@@ -10,7 +10,8 @@ import co.com.cybersoft.events.measurementUnits.MeasurementUnitsModificationEven
 import co.com.cybersoft.events.measurementUnits.RequestMeasurementUnitsDetailsEvent;
 import co.com.cybersoft.events.measurementUnits.RequestMeasurementUnitsPageEvent;
 import co.com.cybersoft.persistence.domain.MeasurementUnits;
-import co.com.cybersoft.persistence.repository.MeasurementUnitsRepository;
+import co.com.cybersoft.persistence.repository.measurementUnits.MeasurementUnitsRepository;
+import co.com.cybersoft.persistence.repository.measurementUnits.MeasurementUnitsCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,11 @@ public class MeasurementUnitsPersistenceServiceImpl implements MeasurementUnitsP
 
 	private final MeasurementUnitsRepository measurementUnitsRepository;
 	
-	public MeasurementUnitsPersistenceServiceImpl(final MeasurementUnitsRepository measurementUnitsRepository) {
+	private final MeasurementUnitsCustomRepo measurementUnitsCustomRepo;
+	
+	public MeasurementUnitsPersistenceServiceImpl(final MeasurementUnitsRepository measurementUnitsRepository, final MeasurementUnitsCustomRepo measurementUnitsCustomRepo) {
 		this.measurementUnitsRepository=measurementUnitsRepository;
+		this.measurementUnitsCustomRepo=measurementUnitsCustomRepo;
 	}
 	
 	@Override
@@ -43,9 +47,19 @@ public class MeasurementUnitsPersistenceServiceImpl implements MeasurementUnitsP
 
 	@Override
 	public MeasurementUnitsDetailsEvent requestMeasurementUnitsDetails(RequestMeasurementUnitsDetailsEvent event) throws Exception {
-		MeasurementUnits measurementUnits = measurementUnitsRepository.findByCode(event.getId());
-		MeasurementUnitsDetails measurementUnitsDetails = measurementUnits.toMeasurementUnitsDetails();
+		MeasurementUnitsDetails measurementUnitsDetails=null;
+		if (event.getId()!=null){
+			MeasurementUnits measurementUnits = measurementUnitsRepository.findByCode(event.getId());
+			if (measurementUnits!=null)
+				measurementUnitsDetails = measurementUnits.toMeasurementUnitsDetails();
+		}
+		else{
+					MeasurementUnits measurementUnits = measurementUnitsRepository.findByDescription(event.getDescription());
+					if (measurementUnits!=null)
+						measurementUnitsDetails = measurementUnits.toMeasurementUnitsDetails();
+				}
 		return new MeasurementUnitsDetailsEvent(measurementUnitsDetails);
+		
 	}
 
 	@Override
@@ -60,6 +74,26 @@ public class MeasurementUnitsPersistenceServiceImpl implements MeasurementUnitsP
 		List<MeasurementUnits> all = measurementUnitsRepository.findAll();
 		List<MeasurementUnitsDetails> list = new ArrayList<MeasurementUnitsDetails>();
 		for (MeasurementUnits measurementUnits : all) {
+			list.add(measurementUnits.toMeasurementUnitsDetails());
+		}
+		return new MeasurementUnitsPageEvent(list);
+	}
+	
+	@Override
+	public MeasurementUnitsPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		List<MeasurementUnits> codes = measurementUnitsCustomRepo.findByStartingCodeNumber(codePrefix);
+		ArrayList<MeasurementUnitsDetails> list = new ArrayList<MeasurementUnitsDetails>();
+		for (MeasurementUnits measurementUnits : codes) {
+			list.add(measurementUnits.toMeasurementUnitsDetails());
+		}
+		return new MeasurementUnitsPageEvent(list);
+	}
+
+	@Override
+	public MeasurementUnitsPageEvent requestByContainingDescription(String description) throws Exception {
+		ArrayList<MeasurementUnitsDetails> list = new ArrayList<MeasurementUnitsDetails>();
+		List<MeasurementUnits> descriptions = measurementUnitsCustomRepo.findByContainingDescription(description);
+		for (MeasurementUnits measurementUnits : descriptions) {
 			list.add(measurementUnits.toMeasurementUnitsDetails());
 		}
 		return new MeasurementUnitsPageEvent(list);

@@ -23,4 +23,8 @@ public interface CorporationService {
 	
 	CorporationPageEvent requestAll() throws Exception;
 	
+	CorporationPageEvent requestByCodePrefix(String code) throws Exception;
+	
+	CorporationPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

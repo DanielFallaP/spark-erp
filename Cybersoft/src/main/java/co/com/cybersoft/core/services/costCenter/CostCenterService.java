@@ -23,4 +23,8 @@ public interface CostCenterService {
 	
 	CostCenterPageEvent requestAll() throws Exception;
 	
+	CostCenterPageEvent requestByCodePrefix(String code) throws Exception;
+	
+	CostCenterPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

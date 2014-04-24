@@ -23,4 +23,8 @@ public interface CalculusTypeService {
 	
 	CalculusTypePageEvent requestAll() throws Exception;
 	
+	CalculusTypePageEvent requestByCodePrefix(String code) throws Exception;
+	
+	CalculusTypePageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

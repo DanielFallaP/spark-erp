@@ -43,7 +43,7 @@ public class AfeInfo implements Serializable{
 
 
 	@NotEmpty
-	private String name;
+	private String description;
 
 
 	@NotNull
@@ -77,12 +77,12 @@ public class AfeInfo implements Serializable{
 		this.code = code;	
 	}
 
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	public Integer getNumber() {
@@ -173,7 +173,7 @@ public class AfeInfo implements Serializable{
 			CompanyDetails selectedCompany=null;
 			ArrayList<CompanyDetails> newList = new ArrayList<CompanyDetails>();
 			for(CompanyDetails company:companyList){
-				if (company.getName().equals(selected)){
+				if (company.getDescription().equals(selected)){
 					selectedCompany=company;
 					newList.add(0, selectedCompany);
 				}
@@ -188,7 +188,7 @@ public class AfeInfo implements Serializable{
 			AfeTypeDetails selectedAfeType=null;
 			ArrayList<AfeTypeDetails> newList = new ArrayList<AfeTypeDetails>();
 			for(AfeTypeDetails afeType:afeTypeList){
-				if (afeType.getName().equals(selected)){
+				if (afeType.getDescription().equals(selected)){
 					selectedAfeType=afeType;
 					newList.add(0, selectedAfeType);
 				}
@@ -203,7 +203,7 @@ public class AfeInfo implements Serializable{
 			ContractDetails selectedContract=null;
 			ArrayList<ContractDetails> newList = new ArrayList<ContractDetails>();
 			for(ContractDetails contract:contractList){
-				if (contract.getName().equals(selected)){
+				if (contract.getDescription().equals(selected)){
 					selectedContract=contract;
 					newList.add(0, selectedContract);
 				}
@@ -218,7 +218,7 @@ public class AfeInfo implements Serializable{
 			BillDetails selectedBill=null;
 			ArrayList<BillDetails> newList = new ArrayList<BillDetails>();
 			for(BillDetails bill:billList){
-				if (bill.getName().equals(selected)){
+				if (bill.getDescription().equals(selected)){
 					selectedBill=bill;
 					newList.add(0, selectedBill);
 				}

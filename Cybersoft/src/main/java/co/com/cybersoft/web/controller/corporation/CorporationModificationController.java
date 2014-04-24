@@ -71,7 +71,7 @@ public class CorporationModificationController {
 	}
 
 	@ModelAttribute("corporationInfo")
-	private CorporationInfo getCorporationInfo(@PathVariable("code") String code, HttpServletRequest request) throws Exception {
+	private CorporationInfo getCorporationInfo(@PathVariable("code") Integer code, HttpServletRequest request) throws Exception {
 		LOG.debug("Retrieving the corporation "+code);
 		CorporationInfo corporationInfo = new CorporationInfo();
 		

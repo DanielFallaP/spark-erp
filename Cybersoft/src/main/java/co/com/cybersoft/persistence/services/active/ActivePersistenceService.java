@@ -24,4 +24,8 @@ public interface ActivePersistenceService {
 	
 	ActivePageEvent requestAll() throws Exception;
 	
+	ActivePageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	ActivePageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

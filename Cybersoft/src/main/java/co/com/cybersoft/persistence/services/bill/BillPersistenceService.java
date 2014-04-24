@@ -24,4 +24,8 @@ public interface BillPersistenceService {
 	
 	BillPageEvent requestAll() throws Exception;
 	
+	BillPageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	BillPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

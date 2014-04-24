@@ -71,7 +71,7 @@ public class PartnerModificationController {
 	}
 
 	@ModelAttribute("partnerInfo")
-	private PartnerInfo getPartnerInfo(@PathVariable("code") String code, HttpServletRequest request) throws Exception {
+	private PartnerInfo getPartnerInfo(@PathVariable("code") Integer code, HttpServletRequest request) throws Exception {
 		LOG.debug("Retrieving the partner "+code);
 		PartnerInfo partnerInfo = new PartnerInfo();
 		

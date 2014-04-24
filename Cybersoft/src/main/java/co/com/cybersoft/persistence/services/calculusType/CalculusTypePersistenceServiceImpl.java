@@ -10,7 +10,8 @@ import co.com.cybersoft.events.calculusType.CalculusTypeModificationEvent;
 import co.com.cybersoft.events.calculusType.RequestCalculusTypeDetailsEvent;
 import co.com.cybersoft.events.calculusType.RequestCalculusTypePageEvent;
 import co.com.cybersoft.persistence.domain.CalculusType;
-import co.com.cybersoft.persistence.repository.CalculusTypeRepository;
+import co.com.cybersoft.persistence.repository.calculusType.CalculusTypeRepository;
+import co.com.cybersoft.persistence.repository.calculusType.CalculusTypeCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,11 @@ public class CalculusTypePersistenceServiceImpl implements CalculusTypePersisten
 
 	private final CalculusTypeRepository calculusTypeRepository;
 	
-	public CalculusTypePersistenceServiceImpl(final CalculusTypeRepository calculusTypeRepository) {
+	private final CalculusTypeCustomRepo calculusTypeCustomRepo;
+	
+	public CalculusTypePersistenceServiceImpl(final CalculusTypeRepository calculusTypeRepository, final CalculusTypeCustomRepo calculusTypeCustomRepo) {
 		this.calculusTypeRepository=calculusTypeRepository;
+		this.calculusTypeCustomRepo=calculusTypeCustomRepo;
 	}
 	
 	@Override
@@ -43,9 +47,19 @@ public class CalculusTypePersistenceServiceImpl implements CalculusTypePersisten
 
 	@Override
 	public CalculusTypeDetailsEvent requestCalculusTypeDetails(RequestCalculusTypeDetailsEvent event) throws Exception {
-		CalculusType calculusType = calculusTypeRepository.findByCode(event.getId());
-		CalculusTypeDetails calculusTypeDetails = calculusType.toCalculusTypeDetails();
+		CalculusTypeDetails calculusTypeDetails=null;
+		if (event.getId()!=null){
+			CalculusType calculusType = calculusTypeRepository.findByCode(event.getId());
+			if (calculusType!=null)
+				calculusTypeDetails = calculusType.toCalculusTypeDetails();
+		}
+		else{
+					CalculusType calculusType = calculusTypeRepository.findByDescription(event.getDescription());
+					if (calculusType!=null)
+						calculusTypeDetails = calculusType.toCalculusTypeDetails();
+				}
 		return new CalculusTypeDetailsEvent(calculusTypeDetails);
+		
 	}
 
 	@Override
@@ -60,6 +74,26 @@ public class CalculusTypePersistenceServiceImpl implements CalculusTypePersisten
 		List<CalculusType> all = calculusTypeRepository.findAll();
 		List<CalculusTypeDetails> list = new ArrayList<CalculusTypeDetails>();
 		for (CalculusType calculusType : all) {
+			list.add(calculusType.toCalculusTypeDetails());
+		}
+		return new CalculusTypePageEvent(list);
+	}
+	
+	@Override
+	public CalculusTypePageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		List<CalculusType> codes = calculusTypeCustomRepo.findByStartingCodeNumber(codePrefix);
+		ArrayList<CalculusTypeDetails> list = new ArrayList<CalculusTypeDetails>();
+		for (CalculusType calculusType : codes) {
+			list.add(calculusType.toCalculusTypeDetails());
+		}
+		return new CalculusTypePageEvent(list);
+	}
+
+	@Override
+	public CalculusTypePageEvent requestByContainingDescription(String description) throws Exception {
+		ArrayList<CalculusTypeDetails> list = new ArrayList<CalculusTypeDetails>();
+		List<CalculusType> descriptions = calculusTypeCustomRepo.findByContainingDescription(description);
+		for (CalculusType calculusType : descriptions) {
 			list.add(calculusType.toCalculusTypeDetails());
 		}
 		return new CalculusTypePageEvent(list);

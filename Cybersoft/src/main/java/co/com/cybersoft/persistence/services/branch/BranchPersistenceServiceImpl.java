@@ -10,7 +10,8 @@ import co.com.cybersoft.events.branch.BranchModificationEvent;
 import co.com.cybersoft.events.branch.RequestBranchDetailsEvent;
 import co.com.cybersoft.events.branch.RequestBranchPageEvent;
 import co.com.cybersoft.persistence.domain.Branch;
-import co.com.cybersoft.persistence.repository.BranchRepository;
+import co.com.cybersoft.persistence.repository.branch.BranchRepository;
+import co.com.cybersoft.persistence.repository.branch.BranchCustomRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,11 @@ public class BranchPersistenceServiceImpl implements BranchPersistenceService{
 
 	private final BranchRepository branchRepository;
 	
-	public BranchPersistenceServiceImpl(final BranchRepository branchRepository) {
+	private final BranchCustomRepo branchCustomRepo;
+	
+	public BranchPersistenceServiceImpl(final BranchRepository branchRepository, final BranchCustomRepo branchCustomRepo) {
 		this.branchRepository=branchRepository;
+		this.branchCustomRepo=branchCustomRepo;
 	}
 	
 	@Override
@@ -43,9 +47,19 @@ public class BranchPersistenceServiceImpl implements BranchPersistenceService{
 
 	@Override
 	public BranchDetailsEvent requestBranchDetails(RequestBranchDetailsEvent event) throws Exception {
-		Branch branch = branchRepository.findByCode(event.getId());
-		BranchDetails branchDetails = branch.toBranchDetails();
+		BranchDetails branchDetails=null;
+		if (event.getId()!=null){
+			Branch branch = branchRepository.findByCode(event.getId());
+			if (branch!=null)
+				branchDetails = branch.toBranchDetails();
+		}
+		else{
+					Branch branch = branchRepository.findByDescription(event.getDescription());
+					if (branch!=null)
+						branchDetails = branch.toBranchDetails();
+				}
 		return new BranchDetailsEvent(branchDetails);
+		
 	}
 
 	@Override
@@ -60,6 +74,26 @@ public class BranchPersistenceServiceImpl implements BranchPersistenceService{
 		List<Branch> all = branchRepository.findAll();
 		List<BranchDetails> list = new ArrayList<BranchDetails>();
 		for (Branch branch : all) {
+			list.add(branch.toBranchDetails());
+		}
+		return new BranchPageEvent(list);
+	}
+	
+	@Override
+	public BranchPageEvent requestByCodePrefix(String codePrefix) throws Exception {
+		List<Branch> codes = branchCustomRepo.findByStartingCodeNumber(codePrefix);
+		ArrayList<BranchDetails> list = new ArrayList<BranchDetails>();
+		for (Branch branch : codes) {
+			list.add(branch.toBranchDetails());
+		}
+		return new BranchPageEvent(list);
+	}
+
+	@Override
+	public BranchPageEvent requestByContainingDescription(String description) throws Exception {
+		ArrayList<BranchDetails> list = new ArrayList<BranchDetails>();
+		List<Branch> descriptions = branchCustomRepo.findByContainingDescription(description);
+		for (Branch branch : descriptions) {
 			list.add(branch.toBranchDetails());
 		}
 		return new BranchPageEvent(list);

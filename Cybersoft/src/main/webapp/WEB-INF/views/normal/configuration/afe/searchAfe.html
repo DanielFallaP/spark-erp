@@ -60,7 +60,7 @@
 				<thead>
 					<tr>
 						<th ><a th:href="@{${page.url}+'?field=code'}" th:text="#{label.afeCode}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=name'}" th:text="#{label.afeName}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=description'}" th:text="#{label.afeDescription}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=number'}" th:text="#{label.afeNumber}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=active'}" th:text="#{label.afeActive}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=company'}" th:text="#{label.afeCompany}"></a></th>
@@ -77,7 +77,7 @@
 				<tbody>
 					<tr th:each="object: ${list}">
 						<td><a th:href="@{/configuration/afe/modifyAfe/}+${object.code}" th:text="${object.code}"></a></td>
-						<td th:text="${object.name}"></td>
+						<td th:text="${object.description}"></td>
 						<td th:text="${object.number}"></td>
 						<td th:text="${object.active}"></td>
 						<td th:text="${object.company}"></td>

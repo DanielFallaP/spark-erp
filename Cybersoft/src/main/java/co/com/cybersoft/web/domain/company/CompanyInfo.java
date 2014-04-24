@@ -39,12 +39,12 @@ public class CompanyInfo implements Serializable{
 	private String createdBy;
 	
 	@NotNull
-	@Range(max=1000)
+	@Range(max=99)
 	private Integer code;
 
 
 	@NotEmpty
-	private String name;
+	private String description;
 
 
 	@NotEmpty
@@ -72,12 +72,12 @@ public class CompanyInfo implements Serializable{
 		this.code = code;	
 	}
 
-	public String getName() {
-		return name;	
+	public String getDescription() {
+		return description;	
 	}
 		
-	public void setName(String name) {
-		this.name = name;	
+	public void setDescription(String description) {
+		this.description = description;	
 	}
 
 	public String getLetter() {
@@ -134,7 +134,7 @@ public class CompanyInfo implements Serializable{
 			CorporationDetails selectedCorporation=null;
 			ArrayList<CorporationDetails> newList = new ArrayList<CorporationDetails>();
 			for(CorporationDetails corporation:corporationList){
-				if (corporation.getName().equals(selected)){
+				if (corporation.getDescription().equals(selected)){
 					selectedCorporation=corporation;
 					newList.add(0, selectedCorporation);
 				}

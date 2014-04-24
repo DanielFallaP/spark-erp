@@ -23,4 +23,8 @@ public interface ContractService {
 	
 	ContractPageEvent requestAll() throws Exception;
 	
+	ContractPageEvent requestByCodePrefix(String code) throws Exception;
+	
+	ContractPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

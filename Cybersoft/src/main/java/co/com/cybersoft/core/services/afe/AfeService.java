@@ -23,4 +23,8 @@ public interface AfeService {
 	
 	AfePageEvent requestAll() throws Exception;
 	
+	AfePageEvent requestByCodePrefix(String code) throws Exception;
+	
+	AfePageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

@@ -24,4 +24,8 @@ public interface PartnerPersistenceService {
 	
 	PartnerPageEvent requestAll() throws Exception;
 	
+	PartnerPageEvent requestByCodePrefix(String codePrefix) throws Exception;
+
+	PartnerPageEvent requestByContainingDescription(String description) throws Exception;
+	
 }

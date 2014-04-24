@@ -31,7 +31,7 @@ public class WareHouseSearchByDescriptionController {
 		StringBuffer responseBuff=new StringBuffer();
 		int i=1;
 		for (WareHouseDetails wareHouseDetails : descriptions) {
-			responseBuff.append(wareHouseDetails.getCode());
+			responseBuff.append(wareHouseDetails.getDescription());
 			if (i!=descriptions.size()){
 				responseBuff.append(CyberUtils.arraySeparator);
 			}
