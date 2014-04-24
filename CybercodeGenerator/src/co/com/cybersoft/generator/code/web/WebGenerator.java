@@ -7,7 +7,6 @@ import org.antlr.stringtemplate.StringTemplateGroup;
 
 import co.com.cybersoft.generator.code.model.Cybersoft;
 import co.com.cybersoft.generator.code.model.Field;
-import co.com.cybersoft.generator.code.model.ReferenceField;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
@@ -124,7 +123,6 @@ public class WebGenerator {
 	
 	private String generateDomainClassImports(Table table){
 		String imports="";
-		List<ReferenceField> references = table.getReferences();
 		List<Field> fields = table.getFields();
 		
 		//Check for validation constraints
@@ -137,7 +135,7 @@ public class WebGenerator {
 		}
 		
 		for (Field field : fields) {
-			if (field.getRequired() && field.getVisible() && field.getType().equals(Cybersoft.stringType)){
+			if (!field.isReference() && field.getRequired() && field.getVisible() && field.getType().equals(Cybersoft.stringType)){
 				imports+="import org.hibernate.validator.constraints.NotEmpty;\n";
 				break;
 			}
@@ -158,13 +156,16 @@ public class WebGenerator {
 			}
 		}
 		
-		for (ReferenceField field : references) {
-			StringTemplate template = new StringTemplate("import co.com.cybersoft.core.domain.$entityName$Details;\n");
-			template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-			imports+=template.toString();
+		for (Field field : fields) {
+			
+			if (field.isReference()){
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.core.domain.$entityName$Details;\n");
+				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				imports+=template.toString();
+			}
 		}
 		
-		if (!references.isEmpty()){
+		if (CodeUtil.containsReferences(table)){
 			
 			imports+="import java.util.List;\n";
 			imports+="import java.util.ArrayList;\n";
@@ -174,68 +175,73 @@ public class WebGenerator {
 	}
 	
 	private String generateControllerReferencesServicesDeclarations(Table table){
-		List<ReferenceField> references = table.getReferences();
 		
 		String declarations="";
-		
-		for (ReferenceField field : references) {
-			StringTemplate template = new StringTemplate("@Autowired\n"
-					+ "	private $entityName$Service $tableName$Service;");
-			template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-			template.setAttribute("tableName", field.getRefType());
-			declarations+=template.toString()+"\n\n";
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (field.isReference()){
+				StringTemplate template = new StringTemplate("@Autowired\n"
+						+ "	private $entityName$Service $tableName$Service;");
+				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("tableName", field.getRefType());
+				declarations+=template.toString()+"\n\n";
+			}
 		}
 		
 		return declarations;
 	}
 	
 	private String generateControllerReferenceImports(Table table){
-		List<ReferenceField> references = table.getReferences();
+		List<Field> fields = table.getFields();
 		
 		String  imports="";
-		for (ReferenceField field : references) {
-			StringTemplate template = new StringTemplate("import co.com.cybersoft.core.services.$tableName$.$entityName$Service;\n"
-					+ "import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;\n");
-			template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-			template.setAttribute("tableName", field.getRefType());
-			imports+=template.toString();
+		for (Field field : fields) {
+			if (field.isReference()){
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.core.services.$tableName$.$entityName$Service;\n"
+						+ "import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;\n");
+				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("tableName", field.getRefType());
+				imports+=template.toString();
+			}
 		}
 		
 		return imports;
 	}
 	
 	private String generateControllerReferencesLists(Table table){
-		List<ReferenceField> references = table.getReferences();
 		
 		String lists="";
-		
-		for (ReferenceField field : references) {
-			StringTemplate template = new StringTemplate("$entityName$PageEvent all$entityName$Event = $tableName$Service.requestAll();\n"
-					+ "$parentTableName$Info.set$entityName$List(all$entityName$Event.get$entityName$List());\n");
-			template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-			template.setAttribute("tableName", field.getRefType());
-			template.setAttribute("parentTableName", table.getName());
-			
-			lists+=template.toString();
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (field.isReference()){
+				StringTemplate template = new StringTemplate("$entityName$PageEvent all$entityName$Event = $tableName$Service.requestAll();\n"
+						+ "$parentTableName$Info.set$entityName$List(all$entityName$Event.get$entityName$List());\n");
+				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("tableName", field.getRefType());
+				template.setAttribute("parentTableName", table.getName());
+				
+				lists+=template.toString();
+			}
 		}
 		
 		return lists;
 	}
 	
 	private String generateModificationControllerReferencesLists(Table table){
-List<ReferenceField> references = table.getReferences();
-		
+		List<Field> fields = table.getFields();
 		String lists="";
 		
-		for (ReferenceField field : references) {
-			StringTemplate template = new StringTemplate("$entityName$PageEvent all$entityName$Event = $tableName$Service.requestAll();\n"
-					+ "$parentTableName$Info.set$entityName$List(all$entityName$Event.get$entityName$List());\n"+
-					"$parentTableName$Info.rearrange$entityName$List($parentTableName$Info.get$entityName$());\n");
-			template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-			template.setAttribute("tableName", field.getRefType());
-			template.setAttribute("parentTableName", table.getName());
-			
-			lists+=template.toString();
+		for (Field field : fields) {
+			if (field.isReference()){
+				StringTemplate template = new StringTemplate("$entityName$PageEvent all$entityName$Event = $tableName$Service.requestAll();\n"
+						+ "$parentTableName$Info.set$entityName$List(all$entityName$Event.get$entityName$List());\n"+
+						"$parentTableName$Info.rearrange$entityName$List($parentTableName$Info.get$entityName$());\n");
+				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("tableName", field.getRefType());
+				template.setAttribute("parentTableName", table.getName());
+				
+				lists+=template.toString();
+			}
 		}
 		
 		return lists;
@@ -245,81 +251,86 @@ List<ReferenceField> references = table.getReferences();
 		String body="";
 		
 		List<Field> fields = table.getFields();
-		List<ReferenceField> references = table.getReferences();
 		
 		//Attributes
 		for (Field field : fields) {
 			if (field.getLength()!=null && field.getType().equals(Cybersoft.stringType)){
 				body+="@Length(max="+field.getLength()+")\n";
 			}
-			if (field.getRequired()&&field.getVisible()&&field.getType().equals(Cybersoft.stringType)){
+			if (field.getRequired()&&field.getVisible()&&(field.isReference()|| field.getType().equals(Cybersoft.stringType))){
 				body+="@NotEmpty\n";
 			}
 			
-			if (field.getRequired()&&field.getVisible()&&(field.getType().equals(Cybersoft.integerType)
+			if (field.getRequired()&&field.getVisible()&&!field.isReference()&&(field.getType().equals(Cybersoft.integerType)
 					||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
 				body+="@NotNull\n";
 			}
 			
-			if (field.getLength()!=null && (field.getType().equals(Cybersoft.integerType)
+			if (field.getLength()!=null && !field.isReference() && (field.getType().equals(Cybersoft.integerType)
 					||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
 				body+="@Range(max="+CodeUtil.getMaxNumber(field.getLength())+")\n";
 			}
 			
-			StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-			fieldTemplate.setAttribute("type", field.getType());
-			fieldTemplate.setAttribute("name", field.getName());
-			body+=fieldTemplate.toString();
-			body+="\n";
-		}
-		
-		//Referencing fields declarations
-		for (ReferenceField field : references) {
-			StringTemplate template = new StringTemplate("private List<$entityName$Details> $tableName$List;");
-			template.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
-			template.setAttribute("tableName", field.getName());
-			body+=template.toString();
-			body+="\n";
+			StringTemplate fieldTemplate;
 			
-			template = new StringTemplate("private $type$ $name$;\n\n");
-			template.setAttribute("type", Cybersoft.stringType);
-			template.setAttribute("name", field.getName());
-			body+=template.toString();
-			body+="\n";
+			if (!field.isReference()){
+				fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+				fieldTemplate.setAttribute("type", field.getType());
+				fieldTemplate.setAttribute("name", field.getName());
+				body+=fieldTemplate.toString();
+				body+="\n";			
+			}
+			else{
+				fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+				fieldTemplate.setAttribute("type", Cybersoft.stringType);
+				fieldTemplate.setAttribute("name", field.getName());
+				body+=fieldTemplate.toString();
+				body+="\n";
+
+				fieldTemplate = new StringTemplate("private List<$entityName$Details> $tableName$List;");
+				fieldTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
+				fieldTemplate.setAttribute("tableName", field.getName());
+				body+=fieldTemplate.toString();
+				body+="\n";				
+			}
 		}
-		
+				
 		//Getters and setters
 		for (Field field : fields) {
-			StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersoft.codePath+"util");
-			StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
-			gettersSettersTemplate.setAttribute("type", field.getType());
-			gettersSettersTemplate.setAttribute("name", field.getName());
-			gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
-			body+=gettersSettersTemplate.toString()+"\n\n";
-		}
-		for (ReferenceField field : references) {
-			StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersoft.codePath+"util");
-			StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("listGetters");
-			gettersSettersTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-			gettersSettersTemplate.setAttribute("tableName", field.getName());
-			body+=gettersSettersTemplate.toString()+"\n\n";			
-			
-			StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-			template.setAttribute("type", Cybersoft.stringType);
-			template.setAttribute("name", field.getName());
-			template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getRefType()));
-			body+=template.toString()+"\n\n";			
+			if (!field.isReference()){
+				StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersoft.codePath+"util");
+				StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
+				gettersSettersTemplate.setAttribute("type", field.getType());
+				gettersSettersTemplate.setAttribute("name", field.getName());
+				gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				body+=gettersSettersTemplate.toString()+"\n\n";
+			}
+			else{
+				StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersoft.codePath+"util");
+				StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("listGetters");
+				gettersSettersTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				gettersSettersTemplate.setAttribute("tableName", field.getName());
+				body+=gettersSettersTemplate.toString()+"\n\n";			
+				
+				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
+				template.setAttribute("type", Cybersoft.stringType);
+				template.setAttribute("name", field.getName());
+				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getRefType()));
+				body+=template.toString()+"\n\n";			
+			}
 		}
 		
 		//Reference list rearrangement
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybersoft.codePath+"web");
-		for (ReferenceField field : references) {
-			StringTemplate template = templateGroup.getInstanceOf("referenceFieldRearrangement");
-			template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-			template.setAttribute("tableName", field.getRefType());
-			template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getDisplayField()));
-			body+=template.toString();
-			body+="\n";
+		for (Field field : fields) {
+			if (field.isReference()){
+				StringTemplate template = templateGroup.getInstanceOf("referenceFieldRearrangement");
+				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("tableName", field.getRefType());
+				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+				body+=template.toString();
+				body+="\n";
+			}
 		}		
 		
 		return body;

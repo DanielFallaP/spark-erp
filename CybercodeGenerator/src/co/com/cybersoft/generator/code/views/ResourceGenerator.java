@@ -71,7 +71,8 @@ public class ResourceGenerator {
 		for (Table table : tables) {
 			List<Field> fields = table.getFields();
 			for (Field field : fields) {
-				messages.add(table.getName()+CodeUtil.toCamelCase(field.getName()));
+				if (!field.isReference())
+					messages.add(table.getName()+CodeUtil.toCamelCase(field.getName()));
 			}
 			messages.add(table.getName()+"Title");
 			messages.add(table.getName()+"Info");

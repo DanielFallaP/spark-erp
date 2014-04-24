@@ -9,6 +9,22 @@ public class Field {
 	private Boolean visible=Boolean.TRUE;
 	private Boolean largeText=Boolean.FALSE;
 	
+	//For references only
+	private String refType;
+	private String displayField;
+	
+	public String getRefType() {
+		return refType;
+	}
+	public void setRefType(String refType) {
+		this.refType = refType;
+	}
+	public String getDisplayField() {
+		return displayField;
+	}
+	public void setDisplayField(String displayField) {
+		this.displayField = displayField;
+	}
 	public Boolean getLargeText() {
 		return largeText;
 	}
@@ -50,6 +66,10 @@ public class Field {
 	}
 	public void setVisible(Boolean visible) {
 		this.visible = visible;
+	}
+	
+	public boolean isReference(){
+		return this.type==null;
 	}
 
 }

@@ -7,7 +7,6 @@ import org.antlr.stringtemplate.StringTemplateGroup;
 
 import co.com.cybersoft.generator.code.model.Cybersoft;
 import co.com.cybersoft.generator.code.model.Field;
-import co.com.cybersoft.generator.code.model.ReferenceField;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
@@ -55,7 +54,7 @@ public class ViewGenerator {
 		List<Field> fields = table.getFields();
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybersoft.codePath+"views");
 		for (Field field : fields) {
-			if (field.getType().equals(Cybersoft.dateType)){
+			if (!field.isReference() && field.getType().equals(Cybersoft.dateType)){
 				StringTemplate template = templateGroup.getInstanceOf("datePicker");
 				template.setAttribute("dateField", field.getName());
 				pickers+=template.toString()+"\n";
@@ -95,7 +94,7 @@ public class ViewGenerator {
 	
 		String text="";
 		for (Field field : fields) {
-			if (field.getVisible()){
+			if (!field.isReference() && field.getVisible()){
 				StringTemplate template;
 				if (!field.getLargeText())
 					template = stringTemplateGroup.getInstanceOf("editableTableRow");
@@ -115,22 +114,24 @@ public class ViewGenerator {
 	
 	private String generateReferenceRows(Table table){
 		String text="";
+		List<Field> fields = table.getFields();
 		
 		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views", Cybersoft.codePath+"views");
-		List<ReferenceField> fields = table.getReferences();
-		for (ReferenceField field : fields) {
-			StringTemplate template;
-			if (CodeUtil.referencesLabelTable(field.getRefType(), cybersoft)){
-				template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
+		for (Field field : fields) {
+			if (field.isReference()){
+				StringTemplate template;
+				if (CodeUtil.referencesLabelTable(field.getRefType(), cybersoft)){
+					template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
+				}
+				else{
+					template = stringTemplateGroup.getInstanceOf("referenceTableRow");
+				}
+				template.setAttribute("tableName", table.getName());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("displayName", field.getDisplayField());
+				text+=template.toString()+"\n";
 			}
-			else{
-				template = stringTemplateGroup.getInstanceOf("referenceTableRow");
-			}
-			template.setAttribute("tableName", table.getName());
-			template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-			template.setAttribute("fieldName", field.getName());
-			template.setAttribute("displayName", field.getDisplayField());
-			text+=template.toString()+"\n";
 		}
 		
 		return text;
@@ -148,13 +149,25 @@ public class ViewGenerator {
 	private String getOtherColumns(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersoft.codePath+"views");
 		List<Field> fields = table.getFields();
-		List<ReferenceField> references = table.getReferences();
 		String text="";
 		int i=0;
 		for (Field field : fields) {
 			if (i!=0){
-				if (field.getVisible() && !field.getLargeText()){
+				if (!field.isReference() && field.getVisible() && !field.getLargeText()){
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
+					template.setAttribute("fieldName", field.getName());
+					text+=template.toString()+"\n";
+				}
+				
+				if (field.isReference()){
+					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
+					if (CodeUtil.referencesLabelTable(field.getRefType(), cybersoft)){
+						template = templateGroup.getInstanceOf("otherLabelTableColumn");
+					}
+					else{
+						template = templateGroup.getInstanceOf("otherColumn");
+					}
+					
 					template.setAttribute("fieldName", field.getName());
 					text+=template.toString()+"\n";
 				}
@@ -162,18 +175,6 @@ public class ViewGenerator {
 			i++;
 		}
 		
-		for (ReferenceField field : references) {
-			StringTemplate template = templateGroup.getInstanceOf("otherColumn");
-			if (CodeUtil.referencesLabelTable(field.getRefType(), cybersoft)){
-				template = templateGroup.getInstanceOf("otherLabelTableColumn");
-			}
-			else{
-				template = templateGroup.getInstanceOf("otherColumn");
-			}
-				
-			template.setAttribute("fieldName", field.getName());
-			text+=template.toString()+"\n";
-		}
 		
 		//Generation of audit fields columns (date of last modification and user of last modification)
 		StringTemplate template = templateGroup.getInstanceOf("otherColumn");
@@ -199,25 +200,24 @@ public class ViewGenerator {
 	private String getHeaderColumns(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersoft.codePath+"views");
 		List<Field> fields = table.getFields();
-		List<ReferenceField> references = table.getReferences();
 		
 		String text="";
 		for (Field field : fields) {
-			if (field.getVisible() && !field.getLargeText()){
+			if (!field.isReference() && field.getVisible() && !field.getLargeText()){
 				StringTemplate template = templateGroup.getInstanceOf("columnHeader");
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("tableName", table.getName());
 				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 				text+=template.toString()+"\n";
 			}
-		}
-		
-		for (ReferenceField field : references) {
-			StringTemplate template = templateGroup.getInstanceOf("columnHeader");
-			template.setAttribute("fieldName", field.getName());
-			template.setAttribute("tableName", table.getName());
-			template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-			text+=template.toString()+"\n";
+			
+			if (field.isReference()){
+				StringTemplate template = templateGroup.getInstanceOf("columnHeader");
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("tableName", table.getName());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				text+=template.toString()+"\n";
+			}
 		}
 		
 		//Generation of audit fields columns (date of last modification and user of last modification)
