@@ -141,12 +141,17 @@ public class WebGenerator {
 			}
 		}
 		
-		for (Field field : fields) {
-			if(field.getRequired() && field.getVisible() && (field.getType().equals(Cybersoft.integerType) || 
-					field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.stringType))){
-				imports+="import javax.validation.constraints.NotNull;\n";
-				break;
+		try {
+			System.out.println("Insertando "+table.getName());
+			for (Field field : fields) {
+				if(field.getRequired() && field.getVisible() && (field.getType().equals(Cybersoft.integerType) || 
+						field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.stringType))){
+					imports+="import javax.validation.constraints.NotNull;\n";
+					break;
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		for (Field field : fields) {
