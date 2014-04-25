@@ -300,9 +300,9 @@
 					 ]
 		 },
 		 {	
-			"name":"itemTradeMarck",
+			"name":"itemTradeMark",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"25", "visible":"false"},
+						{"name":"code", "type":"String", "unique":"true", "length":"25"},
 					 	{"name":"item", "refType":"item", "displayField":"name"},
 						{"name":"tradeMark", "type":"String"},
 						{"name":"active", "refType":"yesNo", "displayField":"name"}
@@ -341,7 +341,7 @@
 		{
 			"name":"miniMax",	
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "visible":"false"},
+						{"name":"code", "type":"String", "unique":"true"},
 						{"name":"items", "refType":"items", "displayField":"name"},
 						{"name":"wareHouse", "refType":"items", "displayField":"name"},
 						{"name":"minimumQuantity", "type":"Double"},
