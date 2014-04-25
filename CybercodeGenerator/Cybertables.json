@@ -1,183 +1,362 @@
-{
+{ 
 	"tables":[
 		 {  
 			"labelTable":"true",		 	
-			"name":"active",		
-			"fields":
-					[
+			"name":"yesNo",		
+			"fields":[
 						{"name":"code", "type":"String", "unique":"true", "length":"1"},
-						{"name":"name", "type":"String", "unique":"true", "length":"12"}
+						{"name":"description", "type":"String", "unique":"true", "length":"12"}
+					]
+		 },
+		 {  
+			"labelTable":"true",		 	
+			"name":"language",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "type":"String", "unique":"true", "length":"20"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+						
+					]
+		 },
+		 {	
+			"name":"country",
+			"fields":[
+						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					]
+		 },
+		 {	
+			"name":"state",
+			"fields":[
+						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"country", "refType":"country", "displayField":"name"},
+						{"name":"letters", "type":"String", "unique":"true", "length":"2"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					]
+		 },
+		 {	
+			"name":"city",
+			"fields":[
+						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"state", "refType":"state", "displayField":"name"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
 		 {	
 			"name":"partner",
 			"fields":[
 						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
-						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"nit", "type":"String", "unique":"true"}
-					],
-			"references":
-					[
-						{"name":"active", "refType":"active", "displayField":"name"}
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"id", "type":"String", "unique":"true", "length":"15"},
+						{"name":"adress", "type":"String"},
+						{"name":"city", "refType":"city", "displayField":"name"},
+						{"name":"email", "type":"String"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
 		 {	
 			"name":"corporation",
 			"fields":[
 						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
-						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"nit", "type":"String", "unique":"true", "length":"15"}
-					],
-			"references":
-					[
-						{"name":"active", "refType":"active", "displayField":"name"}
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"id", "type":"String", "unique":"true", "length":"15"},
+						{"name":"adress", "type":"String"},
+						{"name":"city", "refType":"city", "displayField":"name"},
+						{"name":"email", "type":"String"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
 		 {	
 			"name":"company",
-			"references":
-					[
-						{"name":"corporation", "refType":"corporation", "displayField":"name"},
-						{"name":"active", "refType":"active", "displayField":"name"}
-					],
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
-						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"letter", "type":"String", "unique":"true"},
-						{"name":"nit", "type":"String", "unique":"true", "length":"15"}
+						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},
+						{"name":"corporation", "refType":"corporation", "displayField":"name"},
+						{"name":"letter", "type":"String", "unique":"true", "length":"1"},
+						{"name":"id", "type":"String", "unique":"true", "length":"15"},
+						{"name":"adress", "type":"String"},
+						{"name":"city", "refType":"city", "displayField":"name"},
+						{"name":"email", "type":"String"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
 		 {	
 			"name":"branch",
-			"references":
-			 		[
-						{"name":"corporation", "refType":"corporation", "displayField":"name"},
-						{"name":"company", "refType":"company", "displayField":"name"},
-						{"name":"active", "refType":"active", "displayField":"name"}
-					],
 			"fields":[
 						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},
-						{"name":"name", "type":"String", "unique":"true"}
+						{"name":"company", "refType":"company", "displayField":"name"},
+						{"name":"description", "type":"String", "unique":"true"}, 
+						{"name":"id", "type":"String", "unique":"true", "length":"15"},
+						{"name":"adress", "type":"String"},
+						{"name":"city", "type":"String"},
+						{"name":"email", "type":"String"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
-	     {	
-			"name":"measurementUnits",		
+	     {  
+			"name":"department",		
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"name", "type":"String", "unique":"true"}
-					 ],
-			"references":[
-						{"name":"active", "refType":"active", "displayField":"name"}
-					 ]
+						{"name":"code", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+						
+					]
 		 },
-		 {	
-			"name":"items",		
-			"fields":
-					[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"name", "type":"String", "unique":"true"}
-		             ],
-			"references":[
-						{"name":"measurementUnit", "refType":"measurementUnit", "displayField":"name"},
-						{"name":"active", "refType":"active", "displayField":"name"}
-					 ]
+		 {  
+			"name":"section",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"department", "refType":"department", "displayField":"name"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+						
+					]
 		 },
 		 {
 			"name":"bill",	
-						"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"name", "type":"String", "unique":"true"}
-					],
-						"references":[
-						{"name":"active", "refType":"active", "displayField":"name"}
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"3"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
 		 {	
 			"name":"jointVenture",		
 			"fields":[
 						{"name":"code", "type":"String", "unique":"true", "length":"4"},
-						{"name":"fromDate", "type":"Date"},
-						{"name":"toDate", "type":"Date"}
-					],
-			"references":[
 						{"name":"bill", "refType":"bill", "displayField":"name"},
 						{"name":"partner", "refType":"partner", "displayField":"name"},
-						{"name":"active", "refType":"active", "displayField":"name"}
+						{"name":"fromDate", "type":"Date"},
+						{"name":"toDate", "type":"Date"},
+						{"name":"jointVenturePercentage", "type":"Double"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
 		 { 	
 			"name":"contract",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}  
-					 ] 
+						{"name":"code", "type":"String", "unique":"true", "length":"3"},
+						{"name":"description", "type":"String", "unique":"true"},
+					 	{"name":"active", "refType":"yesNo", "displayField":"name"}
+					] 
 		 },
+		 
 		 {	
 			"name":"afeType",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
 		 {	
 			"name":"afe",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"number", "type":"Integer", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
-					],
-			"references":
-					[
+						{"name":"code", "type":"String", "unique":"true", "length":"10"},
+						{"name":"description", "type":"String", "unique":"true"},
 						{"name":"company", "refType":"company", "displayField":"name"},
 						{"name":"afeType", "refType":"afeType", "displayField":"name"},
 						{"name":"contract", "refType":"contract", "displayField":"name"},
-						{"name":"bill", "refType":"bill", "displayField":"name"}
+						{"name":"bill", "refType":"bill", "displayField":"name"},
+						{"name":"number", "type":"Integer", "unique":"true"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
 		 {	
 			"name":"costCenter",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
+						{"name":"code", "type":"String", "unique":"true", "length":"10"},
 						{"name":"company", "type":"String", "unique":"true"},
 						{"name":"contract", "type":"String", "unique":"true"},
 						{"name":"number", "type":"Integer", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"seccion", "refType":"area", "displayField":"name"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					 ]
+		 },
+		 {	
+			"name":"measurementUnits",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"6"},
+						{"name":"description", "type":"String", "unique":"true"},
+					 	{"name":"active", "refType":"yesNo", "displayField":"name"}
+					 ]
+		 },
+	     {	
+			"name":"balanceGroup",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"1"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
+		 },
+		 {	
+			"name":"accountNature",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"1"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					]
+		 },
+		 {	
+			"name":"groupAccount",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"12"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"englishName", "type":"String", "unique":"true"},
+						{"name":"balanceGroup", "refType":"balanceGroup", "displayField":"name"},
+						{"name":"accountNature", "refType":"accountNature", "displayField":"name"},
+						{"name":"groupAccount", "refType":"groupAccount", "displayField":"name"},
+						{"name":"inventoryAccount", "refType":"yesNo", "displayField":"name"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					]
+		 },
+		 {	
+			"name":"account",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"15"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"englishName", "type":"String", "unique":"true"},
+						{"name":"balanceGroup", "refType":"balanceGroup", "displayField":"name"},
+						{"name":"accountNature", "refType":"accountNature", "displayField":"name"},
+						{"name":"groupAccount", "refType":"groupAccount", "displayField":"name"},
+						{"name":"inventoryAccount", "refType":"yesNo", "displayField":"name"},
+						{"name":"localAccount", "type":"String", "unique":"true", "length":"15"},
+						{"name":"internationalAccount", "type":"String", "unique":"true", "length":"15"},
+						{"name":"gapAccount", "type":"String", "unique":"true", "length":"15"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					]
+		 },
+	     {	
+			"name":"tax",
+			"fields":[
+						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"taxPercentage", "type":"Double", "unique":"true"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					 ]
+		 },
+		 {	
+			"name":"group",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "type":"String", "unique":"true"},
+					 	{"name":"active", "refType":"yesNo", "displayField":"name"}
+					 ]
+		 },
+	     {	
+			"name":"subGroup",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"3"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"group", "refType":"group", "displayField":"name"},
+						{"name":"useDivision", "refType":"yesNo", "displayField":"name"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					 ]
+		 },
+		 {
+	     	"name":"division",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"3"},
+						{"name":"description", "type":"String", "unique":"true"},
+					 	{"name":"subGroup", "refType":"yesNo", "displayField":"name"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					 ]
+		 },
+		 {	
+			"name":"itemType",
+			"fields":[
+						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					 ]
+		 },
+		 {	
+			"name":"item",		
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"15"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"longName", "type":"String", "largeText":"true"},
+						{"name":"group", "refType":"group", "displayField":"name"},
+						{"name":"subGroup", "refType":"subgroup", "displayField":"name"},
+						{"name":"division", "refType":"division", "displayField":"name"},
+						{"name":"inputMeasurementUnit", "refType":"measurementUnit", "displayField":"name"},
+						{"name":"packingUnits", "type":"Double"},
+						{"name":"conversionFactor", "type":"Double"},
+						{"name":"outputMeasurementUnit", "refType":"measurementUnit", "displayField":"name"},
+						{"name":"useMiniMax", "refType":"yesNo", "displayField":"name"},
+						{"name":"tax", "refType":"tax", "displayField":"name"},
+						{"name":"itemType", "refType":"itemType", "displayField":"name"},
+						{"name":"partNumber", "type":"String"},
+						{"name":"commodity", "type":"String"},
+						{"name":"lastItemUsedDate", "type":"Date"},
+						{"name":"oldItem", "type":"String"},
+		                {"name":"tradeMark", "type":"String"},
+						{"name":"array", "type":"String"},
+						{"name":"set", "type":"String"},
+						{"name":"bloqued", "refType":"yesNo", "displayField":"name"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					 ]
+		 },
+		 {	
+			"name":"itemTradeMarck",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"25", "visible":"false"},
+					 	{"name":"item", "refType":"item", "displayField":"name"},
+						{"name":"tradeMark", "type":"String"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
+					 ]
 		 },
 		 {	
 			"name":"calculusType",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "type":"String", "unique":"true", "length":"1"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
 		 {	
 			"name":"operationType",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"name", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "type":"String", "unique":"true", "length":"1"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
 		 {	
 			"name":"wareHouse",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"name", "type":"String", "unique":"true"},
-					    {"name":"accountCode", "type":"String"},
-					    {"name":"accountConceptCode", "type":"String"}
-					],
-			"references":
-					[
-					    {"name":"calculusType", "refType":"calculusType", "displayField":"name"},
+						{"name":"code", "type":"String", "unique":"true", "length":"6"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"account", "refType":"account", "displayField":"name"},
+					    {"name":"accountConceptCode", "type":"String"},
+						{"name":"calculusType", "refType":"calculusType", "displayField":"name"},
 						{"name":"operationType", "refType":"operationType", "displayField":"name"},
 						{"name":"afe", "refType":"afe", "displayField":"name"},
 					    {"name":"contract", "refType":"contract", "displayField":"name"},
-					    {"name":"active", "refType":"active", "displayField":"name"}
+					    {"name":"active", "refType":"yesNo", "displayField":"name"}
+					]
+		},
+		{
+			"name":"miniMax",	
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "visible":"false"},
+						{"name":"items", "refType":"items", "displayField":"name"},
+						{"name":"wareHouse", "refType":"items", "displayField":"name"},
+						{"name":"minimumQuantity", "type":"Double"},
+						{"name":"maxumumQuantity", "type":"Double"},
+						{"name":"orderQuantity", "type":"Double"},
+						{"name":"description", "type":"String", "unique":"true"}
+					]
+		 },
+		 {	
+			"name":"condition",
+			"fields":[
+						{"name":"code", "type":"String", "unique":"true", "length":"1"},
+						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"conditionPercentage", "type":"Double"},
+						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 }
 	 ]
