@@ -17,19 +17,13 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import co.com.cybersoft.persistence.repository.items.ItemRepository;
-import co.com.cybersoft.persistence.services.items.ItemPersistenceService;
-import co.com.cybersoft.persistence.services.items.ItemPersistenceServiceImpl;
-import co.com.cybersoft.persistence.services.measurementUnit.MeasurementUnitPersistenceService;
-import co.com.cybersoft.persistence.services.measurementUnit.MeasurementUnitPersistenceServiceImpl;
-import co.com.cybersoft.persistence.repository.MeasurementUnitRepository;
 $imports$
 
 import com.mongodb.Mongo;
 
 @Configuration
 @EnableMongoRepositories(basePackages="co.com.cybersoft.persistence.repository",
-includeFilters=@ComponentScan.Filter(value={ItemRepository.class, MeasurementUnitRepository.class$repos$},type=FilterType.ASSIGNABLE_TYPE))
+includeFilters=@ComponentScan.Filter(value={$repos$},type=FilterType.ASSIGNABLE_TYPE))
 public class PersistenceConfig {
 	
 	@Bean
@@ -41,15 +35,6 @@ public class PersistenceConfig {
 	public  Mongo mongo() throws UnknownHostException{
 		return new Mongo("localhost");
 	}
-	
-	/**
-	 * Item repository
-	 */
-	@Autowired
-	private ItemRepository itemRepository;
-	
-	@Autowired
-	private MeasurementUnitRepository measurementUnitRepository;
 	
 	$repoFields$
 	
@@ -68,16 +53,6 @@ public class PersistenceConfig {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         return jdbcTemplate;
     }
-	
-	@Bean
-	public ItemPersistenceService itemPersistenceService(){
-		return new ItemPersistenceServiceImpl(itemRepository);
-	}
-	
-	@Bean 
-	public MeasurementUnitPersistenceService measurementUnitPersistenceService(){
-		return new MeasurementUnitPersistenceServiceImpl(measurementUnitRepository);
-	}
 	
 	$beans$
 	

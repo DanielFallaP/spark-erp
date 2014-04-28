@@ -1,5 +1,6 @@
 package co.com.cybersoft.generator.code.web;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
@@ -142,7 +143,6 @@ public class WebGenerator {
 		}
 		
 		try {
-			System.out.println("Insertando "+table.getName());
 			for (Field field : fields) {
 				if(field.getRequired() && field.getVisible() && (field.getType().equals(Cybersoft.integerType) || 
 						field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.stringType))){
@@ -183,13 +183,17 @@ public class WebGenerator {
 		
 		String declarations="";
 		List<Field> fields = table.getFields();
+		HashSet<String> services = new HashSet<String>();
 		for (Field field : fields) {
 			if (field.isReference()){
-				StringTemplate template = new StringTemplate("@Autowired\n"
-						+ "	private $entityName$Service $tableName$Service;");
-				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-				template.setAttribute("tableName", field.getRefType());
-				declarations+=template.toString()+"\n\n";
+				if (!services.contains(field.getRefType())){
+					StringTemplate template = new StringTemplate("@Autowired\n"
+							+ "	private $entityName$Service $tableName$Service;");
+					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+					template.setAttribute("tableName", field.getRefType());
+					declarations+=template.toString()+"\n\n";
+					services.add(field.getRefType());
+				}
 			}
 		}
 		
@@ -200,13 +204,15 @@ public class WebGenerator {
 		List<Field> fields = table.getFields();
 		
 		String  imports="";
+		HashSet<String> referenceImports = new HashSet<String>();
 		for (Field field : fields) {
-			if (field.isReference()){
+			if (field.isReference() && !referenceImports.contains(field.getRefType())){
 				StringTemplate template = new StringTemplate("import co.com.cybersoft.core.services.$tableName$.$entityName$Service;\n"
 						+ "import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;\n");
 				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
 				template.setAttribute("tableName", field.getRefType());
 				imports+=template.toString();
+				referenceImports.add(field.getRefType());
 			}
 		}
 		
@@ -219,9 +225,10 @@ public class WebGenerator {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 			if (field.isReference()){
-				StringTemplate template = new StringTemplate("$entityName$PageEvent all$entityName$Event = $tableName$Service.requestAll();\n"
-						+ "$parentTableName$Info.set$entityName$List(all$entityName$Event.get$entityName$List());\n");
+				StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAll();\n"
+						+ "$parentTableName$Info.set$variableName$List(all$variableName$Event.get$entityName$List());\n");
 				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("variableName", CodeUtil.toCamelCase(field.getName()));
 				template.setAttribute("tableName", field.getRefType());
 				template.setAttribute("parentTableName", table.getName());
 				
@@ -238,10 +245,11 @@ public class WebGenerator {
 		
 		for (Field field : fields) {
 			if (field.isReference()){
-				StringTemplate template = new StringTemplate("$entityName$PageEvent all$entityName$Event = $tableName$Service.requestAll();\n"
-						+ "$parentTableName$Info.set$entityName$List(all$entityName$Event.get$entityName$List());\n"+
-						"$parentTableName$Info.rearrange$entityName$List($parentTableName$Info.get$entityName$());\n");
+				StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAll();\n"
+						+ "$parentTableName$Info.set$variableName$List(all$variableName$Event.get$entityName$List());\n"+
+						"$parentTableName$Info.rearrange$variableName$List($parentTableName$Info.get$variableName$());\n");
 				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("variableName", CodeUtil.toCamelCase(field.getName()));
 				template.setAttribute("tableName", field.getRefType());
 				template.setAttribute("parentTableName", table.getName());
 				
@@ -293,7 +301,7 @@ public class WebGenerator {
 				body+="\n";
 
 				fieldTemplate = new StringTemplate("private List<$entityName$Details> $tableName$List;");
-				fieldTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
+				fieldTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
 				fieldTemplate.setAttribute("tableName", field.getName());
 				body+=fieldTemplate.toString();
 				body+="\n";				
@@ -313,14 +321,15 @@ public class WebGenerator {
 			else{
 				StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersoft.codePath+"util");
 				StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("listGetters");
-				gettersSettersTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				gettersSettersTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
 				gettersSettersTemplate.setAttribute("tableName", field.getName());
+				gettersSettersTemplate.setAttribute("refEntityName", CodeUtil.toCamelCase(field.getRefType()));
 				body+=gettersSettersTemplate.toString()+"\n\n";			
 				
 				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 				template.setAttribute("type", Cybersoft.stringType);
 				template.setAttribute("name", field.getName());
-				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 				body+=template.toString()+"\n\n";			
 			}
 		}
@@ -332,7 +341,9 @@ public class WebGenerator {
 				StringTemplate template = templateGroup.getInstanceOf("referenceFieldRearrangement");
 				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
 				template.setAttribute("tableName", field.getRefType());
-				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("refFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
 				body+=template.toString();
 				body+="\n";
 			}

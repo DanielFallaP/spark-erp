@@ -87,11 +87,14 @@ public class ConfigGenerator {
 		}
 		
 		//Repos
+		int i=1;
 		for (Table table : tables) {
-			StringTemplate stringTemplate = new StringTemplate(",$entityName$Repository.class");
-			
+			StringTemplate stringTemplate = new StringTemplate("$entityName$Repository.class");
 			stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 			repos+=stringTemplate.toString();
+			if (i!=tables.size())
+				repos+=",";
+			i++;
 		}
 		
 		template.setAttribute("imports", imports);
