@@ -27,9 +27,9 @@
 					]
 		 },
 		 {	
-			"name":"state",
+			"name":"administrativeDivision",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
+						{"name":"code", "type":"Integer", "unique":"true", "length":"4"},  
 						{"name":"description", "type":"String", "unique":"true"},
 						{"name":"country", "refType":"country", "displayField":"name"},
 						{"name":"letters", "type":"String", "unique":"true", "length":"2"},
@@ -37,11 +37,14 @@
 					]
 		 },
 		 {	
-			"name":"city",
+			"name":"populatedPlace",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
+						{"name":"code", "type":"Integer", "unique":"true", "length":"5"},  
 						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"state", "refType":"state", "displayField":"name"},
+						{"name":"administrativeDivision", "refType":"administrativeDivision", "displayField":"name"},
+						{"name":"population", "type":"integer"},
+						{"name":"latitude", "type":"string"},
+						{"name":"longitude", "type":"string"},
 						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
@@ -50,9 +53,11 @@
 			"fields":[
 						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
 						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"id", "type":"String", "unique":"true", "length":"15"},
+						{"name":"identification", "type":"String", "unique":"true", "length":"15"},
 						{"name":"adress", "type":"String"},
-						{"name":"city", "refType":"city", "displayField":"name"},
+						{"name":"zipCode", "type":"String"},
+						{"name":"populatedPlace", "refType":"populatedPlace", "displayField":"name"},
+						{"name":"pob", "type":"String"},
 						{"name":"email", "type":"String"},
 						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
@@ -62,9 +67,11 @@
 			"fields":[
 						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
 						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"id", "type":"String", "unique":"true", "length":"15"},
+						{"name":"identification", "type":"String", "unique":"true", "length":"15"},
 						{"name":"adress", "type":"String"},
-						{"name":"city", "refType":"city", "displayField":"name"},
+						{"name":"zipCode", "type":"String"},
+						{"name":"populatedPlace", "refType":"populatedPlace", "displayField":"name"},
+						{"name":"pob", "type":"String"},
 						{"name":"email", "type":"String"},
 						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
@@ -75,9 +82,11 @@
 						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},
 						{"name":"corporation", "refType":"corporation", "displayField":"name"},
 						{"name":"letter", "type":"String", "unique":"true", "length":"1"},
-						{"name":"id", "type":"String", "unique":"true", "length":"15"},
+						{"name":"identification", "type":"String", "unique":"true", "length":"15"},
 						{"name":"adress", "type":"String"},
-						{"name":"city", "refType":"city", "displayField":"name"},
+						{"name":"zipCode", "type":"String"},
+						{"name":"populatedPlace", "refType":"populatedPlace", "displayField":"name"},
+						{"name":"pob", "type":"String"},
 						{"name":"email", "type":"String"},
 						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
@@ -85,12 +94,14 @@
 		 {	
 			"name":"branch",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},
+						{"name":"code", "type":"Integer", "unique":"true", "length":"4"},
 						{"name":"company", "refType":"company", "displayField":"name"},
 						{"name":"description", "type":"String", "unique":"true"}, 
-						{"name":"id", "type":"String", "unique":"true", "length":"15"},
+						{"name":"identification", "type":"String", "unique":"true", "length":"15"},
 						{"name":"adress", "type":"String"},
-						{"name":"city", "type":"String"},
+						{"name":"zipCode", "type":"String"},
+						{"name":"populatedPlace", "refType":"populatedPlace", "displayField":"name"},
+						{"name":"pob", "type":"String"},
 						{"name":"email", "type":"String"},
 						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
@@ -107,7 +118,7 @@
 		 {  
 			"name":"section",		
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
+						{"name":"code", "type":"String", "unique":"true", "length":"3"},
 						{"name":"description", "type":"String", "unique":"true"},
 						{"name":"department", "refType":"department", "displayField":"name"},
 						{"name":"active", "refType":"yesNo", "displayField":"name"}
@@ -222,9 +233,9 @@
 						{"name":"accountNature", "refType":"accountNature", "displayField":"name"},
 						{"name":"groupAccount", "refType":"groupAccount", "displayField":"name"},
 						{"name":"inventoryAccount", "refType":"yesNo", "displayField":"name"},
-						{"name":"localAccount", "type":"String", "unique":"true", "length":"15"},
-						{"name":"internationalAccount", "type":"String", "unique":"true", "length":"15"},
-						{"name":"gapAccount", "type":"String", "unique":"true", "length":"15"},
+						{"name":"localAccount", "type":"String", "length":"15"},
+						{"name":"internationalAccount", "type":"String", "length":"15"},
+						{"name":"gapAccount", "type":"String", "length":"15"},
 						{"name":"active", "refType":"yesNo", "displayField":"name"}
 					]
 		 },
