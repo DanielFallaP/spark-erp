@@ -136,5 +136,13 @@ public class CodeUtil {
 		return false;
 	}
 	
-//	public static List get
+	public static boolean containsField(Table table, String fieldName){
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (field.getName().equals(fieldName)){
+				return true;
+			}
+		}
+		return false;
+	}
 }

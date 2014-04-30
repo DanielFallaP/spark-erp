@@ -9,4 +9,6 @@ public interface $entityName$CustomRepo {
 	List<$entityName$> findByStartingCodeNumber(String codePrefix);
 	
 	List<$entityName$> findByContainingDescription(String descriptionSubstring);
+
+	List<$entityName$> findAllActive();
 }

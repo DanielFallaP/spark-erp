@@ -67,7 +67,7 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 	
 	@Override
 	public $entityName$PageEvent requestAll() throws Exception {
-		List<$entityName$> all = $tableName$Repository.findAll();
+		List<$entityName$> all = $tableName$$repo$.findAll$active$();
 		List<$entityName$Details> list = new ArrayList<$entityName$Details>();
 		for ($entityName$ $tableName$ : all) {
 			list.add($tableName$.to$entityName$Details());

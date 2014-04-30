@@ -88,6 +88,8 @@ public class PersistenceGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceImplementation");
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
+		template.setAttribute("repo", table.isActiveReference()?"CustomRepo":"Repository");
+		template.setAttribute("active", table.isActiveReference()?"Active":"");
 		
 		StringTemplateGroup subTemplateGroup=new StringTemplateGroup("persistence",Cybersoft.codePath+"persistence");
 		StringTemplate subTemplate = subTemplateGroup.getInstanceOf("descriptionPersistenceServiceImpl");
@@ -128,11 +130,20 @@ public class PersistenceGenerator {
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("fieldType", CodeUtil.getCodeType(table));
 		template.setAttribute("byContainingDescription", generateSearchByDescription(table));
+		template.setAttribute("findAllActive", generateAllActiveSearch(table));
 		
 		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepoImpl.java");
 		
 	}
 	
+	private String generateAllActiveSearch(Table table) {
+			StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybersoft.codePath+"persistence");
+			StringTemplate template = templateGroup.getInstanceOf("findAllActive");
+			template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+			template.setAttribute("tableName", table.getName());
+			return template.toString();
+	}
+
 	private String generateSearchByDescription(Table table){
 		StringTemplate template;
 		if (CodeUtil.containsDescriptionField(table)){

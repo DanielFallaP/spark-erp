@@ -13,7 +13,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import co.com.cybersoft.persistence.domain.$entityName$;
-
+import co.com.cybersoft.util.CyberUtils;
 
 public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 
@@ -38,5 +38,7 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 	}
 
 	$byContainingDescription$
+	
+	$findAllActive$
 
 }

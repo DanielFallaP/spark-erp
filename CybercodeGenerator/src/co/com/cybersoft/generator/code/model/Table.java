@@ -2,6 +2,8 @@ package co.com.cybersoft.generator.code.model;
 
 import java.util.List;
 
+import co.com.cybersoft.generator.code.util.CodeUtil;
+
 public class Table {
 	private String name;
 	private List<Field> fields;
@@ -24,6 +26,13 @@ public class Table {
 	}
 	public void setFields(List<Field> fields) {
 		this.fields = fields;
+	}
+	
+	public boolean isActiveReference(){
+		if (CodeUtil.containsField(this, Cybersoft.activeFieldName))
+			return true;
+		else
+			return false;
 	}
 	
 }
