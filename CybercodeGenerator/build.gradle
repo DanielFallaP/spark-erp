@@ -43,7 +43,10 @@ dependencies {
   //Mysql
   compile 'mysql:mysql-connector-java:5.1.6'
   //Mongo
-  compile 'org.mongodb:mongo-java-driver:2.12.0'  
+  compile 'org.mongodb:mongo-java-driver:2.12.0' 
+  //Apache commons io
+  compile 'org.apache.commons:commons-io:1.3.2'
+             
 }
 
 task wrapper(type: Wrapper) { gradleVersion = '1.6' }

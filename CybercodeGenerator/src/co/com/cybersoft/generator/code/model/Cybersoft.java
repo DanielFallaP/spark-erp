@@ -32,6 +32,8 @@ public class Cybersoft {
 	public final static String decisionTableFalseValue="label.false";
 	
 	public final static String activeFieldName="active";
+	
+	public final static String projectName="Cybersoft";
 
 	public List<Table> getTables() {
 		return tables;

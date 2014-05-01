@@ -145,4 +145,22 @@ public class CodeUtil {
 		}
 		return false;
 	}
+	
+	public static boolean containsTable(Cybersoft cybersoft, String tableName){
+		List<Table> tables = cybersoft.getTables();
+		for (Table table : tables) {
+			if (table.getName().equals(tableName))
+				return true;
+		}
+		return false;
+	}
+	
+	public static boolean isGeneratedFile(Cybersoft cybersoft, String fileName){
+		List<Table> tables = cybersoft.getTables();
+		for (Table table : tables) {
+			if (fileName.toLowerCase().startsWith(table.getName().toLowerCase()))
+				return true;
+		}
+		return false;
+	}
 }
