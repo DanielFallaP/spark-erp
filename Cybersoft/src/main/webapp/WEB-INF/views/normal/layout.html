@@ -12,14 +12,17 @@
 		                    <span class="icon-bar"></span>
 		                    <span class="icon-bar"></span>
 		                </a>
-		                <a class="brand" th:href="@{/}" th:text="#{label.cybersoft}"></a>
+		                <a class="brand" th:href="@{/}" th:text="#{label.cybersystems}"></a>
 		                <div class="nav-collapse collapse">
 		                    <p class="navbar-text pull-right">
 		
 		                    </p>
 		                    <ul class="nav">
+		                        <li><a th:href="@{/requisition}" th:text="#{label.requisitionsOption}"></a></li>
+		                        <li><a th:href="@{/providerAssignment}" th:text="#{label.providerAssignment}"></a></li>
 		                        <li><a th:href="@{/purchase}" th:text="#{label.purchaseOrders}"></a></li>
 		                        <li><a th:href="@{/configuration}" th:text="#{label.navbarConfiguration}"></a></li>
+		                        <li><a th:href="@{/settings}" th:text="#{label.settingsOption}"></a></li>
 		                    </ul>
 		                </div> <!--/.nav-collapse -->
 		            </div>

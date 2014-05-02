@@ -6,11 +6,11 @@
 		<div th:fragment='paginationbar'>
 			  <div class='pagination pagination-centered'>
 			    <ul>
-			      <li>
+			      <li id="_firstPage">
 			        <span th:if='${page.firstPage}' th:text='#{label.firstPage}'>First</span>
 			        <a th:if='${not page.firstPage}' th:href='@{${page.url}(page.page=1,page.size=${page.size})}' th:text='#{label.firstPage}'>First</a>
 			      </li>
-			      <li>
+			      <li id="_previousPage" >
 			        <span th:if='${not page.hasPreviousPage}'>«</span>
 			        <a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page.page=${page.number-1})}' th:title='#{label.previousPage}'>«</a>
 			      </li>
@@ -18,11 +18,11 @@
 <!-- 			        <span th:if='${item.current}' th:text='${item.number}'>1</span> -->
 			        <span th:text="${page.number}+'/'+${page.totalPages}">1</span>
 			      </li>
-			      <li>
+			      <li id="_nextPage" >
 			        <span th:if='${not page.hasNextPage}'>»</span>
 			        <a th:if='${page.hasNextPage}' th:href='@{${page.url}(page.page=${page.number+1})}' th:title='#{label.nextPage}'>»</a>
 			      </li>
-			      <li>
+			      <li id="_lastPage" >
 			        <span th:if='${page.lastPage}' th:text='#{label.lastPage}'>Last</span>
 			        <a th:if='${not page.lastPage}' th:href='@{${page.url}(page.page=${page.totalPages})}' th:text='#{label.lastPage}'>Last</a>
 			      </li>
