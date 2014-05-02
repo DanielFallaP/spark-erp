@@ -22,9 +22,7 @@
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 			<div class="hero-unit span9">
-				<div><a th:href="@{/configuration/items/searchItem}" th:text="#{label.itemConfiguration}"></a> </div>
 				$links$
-				<div><a th:href="@{/configuration/language}" th:text="#{label.languageConfiguration}"></a> </div>
 			</div>
 	</div>
 	<div th:include="normal/layout :: footer"></div>

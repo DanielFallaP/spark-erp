@@ -41,6 +41,30 @@
 	     		  \$('#new a').trigger('click');
 	    	  }
 	    	});
+	    	
+	       \$(document).keyup(function(e) {
+	    	  if(e.which == 39 || e.which == 34) {
+	     		  \$('#_nextPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     \$(document).keyup(function(e) {
+	    	  if(e.which == 37 || e.which == 33) {
+	     		  \$('#_previousPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     \$(document).keyup(function(e) {
+	    	  if(e.which == 35) {
+	     		  \$('#_lastPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     \$(document).keyup(function(e) {
+	    	  if(e.which == 36) {
+	     		  \$('#_firstPage a').trigger('click');
+	    	  }
+	    	});	
 	     </script>
 	    
 </head>
@@ -53,7 +77,7 @@
 				<tr>
 					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/configuration/$tableName$/create$entityName$/fromList}" th:title='#{label.$tableName$}'>+</a></li></ul></div></td>
 					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
-					<td width="34%"><div></div></td>
+					<td width="34%">$excel$</td>
 				</tr>
 			</table>
 			<table class="table table-striped" >

@@ -28,9 +28,20 @@ public class WebGenerator {
 			generateSearchByCodeController(table);
 			if (CodeUtil.containsDescriptionField(table))
 				generateSearchByDescriptionController(table);
+			if (!table.getLabelTable())
+				generateExcelController(table);
 		}
 	}
 	
+	private void generateExcelController(Table table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersoft.codePath+"web");
+		StringTemplate template = templateGroup.getInstanceOf("excelController");
+		template.setAttribute("tableName", table.getName());
+		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+		
+		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ExcelController.java");
+	}
+
 	private void generateSearchByCodeController(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersoft.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchByCodeController");

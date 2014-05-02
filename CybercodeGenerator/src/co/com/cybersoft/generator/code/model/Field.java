@@ -8,11 +8,18 @@ public class Field {
 	private Boolean required=Boolean.TRUE;
 	private Boolean visible=Boolean.TRUE;
 	private Boolean largeText=Boolean.FALSE;
+	private Boolean readOnly=Boolean.FALSE;
 	
 	//For references only
 	private String refType;
 	private String displayField;
-	
+
+	public Boolean getReadOnly() {
+		return readOnly;
+	}
+	public void setReadOnly(Boolean readOnly) {
+		this.readOnly = readOnly;
+	}
 	public String getRefType() {
 		return refType;
 	}

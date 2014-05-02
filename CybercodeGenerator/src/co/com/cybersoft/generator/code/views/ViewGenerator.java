@@ -83,8 +83,16 @@ public class ViewGenerator {
 		template.setAttribute("codeColumn", getCodeColumn(table));
 		template.setAttribute("otherColumns", getOtherColumns(table));
 		template.setAttribute("columnHeaders", getHeaderColumns(table));
+		template.setAttribute("excel", table.getLabelTable()?"<div></div>":generateExcelLink(table));
 		
 		CodeUtil.writeClass(template.toString(), Cybersoft.targetViewPath+"/normal/configuration/"+table.getName(), "search"+CodeUtil.toCamelCase(table.getName())+".html");
+	}
+	
+	private String generateExcelLink(Table table){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersoft.codePath+"views");
+		StringTemplate template = templateGroup.getInstanceOf("excel");
+		template.setAttribute("tableName", table.getName());
+		return template.toString();
 	}
 	
 	private String generateEditableRows(Table table){
@@ -93,7 +101,7 @@ public class ViewGenerator {
 	
 		String text="";
 		for (Field field : fields) {
-			if (!field.isReference() && field.getVisible()){
+			if (!field.isReference() && field.getVisible() && !field.getReadOnly()){
 				StringTemplate template;
 				if (!field.getLargeText())
 					template = stringTemplateGroup.getInstanceOf("editableTableRow");
