@@ -278,21 +278,23 @@ public class WebGenerator {
 		
 		//Attributes
 		for (Field field : fields) {
-			if (field.getLength()!=null && field.getType().equals(Cybersoft.stringType)){
-				body+="@Length(max="+field.getLength()+")\n";
-			}
-			if (field.getRequired()&&field.getVisible()&&(field.isReference()|| field.getType().equals(Cybersoft.stringType))){
-				body+="@NotEmpty\n";
-			}
-			
-			if (field.getRequired()&&field.getVisible()&&!field.isReference()&&(field.getType().equals(Cybersoft.integerType)
-					||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
-				body+="@NotNull\n";
-			}
-			
-			if (field.getLength()!=null && !field.isReference() && (field.getType().equals(Cybersoft.integerType)
-					||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
-				body+="@Range(max="+CodeUtil.getMaxNumber(field.getLength())+")\n";
+			if (!field.isReference() && !field.getType().equals(Cybersoft.booleanType)){
+				if (field.getLength()!=null && field.getType().equals(Cybersoft.stringType)){
+					body+="@Length(max="+field.getLength()+")\n";
+				}
+				if (field.getRequired()&&field.getVisible()&&(field.isReference()|| field.getType().equals(Cybersoft.stringType))){
+					body+="@NotEmpty\n";
+				}
+				
+				if (field.getRequired()&&field.getVisible()&&!field.isReference()&&(field.getType().equals(Cybersoft.integerType)
+						||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
+					body+="@NotNull\n";
+				}
+				
+				if (field.getLength()!=null && !field.isReference() && (field.getType().equals(Cybersoft.integerType)
+						||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
+					body+="@Range(max="+CodeUtil.getMaxNumber(field.getLength())+")\n";
+				}
 			}
 			
 			StringTemplate fieldTemplate;

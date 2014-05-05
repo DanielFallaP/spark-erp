@@ -103,8 +103,10 @@ public class ViewGenerator {
 		for (Field field : fields) {
 			if (!field.isReference() && field.getVisible() && !field.getReadOnly()){
 				StringTemplate template;
-				if (!field.getLargeText())
+				if (!field.getLargeText() && !field.getType().equals(Cybersoft.booleanType))
 					template = stringTemplateGroup.getInstanceOf("editableTableRow");
+				else if (field.getType().equals(Cybersoft.booleanType))
+					template = stringTemplateGroup.getInstanceOf("editableCheck");
 				else
 					template = stringTemplateGroup.getInstanceOf("editableTextAreaRow");
 				template.setAttribute("tableName", table.getName());
@@ -160,8 +162,14 @@ public class ViewGenerator {
 		int i=0;
 		for (Field field : fields) {
 			if (i!=0){
-				if (!field.isReference() && field.getVisible() && !field.getLargeText()){
+				if (!field.isReference() && field.getVisible() && !field.getLargeText() && !field.getType().equals(Cybersoft.booleanType)){
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
+					template.setAttribute("fieldName", field.getName());
+					text+=template.toString()+"\n";
+				}
+				
+				if (!field.isReference() && field.getVisible() && !field.getLargeText() && field.getType().equals(Cybersoft.booleanType)){
+					StringTemplate template = templateGroup.getInstanceOf("booleanColumn");
 					template.setAttribute("fieldName", field.getName());
 					text+=template.toString()+"\n";
 				}

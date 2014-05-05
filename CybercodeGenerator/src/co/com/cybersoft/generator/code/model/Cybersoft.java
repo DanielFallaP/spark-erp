@@ -23,6 +23,8 @@ public class Cybersoft {
 	
 	public final static String doubleType="Double";
 	
+	public final static String booleanType="Boolean";
+	
 	public final static String arraySeparator="/////";
 	
 	public final static String decisionTable="yesNo";
