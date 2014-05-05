@@ -112,8 +112,7 @@
 		        	<div id="back"><a th:if="\${$tableName$Info.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/configuration/$tableName$/search$entityName$}"></a></div>
 		        	<h3 th:text="#{label.$tableName$CreationTitle}"></h3>
 		        	<table>		        			        			
-		        		$editableTableRows$
-		        		$editableReferenceRows$
+		        		$rows$
 		        		<tr>
 		        			<td>
 		        				<input type="submit" th:value="#{label.save}" />

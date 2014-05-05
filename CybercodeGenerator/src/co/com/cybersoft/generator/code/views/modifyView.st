@@ -61,8 +61,7 @@
 		        	<div id="back"><a th:text="#{label.back}" th:href="@{/configuration/$tableName$/search$entityName$}"></a></div>
 		        	<h3 th:text="#{label.$tableName$ModificationTitle}"></h3>
 		        	<table>
-		        		$editableTableRows$
-		        		$editableReferenceRows$
+		        		$rows$
 		        		<tr>
 		        			<td>
 		        				<input type="submit" th:value="#{label.save}" />

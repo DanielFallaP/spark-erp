@@ -39,8 +39,7 @@ public class ViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("createView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-		template.setAttribute("editableTableRows", generateEditableRows(table));
-		template.setAttribute("editableReferenceRows", generateReferenceRows(table));
+		template.setAttribute("rows", generateFieldRows(table));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
 		template.setAttribute("arraySeparator", Cybersoft.arraySeparator);
 
@@ -68,13 +67,13 @@ public class ViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("modifyView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-		template.setAttribute("editableTableRows", generateEditableRows(table));
-		template.setAttribute("editableReferenceRows", generateReferenceRows(table));
+		template.setAttribute("rows", generateFieldRows(table));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
 		
 		CodeUtil.writeClass(template.toString(), Cybersoft.targetViewPath+"/normal/configuration/"+table.getName(), "modify"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
 	
+
 	private void generateSearchView(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersoft.codePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("searchView");
@@ -93,6 +92,45 @@ public class ViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("excel");
 		template.setAttribute("tableName", table.getName());
 		return template.toString();
+	}
+	
+	private String generateFieldRows(Table table) {
+		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views", Cybersoft.codePath+"views");
+		List<Field> fields = table.getFields();
+		String text="";
+		for (Field field : fields) {
+			if (!field.isReference() && field.getVisible() && !field.getReadOnly()){
+				StringTemplate template;
+				if (!field.getLargeText() && !field.getType().equals(Cybersoft.booleanType))
+					template = stringTemplateGroup.getInstanceOf("editableTableRow");
+				else if (field.getType().equals(Cybersoft.booleanType))
+					template = stringTemplateGroup.getInstanceOf("editableCheck");
+				else
+					template = stringTemplateGroup.getInstanceOf("editableTextAreaRow");
+				template.setAttribute("tableName", table.getName());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("fieldName", field.getName());
+				if (field.getType().equals(Cybersoft.dateType))
+					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
+				text+=template.toString()+"\n";
+			}
+			
+			if (field.isReference()){
+				StringTemplate template;
+				if (CodeUtil.referencesLabelTable(field.getRefType(), cybersoft)){
+					template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
+				}
+				else{
+					template = stringTemplateGroup.getInstanceOf("referenceTableRow");
+				}
+				template.setAttribute("tableName", table.getName());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("displayName", field.getDisplayField());
+				text+=template.toString()+"\n";
+			}
+		}
+		return text;
 	}
 	
 	private String generateEditableRows(Table table){
