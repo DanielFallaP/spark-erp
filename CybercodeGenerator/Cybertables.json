@@ -12,6 +12,7 @@
 			"labelTable":"true",		 	
 			"name":"language",		
 			"fields":[
+			
 						{"name":"code", "type":"String", "unique":"true", "length":"2"},
 						{"name":"description", "type":"String", "unique":"true", "length":"20"},
 						{"name":"active", "type":"Boolean"}
