@@ -168,7 +168,8 @@
 						{"name":"thirdParty", "refType":"thirdParty", "displayField":"description"},
 						{"name":"active", "type":"Boolean"}
 					]
-		 },
+		 }
+		 ,
 		 {  
 			"name":"operatingSystem",		
 			"fields":[
