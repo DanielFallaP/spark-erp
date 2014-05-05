@@ -151,6 +151,10 @@ public class WebGenerator {
 				imports+="import org.hibernate.validator.constraints.NotEmpty;\n";
 				break;
 			}
+			if (field.isReference()&&field.getRequired()){
+				imports+="import org.hibernate.validator.constraints.NotEmpty;\n";
+				break;
+			}
 		}
 		
 		try {
@@ -295,6 +299,10 @@ public class WebGenerator {
 						||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
 					body+="@Range(max="+CodeUtil.getMaxNumber(field.getLength())+")\n";
 				}
+			}
+			
+			if (field.isReference()&&field.getRequired()){
+				body+="@NotEmpty\n";
 			}
 			
 			StringTemplate fieldTemplate;
