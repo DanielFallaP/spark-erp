@@ -2,18 +2,10 @@
 	"tables":[
 		 {  
 			"labelTable":"true",		 	
-			"name":"yesNo",		
-			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"1"},
-						{"name":"description", "type":"String", "unique":"true", "length":"12"}
-					]
-		 },
-		 {  
-			"labelTable":"true",		 	
 			"name":"language",		
 			"fields":[
 			
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
+						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
 						{"name":"description", "type":"String", "unique":"true", "length":"20"},
 						{"name":"active", "type":"Boolean"}
 						
@@ -23,8 +15,8 @@
 			"labelTable":"true",		 	
 			"name":"currency",		
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true", "length":"30"},
+						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},
+						{"name":"description", "type":"String", "unique":"true", "length":"40"},
 						{"name":"currencyLetters", "type":"String", "unique":"true", "length":"3"},
 						{"name":"active", "type":"Boolean"}
 						
@@ -33,13 +25,15 @@
 		 {  
 			"name":"exchangeRate",		
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"4"},
-						{"name":"description", "type":"String", "unique":"true", "length":"30"},
+						{"name":"code", "type":"Integer", "unique":"true", "length":"5"},
+						{"name":"description", "type":"String", "length":"30"},
 						{"name":"localCurrency", "refType":"currency", "displayField":"description"},
 						{"name":"otherCurrency", "refType":"currency", "displayField":"description"},
-						{"name":"date", "type":"Date", "unique":"true"},
-						{"name":"rate", "type":"Double", "unique":"true"},
+						{"name":"date", "type":"Date"},
+						{"name":"rate", "type":"Double"},
+						{"name":"variation", "type":"Double"},
 						{"name":"active", "type":"Boolean"}
+						
 						
 					]
 		 },
@@ -168,8 +162,7 @@
 						{"name":"thirdParty", "refType":"thirdParty", "displayField":"description"},
 						{"name":"active", "type":"Boolean"}
 					]
-		 }
-		 ,
+		 },
 		 {  
 			"name":"operatingSystem",		
 			"fields":[
@@ -563,15 +556,14 @@
 						{"name":"useRequiredDateByItem", "type":"Boolean"},
 						{"name":"useCostDiscriminationByItem", "type":"Boolean"},
 						{"name":"usePurchaseOrderImportationPercentage", "type":"Boolean"},
-						{"name":"UseNewReferenceControlCondition", "type":"Boolean"},
 						{"name":"usePurchaseOrderBudget", "type":"Boolean"},
 						{"name":"percentageThatWarnsThatTheBudgetIsRunningOut", "type":"Double", "unique":"true"},
 						{"name":"UseNewReferenceControlCondition", "type":"Boolean"},
 						{"name":"newReferenceControlCondition", "refType":"condition", "displayField":"description"},
-						{"name":"inputInventoryTransaction", "refType":"transaction", "displayField":"description"},
+						{"name":"inputInventoryTransaction", "refType":"stockTransaction", "displayField":"description"},
 						{"name":"transitWarehouse", "refType":"warehouse", "displayField":"description"},
-						{"name":"transitInputInventoryTransaction", "refType":"transaction", "displayField":"description"},
-						{"name":"transitoutputInventoryTransaction", "refType":"transaction", "displayField":"description"},
+						{"name":"transitInputInventoryTransaction", "refType":"stockTransaction", "displayField":"description"},
+						{"name":"transitoutputInventoryTransaction", "refType":"stockTransaction", "displayField":"description"},
 						{"name":"yearEndInventoryCutoffDate", "type":"Date", "unique":"true"},
 						{"name":"percentOfLargerUnitsIssuingItemReception", "type":"Double", "unique":"true"},
 						{"name":"acceptsRequisitionDate", "type":"Boolean"},
@@ -598,8 +590,8 @@
 			"fields":[
 						{"name":"code", "type":"String", "unique":"true", "length":"6"},
 						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"year", "type":"Interger", "unique":"true", "length":"4"},
-						{"name":"month", "type":"Interger", "unique":"true", "length":"2"},
+						{"name":"year", "type":"Integer", "unique":"true", "length":"4"},
+						{"name":"month", "type":"Integer", "unique":"true", "length":"2"},
 						{"name":"fromDate", "type":"Date", "unique":"true"},
 						{"name":"toDate", "type":"Date", "unique":"true"},
 						{"name":"InventoryOpen", "type":"Boolean"},
