@@ -21,8 +21,7 @@
 						{"name":"active", "type":"Boolean"}
 						
 					]
-		 },
-		 
+		 },		 
 		 {  
 			"name":"exchangeRate",		
 			"fields":[
