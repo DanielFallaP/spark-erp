@@ -67,7 +67,12 @@ dependencies {
   compile 'org.thymeleaf:thymeleaf-spring3:2.0.18'
   
   //MySQL
-  compile 'mysql:mysql-connector-java:5.1.6'  
+  compile 'mysql:mysql-connector-java:5.1.6'
+  
+  //Apache POI
+//  compile  'org.apache.poi:poi:3.10-FINAL'
+  compile 'org.apache.poi:poi:3.9'
+            
     
   testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
   testCompile 'junit:junit:4.11'
