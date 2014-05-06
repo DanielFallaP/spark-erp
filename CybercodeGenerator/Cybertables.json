@@ -3,132 +3,143 @@
 		 {  
 			"labelTable":"true",		 	
 			"name":"language",		
+			"spanishName":"Lenguaje",		
 			"fields":[
-			
-						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true", "length":"20"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true", "length":"20"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 					]
 		 },
 		 {  
 			"labelTable":"true",		 	
 			"name":"currency",		
+			"spanishName":"Moneda",		
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},
-						{"name":"description", "type":"String", "unique":"true", "length":"40"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"3"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true", "length":"40"},
 						{"name":"currencyLetters", "type":"String", "unique":"true", "length":"3"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 					]
 		 },		 
 		 {  
 			"name":"exchangeRate",		
+			"spanishName":"Tipo de cambio",		
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"5"},
-						{"name":"description", "type":"String", "length":"30"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"5"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "length":"30"},
 						{"name":"localCurrency", "refType":"currency", "displayField":"description"},
-						{"name":"otherCurrency", "refType":"currency", "displayField":"description"},
+						{"name":"foreingCurrency", "refType":"currency", "displayField":"description"},
 						{"name":"date", "type":"Date"},
 						{"name":"rate", "type":"Double"},
 						{"name":"variation", "type":"Double"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 						
 					]
 		 },
 		 {	
 			"name":"country",
+			"spanishName":"País",		
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"3"},  
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"administrativeDivision",
+			"spanishName":"Departamento/Estado",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"4"},  
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"4"},  
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"country", "refType":"country", "displayField":"description"},
 						{"name":"letters", "type":"String", "unique":"true", "length":"2"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"populatedPlace",
+			"spanishName":"Ciudad",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"5"},  
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"5"},  
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"administrativeDivision", "refType":"administrativeDivision", "displayField":"description"},
 						{"name":"population", "type":"Integer"},
 						{"name":"latitude", "type":"String"},
 						{"name":"longitude", "type":"String"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 
 		 {  
 			"labelTable":"true",		 	
+			"spanishName":"Origen del proveedor",
 			"name":"supplierOrigin",		
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 					]
 		 },
 		 {  
 			"name":"taxRegime",		
+			"spanishName":"Regimen de impuesto",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 					]
 		 },
 		 {	
 			"name":"tax",
+			"spanishName":"Impuesto de venta",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"taxPercentage", "type":"Double", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 		 {	
 			"name":"withholding",
+			"spanishName":"Retención",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"withholdingPercentage", "type":"Double", "unique":"true"},
-						{"name":"industryAndComerceWithholding", "type":"Boolean"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"industryAndCommerceWithholding", "type":"Boolean"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 		 {  
 			"labelTable":"true",		 	
-			"name":"thirdPartyType",		
+			"name":"thirdPartyType",
+			"spanishName":"Tipo de tercero",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 					]
 		 },
 		 {	
 			"name":"thirdParty",
+			"spanishName":"Tercero",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"15"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"15"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"identification", "type":"String", "unique":"true", "length":"15"},
-						{"name":"adress", "type":"String"},
+						{"name":"address", "type":"String"},
 						{"name":"zipCode", "type":"String"},
 						{"name":"populatedPlace", "refType":"populatedPlace", "displayField":"description"},
 						{"name":"pob", "type":"String"},
 						{"name":"email", "type":"String"},
 						{"name":"phoneNumber", "type":"String"},
-						{"name":"celularNumber", "type":"String"},
+						{"name":"cellularNumber", "type":"String"},
 						{"name":"supplierOrigin", "refType":"supplierOrigin", "displayField":"description"},
 						{"name":"majorContributor", "type":"Boolean"},
 						{"name":"taxResponsible", "type":"Boolean"},
@@ -136,56 +147,61 @@
 						{"name":"autoWithholder", "type":"Boolean"},
 						{"name":"autoWithholderDocument", "type":"String"},
 						{"name":"autoWithholderDate", "type":"Date"},
-						{"name":"industryAndComerceWithholding", "refType":"withholding", "displayField":"description"},
-						{"name":"industryAndComerceActivity", "type":"String"},
+						{"name":"industryAndCommerceWithholding", "refType":"withholding", "displayField":"description"},
+						{"name":"industryAndCommerceActivity", "type":"String"},
 						{"name":"paymentByBank", "type":"Boolean"},
 						{"name":"contactPerson", "type":"String"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 		 {  
 			"name":"thirdPartyClass",		
+			"spanishName":"Clase de tercero",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"thirdParty", "refType":"thirdParty", "displayField":"description"},
 						{"name":"thirdPartyType", "refType":"thirdPartyType", "displayField":"description"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 					]
 		 },
 		 {	
 			"name":"partner",
+			"spanishName":"Socio",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},  
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},  
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"thirdParty", "refType":"thirdParty", "displayField":"description"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {  
 			"name":"operatingSystem",		
+			"spanishName":"Sistema operacional",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 					]
 		 },
 		 {	
 			"name":"tenancy",
+			"spanishName":"Tenencia",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"5"},  
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"5"},  
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"thirdParty", "refType":"thirdParty", "displayField":"description"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {  
 			"name":"tenancyConfiguration",		
+			"spanishName":"Configuración de tenencia",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"tenancy", "refType":"tenancy", "displayField":"description"},
 						{"name":"operatingSystem", "refType":"operatingSystem", "displayField":"description"},
 						{"name":"softwareTradeMark", "type":"String", "unique":"true"},
@@ -194,104 +210,113 @@
 						{"name":"doubleCurrency", "type":"Boolean"},
 						{"name":"localCurrency", "refType":"currency", "displayField":"description"},
 						{"name":"foreignCurrency", "refType":"currency", "displayField":"description"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 					]
 		 },
 		 {	
 			"name":"corporation",
+			"spanishName":"Corporación",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"identification", "type":"String", "unique":"true", "length":"15"},
-						{"name":"adress", "type":"String"},
+						{"name":"address", "type":"String"},
 						{"name":"zipCode", "type":"String"},
 						{"name":"populatedPlace", "refType":"populatedPlace", "displayField":"description"},
 						{"name":"pob", "type":"String"},
 						{"name":"email", "type":"String"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"company",
+			"spanishName":"Compañia",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"3"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"corporation", "refType":"corporation", "displayField":"description"},
 						{"name":"letter", "type":"String", "unique":"true", "length":"1"},
 						{"name":"identification", "type":"String", "unique":"true", "length":"15"},
-						{"name":"adress", "type":"String"},
+						{"name":"address", "type":"String"},
 						{"name":"zipCode", "type":"String"},
 						{"name":"populatedPlace", "refType":"populatedPlace", "displayField":"description"},
 						{"name":"pob", "type":"String"},
 						{"name":"email", "type":"String"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"branch",
+			"spanishName":"Sucursal",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"4"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"4"},
 						{"name":"company", "refType":"company", "displayField":"description"},
-						{"name":"description", "type":"String", "unique":"true"}, 
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"}, 
 						{"name":"identification", "type":"String", "unique":"true", "length":"15"},
-						{"name":"adress", "type":"String"},
+						{"name":"address", "type":"String"},
 						{"name":"zipCode", "type":"String"},
 						{"name":"populatedPlace", "refType":"populatedPlace", "displayField":"description"},
 						{"name":"pob", "type":"String"},
 						{"name":"email", "type":"String"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 	     {  
 			"name":"department",		
+			"spanishName":"Departamento",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 					]
 		 },
 		 {  
 			"name":"section",		
+			"spanishName":"Sección",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"3"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"department", "refType":"department", "displayField":"description"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 					]
 		 },
 		 {	
 			"labelTable":"true",		 	
 			"name":"transportationType",
+			"spanishName":"Tipo de transporte",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"5"},  
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"5"},  
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"priority",
+			"spanishName":"Prioridad",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"1"},  
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"1"},  
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"accountNature",
+			"spanishName":"Naturaleza contable",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"1"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"stockTransaction",
+			"spanishName":"Transacción de inventario",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"3"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"accountNature", "refType":"accountNature", "displayField":"description"},
 						{"name":"requiresVendor", "type":"Boolean"},
 						{"name":"requiresAccount", "type":"Boolean"},
@@ -300,119 +325,130 @@
 	 					{"name":"affectsAverageCost", "type":"Boolean"},
 						{"name":"affectsLastCost", "type":"Boolean"},
 						{"name":"affectsUnits", "type":"Boolean"},
-						{"name":"acceptaModify", "type":"Boolean"},
+						{"name":"acceptsModify", "type":"Boolean"},
 						{"name":"acceptsSecondCurrencyChange", "type":"Boolean"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
-			"name":"condition",
+			"name":"itemCondition",
+			"spanishName":"Condición de item",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"1"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"conditionPercentage", "type":"Double"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {
-			"name":"bill",	
+			"name":"billCode",	
+			"spanishName":"Código de factura",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"3"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"jointVenture",		
+			"spanishName":"Participación conjunta",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"4"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"4"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"bill", "refType":"bill", "displayField":"description"},
 						{"name":"partner", "refType":"partner", "displayField":"description"},
 						{"name":"fromDate", "type":"Date"},
 						{"name":"toDate", "type":"Date"},
 						{"name":"jointVenturePercentage", "type":"Double"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 { 	
 			"labelTable":"true",		 	
+			"spanishName":"Contrato",
 			"name":"contract",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"3"},
-						{"name":"description", "type":"String", "unique":"true"},
-					 	{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+					 	{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					] 
 		 },
 		 {	
 			"labelTable":"true",		 	
 			"name":"afeType",
+			"spanishName":"Tipo de proyecto",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"afe",
+			"spanishName":"Proyecto",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"10"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"10"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"company", "refType":"company", "displayField":"description"},
 						{"name":"afeType", "refType":"afeType", "displayField":"description"},
 						{"name":"contract", "refType":"contract", "displayField":"description"},
 						{"name":"bill", "refType":"bill", "displayField":"description"},
 						{"name":"number", "type":"Integer", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"costCenter",
+			"spanishName":"Centro de costo",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"10"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"10"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"company", "type":"String", "unique":"true"},
 						{"name":"contract", "type":"String", "unique":"true"},
 						{"name":"number", "type":"Integer", "unique":"true"},
 						{"name":"section", "refType":"section", "displayField":"description"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 		 {	
 			"labelTable":"true",		 	
 			"name":"measurementUnit",		
+			"spanishName":"Unidad de medida",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"6"},
-						{"name":"description", "type":"String", "unique":"true"},
-					 	{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"6"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+					 	{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 	     {	
 			"labelTable":"true",		 	
 			"name":"balanceGroup",
+			"spanishName":"Grupo de balance",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"1"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"groupAccount",
+			"spanishName":"Cuenta totalizadora",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"12"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"12"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"englishName", "type":"String", "unique":"true"},
 						{"name":"balanceGroup", "refType":"balanceGroup", "displayField":"description"},
 						{"name":"accountNature", "refType":"accountNature", "displayField":"description"},
 						{"name":"stockAccount", "type":"Boolean"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"account",
+			"spanishName":"Cuenta contable",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"15"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"15"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"englishName", "type":"String", "unique":"true"},
 						{"name":"balanceGroup", "refType":"balanceGroup", "displayField":"description"},
 						{"name":"accountNature", "refType":"accountNature", "displayField":"description"},
@@ -421,58 +457,64 @@
 						{"name":"localAccount", "type":"String", "length":"15"},
 						{"name":"internationalAccount", "type":"String", "length":"15"},
 						{"name":"gapAccount", "type":"String", "length":"15"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 	     {	
 			"name":"accountConcept",
+			"spanishName":"Concepto contable",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"4"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"4"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"usedInStock", "type":"Boolean"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 		 {	
 			"name":"group",		
+			"spanishName":"Grupo de inventario",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-					 	{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+					 	{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 	     {	
 			"name":"subGroup",		
+			"spanishName":"Subgrupo de inventario",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"3"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"group", "refType":"group", "displayField":"description"},
 						{"name":"useDivision", "type":"Boolean"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 		 {
 	     	"name":"division",		
+			"spanishName":"División de inventario",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"3"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 					 	{"name":"subGroup", "type":"Boolean"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 		 {	
 			"name":"itemType",
+			"spanishName":"Tipo de ítem",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 		 {	
 			"name":"item",		
+			"spanishName":"Item",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"15"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"15"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"longName", "type":"String", "largeText":"true"},
 						{"name":"group", "refType":"group", "displayField":"description"},
 						{"name":"subGroup", "refType":"subGroup", "displayField":"description"},
@@ -492,57 +534,62 @@
 						{"name":"array", "type":"String"},
 						{"name":"set", "type":"String"},
 						{"name":"permitsLargerUnitsIssuingItemReception", "type":"Boolean"},
-						{"name":"bloqued", "type":"Boolean"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"blocked", "type":"Boolean"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 		 {	
 			"name":"itemTradeMark",
+			"spanishName":"Marca de ítem",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"25"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"25"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 					 	{"name":"item", "refType":"item", "displayField":"description"},
 						{"name":"tradeMark", "type":"String"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					 ]
 		 },
 		 {	
 			"labelTable":"true",		 	
 			"name":"calculusType",
+			"spanishName":"Tipo de cálculo",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"1"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"labelTable":"true",		 	
 			"name":"operationType",
+			"spanishName":"Tipo de operación",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"1"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"warehouse",
+			"spanishName":"Bodega",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"6"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"6"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"account", "refType":"account", "displayField":"description"},
 					    {"name":"accountConcept", "refType":"accountConcept", "displayField":"description"},
 						{"name":"calculusType", "refType":"calculusType", "displayField":"description"},
 						{"name":"operationType", "refType":"operationType", "displayField":"description"},
 						{"name":"afe", "refType":"afe", "displayField":"description"},
 					    {"name":"contract", "refType":"contract", "displayField":"description"},
-					    {"name":"active", "type":"Boolean"}
+					    {"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		},
 		{  
 			"name":"businessRules",		
+			"spanishName":"Reglas de negocio",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"standardTax", "refType":"tax", "displayField":"description"},
 						{"name":"standardTransportation", "refType":"transportationType", "displayField":"description"},
 						{"name":"standardPriority", "refType":"priority", "displayField":"description"},
@@ -563,7 +610,7 @@
 						{"name":"inputInventoryTransaction", "refType":"stockTransaction", "displayField":"description"},
 						{"name":"transitWarehouse", "refType":"warehouse", "displayField":"description"},
 						{"name":"transitInputInventoryTransaction", "refType":"stockTransaction", "displayField":"description"},
-						{"name":"transitoutputInventoryTransaction", "refType":"stockTransaction", "displayField":"description"},
+						{"name":"transitOutputInventoryTransaction", "refType":"stockTransaction", "displayField":"description"},
 						{"name":"yearEndInventoryCutoffDate", "type":"Date", "unique":"true"},
 						{"name":"percentOfLargerUnitsIssuingItemReception", "type":"Double", "unique":"true"},
 						{"name":"acceptsRequisitionDate", "type":"Boolean"},
@@ -573,23 +620,25 @@
 						{"name":"inventoryGroupForConsumption", "refType":"group", "displayField":"description"},
 						{"name":"referenceCurrency", "refType":"currency", "displayField":"description"},
 						{"name":"fCurrency", "refType":"currency", "displayField":"description"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"labelTable":"true",		 	
 			"name":"modules",
+			"spanishName":"Módulos",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"period",
+			"spanishName":"Período",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"6"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"6"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"year", "type":"Integer", "unique":"true", "length":"4"},
 						{"name":"month", "type":"Integer", "unique":"true", "length":"2"},
 						{"name":"fromDate", "type":"Date", "unique":"true"},
@@ -598,71 +647,78 @@
 						{"name":"accountingOpen", "type":"Boolean"},
 						{"name":"serviceOrderOpen", "type":"Boolean"},
 						{"name":"accountPayable", "type":"Boolean"},
-						{"name":"payrolOpen", "type":"Boolean"},
+						{"name":"payrollOpen", "type":"Boolean"},
 						{"name":"totalOpen", "type":"Boolean"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {
 			"name":"miniMax",	
+			"spanishName":"Mínimo Máximo",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"item", "refType":"item", "displayField":"description"},
 						{"name":"warehouse", "refType":"item", "displayField":"description"},
 						{"name":"minimumQuantity", "type":"Double"},
-						{"name":"maxumumQuantity", "type":"Double"},
+						{"name":"maximumQuantity", "type":"Double"},
 						{"name":"orderQuantity", "type":"Double"}
 					]
 		 },
 		 {	
 			"name":"quality",
+			"spanishName":"Calidad",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"shoppingDestination",
+			"spanishName":"Destino de la compra",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"holiday",
+			"spanishName":"Festivos",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"4"},
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"4"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"country", "refType":"country", "displayField":"description"},
 						{"name":"holiday", "type":"Date"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"methodOfPayment",
+			"spanishName":"Método de pago",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"supplierSelectionReason",
+			"spanishName":"Razón de selección de proveedor",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"deliveryLocations",
+			"spanishName":"Lugar de destino",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"2"},
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"adress", "type":"String"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"address", "type":"String"},
 						{"name":"zipCode", "type":"String"},
 						{"name":"populatedPlace", "refType":"populatedPlace", "displayField":"description"},
 						{"name":"pob", "type":"String"},
@@ -670,36 +726,39 @@
 						{"name":"phoneNumber", "type":"String"},
 						{"name":"faxNumber", "type":"String"},
 						{"name":"contactPerson", "type":"String"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"person",
+			"spanishName":"Persona",
 			"fields":[
-						{"name":"code", "type":"Integer", "unique":"true", "length":"3"},  
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"3"},  
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"thirdParty", "refType":"thirdParty", "displayField":"description"},
 						{"name":"section", "refType":"section", "displayField":"description"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"labelTable":"true",		 	
 			"name":"doc",
+			"spanishName":"Documentos",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"3"},  
-						{"name":"description", "type":"String", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},  
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 },
 		 {	
 			"name":"consecutive",
+			"spanishName":"Consecutivo",
 			"fields":[
-						{"name":"code", "type":"String", "unique":"true", "length":"4"},  
-						{"name":"description", "type":"String", "unique":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"4"},  
+						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
 						{"name":"doc", "refType":"doc", "displayField":"description"},
 						{"name":"consecutive", "type":"Integer", "unique":"true"},
-						{"name":"active", "type":"Boolean"}
+						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
 		 }
 	 ]
