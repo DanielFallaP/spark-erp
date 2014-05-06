@@ -18,7 +18,7 @@
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"3"},
 						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true", "length":"40"},
-						{"name":"currencyLetters", "type":"String", "unique":"true", "length":"3"},
+						{"name":"currencyLetters", "spanishName":"Moneda abreviada", "type":"String", "unique":"true", "length":"3"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 						
 					]
@@ -355,7 +355,7 @@
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"4"},
 						{"name":"description", "spanishName":"Descripción", "type":"String", "unique":"true"},
-						{"name":"bill", "refType":"bill", "displayField":"description"},
+						{"name":"billCode", "refType":"billCode", "displayField":"description"},
 						{"name":"partner", "refType":"partner", "displayField":"description"},
 						{"name":"fromDate", "type":"Date"},
 						{"name":"toDate", "type":"Date"},
@@ -392,7 +392,7 @@
 						{"name":"company", "refType":"company", "displayField":"description"},
 						{"name":"afeType", "refType":"afeType", "displayField":"description"},
 						{"name":"contract", "refType":"contract", "displayField":"description"},
-						{"name":"bill", "refType":"bill", "displayField":"description"},
+						{"name":"billCode", "refType":"billCode", "displayField":"description"},
 						{"name":"number", "type":"Integer", "unique":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean"}
 					]
@@ -606,7 +606,7 @@
 						{"name":"usePurchaseOrderBudget", "type":"Boolean"},
 						{"name":"percentageThatWarnsThatTheBudgetIsRunningOut", "type":"Double", "unique":"true"},
 						{"name":"UseNewReferenceControlCondition", "type":"Boolean"},
-						{"name":"newReferenceControlCondition", "refType":"condition", "displayField":"description"},
+						{"name":"newReferenceControlCondition", "refType":"itemCondition", "displayField":"description"},
 						{"name":"inputInventoryTransaction", "refType":"stockTransaction", "displayField":"description"},
 						{"name":"transitWarehouse", "refType":"warehouse", "displayField":"description"},
 						{"name":"transitInputInventoryTransaction", "refType":"stockTransaction", "displayField":"description"},
