@@ -4,7 +4,7 @@
       xmlns:spring="http://www.springframework.org/tags">
  <head>
 <meta charset="ISO-8859-1"/>
-<title th:text="#{label.$tableName$Title}"></title>
+<title th:text="#{label.$tableName$Info}"></title>
 
 <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
 		<style type="text/css">
@@ -75,7 +75,7 @@
 			<h3 th:text="#{label.$tableName$Info}"> </h3>
 			<table width="100%">
 				<tr>
-					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/configuration/$tableName$/create$entityName$/fromList}" th:title='#{label.$tableName$}'>+</a></li></ul></div></td>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/configuration/$tableName$/create$entityName$/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
 					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
 					<td width="34%">$excel$</td>
 				</tr>

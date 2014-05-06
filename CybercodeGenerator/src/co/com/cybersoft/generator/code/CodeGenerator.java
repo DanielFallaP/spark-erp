@@ -1,7 +1,8 @@
 package co.com.cybersoft.generator.code;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -21,7 +22,7 @@ public class CodeGenerator {
 	private ObjectMapper mapper=new ObjectMapper();
 	
 	public void generate() throws JsonParseException, JsonMappingException, IOException{
-		Cybersoft cybersoft = mapper.readValue(new File("Cybertables.json"), Cybersoft.class);
+		Cybersoft cybersoft=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybersoft.class);
 		System.out.println("Finished reading file");
 		
 		if (!cybersoft.getTables().isEmpty()){

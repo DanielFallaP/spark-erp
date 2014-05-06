@@ -8,7 +8,14 @@ public class Table {
 	private String name;
 	private List<Field> fields;
 	private Boolean labelTable=Boolean.FALSE;
+	private String spanishName;
 	
+	public String getSpanishName() {
+		return spanishName;
+	}
+	public void setSpanishName(String spanishName) {
+		this.spanishName = spanishName;
+	}
 	public Boolean getLabelTable() {
 		return labelTable;
 	}

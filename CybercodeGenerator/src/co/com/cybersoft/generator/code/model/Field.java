@@ -9,11 +9,18 @@ public class Field {
 	private Boolean visible=Boolean.TRUE;
 	private Boolean largeText=Boolean.FALSE;
 	private Boolean readOnly=Boolean.FALSE;
+	private String spanishName;
 	
 	//For references only
 	private String refType;
 	private String displayField;
-
+	
+	public String getSpanishName() {
+		return spanishName;
+	}
+	public void setSpanishName(String spanishName) {
+		this.spanishName = spanishName;
+	}
 	public Boolean getReadOnly() {
 		return readOnly;
 	}
