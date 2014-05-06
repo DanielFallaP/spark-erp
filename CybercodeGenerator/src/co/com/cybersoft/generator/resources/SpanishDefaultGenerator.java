@@ -25,32 +25,32 @@ public class SpanishDefaultGenerator {
 	}
 
 	private void updateDefaultEnglishConfigurationName(Table table) throws SQLException {
-		updatePst.setString(1, CodeUtil.getDefaultName(table.getSpanishName()));
+		updatePst.setString(1, table.getSpanishName());
 		updatePst.setString(2, table.getName()+"Configuration");
 		updatePst.execute();
 		
 	}
 
 	private void updateDefaultEnglishCreationName(Table table) throws SQLException {
-		updatePst.setString(1, "Creación de "+CodeUtil.getDefaultName(table.getSpanishName()));
+		updatePst.setString(1, "Creación de "+table.getSpanishName());
 		updatePst.setString(2, table.getName()+"CreationTitle");
 		updatePst.execute();
 	}
 
 	private void updateDefaultEnglishModificationName(Table table) throws SQLException {
-		updatePst.setString(1, "Modificación de "+CodeUtil.getDefaultName(table.getSpanishName()));
+		updatePst.setString(1, "Modificación de "+table.getSpanishName());
 		updatePst.setString(2, table.getName()+"ModificationTitle");
 		updatePst.execute();
 	}
 
 	private void updateDefaultEnglishInfoName(Table table) throws SQLException {
-		updatePst.setString(1, CodeUtil.getDefaultName(table.getSpanishName()));
+		updatePst.setString(1, table.getSpanishName());
 		updatePst.setString(2, table.getName()+"Info");
 		updatePst.execute();
 	}
 
 	private void updateDefaultEnglishTableName(Table table) throws SQLException {
-		updatePst.setString(1, CodeUtil.getDefaultName(table.getSpanishName()));
+		updatePst.setString(1, table.getSpanishName());
 		updatePst.setString(2, table.getName());
 		updatePst.execute();
 	}
@@ -59,7 +59,7 @@ public class SpanishDefaultGenerator {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 			if (field.getSpanishName()!=null){
-				updatePst.setString(1, CodeUtil.getDefaultName(field.getSpanishName()));
+				updatePst.setString(1, field.getSpanishName());
 				updatePst.setString(2, table.getName()+CodeUtil.toCamelCase(field.getName()));
 				updatePst.execute();
 			}

@@ -6,7 +6,7 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
-import co.com.cybersoft.generator.code.model.Cybersoft;
+import co.com.cybersoft.generator.code.model.Cybersystems;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
@@ -18,7 +18,7 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
  */
 public class WebGenerator {
 
-	public void generate(Cybersoft cybersoft){
+	public void generate(Cybersystems cybersoft){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			generateSearchController(table);
@@ -34,34 +34,34 @@ public class WebGenerator {
 	}
 	
 	private void generateExcelController(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersoft.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersystems.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("excelController");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ExcelController.java");
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ExcelController.java");
 	}
 
 	private void generateSearchByCodeController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersoft.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersystems.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchByCodeController");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchByCodeController.java");
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchByCodeController.java");
 	}
 	
 	private void generateSearchByDescriptionController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersoft.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersystems.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchByDescriptionController");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchByDescriptionController.java");
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchByDescriptionController.java");
 	}
 	
 	private void generateSearchController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybersoft.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybersystems.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchController");
 		template.setAttribute("entityName", table.getName());
 		template.setAttribute("coreService", CodeUtil.toCamelCase(table.getName())+"Service");
@@ -74,11 +74,11 @@ public class WebGenerator {
 		template.setAttribute("requestMethodName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("viewURL", "/configuration/"+table.getName()+"/search"+CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchController.java");
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchController.java");
 	}
 	
 	private void generateCreateController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybersoft.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybersystems.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("creationController");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
 		template.setAttribute("tableName", table.getName());
@@ -92,16 +92,16 @@ public class WebGenerator {
 		//reference lists
 		template.setAttribute("setReferencesLists", generateControllerReferencesLists(table));
 		
-		if (CodeUtil.getCodeType(table).equals(Cybersoft.stringType))
+		if (CodeUtil.getCodeType(table).equals(Cybersystems.stringType))
 			template.setAttribute("code", "code");
 		else
 			template.setAttribute("code", "Integer.parseInt(code)");
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CreationController.java");
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CreationController.java");
 	}
 	
 	private void generateModifyController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybersoft.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybersystems.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("modificationController");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
 		template.setAttribute("tableName", table.getName());
@@ -118,18 +118,18 @@ public class WebGenerator {
 		
 		template.setAttribute("codeType", CodeUtil.getCodeType(table));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationController.java");
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationController.java");
 	}
 	
 	private void generateDomain(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersoft.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersystems.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("domainClasses");
 		String className = CodeUtil.toCamelCase(table.getName()+"Info");
 		template.setAttribute("domainClassName", className);
 		template.setAttribute("bodyDomainClass", generateDomainBody(table));
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("referencesImports", generateDomainClassImports(table));
-		CodeUtil.writeClass(template.toString(),Cybersoft.targetClassPath+"/web/domain/"+table.getName(), className+".java");
+		CodeUtil.writeClass(template.toString(),Cybersystems.targetClassPath+"/web/domain/"+table.getName(), className+".java");
 	}
 	
 	
@@ -139,7 +139,7 @@ public class WebGenerator {
 		
 		//Check for validation constraints
 		for (Field field : fields) {
-			if (field.getLength()!=null && field.getType().equals(Cybersoft.stringType)){
+			if (field.getLength()!=null && field.getType().equals(Cybersystems.stringType)){
 				imports+="import org.hibernate.validator.constraints.Length;\n";
 				break;
 			}
@@ -147,7 +147,7 @@ public class WebGenerator {
 		}
 		
 		for (Field field : fields) {
-			if (!field.isReference() && field.getRequired() && field.getVisible() && field.getType().equals(Cybersoft.stringType)){
+			if (!field.isReference() && field.getRequired() && field.getVisible() && field.getType().equals(Cybersystems.stringType)){
 				imports+="import org.hibernate.validator.constraints.NotEmpty;\n";
 				break;
 			}
@@ -159,8 +159,8 @@ public class WebGenerator {
 		
 		try {
 			for (Field field : fields) {
-				if(field.getRequired() && field.getVisible() && (field.getType().equals(Cybersoft.integerType) || 
-						field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.stringType))){
+				if(field.getRequired() && field.getVisible() && (field.getType().equals(Cybersystems.integerType) || 
+						field.getType().equals(Cybersystems.longType) || field.getType().equals(Cybersystems.stringType))){
 					imports+="import javax.validation.constraints.NotNull;\n";
 					break;
 				}
@@ -170,8 +170,8 @@ public class WebGenerator {
 		}
 		
 		for (Field field : fields) {
-			if (field.getLength()!=null && (field.getType().equals(Cybersoft.integerType)
-					||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
+			if (field.getLength()!=null && (field.getType().equals(Cybersystems.integerType)
+					||field.getType().equals(Cybersystems.longType) || field.getType().equals(Cybersystems.doubleType))){
 				imports+="import org.hibernate.validator.constraints.Range;\n";
 			}
 		}
@@ -282,21 +282,21 @@ public class WebGenerator {
 		
 		//Attributes
 		for (Field field : fields) {
-			if (!field.isReference() && !field.getType().equals(Cybersoft.booleanType)){
-				if (field.getLength()!=null && field.getType().equals(Cybersoft.stringType)){
+			if (!field.isReference() && !field.getType().equals(Cybersystems.booleanType)){
+				if (field.getLength()!=null && field.getType().equals(Cybersystems.stringType)){
 					body+="@Length(max="+field.getLength()+")\n";
 				}
-				if (field.getRequired()&&field.getVisible()&&(field.isReference()|| field.getType().equals(Cybersoft.stringType))){
+				if (field.getRequired()&&field.getVisible()&&(field.isReference()|| field.getType().equals(Cybersystems.stringType))){
 					body+="@NotEmpty\n";
 				}
 				
-				if (field.getRequired()&&field.getVisible()&&!field.isReference()&&(field.getType().equals(Cybersoft.integerType)
-						||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
+				if (field.getRequired()&&field.getVisible()&&!field.isReference()&&(field.getType().equals(Cybersystems.integerType)
+						||field.getType().equals(Cybersystems.longType) || field.getType().equals(Cybersystems.doubleType))){
 					body+="@NotNull\n";
 				}
 				
-				if (field.getLength()!=null && !field.isReference() && (field.getType().equals(Cybersoft.integerType)
-						||field.getType().equals(Cybersoft.longType) || field.getType().equals(Cybersoft.doubleType))){
+				if (field.getLength()!=null && !field.isReference() && (field.getType().equals(Cybersystems.integerType)
+						||field.getType().equals(Cybersystems.longType) || field.getType().equals(Cybersystems.doubleType))){
 					body+="@Range(max="+CodeUtil.getMaxNumber(field.getLength())+")\n";
 				}
 			}
@@ -316,7 +316,7 @@ public class WebGenerator {
 			}
 			else{
 				fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-				fieldTemplate.setAttribute("type", Cybersoft.stringType);
+				fieldTemplate.setAttribute("type", Cybersystems.stringType);
 				fieldTemplate.setAttribute("name", field.getName());
 				body+=fieldTemplate.toString();
 				body+="\n";
@@ -332,7 +332,7 @@ public class WebGenerator {
 		//Getters and setters
 		for (Field field : fields) {
 			if (!field.isReference()){
-				StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersoft.codePath+"util");
+				StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersystems.codePath+"util");
 				StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
 				gettersSettersTemplate.setAttribute("type", field.getType());
 				gettersSettersTemplate.setAttribute("name", field.getName());
@@ -340,7 +340,7 @@ public class WebGenerator {
 				body+=gettersSettersTemplate.toString()+"\n\n";
 			}
 			else{
-				StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersoft.codePath+"util");
+				StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybersystems.codePath+"util");
 				StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("listGetters");
 				gettersSettersTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
 				gettersSettersTemplate.setAttribute("tableName", field.getName());
@@ -348,7 +348,7 @@ public class WebGenerator {
 				body+=gettersSettersTemplate.toString()+"\n\n";			
 				
 				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-				template.setAttribute("type", Cybersoft.stringType);
+				template.setAttribute("type", Cybersystems.stringType);
 				template.setAttribute("name", field.getName());
 				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 				body+=template.toString()+"\n\n";			
@@ -356,7 +356,7 @@ public class WebGenerator {
 		}
 		
 		//Reference list rearrangement
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybersoft.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybersystems.codePath+"web");
 		for (Field field : fields) {
 			if (field.isReference()){
 				StringTemplate template = templateGroup.getInstanceOf("referenceFieldRearrangement");

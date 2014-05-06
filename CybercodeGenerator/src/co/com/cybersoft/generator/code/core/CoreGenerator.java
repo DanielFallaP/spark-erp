@@ -5,13 +5,13 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
-import co.com.cybersoft.generator.code.model.Cybersoft;
+import co.com.cybersoft.generator.code.model.Cybersystems;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class CoreGenerator {
 
-	public void generate(Cybersoft cybersoft){
+	public void generate(Cybersystems cybersoft){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			generateCoreServiceImplementation(table);
@@ -21,7 +21,7 @@ public class CoreGenerator {
 	}
 	
 	private void generateCoreServiceInterface(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybersoft.codePath+"core");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybersystems.codePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreServiceInterface");
 		String className=CodeUtil.toCamelCase(table.getName())+"Service";
 		template.setAttribute("entityName", table.getName());
@@ -34,11 +34,11 @@ public class CoreGenerator {
 		template.setAttribute("className", className);
 		template.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/core/services/"+table.getName(), className+".java");
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/core/services/"+table.getName(), className+".java");
 	}
 	
 	private void generateCoreServiceImplementation(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybersoft.codePath+"core");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybersystems.codePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreServiceImpl");
 		String className=CodeUtil.toCamelCase(table.getName())+"Service";
 		template.setAttribute("entityName", table.getName());
@@ -51,16 +51,16 @@ public class CoreGenerator {
 		template.setAttribute("allRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent");
 		template.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/core/services/"+table.getName(), className+"Impl.java");
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/core/services/"+table.getName(), className+"Impl.java");
 	}
 	
 	private void generateCoreDomainClass(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybersoft.codePath+"core");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybersystems.codePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreDomain");
 		template.setAttribute("fieldDeclaration", CodeUtil.getFieldDeclarations(table));
 		template.setAttribute("gettersAndSetters", CodeUtil.getGettersAndSetters(table));
 		template.setAttribute("coreDomainClass", CodeUtil.toCamelCase(table.getName())+"Details");
 		
-		CodeUtil.writeClass(template.toString(), Cybersoft.targetClassPath+"/core/domain", CodeUtil.toCamelCase(table.getName())+"Details.java");
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/core/domain", CodeUtil.toCamelCase(table.getName())+"Details.java");
 	}
 }

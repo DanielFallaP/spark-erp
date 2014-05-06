@@ -36,7 +36,7 @@ public class Table {
 	}
 	
 	public boolean isActiveReference(){
-		if (CodeUtil.containsField(this, Cybersoft.activeFieldName))
+		if (CodeUtil.containsField(this, Cybersystems.activeFieldName))
 			return true;
 		else
 			return false;

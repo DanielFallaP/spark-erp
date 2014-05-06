@@ -10,7 +10,7 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
-import co.com.cybersoft.generator.code.model.Cybersoft;
+import co.com.cybersoft.generator.code.model.Cybersystems;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 
@@ -47,13 +47,13 @@ public class CodeUtil {
 	}
 	
 	public static String getGettersAndSetters(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("util",Cybersoft.codePath+"util");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("util",Cybersystems.codePath+"util");
 		List<Field> fields = table.getFields();
 		
 		String text="";
 		for (Field field : fields) {
 			StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-			template.setAttribute("type", field.isReference()?Cybersoft.stringType:field.getType());
+			template.setAttribute("type", field.isReference()?Cybersystems.stringType:field.getType());
 			template.setAttribute("name", field.getName());
 			template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 			text+=template.toString()+"\n";
@@ -72,7 +72,7 @@ public class CodeUtil {
 		
 		for (Field field : fields) {
 			StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-			fieldTemplate.setAttribute("type", field.isReference()?Cybersoft.stringType:field.getType());
+			fieldTemplate.setAttribute("type", field.isReference()?Cybersystems.stringType:field.getType());
 			fieldTemplate.setAttribute("name", field.getName());
 			text+=fieldTemplate.toString();
 			text+="\n";
@@ -81,7 +81,7 @@ public class CodeUtil {
 		return text;
 	}
 	
-	public static boolean referencesLabelTable(String tableName, Cybersoft cybersoft){
+	public static boolean referencesLabelTable(String tableName, Cybersystems cybersoft){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			if (table.getName().equals(tableName)){
@@ -105,7 +105,7 @@ public class CodeUtil {
 		int i=0;
 		for (Field field : fields) {
 			if (i!=0){
-				if (!field.isReference() && field.getType().equals(Cybersoft.stringType)){
+				if (!field.isReference() && field.getType().equals(Cybersystems.stringType)){
 					labelField=field.getName();
 					break;
 				}
@@ -147,7 +147,7 @@ public class CodeUtil {
 		return false;
 	}
 	
-	public static boolean containsTable(Cybersoft cybersoft, String tableName){
+	public static boolean containsTable(Cybersystems cybersoft, String tableName){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			if (table.getName().equals(tableName))
@@ -156,7 +156,7 @@ public class CodeUtil {
 		return false;
 	}
 	
-	public static boolean isGeneratedFile(Cybersoft cybersoft, String fileName){
+	public static boolean isGeneratedFile(Cybersystems cybersoft, String fileName){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			if (fileName.toLowerCase().startsWith(table.getName().toLowerCase()))
@@ -181,7 +181,7 @@ public class CodeUtil {
 		}
 	}
 	
-	public static List<String> getTableNames(Cybersoft cybersoft){
+	public static List<String> getTableNames(Cybersystems cybersoft){
 		List<String> tableNames = new ArrayList<String>();
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {

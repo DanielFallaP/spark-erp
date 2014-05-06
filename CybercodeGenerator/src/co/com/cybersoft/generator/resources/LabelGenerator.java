@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import co.com.cybersoft.generator.code.model.Cybersoft;
+import co.com.cybersoft.generator.code.model.Cybersystems;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
@@ -29,7 +29,7 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
-public class LabelGenerator {
+public class LabelGenerator implements DBConstants{
 
 	public static final String viewsAbsolutePath="C:\\Users\\daniel\\git\\co.com.cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views";
 	
@@ -39,14 +39,10 @@ public class LabelGenerator {
 	
 	public final PreparedStatement spanishUpdatePst;
 	
-	private final Cybersoft cybersoft;
+	private final Cybersystems cybersoft;
 	
 	private final DB mongoDB;
 	
-	public static final String labelPrefix="label";
-	
-	public static final String mongoDBNAme="cybersoft";
-
 	public static void main(String[] args) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -62,10 +58,10 @@ public class LabelGenerator {
 			//Mongo setup. For replica set configurations, it is necessary to supply
 			//the seed members to auto-discover the primary instance
 			MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("localhost",27017)));
-			DB db = mongoClient.getDB(mongoDBNAme);
+			DB db = mongoClient.getDB(mongoDBName);
 			
 			ObjectMapper mapper = new ObjectMapper();
-			Cybersoft cybersoft=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybersoft.class);
+			Cybersystems cybersoft=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybersystems.class);
 			
 			File rootDirectory = new File(viewsAbsolutePath);
 			
@@ -153,7 +149,7 @@ public class LabelGenerator {
 		}
 	}
 
-	public LabelGenerator(Cybersoft cybersoft, PreparedStatement insertionPst, PreparedStatement updatePst, PreparedStatement spanishUpdatePst, DB mongoDB){
+	public LabelGenerator(Cybersystems cybersoft, PreparedStatement insertionPst, PreparedStatement updatePst, PreparedStatement spanishUpdatePst, DB mongoDB){
 		this.cybersoft=cybersoft;
 		this.insertionPst=insertionPst;
 		this.englishUpdatePst=updatePst;

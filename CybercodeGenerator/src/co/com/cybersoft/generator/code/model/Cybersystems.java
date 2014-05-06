@@ -2,9 +2,8 @@ package co.com.cybersoft.generator.code.model;
 
 import java.util.List;
 
-public class Cybersoft {
+public class Cybersystems {
 	
-
 	private List<Table> tables;
 	
 	public final static String codePath="src/co/com/cybersoft/generator/code/";
@@ -27,15 +26,13 @@ public class Cybersoft {
 	
 	public final static String arraySeparator="/////";
 	
-	public final static String decisionTable="yesNo";
-	
 	public final static String decisionTableTrueValue="label.true";
 	
 	public final static String decisionTableFalseValue="label.false";
 	
 	public final static String activeFieldName="active";
 	
-	public final static String projectName="Cybersoft";
+	public final static String repoDirName="Cybersoft";
 
 	public List<Table> getTables() {
 		return tables;
