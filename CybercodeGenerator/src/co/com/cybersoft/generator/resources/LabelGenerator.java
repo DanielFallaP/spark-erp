@@ -3,8 +3,10 @@ package co.com.cybersoft.generator.resources;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,6 +17,11 @@ import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import co.com.cybersoft.generator.code.model.Cybersoft;
+import co.com.cybersoft.generator.code.model.Field;
+import co.com.cybersoft.generator.code.model.Table;
+import co.com.cybersoft.generator.code.util.CodeUtil;
+
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -22,15 +29,15 @@ import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
-import co.com.cybersoft.generator.code.model.Cybersoft;
-import co.com.cybersoft.generator.code.model.Table;
-import co.com.cybersoft.generator.code.util.CodeUtil;
-
 public class LabelGenerator {
 
 	public static final String viewsAbsolutePath="C:\\Users\\daniel\\git\\co.com.cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views";
 	
-	public final PreparedStatement pst;
+	public final PreparedStatement insertionPst;
+	
+	public final PreparedStatement englishUpdatePst;
+	
+	public final PreparedStatement spanishUpdatePst;
 	
 	private final Cybersoft cybersoft;
 	
@@ -45,19 +52,24 @@ public class LabelGenerator {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con=DriverManager.getConnection("jdbc:mysql://cybersoft.c6g4nh1b2apj.us-east-1.rds.amazonaws.com/cybersoft?"
 					+ "user=cybersoft&password=petronube");
-			PreparedStatement pst = con.prepareStatement("insert into cybersoft.dictionary (message) values (?)");
 			
+			con.setAutoCommit(true);
+			PreparedStatement insertionPst = con.prepareStatement("insert into cybersoft.dictionary (message) values (?)");
+			
+			PreparedStatement englishUpdatePst = con.prepareStatement("update cybersoft.dictionary set english=?, generated=1 where message=? and english is null");
+			
+			PreparedStatement spanishUpdatePst = con.prepareStatement("update cybersoft.dictionary set spanish=?, generated=1 where message=? and spanish is null");
 			//Mongo setup. For replica set configurations, it is necessary to supply
 			//the seed members to auto-discover the primary instance
 			MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("localhost",27017)));
 			DB db = mongoClient.getDB(mongoDBNAme);
 			
 			ObjectMapper mapper = new ObjectMapper();
-			Cybersoft cybersoft = mapper.readValue(new File("Cybertables.json"), Cybersoft.class);
+			Cybersoft cybersoft=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybersoft.class);
 			
 			File rootDirectory = new File(viewsAbsolutePath);
 			
-			LabelGenerator labelGenerator = new LabelGenerator(cybersoft,pst,db);
+			LabelGenerator labelGenerator = new LabelGenerator(cybersoft,insertionPst, englishUpdatePst, spanishUpdatePst, db);
 
 			//Inserts all labels found in the views directory
 			labelGenerator.insertLabels(rootDirectory);
@@ -65,14 +77,87 @@ public class LabelGenerator {
 			//Inserts all labels found in label tables
 			labelGenerator.insertLabelTablesContent();
 			
+			//Updates English default messages for empty messages in the DB
+			labelGenerator.updateDefaultEnglishMessages();
+			
+			//Updates Spanish default messages for empty messages in the DB
+			labelGenerator.updateDefaultSpanishMessages();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public LabelGenerator(Cybersoft cybersoft, PreparedStatement pst, DB mongoDB){
+	private void updateDefaultSpanishMessages() throws SQLException {
+		List<Table> tables = cybersoft.getTables();
+		for (Table table : tables) {
+			System.out.println("=============Inserting default Spanish messages for table: "+table.getName());
+			SpanishDefaultGenerator generator = new SpanishDefaultGenerator(spanishUpdatePst);
+			generator.updateDefaultSpanishMessages(table);
+		}
+	}
+
+	private void updateDefaultEnglishMessages() throws SQLException {
+		List<Table> tables = cybersoft.getTables();
+		for (Table table : tables) {
+			System.out.println("=============Inserting default English messages for table: "+table.getName());
+			updateDefaultEnglishMessages(table);
+		}
+	}
+
+	private void updateDefaultEnglishMessages(Table table) throws SQLException {
+		updateDefaultEnglishFields(table);
+		updateDefaultEnglishTableName(table);
+		updateDefaultEnglishInfoName(table);
+		updateDefaultEnglishModificationName(table);
+		updateDefaultEnglishCreationName(table);
+		updateDefaultEnglishConfigurationName(table);
+	}
+
+	private void updateDefaultEnglishConfigurationName(Table table) throws SQLException {
+		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
+		englishUpdatePst.setString(2, table.getName()+"Configuration");
+		englishUpdatePst.execute();
+	}
+
+	private void updateDefaultEnglishCreationName(Table table) throws SQLException {
+		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName())+" Creation");
+		englishUpdatePst.setString(2, table.getName()+"CreationTitle");
+		englishUpdatePst.execute();
+	}
+
+	private void updateDefaultEnglishModificationName(Table table) throws SQLException {
+		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName())+" Modification");
+		englishUpdatePst.setString(2, table.getName()+"ModificationTitle");
+		englishUpdatePst.execute();
+	}
+
+	private void updateDefaultEnglishInfoName(Table table) throws SQLException {
+		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
+		englishUpdatePst.setString(2, table.getName()+"Info");
+		englishUpdatePst.execute();
+	}
+
+	private void updateDefaultEnglishTableName(Table table) throws SQLException {
+		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
+		englishUpdatePst.setString(2, table.getName());
+		englishUpdatePst.execute();
+	}
+
+	private void updateDefaultEnglishFields(Table table) throws SQLException {
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			englishUpdatePst.setString(1, CodeUtil.getDefaultName(field.getName()));
+			englishUpdatePst.setString(2, table.getName()+CodeUtil.toCamelCase(field.getName()));
+			englishUpdatePst.execute();
+		}
+	}
+
+	public LabelGenerator(Cybersoft cybersoft, PreparedStatement insertionPst, PreparedStatement updatePst, PreparedStatement spanishUpdatePst, DB mongoDB){
 		this.cybersoft=cybersoft;
-		this.pst=pst;
+		this.insertionPst=insertionPst;
+		this.englishUpdatePst=updatePst;
+		this.spanishUpdatePst=spanishUpdatePst;
 		this.mongoDB=mongoDB;
 	}
 	
@@ -84,17 +169,17 @@ public class LabelGenerator {
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			if (table.getLabelTable()){
-				insertLabelTableContent(table);
+				insertFromLabelTableContent(table);
 			}
 		}		
 	}
 	
 	/**
-	 * Inserts all labels contained in the specified table
+	 * Inserts all labels contained in the specified label table
 	 * @param table
 	 * @throws SQLException 
 	 */
-	private void insertLabelTableContent(Table table) throws SQLException {
+	private void insertFromLabelTableContent(Table table) throws SQLException {
 		System.out.println("====================Inserting labels in label table: "+table.getName());
 		DBCollection collection = mongoDB.getCollection(table.getName());
 		DBCursor cursor = collection.find();
@@ -113,7 +198,7 @@ public class LabelGenerator {
 
 	/**
 	 * This method inserts all labels contained in all the html pages
-	 * in the given view directory into the label database 
+	 * in the Cybersystems's source view directory into the label database 
 	 * for further generation of message resources
 	 * @param directory
 	 * @throws FileNotFoundException 
@@ -140,8 +225,8 @@ public class LabelGenerator {
 		for (String message : messages) {
 			try {
 //				System.out.println(message);
-				pst.setString(1, message);
-				pst.execute();
+				insertionPst.setString(1, message);
+				insertionPst.execute();
 			} catch (Exception e) {
 				//Just continue with the next message if this one was previously inserted
 				continue;

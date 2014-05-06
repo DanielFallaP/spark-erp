@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
@@ -163,4 +164,30 @@ public class CodeUtil {
 		}
 		return false;
 	}
+	
+	public static String getDefaultName(String camelCaseName){
+		if (camelCaseName!=null){
+			String name=new Character(camelCaseName.charAt(0)).toString().toUpperCase();
+			for (int i = 1; i < camelCaseName.length(); i++) {
+				Character ch = camelCaseName.charAt(i);
+				if (ch.toString().equals(ch.toString().toUpperCase()))
+					name+=" ";
+				name+=ch.toString();
+			}
+			return name;
+		}
+		else{
+			return null;
+		}
+	}
+	
+	public static List<String> getTableNames(Cybersoft cybersoft){
+		List<String> tableNames = new ArrayList<String>();
+		List<Table> tables = cybersoft.getTables();
+		for (Table table : tables) {
+			tableNames.add(table.getName());
+		}
+		return tableNames;
+	}
+	
 }
