@@ -1,4 +1,4 @@
-package co.com.cybersoft.man.services;
+package co.com.cybersoft.man.services.excel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -17,7 +18,6 @@ import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 
@@ -46,7 +46,7 @@ public class ReportingServiceImpl implements ReportingService {
 	
 	private String generateExcel(DBCursor cursor, Class<?> _class) throws IOException{
 		//Generation of document and title
-		Workbook wb=new XSSFWorkbook();
+		Workbook wb=new HSSFWorkbook();
 		Sheet sheet = wb.createSheet(_class.getSimpleName());
 		PrintSetup printSetup = sheet.getPrintSetup();
 		printSetup.setLandscape(true);
@@ -104,13 +104,17 @@ public class ReportingServiceImpl implements ReportingService {
 							Long number=(Long) object;
 							cell.setCellValue(number.doubleValue());
 						}
+						else if (object instanceof Boolean){
+							Boolean bool=(Boolean) object;
+							cell.setCellValue(bool.toString());
+						}
 						else
 							cell.setCellValue((Date) object);
 					}
 					else{
 						cell.setCellValue("");
 					}
-					cell.setCellStyle(styles.get("cell"));
+//					cell.setCellStyle(styles.get("cell"));
 					k++;
 				}
 			}
@@ -119,7 +123,7 @@ public class ReportingServiceImpl implements ReportingService {
 		
 		//Write the file
 		UUID uuid = UUID.randomUUID();
-		String fileName=_class.getSimpleName()+"-"+uuid.toString()+".xlsx";
+		String fileName=_class.getSimpleName()+"-"+uuid.toString()+".xls";
 		File directory = new File(CyberUtils.excelFilePath);
 		File excel = new File(directory,fileName);
 		FileOutputStream outputStream = new FileOutputStream(excel);

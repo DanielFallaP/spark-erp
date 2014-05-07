@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import co.com.cybersoft.man.services.ReportingService;
+import co.com.cybersoft.man.services.excel.ReportingService;
 import co.com.cybersoft.persistence.domain.$entityName$;
 
 @Controller
