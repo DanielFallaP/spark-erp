@@ -25,7 +25,6 @@ public class WebGenerator {
 			generateModifyController(table);
 			generateCreateController(table);
 			generateDomain(table);
-			generateSearchByCodeController(table);
 			if (CodeUtil.containsDescriptionField(table))
 				generateSearchByDescriptionController(table);
 			if (!table.getLabelTable())
@@ -42,15 +41,6 @@ public class WebGenerator {
 		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ExcelController.java");
 	}
 
-	private void generateSearchByCodeController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersystems.codePath+"web");
-		StringTemplate template = templateGroup.getInstanceOf("searchByCodeController");
-		template.setAttribute("tableName", table.getName());
-		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-		
-		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchByCodeController.java");
-	}
-	
 	private void generateSearchByDescriptionController(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersystems.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchByDescriptionController");
@@ -92,11 +82,6 @@ public class WebGenerator {
 		//reference lists
 		template.setAttribute("setReferencesLists", generateControllerReferencesLists(table));
 		
-		if (CodeUtil.getCodeType(table).equals(Cybersystems.stringType))
-			template.setAttribute("code", "code");
-		else
-			template.setAttribute("code", "Integer.parseInt(code)");
-		
 		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CreationController.java");
 	}
 	
@@ -105,7 +90,6 @@ public class WebGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("modificationController");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
 		template.setAttribute("tableName", table.getName());
-		template.setAttribute("codyType", CodeUtil.getCodeType(table));
 		
 		//imports for references
 		template.setAttribute("referenceServicesImports", generateControllerReferenceImports(table));
@@ -115,8 +99,6 @@ public class WebGenerator {
 		
 		//reference lists
 		template.setAttribute("setReferencesLists", generateModificationControllerReferencesLists(table));
-		
-		template.setAttribute("codeType", CodeUtil.getCodeType(table));
 		
 		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationController.java");
 	}

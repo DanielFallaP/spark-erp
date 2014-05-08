@@ -49,7 +49,7 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 	public $entityName$DetailsEvent request$entityName$Details(Request$entityName$DetailsEvent event) throws Exception {
 		$entityName$Details $tableName$Details=null;
 		if (event.getId()!=null){
-			$entityName$ $tableName$ = $tableName$Repository.findByCode(event.getId());
+			$entityName$ $tableName$ = $tableName$Repository.findOne(event.getId());
 			if ($tableName$!=null)
 				$tableName$Details = $tableName$.to$entityName$Details();
 		}
@@ -75,16 +75,6 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 		return new $entityName$PageEvent(list);
 	}
 	
-	@Override
-	public $entityName$PageEvent requestByCodePrefix(String codePrefix) throws Exception {
-		List<$entityName$> codes = $tableName$CustomRepo.findByStartingCodeNumber(codePrefix);
-		ArrayList<$entityName$Details> list = new ArrayList<$entityName$Details>();
-		for ($entityName$ $tableName$ : codes) {
-			list.add($tableName$.to$entityName$Details());
-		}
-		return new $entityName$PageEvent(list);
-	}
-
 	@Override
 	public $entityName$PageEvent requestByContainingDescription(String description) throws Exception {
 		ArrayList<$entityName$Details> list = new ArrayList<$entityName$Details>();

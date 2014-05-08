@@ -37,7 +37,7 @@ $referenceServicesImports$
  *
  */
 @Controller
-@RequestMapping("/configuration/$tableName$/modify$entityName$/{code}")
+@RequestMapping("/configuration/$tableName$/modify$entityName$/{id}")
 public class $entityName$ModificationController {
 	private static final Logger LOG=LoggerFactory.getLogger($entityName$ModificationController.class);
 	
@@ -70,11 +70,11 @@ public class $entityName$ModificationController {
 	}
 
 	@ModelAttribute("$tableName$Info")
-	private $entityName$Info get$entityName$Info(@PathVariable("code") $codeType$ code, HttpServletRequest request) throws Exception {
-		LOG.debug("Retrieving the $tableName$ "+code);
+	private $entityName$Info get$entityName$Info(@PathVariable("id") String id, HttpServletRequest request) throws Exception {
+		LOG.debug("Retrieving the $tableName$ "+id);
 		$entityName$Info $tableName$Info = new $entityName$Info();
 		
-		$entityName$DetailsEvent request$entityName$Details = $tableName$Service.request$entityName$Details(new Request$entityName$DetailsEvent(code));
+		$entityName$DetailsEvent request$entityName$Details = $tableName$Service.request$entityName$Details(new Request$entityName$DetailsEvent(id));
 		$setReferencesLists$
 		request.getSession().setAttribute("$tableName$Info", $tableName$Info);
 		

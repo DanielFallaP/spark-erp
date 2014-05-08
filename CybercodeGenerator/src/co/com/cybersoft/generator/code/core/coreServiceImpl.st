@@ -53,11 +53,6 @@ public class $entityUppercaseName$ServiceImpl implements $entityUppercaseName$Se
 	}
 	
 	@Override
-	public $entityUppercaseName$PageEvent requestByCodePrefix(String codePrefix) throws Exception {
-		return $entityName$PersistenceService.requestByCodePrefix(codePrefix);
-	}
-
-	@Override
 	public $entityUppercaseName$PageEvent requestByContainingDescription(String description) throws Exception {
 		return $entityName$PersistenceService.requestByContainingDescription(description);
 	}

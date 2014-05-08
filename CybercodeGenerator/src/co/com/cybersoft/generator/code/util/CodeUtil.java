@@ -102,15 +102,11 @@ public class CodeUtil {
 	public static String getLabelField(Table table){
 		List<Field> fields = table.getFields();
 		String labelField="";
-		int i=0;
 		for (Field field : fields) {
-			if (i!=0){
 				if (!field.isReference() && field.getType().equals(Cybersystems.stringType)){
 					labelField=field.getName();
 					break;
 				}
-			}
-			i++;
 		}
 		return labelField;
 	}
@@ -122,10 +118,6 @@ public class CodeUtil {
 				return true;
 		}
 		return false;
-	}
-	
-	public static String getCodeType(Table table){
-		return table.getFields().get(0).getType();
 	}
 	
 	public static boolean containsReferences(Table table){

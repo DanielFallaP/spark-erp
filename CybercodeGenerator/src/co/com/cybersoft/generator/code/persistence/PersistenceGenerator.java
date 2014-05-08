@@ -110,11 +110,20 @@ public class PersistenceGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("repository");
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		template.setAttribute("codeType", CodeUtil.getCodeType(table));
-		StringTemplate subTemplate=new StringTemplate("$entityName$ findByDescription(String description);\n");
-		subTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-		if (CodeUtil.containsDescriptionField(table))
-			template.setAttribute("description", subTemplate.toString());
+		
+		//Add methods to search by each field
+		String methods="";
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			StringTemplate subTemplate=new StringTemplate("$entityName$ findBy$fieldName$($fieldType$ value);\n");
+			subTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+			subTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+			subTemplate.setAttribute("fieldType", field.getType()!=null?CodeUtil.toCamelCase(field.getType()):Cybersystems.stringType);
+			methods+=subTemplate.toString()+"\n";
+		}
+		
+		template.setAttribute("findByFields", methods);
+		
 		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"Repository.java");
 		
 		//Custom repository interface generation
@@ -128,7 +137,6 @@ public class PersistenceGenerator {
 		template = templateGroup.getInstanceOf("customRepositoryImplementation");
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		template.setAttribute("fieldType", CodeUtil.getCodeType(table));
 		template.setAttribute("byContainingDescription", generateSearchByDescription(table));
 		template.setAttribute("findAllActive", generateAllActiveSearch(table));
 		

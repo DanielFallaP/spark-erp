@@ -35,6 +35,7 @@ public class ViewGenerator {
 	}
 	
 	private void generateCreateView(Table table){
+		
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersystems.codePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("createView");
 		template.setAttribute("tableName", table.getName());
@@ -43,6 +44,10 @@ public class ViewGenerator {
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
 		template.setAttribute("arraySeparator", Cybersystems.arraySeparator);
 
+		List<Field> fields = table.getFields();
+		if (!fields.isEmpty()){
+			template.setAttribute("firstField", fields.get(0).getName());
+		}
 		
 		CodeUtil.writeClass(template.toString(), Cybersystems.targetViewPath+"/normal/configuration/"+table.getName(), "create"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
@@ -69,6 +74,10 @@ public class ViewGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("rows", generateFieldRows(table));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
+		List<Field> fields = table.getFields();
+		if (!fields.isEmpty()){
+			template.setAttribute("firstField", fields.get(0).getName());
+		}
 		
 		CodeUtil.writeClass(template.toString(), Cybersystems.targetViewPath+"/normal/configuration/"+table.getName(), "modify"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
@@ -79,8 +88,7 @@ public class ViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("searchView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-		template.setAttribute("codeColumn", getCodeColumn(table));
-		template.setAttribute("otherColumns", getOtherColumns(table));
+		template.setAttribute("columns", getOtherColumns(table));
 		template.setAttribute("columnHeaders", getHeaderColumns(table));
 		template.setAttribute("excel", table.getLabelTable()?"<div></div>":generateExcelLink(table));
 		
@@ -133,57 +141,6 @@ public class ViewGenerator {
 		return text;
 	}
 	
-	private String generateEditableRows(Table table){
-		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views", Cybersystems.codePath+"views");
-		List<Field> fields = table.getFields();
-	
-		String text="";
-		for (Field field : fields) {
-			if (!field.isReference() && field.getVisible() && !field.getReadOnly()){
-				StringTemplate template;
-				if (!field.getLargeText() && !field.getType().equals(Cybersystems.booleanType))
-					template = stringTemplateGroup.getInstanceOf("editableTableRow");
-				else if (field.getType().equals(Cybersystems.booleanType))
-					template = stringTemplateGroup.getInstanceOf("editableCheck");
-				else
-					template = stringTemplateGroup.getInstanceOf("editableTextAreaRow");
-				template.setAttribute("tableName", table.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				template.setAttribute("fieldName", field.getName());
-				if (field.getType().equals(Cybersystems.dateType))
-					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
-				text+=template.toString()+"\n";
-			}
-		}
-		
-		return text;
-	}
-	
-	private String generateReferenceRows(Table table){
-		String text="";
-		List<Field> fields = table.getFields();
-		
-		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views", Cybersystems.codePath+"views");
-		for (Field field : fields) {
-			if (field.isReference()){
-				StringTemplate template;
-				if (CodeUtil.referencesLabelTable(field.getRefType(), cybersoft)){
-					template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
-				}
-				else{
-					template = stringTemplateGroup.getInstanceOf("referenceTableRow");
-				}
-				template.setAttribute("tableName", table.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				template.setAttribute("fieldName", field.getName());
-				template.setAttribute("displayName", field.getDisplayField());
-				text+=template.toString()+"\n";
-			}
-		}
-		
-		return text;
-	}
-	
 	private String getCodeColumn(Table table){
 		
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersystems.codePath+"views");
@@ -197,9 +154,7 @@ public class ViewGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersystems.codePath+"views");
 		List<Field> fields = table.getFields();
 		String text="";
-		int i=0;
 		for (Field field : fields) {
-			if (i!=0){
 				if (!field.isReference() && field.getVisible() && !field.getLargeText() && !field.getType().equals(Cybersystems.booleanType)){
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
 					template.setAttribute("fieldName", field.getName());
@@ -224,8 +179,6 @@ public class ViewGenerator {
 					template.setAttribute("fieldName", field.getName());
 					text+=template.toString()+"\n";
 				}
-			}
-			i++;
 		}
 		
 		

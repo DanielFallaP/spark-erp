@@ -6,8 +6,6 @@ import co.com.cybersoft.persistence.domain.$entityName$;
 
 public interface $entityName$CustomRepo {
 
-	List<$entityName$> findByStartingCodeNumber(String codePrefix);
-	
 	List<$entityName$> findByContainingDescription(String descriptionSubstring);
 
 	List<$entityName$> findAllActive();

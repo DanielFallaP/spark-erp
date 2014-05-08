@@ -35,37 +35,7 @@
 	    	  }
 	    	});
 	    	
-	     \$(function(){
-	     \$("#code").autocomplete({
-	    	    source: function (request, response) {
-	    	    		var path=window.location.pathname.split("/");
-	    	    		var prefix="";
-	    	    		if (path[1].localeCompare("configuration")!=0){
-	    	    			prefix="/"+path[1];	
-	    	    		}
-	    	    		
-						\$.get(prefix+"/configuration/$tableName$/getCodeList/"+request.term, {}, function (data) {
-	    	            var array=data.split("$arraySeparator$");
-	    	            if (data!="")
-	    	            	response(array);
-	    	            else
-	    	            	response(null);
-	    	        });
-	    	    },
-	    	    minLength: 3,
-	    	    select: function(a, b){
-	    	    		\$(this).val(b.item.value);
-	    	    		var path=window.location.pathname.split("/");
-	    	    		var prefix="";
-	    	    		if (path[1].localeCompare("configuration")!=0){
-	    	    			prefix="/"+path[1];	
-	    	    		}
-	    	    		window.open(prefix+"/configuration/$tableName$/create$entityName$/fromList?id="+b.item.value,"_self");
-	    	    	}
-	    	});
-	    	 
-	     });
-	     
+	        	     
 	     \$(function(){
 		     \$("#description").autocomplete({
 		    	    source: function (request, response) {
@@ -97,8 +67,8 @@
 		    	 
 		     });
 		     
-		   function setFocus(){
-		   		document.getElementById("code").focus();
+		  function setFocus(){
+		   		document.getElementById("$firstField$").focus();
 		   } 
 	     
 	     </script>

@@ -24,8 +24,6 @@ public interface $entityName$PersistenceService {
 	
 	$entityName$PageEvent requestAll() throws Exception;
 	
-	$entityName$PageEvent requestByCodePrefix(String codePrefix) throws Exception;
-
 	$entityName$PageEvent requestByContainingDescription(String description) throws Exception;
 	
 }

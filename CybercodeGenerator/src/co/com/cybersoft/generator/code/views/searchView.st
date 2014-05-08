@@ -17,6 +17,7 @@
 	            padding: 9px 0;
 	        }
 	    </style>
+	     <link th:href="@{/resources/css/cybersystems.css}" rel="stylesheet" />
 	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
 		 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
 		 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
@@ -65,6 +66,25 @@
 	     		  \$('#_firstPage a').trigger('click');
 	    	  }
 	    	});	
+	    	
+	    \$(window).load(function(){
+		\$('#search tr').hover(function() {
+		    \$(this).addClass('hover');
+		}, function() {
+		    \$(this).removeClass('hover');
+		});
+		});
+
+	    function buildURL(id){
+	    	var path=window.location.pathname.split("/");
+  	    	var prefix="";
+  	    	if (path[1].localeCompare("configuration")!=0){
+  	    		prefix="/"+path[1];	
+  	    	}
+	    	var url=prefix+"/configuration/$tableName$/modify$entityName$/"+id;
+	    	document.location=url;
+	    }	
+	    	
 	     </script>
 	    
 </head>
@@ -86,10 +106,9 @@
 						$columnHeaders$
 					</tr>
 				</thead>
-				<tbody>
-					<tr th:each="object: \${list}">
-						$codeColumn$
-						$otherColumns$
+				<tbody id="search">
+					<tr th:each="object: \${list}" th:onClick="'buildURL(\''+\${object.id}+'\')'">
+						$columns$
 					</tr>
 				</tbody>
 			</table>

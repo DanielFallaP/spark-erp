@@ -86,13 +86,7 @@ public class $entityName$CreationController {
 	private $entityName$Info get$entityName$Info(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		$entityName$Info $tableName$Info = new $entityName$Info();
 		
-		String code = request.getParameter("id");
 		String description = request.getParameter("desc");
-		if (code!=null){
-			$entityName$DetailsEvent responseEvent = $tableName$Service.request$entityName$Details(new Request$entityName$DetailsEvent($code$));
-			if (responseEvent.get$entityName$Details()!=null)
-				BeanUtils.copyProperties(responseEvent.get$entityName$Details(), $tableName$Info);
-		}
 		
 		if (description!=null){
 			Request$entityName$DetailsEvent event = new Request$entityName$DetailsEvent(null);

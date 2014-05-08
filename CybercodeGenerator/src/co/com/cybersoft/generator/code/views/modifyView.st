@@ -47,7 +47,7 @@
 	    	});
 	    	
 	    	function setFocus(){
-		   		document.getElementById("code").focus();
+		   		document.getElementById("$firstField$").focus();
 		   }
 	     </script>
     
