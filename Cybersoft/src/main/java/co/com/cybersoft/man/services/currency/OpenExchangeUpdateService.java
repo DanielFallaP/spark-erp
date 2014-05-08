@@ -12,10 +12,10 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import co.com.cybersoft.persistence.domain.CustomerTenancy;
 import co.com.cybersoft.persistence.domain.ExchangeRate;
-import co.com.cybersoft.persistence.domain.Tenancy;
+import co.com.cybersoft.persistence.repository.customerTenancy.CustomerTenancyRepository;
 import co.com.cybersoft.persistence.repository.exchangeRate.ExchangeRateRepository;
-import co.com.cybersoft.persistence.repository.tenancy.TenancyRepository;
 
 public class OpenExchangeUpdateService implements CurrencyUpdateService{
 
@@ -24,7 +24,7 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 	private final String appId="b47cc3874ddd42928483a941d4d550f9";
 	
 	@Autowired
-	private TenancyRepository tenancyRepo;
+	private CustomerTenancyRepository tenancyRepo;
 	
 	@Autowired
 	private ExchangeRateRepository exchangeRateRepo;
@@ -32,7 +32,7 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 	@PostConstruct
 	@Override
 	public void updateTodayRates() throws Exception{
-		List<Tenancy> tenancyList = tenancyRepo.findAll();
+		List<CustomerTenancy> tenancyList = tenancyRepo.findAll();
 		if (!tenancyList.isEmpty()){
 			//Check if the rate already exists
 			Calendar cal = Calendar.getInstance();
@@ -43,8 +43,8 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 			ExchangeRate exchangeRate = exchangeRateRepo.findByDate(cal.getTime());
 			if (exchangeRate==null){
 				cal.add(Calendar.DATE, -1);
-				Tenancy tenancy = tenancyList.get(0);
-				String baseCurrency=tenancy.getOtherCurrency();
+				CustomerTenancy tenancy = tenancyList.get(0);
+				String baseCurrency=tenancy.getForeignCurrency();
 				String localCurrency=tenancy.getLocalCurrency();
 				
 				Integer year = cal.get(Calendar.YEAR);
@@ -77,7 +77,6 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 						cal.add(Calendar.DATE, 1);
 						exchangeRate = new ExchangeRate();
 						exchangeRate.setActive(true);
-						exchangeRate.setCode(1);
 						exchangeRate.setCreatedBy("admin");
 						exchangeRate.setDate(cal.getTime());
 						exchangeRate.setVariation(0D);
@@ -85,9 +84,7 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 						exchangeRate.setRate(rate);
 						exchangeRate.setLocalCurrency(localCurrency);
 						exchangeRate.setForeingCurrency(baseCurrency);
-						exchangeRate.setDescription("COD to USD rate");
 						exchangeRate.setDateOfModification(cal.getTime());
-						exchangeRate.setDate(cal.getTime());
 						exchangeRate.setDateOfCreation(cal.getTime());
 						
 						exchangeRateRepo.save(exchangeRate);
