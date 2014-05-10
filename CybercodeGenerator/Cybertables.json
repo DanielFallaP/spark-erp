@@ -70,9 +70,10 @@
 						{"name":"country", "spanishName":"País", "refType":"country", "displayField":"country"},
 						{"name":"state", "spanishName":"DepartamentoEstado", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"capital", "spanishName":"Capital", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"area", "spanishName":"Area", "type":"Double", "required":"false"},
-						{"name":"population", "spanishName":"Población", "type":"Double", "required":"false"},
-						{"name":"yearOfStablishment", "spanishName":"Año Establecimiento", "type":"Integer", "required":"false"},
+						{"name":"area", "spanishName":"Area", "type":"Integer", "required":"false"},
+						{"name":"population", "spanishName":"Población", "type":"Integer", "required":"false"},
+						{"name":"dateOfEstablishment", "spanishName":"Fecha de creación", "type":"Date", "required":"false"},
+						{"name":"abreviation", "spanishName":"Letras", "type":"String", "required":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -82,9 +83,10 @@
 			"fields":[
 						{"name":"state", "spanishName":"DepartamentoEstado", "refType":"state", "displayField":"state"},
 						{"name":"populatedPlace", "spanishName":"Ciudad", "type":"String", "autocomplete":"true"},
-						{"name":"population", "spanishName":"Población", "type":"Integer"},
-						{"name":"latitude", "spanishName":"Latitud", "type":"String"},
-						{"name":"longitude", "spanishName":"Longitud", "type":"String"},
+						{"name":"area", "spanishName":"Area", "type":"Integer", "required":"false"},
+						{"name":"population", "spanishName":"Población", "type":"Integer", "required":"false"},
+						{"name":"latitude", "spanishName":"Latitud", "type":"String", "required":"false"},
+						{"name":"longitude", "spanishName":"Longitud", "type":"String", "required":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -139,7 +141,7 @@
 			"fields":[
 						{"name":"thirdParty", "spanishName":"Nombre", "type":"String", "autocomplete":"true", "autocomplete":"true"},
 						{"name":"identification", "spanishName":"identificación", "type":"String", "unique":"true", "length":"15", "autocomplete":"true"},
-						{"name":"address", "spanishName":"Dirección", "type":"String"}, "required":"false",
+						{"name":"address", "spanishName":"Dirección", "type":"String", "required":"false"},
 						{"name":"zipCode", "spanishName":"Código postal", "type":"String", "required":"false"},
 						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "displayField":"description", "autocomplete":"true"},
 						{"name":"pob", "spanishName":"Zona postal", "type":"String", "required":"false"},
