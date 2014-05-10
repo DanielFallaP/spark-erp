@@ -42,7 +42,7 @@ public class ViewGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("rows", generateFieldRows(table));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
-		template.setAttribute("arraySeparator", Cybersystems.arraySeparator);
+		template.setAttribute("autocompleteFunctions", generateAutocompleteFunctions(table));
 
 		List<Field> fields = table.getFields();
 		if (!fields.isEmpty()){
@@ -50,6 +50,26 @@ public class ViewGenerator {
 		}
 		
 		CodeUtil.writeClass(template.toString(), Cybersystems.targetViewPath+"/normal/configuration/"+table.getName(), "create"+CodeUtil.toCamelCase(table.getName())+".html");
+	}
+	
+	private String generateAutocompleteFunctions(Table table){
+		List<Field> fields = table.getFields();
+		String functions="";
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersystems.codePath+"views");
+		for (Field field : fields) {
+			if (CodeUtil.generateAutoComplete(field)){
+				StringTemplate template = templateGroup.getInstanceOf("autocompleteFunction");
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("tableName", table.getName());
+				template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+				template.setAttribute("arraySeparator", Cybersystems.arraySeparator);
+
+				functions+="\n"+template.toString();
+			}
+		}
+		
+		return functions;
 	}
 	
 	private String generateDateFieldPickers(Table table){
@@ -130,6 +150,9 @@ public class ViewGenerator {
 				}
 				else{
 					template = stringTemplateGroup.getInstanceOf("referenceTableRow");
+					if (!field.getRequired()){
+						template.setAttribute("optionalReference", "<option value=\"\"></option>");
+					}
 				}
 				template.setAttribute("tableName", table.getName());
 				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
@@ -139,15 +162,6 @@ public class ViewGenerator {
 			}
 		}
 		return text;
-	}
-	
-	private String getCodeColumn(Table table){
-		
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersystems.codePath+"views");
-		StringTemplate template = templateGroup.getInstanceOf("codeColumn");
-		template.setAttribute("tableName", table.getName());
-		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-		return template.toString();
 	}
 	
 	private String getOtherColumns(Table table){

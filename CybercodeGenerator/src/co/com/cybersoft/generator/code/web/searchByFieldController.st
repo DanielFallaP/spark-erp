@@ -17,22 +17,22 @@ import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;
 import co.com.cybersoft.util.CyberUtils;
 
 @Controller
-@RequestMapping("/configuration/$tableName$/getDescriptionList/{description}")
-public class $entityName$SearchByDescriptionController {
+@RequestMapping("/configuration/$tableName$/get$upperFieldName$List/{$fieldName$}")
+public class $entityName$SearchBy$upperFieldName$Controller {
 
 	@Autowired
 	private $entityName$Service $tableName$Service;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public void get$entityName$Descriptions(@PathVariable("description") String description, HttpServletResponse response) throws Exception{
-		$entityName$PageEvent descriptionEvent = $tableName$Service.requestByContainingDescription(description);
+		public void get$entityName$List(@PathVariable("$fieldName$") String $fieldName$, HttpServletResponse response) throws Exception{
+		$entityName$PageEvent $fieldName$Event = $tableName$Service.requestByContaining$upperFieldName$($fieldName$);
 		
-		List<$entityName$Details> descriptions = descriptionEvent.get$entityName$List();
+		List<$entityName$Details> $fieldName$List = $fieldName$Event.get$entityName$List();
 		StringBuffer responseBuff=new StringBuffer();
 		int i=1;
-		for ($entityName$Details $tableName$Details : descriptions) {
-			responseBuff.append($tableName$Details.getDescription());
-			if (i!=descriptions.size()){
+		for ($entityName$Details $tableName$Details : $fieldName$List) {
+			responseBuff.append($tableName$Details.get$upperFieldName$());
+			if (i!=$fieldName$List.size()){
 				responseBuff.append(CyberUtils.arraySeparator);
 			}
 			i++;

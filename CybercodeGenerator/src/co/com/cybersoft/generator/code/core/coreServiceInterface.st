@@ -21,8 +21,9 @@ public interface $className$ {
 
 	$singleResponseEvent$ modify$entityUppercaseName$($modifyEvent$ event) throws Exception;
 	
-	$entityUppercaseName$PageEvent requestAll() throws Exception;
+	$requestAll$
 	
-	$entityUppercaseName$PageEvent requestByContainingDescription(String description) throws Exception;
+	$autocompleteRequest$
+	
 	
 }

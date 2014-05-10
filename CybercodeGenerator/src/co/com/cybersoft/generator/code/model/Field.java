@@ -3,18 +3,32 @@ package co.com.cybersoft.generator.code.model;
 public class Field {
 	private String name;
 	private String type;
-	private Boolean unique;
+	private Boolean unique=Boolean.FALSE;
 	private Integer length;
 	private Boolean required=Boolean.TRUE;
 	private Boolean visible=Boolean.TRUE;
 	private Boolean largeText=Boolean.FALSE;
 	private Boolean readOnly=Boolean.FALSE;
+	private Boolean autocomplete=Boolean.FALSE;
 	private String spanishName;
+	private String defaultValue;
 	
 	//For references only
 	private String refType;
 	private String displayField;
 	
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+	public Boolean getAutocomplete() {
+		return autocomplete;
+	}
+	public void setAutocomplete(Boolean autocomplete) {
+		this.autocomplete = autocomplete;
+	}
 	public String getSpanishName() {
 		return spanishName;
 	}

@@ -9,7 +9,14 @@ public class Table {
 	private List<Field> fields;
 	private Boolean labelTable=Boolean.FALSE;
 	private String spanishName;
+	private Boolean singletonTable;
 	
+	public Boolean getSingletonTable() {
+		return singletonTable;
+	}
+	public void setSingletonTable(Boolean singletonTable) {
+		this.singletonTable = singletonTable;
+	}
 	public String getSpanishName() {
 		return spanishName;
 	}

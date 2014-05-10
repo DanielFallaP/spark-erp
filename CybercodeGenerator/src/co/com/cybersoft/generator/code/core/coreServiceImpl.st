@@ -46,15 +46,10 @@ public class $entityUppercaseName$ServiceImpl implements $entityUppercaseName$Se
 	public $singleResponseEvent$ modify$entityUppercaseName$($modifyEvent$ event) throws Exception {
 		return $entityName$PersistenceService.modify$entityUppercaseName$(event);
 	}
+
+	$requestAll$
 	
-	@Override
-	public $entityUppercaseName$PageEvent requestAll() throws Exception {
-		return $entityName$PersistenceService.requestAll();
-	}
+	$autocompleteRequest$
 	
-	@Override
-	public $entityUppercaseName$PageEvent requestByContainingDescription(String description) throws Exception {
-		return $entityName$PersistenceService.requestByContainingDescription(description);
-	}
 	
 }

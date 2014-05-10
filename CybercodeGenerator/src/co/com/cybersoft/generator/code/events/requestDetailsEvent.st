@@ -9,7 +9,7 @@ public class Request$entityName$DetailsEvent {
 
 	private String id;
 	
-	private String description;
+	private String field;
 	
 	public Request$entityName$DetailsEvent(String id){
 		this.id=id;
@@ -19,11 +19,11 @@ public class Request$entityName$DetailsEvent {
 		return id;
 	}
 	
-	public String getDescription() {
-		return description;
+	public String getField() {
+		return field;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setField(String field) {
+		this.field = field;
 	}
 }

@@ -6,7 +6,7 @@ import co.com.cybersoft.persistence.domain.$entityName$;
 
 public interface $entityName$CustomRepo {
 
-	List<$entityName$> findByContainingDescription(String descriptionSubstring);
+	$autocompleteQuery$
 
-	List<$entityName$> findAllActive();
+	$findAllActive$
 }

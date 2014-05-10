@@ -20,7 +20,7 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 	@Autowired
 	private MongoOperations mongo;
 	
-	$byContainingDescription$
+	$byContainingFields$
 	
 	$findAllActive$
 

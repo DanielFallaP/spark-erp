@@ -1,16 +1,16 @@
 @Override
-	public List<$entityName$> findByContainingDescription(
-			String descriptionSubstring) {
+	public List<$entityName$> findByContaining$upperReferenceField$(
+			String $fieldName$Substring) {
 		List<$entityName$> $tableName$List = new ArrayList<$entityName$>();
 		DBCollection $tableName$Collection = mongo.getCollection("$tableName$");
 		BasicDBObject dbObject = new BasicDBObject();
-		dbObject.put("description", Pattern.compile(descriptionSubstring));
+		dbObject.put("$fieldName$", Pattern.compile($fieldName$Substring));
 		DBCursor $tableName$Cursor = $tableName$Collection.find(dbObject).limit(10);
 		while ($tableName$Cursor.hasNext()){
 			DBObject object = $tableName$Cursor.next();
-			String description=(String) object.get("description");
+			String $fieldName$String=(String) object.get("$fieldName$");
 			$entityName$ $tableName$ = new $entityName$();
-			$tableName$.setDescription(description);
+			$tableName$.set$upperReferenceField$($fieldName$String);
 			$tableName$List.add($tableName$);
 		}
 		return $tableName$List;

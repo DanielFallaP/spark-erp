@@ -86,11 +86,11 @@ public class $entityName$CreationController {
 	private $entityName$Info get$entityName$Info(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		$entityName$Info $tableName$Info = new $entityName$Info();
 		
-		String description = request.getParameter("desc");
+		String field = request.getParameter("field");
 		
-		if (description!=null){
+		if (field!=null){
 			Request$entityName$DetailsEvent event = new Request$entityName$DetailsEvent(null);
-			event.setDescription(description);
+			event.setField(field);
 			$entityName$DetailsEvent responseEvent = $tableName$Service.request$entityName$Details(event);
 			if (responseEvent.get$entityName$Details()!=null)
 				BeanUtils.copyProperties(responseEvent.get$entityName$Details(), $tableName$Info);
@@ -99,6 +99,7 @@ public class $entityName$CreationController {
 		$tableName$Info.setId(null);
 		
 		$setReferencesLists$
+		$setDefaults$
 		
 		$tableName$Info.setCalledFrom(calledFrom);
 		request.getSession().setAttribute("$tableName$Info", $tableName$Info);

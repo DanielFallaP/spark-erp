@@ -4,7 +4,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
@@ -111,6 +113,25 @@ public class CodeUtil {
 		return labelField;
 	}
 	
+	public static boolean generateQueryForReferences(Field field){
+		if (!field.isReference()){
+			return field.getUnique()&field.getType().equals(Cybersystems.stringType);
+		}			
+		else
+			return false;
+	}
+	
+	public static boolean generateDescriptionAutocomplete(Table table){
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (!field.isReference() && field.getName().equals("description") && field.getUnique())
+				return true;
+			if (!field.isReference() && field.getName().equals("description") && !field.getUnique() && field.getAutocomplete())
+				return true;
+		}
+		return false;
+	}
+	
 	public static boolean containsDescriptionField(Table table){
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
@@ -180,6 +201,47 @@ public class CodeUtil {
 			tableNames.add(table.getName());
 		}
 		return tableNames;
+	}
+	
+	public static String getDefaultValue(Field field){
+		try {
+			if (field.getType().equals(Cybersystems.booleanType)){
+				Boolean.parseBoolean(field.getDefaultValue());
+				return field.getDefaultValue();
+			}
+			else if (field.getType().equals(Cybersystems.stringType))
+				return "\""+field.getDefaultValue()+"\"";
+			else if (field.getType().equals(Cybersystems.longType)){
+				Long.parseLong(field.getDefaultValue());
+				return field.getDefaultValue()+"L";
+			}
+			else if (field.getType().equals(Cybersystems.doubleType)){
+				Double.parseDouble(field.getDefaultValue());
+				return field.getDefaultValue()+"D";
+			}
+			else if (field.getType().equals(Cybersystems.integerType)){
+				Integer.parseInt(field.getDefaultValue());
+				return field.getDefaultValue();
+			}
+			else if (field.getType().equals(Cybersystems.dateType)){
+				if (field.getDefaultValue().toLowerCase().equals(Cybersystems.todayValue)){
+					return "new Date()";
+				}
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy");
+				Date date = simpleDateFormat.parse(field.getDefaultValue());
+				String time=((Long)date.getTime()).toString();
+				return "new Date("+time+"L)";
+			}else{
+				throw new Exception("Invalid field format");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	public static boolean generateAutoComplete(Field field){
+		return !field.isReference()&&field.getUnique()&&field.getAutocomplete()&&field.getType().equals(Cybersystems.stringType);
 	}
 	
 }

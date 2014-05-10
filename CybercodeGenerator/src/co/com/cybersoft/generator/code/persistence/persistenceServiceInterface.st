@@ -22,8 +22,8 @@ public interface $entityName$PersistenceService {
 	
 	$entityName$DetailsEvent modify$entityName$($entityName$ModificationEvent event) throws Exception;
 	
-	$entityName$PageEvent requestAll() throws Exception;
+	$requestAll$
 	
-	$entityName$PageEvent requestByContainingDescription(String description) throws Exception;
+	$autocompleteRequest$
 	
 }

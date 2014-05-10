@@ -33,6 +33,8 @@ public class Cybersystems {
 	public final static String activeFieldName="active";
 	
 	public final static String repoDirName="Cybersoft";
+	
+	public final static String todayValue="today";
 
 	public List<Table> getTables() {
 		return tables;

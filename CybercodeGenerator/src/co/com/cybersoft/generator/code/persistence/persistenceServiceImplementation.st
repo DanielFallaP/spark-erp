@@ -65,24 +65,8 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 		return new $entityName$DetailsEvent($tableName$.to$entityName$Details());
 	}
 	
-	@Override
-	public $entityName$PageEvent requestAll() throws Exception {
-		List<$entityName$> all = $tableName$$repo$.findAll$active$();
-		List<$entityName$Details> list = new ArrayList<$entityName$Details>();
-		for ($entityName$ $tableName$ : all) {
-			list.add($tableName$.to$entityName$Details());
-		}
-		return new $entityName$PageEvent(list);
-	}
+	$requestAll$
 	
-	@Override
-	public $entityName$PageEvent requestByContainingDescription(String description) throws Exception {
-		ArrayList<$entityName$Details> list = new ArrayList<$entityName$Details>();
-		List<$entityName$> descriptions = $tableName$CustomRepo.findByContainingDescription(description);
-		for ($entityName$ $tableName$ : descriptions) {
-			list.add($tableName$.to$entityName$Details());
-		}
-		return new $entityName$PageEvent(list);
-	}
-
+	$autocompleteRequest$
+	
 }

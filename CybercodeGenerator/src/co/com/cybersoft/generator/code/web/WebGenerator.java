@@ -25,8 +25,12 @@ public class WebGenerator {
 			generateModifyController(table);
 			generateCreateController(table);
 			generateDomain(table);
-			if (CodeUtil.containsDescriptionField(table))
-				generateSearchByDescriptionController(table);
+			List<Field> fields = table.getFields();
+			for (Field field : fields) {
+				if (CodeUtil.generateAutoComplete(field)){
+					generateSearchByFieldController(table,field);
+				}
+			}
 			if (!table.getLabelTable())
 				generateExcelController(table);
 		}
@@ -41,13 +45,15 @@ public class WebGenerator {
 		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ExcelController.java");
 	}
 
-	private void generateSearchByDescriptionController(Table table){
+	private void generateSearchByFieldController(Table table, Field field){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersystems.codePath+"web");
-		StringTemplate template = templateGroup.getInstanceOf("searchByDescriptionController");
+		StringTemplate template = templateGroup.getInstanceOf("searchByFieldController");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("fieldName", field.getName());
+		template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchByDescriptionController.java");
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchBy"+CodeUtil.toCamelCase(field.getName())+"Controller.java");
 	}
 	
 	private void generateSearchController(Table table){
@@ -82,7 +88,25 @@ public class WebGenerator {
 		//reference lists
 		template.setAttribute("setReferencesLists", generateControllerReferencesLists(table));
 		
+		//default values
+		template.setAttribute("setDefaults", generateDefaults(table));
+		
 		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CreationController.java");
+	}
+	
+	private String generateDefaults(Table table){
+		List<Field> fields = table.getFields();
+		String defaults="";
+		for (Field field : fields) {
+			if (field.getDefaultValue()!=null){
+				StringTemplate stringTemplate = new StringTemplate("$tableName$Info.set$fieldName$($defaultValue$);\n");
+				stringTemplate.setAttribute("tableName", table.getName());
+				stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				stringTemplate.setAttribute("defaultValue", CodeUtil.getDefaultValue(field));
+				defaults+=stringTemplate.toString();
+			}
+		}
+		return defaults;
 	}
 	
 	private void generateModifyController(Table table){
@@ -139,17 +163,15 @@ public class WebGenerator {
 			}
 		}
 		
-		try {
 			for (Field field : fields) {
-				if(field.getRequired() && field.getVisible() && (field.getType().equals(Cybersystems.integerType) || 
-						field.getType().equals(Cybersystems.longType) || field.getType().equals(Cybersystems.stringType))){
-					imports+="import javax.validation.constraints.NotNull;\n";
-					break;
+				if (!field.isReference()){
+					if(field.getRequired() && field.getVisible() && (field.getType().equals(Cybersystems.integerType) || 
+							field.getType().equals(Cybersystems.longType) || field.getType().equals(Cybersystems.doubleType))){
+						imports+="import javax.validation.constraints.NotNull;\n";
+						break;
+					}
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		for (Field field : fields) {
 			if (field.getLength()!=null && (field.getType().equals(Cybersystems.integerType)
@@ -222,13 +244,13 @@ public class WebGenerator {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 			if (field.isReference()){
-				StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAll();\n"
+				StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAllBy$referenceField$();\n"
 						+ "$parentTableName$Info.set$variableName$List(all$variableName$Event.get$entityName$List());\n");
 				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
 				template.setAttribute("variableName", CodeUtil.toCamelCase(field.getName()));
 				template.setAttribute("tableName", field.getRefType());
 				template.setAttribute("parentTableName", table.getName());
-				
+				template.setAttribute("referenceField", CodeUtil.toCamelCase(field.getDisplayField()));
 				lists+=template.toString();
 			}
 		}
@@ -242,14 +264,13 @@ public class WebGenerator {
 		
 		for (Field field : fields) {
 			if (field.isReference()){
-				StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAll();\n"
-						+ "$parentTableName$Info.set$variableName$List(all$variableName$Event.get$entityName$List());\n"+
-						"$parentTableName$Info.rearrange$variableName$List($parentTableName$Info.get$variableName$());\n");
+				StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAllBy$referenceField$();\n"
+						+ "$parentTableName$Info.set$variableName$List(all$variableName$Event.get$entityName$List());\n");
 				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
 				template.setAttribute("variableName", CodeUtil.toCamelCase(field.getName()));
 				template.setAttribute("tableName", field.getRefType());
 				template.setAttribute("parentTableName", table.getName());
-				
+				template.setAttribute("referenceField", CodeUtil.toCamelCase(field.getDisplayField()));
 				lists+=template.toString();
 			}
 		}
@@ -336,21 +357,6 @@ public class WebGenerator {
 				body+=template.toString()+"\n\n";			
 			}
 		}
-		
-		//Reference list rearrangement
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybersystems.codePath+"web");
-		for (Field field : fields) {
-			if (field.isReference()){
-				StringTemplate template = templateGroup.getInstanceOf("referenceFieldRearrangement");
-				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-				template.setAttribute("tableName", field.getRefType());
-				template.setAttribute("fieldName", field.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				template.setAttribute("refFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
-				body+=template.toString();
-				body+="\n";
-			}
-		}		
 		
 		return body;
 	}
