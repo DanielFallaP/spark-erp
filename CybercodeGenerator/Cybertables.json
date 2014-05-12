@@ -188,7 +188,7 @@
 			"name":"partner",
 			"spanishName":"Socio",
 			"fields":[
-						{"name":"thirdParty", "spanishName":"Identificación", "refType":"thirdParty", "displayField":"thirdParty"},
+						{"name":"partner", "spanishName":"Identificación", "refType":"thirdParty", "displayField":"thirdParty"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},  
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -221,7 +221,7 @@
 			"name":"corporation",
 			"spanishName":"Corporación",
 			"fields":[
-						{"name":"thirdParty", "spanishName":"Identificación", "refType":"thirdParty", "displayField":"thirdParty"},
+						{"name":"corporation", "spanishName":"Identificación", "refType":"thirdParty", "displayField":"thirdParty"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -640,7 +640,7 @@
 			"name":"miniMax",	
 			"spanishName":"Mínimo Máximo",
 			"fields":[
-						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"item"},
+						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"itemDescription"},
 						{"name":"warehouse", "spanishName":"Bodega", "refType":"warehouse", "displayField":"warehouse"},
 						{"name":"minimumQuantity", "spanishName":"Cantidad mínima", "type":"Double"},
 						{"name":"maximumQuantity", "spanishName":"Cantidad máxima", "type":"Double"},
