@@ -1,6 +1,5 @@
 else{
-			$entityName$ $tableName$ = $tableName$Repository.findByDescription(event.getDescription());
-			if ($tableName$!=null)
-				$tableName$Details = $tableName$.to$entityName$Details();
-		}
-		
+					$entityName$ $tableName$ = new $entityName$PersistenceFactory($tableName$Repository).get$entityName$ByField(event.getField(),event.getValue());
+					if ($tableName$!=null)
+						$tableName$Details = $tableName$.to$entityName$Details();
+				}

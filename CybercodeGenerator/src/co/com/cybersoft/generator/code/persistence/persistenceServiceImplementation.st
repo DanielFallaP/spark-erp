@@ -53,7 +53,7 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 			if ($tableName$!=null)
 				$tableName$Details = $tableName$.to$entityName$Details();
 		}
-		$description$
+		$queryByField$
 		return new $entityName$DetailsEvent($tableName$Details);
 		
 	}

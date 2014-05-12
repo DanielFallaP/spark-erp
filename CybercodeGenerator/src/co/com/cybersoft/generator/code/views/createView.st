@@ -23,6 +23,7 @@
 		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
 	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
 	    <script type="text/javascript">
+	      /* <![CDATA[ */
 	     
 	      \$(document).keyup(function(e) {
 	    	  if(e.which == 27) {
@@ -40,7 +41,8 @@
 		  function setFocus(){
 		   		document.getElementById("$firstField$").focus();
 		   } 
-	     
+		   
+	       /* ]]> */
 	     </script>
 	    $datePickerConfig$
     </head>

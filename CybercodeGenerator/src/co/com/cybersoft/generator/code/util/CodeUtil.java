@@ -116,7 +116,9 @@ public class CodeUtil {
 	public static boolean generateQueryForReferences(Field field){
 		if (!field.isReference()){
 			return field.getUnique()&field.getType().equals(Cybersystems.stringType);
-		}			
+		}
+		else if (field.isReference())
+			return true;
 		else
 			return false;
 	}

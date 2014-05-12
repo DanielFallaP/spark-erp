@@ -19,9 +19,31 @@ public class PersistenceGenerator {
 			generatePersistenceInterface(table);
 			generatePersistenceImpl(table);
 			generateRepositories(table);
+			generatePersistenceFactory(table);
 		}
 	}
 	
+	private void generatePersistenceFactory(Table table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybersystems.codePath+"persistence");
+		StringTemplate template = templateGroup.getInstanceOf("persistenceFactory");
+		List<Field> fields = table.getFields();
+		String byFields="";
+		for (Field field : fields) {
+			if (!field.isReference() && field.getType().equals(Cybersystems.stringType)){
+				StringTemplate stringTemplate = templateGroup.getInstanceOf("queryByField");
+				stringTemplate.setAttribute("fieldName", field.getName());
+				stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				stringTemplate.setAttribute("tableName", table.getName());
+				byFields+=stringTemplate.toString();
+			}
+		}
+		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("tableName", table.getName());
+		template.setAttribute("queriesByFields", byFields);
+		
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceFactory.java");
+	}
+
 	public void generateDomainClass(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybersystems.codePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceDomain");
@@ -114,12 +136,12 @@ public class PersistenceGenerator {
 		template.setAttribute("active", table.isActiveReference()?"Active":"");
 		
 		StringTemplateGroup subTemplateGroup=new StringTemplateGroup("persistence",Cybersystems.codePath+"persistence");
-//		if(CodeUtil.generateDescriptionAutocomplete(table)){
-//			StringTemplate subTemplate = subTemplateGroup.getInstanceOf("descriptionPersistenceServiceImpl");
-//			subTemplate.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
-//			subTemplate.setAttribute("tableName", table.getName());
-//			template.setAttribute("description", subTemplate.toString());
-//		}
+		if(CodeUtil.generateDescriptionAutocomplete(table)){
+			StringTemplate subTemplate = subTemplateGroup.getInstanceOf("fieldPersistenceServiceImpl");
+			subTemplate.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+			subTemplate.setAttribute("tableName", table.getName());
+			template.setAttribute("queryByField", subTemplate.toString());
+		}
 		
 		List<Field> fields = table.getFields();
 		String requestImpl="";

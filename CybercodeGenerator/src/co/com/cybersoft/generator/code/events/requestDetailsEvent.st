@@ -11,6 +11,8 @@ public class Request$entityName$DetailsEvent {
 	
 	private String field;
 	
+	private String value;
+	
 	public Request$entityName$DetailsEvent(String id){
 		this.id=id;
 	}
@@ -26,4 +28,12 @@ public class Request$entityName$DetailsEvent {
 	public void setField(String field) {
 		this.field = field;
 	}
+	
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}	
 }

@@ -86,11 +86,13 @@ public class $entityName$CreationController {
 	private $entityName$Info get$entityName$Info(@PathVariable("from") String calledFrom, HttpServletRequest request)  throws Exception {
 		$entityName$Info $tableName$Info = new $entityName$Info();
 		
+		String value = request.getParameter("value");
 		String field = request.getParameter("field");
 		
-		if (field!=null){
+		if (value!=null){
 			Request$entityName$DetailsEvent event = new Request$entityName$DetailsEvent(null);
 			event.setField(field);
+			event.setValue(value);
 			$entityName$DetailsEvent responseEvent = $tableName$Service.request$entityName$Details(event);
 			if (responseEvent.get$entityName$Details()!=null)
 				BeanUtils.copyProperties(responseEvent.get$entityName$Details(), $tableName$Info);
