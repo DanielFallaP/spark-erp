@@ -73,6 +73,11 @@ dependencies {
 //  compile  'org.apache.poi:poi:3.10-FINAL'
   compile 'org.apache.poi:poi:3.9'
             
+  //Joda time library
+  compile 'joda-time:joda-time:2.3'
+  
+  //Timer library
+  compile 'org.quartz-scheduler:quartz:2.2.1'  
     
   testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
   testCompile 'junit:junit:4.11'

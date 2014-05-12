@@ -6,10 +6,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import co.com.cybersoft.persistence.domain.CustomerTenancy;
@@ -29,13 +32,56 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 	@Autowired
 	private ExchangeRateRepository exchangeRateRepo;
 	
-	@PostConstruct
 	@Override
 	public void updateTodayRates() throws Exception{
+		updateRatesForDay(new Date());
+	}
+	
+	@PostConstruct
+	private void updateRatesAtStart() throws Exception{
+		Date to=new Date();
+		GregorianCalendar init = new GregorianCalendar();
+		init.setTime(to);
+		init.add(Calendar.DATE, -30);
+		
+		updatePeriodRates(init.getTime(), to);
+	}
+
+	@Override
+	public void updatePeriodRates(Date from, Date to) throws Exception{
+		GregorianCalendar init = new GregorianCalendar();
+		init.setTime(from);
+		init.set(Calendar.HOUR_OF_DAY, 0);
+		init.set(Calendar.MINUTE, 0);
+		init.set(Calendar.SECOND, 0);
+		init.set(Calendar.MILLISECOND, 0);
+		
+		GregorianCalendar finale = new GregorianCalendar();
+		finale.setTime(to);
+		finale.set(Calendar.HOUR_OF_DAY, 0);
+		finale.set(Calendar.MINUTE, 0);
+		finale.set(Calendar.SECOND, 0);
+		finale.set(Calendar.MILLISECOND, 0);
+		
+		
+		
+		int days = Days.daysBetween(new DateTime(new Date(init.getTimeInMillis())), new DateTime(new Date(finale.getTimeInMillis()))).getDays();
+		if (days>30)
+			days=30;
+		
+		//Update the rates for the past 30 days or less
+		for (int i = 0; i < days; i++) {
+			init.add(Calendar.DATE, 1);
+			updateRatesForDay(init.getTime());
+		}
+	}
+	
+	private void updateRatesForDay(Date date) throws Exception{
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(date);
 		List<CustomerTenancy> tenancyList = tenancyRepo.findAll();
 		if (!tenancyList.isEmpty()){
-			//Check if the rate already exists
-			Calendar cal = Calendar.getInstance();
+			//Check if the rate for today already exists
 			cal.set(Calendar.HOUR_OF_DAY, 0);
 			cal.set(Calendar.MINUTE, 0);
 			cal.set(Calendar.SECOND, 0);
@@ -43,6 +89,10 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 			ExchangeRate exchangeRate = exchangeRateRepo.findByDate(cal.getTime());
 			if (exchangeRate==null){
 				cal.add(Calendar.DATE, -1);
+				
+				//Get yesterday rate if there is one
+				ExchangeRate yesterdayRate = exchangeRateRepo.findByDate(cal.getTime());
+				
 				CustomerTenancy tenancy = tenancyList.get(0);
 				String baseCurrency=tenancy.getForeignCurrency();
 				String localCurrency=tenancy.getLocalCurrency();
@@ -60,12 +110,11 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 				URL url = new URL(queryURL);
 				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 				connection.setRequestMethod("GET");
-				int responseCode = connection.getResponseCode();
 				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 				
 				//Get the .json response
 				String inputLine;
-		 
+				
 				while ((inputLine = reader.readLine()) != null) {
 					if (inputLine.contains(localCurrency)){
 						String r=inputLine.replace("\""+localCurrency+"\"", "");
@@ -73,13 +122,17 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 						r=r.replace(",", "");
 						
 						Double rate=Double.parseDouble(r.trim());
+						Double variation=0D;
+						if (yesterdayRate!=null && yesterdayRate.getRate()!=null){
+							variation=rate-yesterdayRate.getRate();
+						}
 						
 						cal.add(Calendar.DATE, 1);
 						exchangeRate = new ExchangeRate();
 						exchangeRate.setActive(true);
 						exchangeRate.setCreatedBy("admin");
 						exchangeRate.setDate(cal.getTime());
-						exchangeRate.setVariation(0D);
+						exchangeRate.setVariation(variation);
 						exchangeRate.setUserName("admin");
 						exchangeRate.setRate(rate);
 						exchangeRate.setLocalCurrency(localCurrency);
@@ -87,18 +140,15 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 						exchangeRate.setDateOfModification(cal.getTime());
 						exchangeRate.setDateOfCreation(cal.getTime());
 						
+						
 						exchangeRateRepo.save(exchangeRate);
+
 						break;
 					}
 				}
 				reader.close();
 			}
 		}
-	}
-
-	@Override
-	public void updatePeriodRates(Date from, Date to) throws Exception{
-		
 	}
 
 }
