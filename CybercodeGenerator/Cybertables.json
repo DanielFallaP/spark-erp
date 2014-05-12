@@ -198,7 +198,7 @@
 			"spanishName":"Impuesto de timbre",
 			"fields":[
 						{"name":"stampDuty", "spanishName":"Impuesto de timbre", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"consignmentWithholdingPercentage", "spanishName":"Porcentaje de retención de remesa", "type":"Double", "unique":"true"},
+						{"name":"stampDutyPercentage", "spanishName":"Porcentaje de impuesto de timbre", "type":"Double", "unique":"true"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
 						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
