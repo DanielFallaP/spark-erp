@@ -294,7 +294,7 @@
 		 },
 		 {	
 			"labelTable":"true",		 	
-			"name":"document",
+			"name":"doc",
 			"spanishName":"Documentos",
 			"fields":[
 						{"name":"document", "spanishName":"Documento", "type":"String", "unique":"true", "autocomplete":"true"},
@@ -318,7 +318,7 @@
 						{"name":"affectStock", "spanishName":"Afecta existencia", "type":"Boolean", "defaultValue":"true"},
 						{"name":"posted", "spanishName":"Contabiliza", "type":"Boolean", "defaultValue":"true"},
 						{"name":"acceptsSecondCurrencyChange", "spanishName":"Acepta segunda moneda", "type":"Boolean", "defaultValue":"true"},
-						{"name":"document", "spanishName":"Documento", "refType":"document", "displayField":"document"},
+						{"name":"document", "spanishName":"Documento", "refType":"doc", "displayField":"document"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -720,7 +720,7 @@
 			"name":"consecutive",
 			"spanishName":"Consecutivo",
 			"fields":[
-						{"name":"document", "spanishName":"Documento", "refType":"document", "displayField":"document"},
+						{"name":"document", "spanishName":"Documento", "refType":"doc", "displayField":"document"},
 						{"name":"consecutive", "spanishName":"Número consecutivo", "type":"Integer", "unique":"true"},
 						{"name":"consecutiveName", "spanishName":"Nombre del consecutivo", "type":"String", "unique":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
