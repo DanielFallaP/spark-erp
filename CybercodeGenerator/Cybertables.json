@@ -82,7 +82,7 @@
 			"spanishName":"Ciudad",
 			"fields":[
 						{"name":"state", "spanishName":"DepartamentoEstado", "refType":"state", "displayField":"state"},
-						{"name":"populatedPlace", "spanishName":"Ciudad", "type":"String", "autocomplete":"true"},
+						{"name":"populatedPlace", "spanishName":"Ciudad", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"area", "spanishName":"Area", "type":"Integer", "required":"false"},
 						{"name":"population", "spanishName":"Población", "type":"Integer", "required":"false"},
 						{"name":"latitude", "spanishName":"Latitud", "type":"String", "required":"false"},
@@ -139,7 +139,7 @@
 			"name":"thirdParty",
 			"spanishName":"Tercero",
 			"fields":[
-						{"name":"thirdParty", "spanishName":"Nombre", "type":"String", "autocomplete":"true"},
+						{"name":"thirdParty", "spanishName":"Nombre", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"identification", "spanishName":"identificación", "type":"String", "unique":"true", "length":"15", "autocomplete":"true"},
 						{"name":"address", "spanishName":"Dirección", "type":"String", "required":"false"},
 						{"name":"zipCode", "spanishName":"Código postal", "type":"String", "required":"false"},
@@ -249,7 +249,7 @@
 			"name":"department",		
 			"spanishName":"Departamento",
 			"fields":[
-						{"name":"branch", "spanishName":"Sucursal", "refType":"branch", "displayField":"branch"},
+						{"name":"brach", "spanishName":"Sucursal", "refType":"branch", "displayField":"branch"},
 						{"name":"department", "spanishName":"Departamento", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -260,7 +260,7 @@
 			"name":"section",		
 			"spanishName":"Sección",
 			"fields":[
-						{"name":"department", "spanishName":"Departmento", "refType":"branch", "displayField":"department"},
+						{"name":"department", "spanishName":"Departmento", "refType":"department", "displayField":"department"},
 						{"name":"section", "spanishName":"Sección", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -532,7 +532,7 @@
 			"name":"itemTradeMark",
 			"spanishName":"Marca de ítem",
 			"fields":[
-						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code", "autocomplete":"true"},
+						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"itemDescription", "autocomplete":"true"},
 						{"name":"tradeMark", "spanishName":"Marca", "type":"String", "unique":"true"},
 					 	{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
