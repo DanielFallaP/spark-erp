@@ -6,12 +6,14 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.PrintSetup;
@@ -19,6 +21,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.mongodb.core.MongoOperations;
 
 import co.com.cybersoft.util.CyberUtils;
@@ -30,13 +34,19 @@ import com.mongodb.DBObject;
 public class ReportingServiceImpl implements ReportingService {
 
 	@Autowired
+	private ApplicationContext context;
+	
+	@Autowired
 	private MongoOperations mongo;
 	
+	@Autowired
+	private ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource;
+	
 	@Override
-	public String toExcel(String className) throws Exception {
+	public String toExcel(String className, Locale locale) throws Exception {
 		Class<?> forName = Class.forName(className);
 		DBCollection collection = mongo.getCollection(toLowerCamelCase(forName.getSimpleName()));
-		return generateExcel(collection.find(), forName);
+		return generateExcel(collection.find(), forName, locale);
 	}
 	
 	private String toLowerCamelCase(String name){
@@ -44,10 +54,17 @@ public class ReportingServiceImpl implements ReportingService {
 		return character.toString().toLowerCase()+name.substring(1);
 	}
 	
-	private String generateExcel(DBCursor cursor, Class<?> _class) throws IOException{
+	private String toUpperCamelCase(String name){
+		Character character= name.charAt(0);
+		return character.toString().toUpperCase()+name.substring(1);
+	}
+	
+	private String generateExcel(DBCursor cursor, Class<?> _class, Locale locale) throws IOException{
+		
+		
 		//Generation of document and title
 		Workbook wb=new HSSFWorkbook();
-		Sheet sheet = wb.createSheet(_class.getSimpleName());
+		Sheet sheet = wb.createSheet(reloadableResourceBundleMessageSource.getMessage(CyberUtils.messageResourcePrefix+toLowerCamelCase(_class.getSimpleName()),null,toLowerCamelCase(_class.getSimpleName()),locale));
 		PrintSetup printSetup = sheet.getPrintSetup();
 		printSetup.setLandscape(true);
 		sheet.setHorizontallyCenter(true);
@@ -57,7 +74,7 @@ public class ReportingServiceImpl implements ReportingService {
 		Row titleRow = sheet.createRow(0);
 		titleRow.setHeightInPoints(45);
 		Cell titleCell = titleRow.createCell(0);
-		titleCell.setCellValue(_class.getSimpleName());
+		titleCell.setCellValue(reloadableResourceBundleMessageSource.getMessage(CyberUtils.messageResourcePrefix+toLowerCamelCase(_class.getSimpleName()),null,toLowerCamelCase(_class.getSimpleName()),locale));
 		titleCell.setCellStyle(styles.get("title"));
 		sheet.setColumnWidth(0, 30*256);
 		
@@ -72,7 +89,7 @@ public class ReportingServiceImpl implements ReportingService {
 			Field field = fields[i];
 			if (!field.getName().equals(CyberUtils.idField)){
 				headerCell = headerRow.createCell(j);
-				headerCell.setCellValue(fields[i].getName());
+				headerCell.setCellValue(reloadableResourceBundleMessageSource.getMessage(CyberUtils.messageResourcePrefix+toLowerCamelCase(_class.getSimpleName())+toUpperCamelCase(fields[i].getName()),null,toLowerCamelCase(_class.getSimpleName())+toUpperCamelCase(fields[i].getName()),locale));
 				headerCell.setCellStyle(styles.get("header"));
 				j++;
 			}
@@ -90,31 +107,38 @@ public class ReportingServiceImpl implements ReportingService {
 					Cell cell = row.createCell(k);
 					Object object = next.get(toLowerCamelCase(fields[i].getName()));
 					if (object!=null){
-						if (object instanceof String)
+						if (object instanceof String){
 							cell.setCellValue((String) object);
+							cell.setCellStyle(styles.get("cell"));
+						}
 						else if (object instanceof Double ){
 							cell.setCellValue((double) object);
+							cell.setCellStyle(styles.get("cell"));
 						}
 						else if (object instanceof Integer){
 							Integer number=(Integer) object;
 							cell.setCellValue(number.doubleValue());
+							cell.setCellStyle(styles.get("cell"));
 							
 						}
 						else if (object instanceof Long){
 							Long number=(Long) object;
 							cell.setCellValue(number.doubleValue());
+							cell.setCellStyle(styles.get("cell"));
 						}
 						else if (object instanceof Boolean){
 							Boolean bool=(Boolean) object;
 							cell.setCellValue(bool.toString());
+							cell.setCellStyle(styles.get("cell"));
 						}
-						else
-							cell.setCellValue((Date) object);
+						else{
+							cell.setCellValue(((Date) object));
+							cell.setCellStyle(styles.get("dateCell"));
+						}
 					}
 					else{
 						cell.setCellValue("");
 					}
-//					cell.setCellStyle(styles.get("cell"));
 					k++;
 				}
 			}
@@ -171,7 +195,25 @@ public class ReportingServiceImpl implements ReportingService {
         style.setBorderBottom(CellStyle.BORDER_THIN);
         style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
         styles.put("cell", style);
+        
+        DataFormat df = wb.createDataFormat();
+        
+        style = wb.createCellStyle();
+        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setWrapText(true);
+        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+        style.setDataFormat(df.getFormat("dd-mm-yyyy"));
+        styles.put("dateCell", style);
 
+
+        
         return styles;
 	}
 }
