@@ -1,6 +1,7 @@
 package co.com.cybersoft.generator.resources;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
@@ -13,6 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import co.com.cybersoft.generator.code.model.Cybersystems;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
+import co.com.cybersoft.generator.code.util.CodeUtil;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -49,37 +51,48 @@ public class DataPopulation implements DBConstants{
 	public void populate() throws Exception{
 		FileReader fileReader = new FileReader(dataTablePath);
 		BufferedReader reader = new BufferedReader(fileReader);
+		
+		BufferedWriter bufferedWriter = CodeUtil.initializeErrorFileWriting("insertionErrors.txt");
 		String line = reader.readLine();
 			while(line!=null){
-				String[] data = line.split(dataFileSeparator);
-				if (data.length!=0 && !data[0].equals("")){
-					System.out.println("=============Inserting data in: "+data[0]);
-					insertRecord(getTableLine(data), data);
+				try {
+					String[] data = line.split(dataFileSeparator);
+					if (data.length!=0 && !data[0].equals("")){
+						System.out.println("=============Inserting data in: "+data[0]);
+						insertRecord(getTableLine(data), data);
+						line=reader.readLine();
+					}
+					else{
+						line=reader.readLine();
+					}
+				} catch (Exception e) {
+					String errorLine=line+"   "+e.getMessage();
+					bufferedWriter = CodeUtil.writeErrorLine(errorLine, bufferedWriter);
 					line=reader.readLine();
-				}
-				else{
-					line=reader.readLine();
+					continue;
 				}
 			}
+
+		bufferedWriter.close();
 		reader.close();
 	}
 	
 	private void insertRecord(Table table, String[] data){
-		List<Field> fields = table.getFields();
-		DBCollection collection = mongoDB.getCollection(table.getName());
-		BasicDBObject doc=new BasicDBObject();
-		for (int i = 0; i < fields.size(); i++) {
-			Field field=fields.get(i);
-			appendValue(doc, field, data[i+1]);
-		}
-		
-		doc.append("dateOfCreation", new Date());
-		doc.append("createdBy", "batchProcess");
-		doc.append("dateOfModification", new Date());
-		doc.append("userName", "batchProcess");
-		
-		if (doc.size()!=0)
-			collection.insert(doc);
+			List<Field> fields = table.getFields();
+			DBCollection collection = mongoDB.getCollection(table.getName());
+			BasicDBObject doc=new BasicDBObject();
+			for (int i = 0; i < fields.size(); i++) {
+				Field field=fields.get(i);
+				appendValue(doc, field, data[i+1]);
+			}
+			
+			doc.append("dateOfCreation", new Date());
+			doc.append("createdBy", "batchProcess");
+			doc.append("dateOfModification", new Date());
+			doc.append("userName", "batchProcess");
+			
+			if (doc.size()!=0)
+				collection.insert(doc);
 	}
 	
 	private Table getTableLine(String[] data) throws Exception{

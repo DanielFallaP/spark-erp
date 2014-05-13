@@ -24,6 +24,18 @@ public class CodeUtil {
 		return character.toString().toUpperCase()+name.substring(1);
 	}
 	
+	public static BufferedWriter initializeErrorFileWriting(String fileName) throws IOException{
+		File file = new File(fileName);
+		
+		BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
+		return bufferedWriter;
+	}
+	
+	public static BufferedWriter writeErrorLine(String line, BufferedWriter bufferedWriter) throws IOException{
+		bufferedWriter.write(line+"\n");
+		return bufferedWriter;
+	}
+	
 	public static void writeClass(String code, String filePath, String fileName){
 		BufferedWriter bufferedWriter=null;
 		try {
@@ -83,14 +95,15 @@ public class CodeUtil {
 		return text;
 	}
 	
-	public static boolean referencesLabelTable(String tableName, Cybersystems cybersoft){
+	public static boolean referencesLabelTable(Field referenceField, Cybersystems cybersoft){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
-			if (table.getName().equals(tableName)){
-				if (table.getLabelTable())
-					return true;
-				else
-					return false;
+			if (table.getLabelTable() &&table.getName().equals(referenceField.getRefType())){
+				List<Field> fields = table.getFields();
+				for (Field field : fields) {
+					if (field.getName().equals(referenceField.getDisplayField()) && field.getLabelField())
+						return true;
+				}
 			}
 		}
 		return false;
@@ -105,7 +118,7 @@ public class CodeUtil {
 		List<Field> fields = table.getFields();
 		String labelField="";
 		for (Field field : fields) {
-				if (!field.isReference() && field.getType().equals(Cybersystems.stringType)){
+				if (!field.isReference() && field.getLabelField() && field.getType().equals(Cybersystems.stringType)){
 					labelField=field.getName();
 					break;
 				}
