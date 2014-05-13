@@ -145,7 +145,7 @@ public class ViewGenerator {
 			
 			if (field.isReference()){
 				StringTemplate template;
-				if (CodeUtil.referencesLabelTable(field.getRefType(), cybersoft)){
+				if (CodeUtil.referencesLabelTable(field, cybersoft)){
 					template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
 				}
 				else{
@@ -183,7 +183,7 @@ public class ViewGenerator {
 				
 				if (field.isReference()){
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
-					if (CodeUtil.referencesLabelTable(field.getRefType(), cybersoft)){
+					if (CodeUtil.referencesLabelTable(field, cybersoft)){
 						template = templateGroup.getInstanceOf("otherLabelTableColumn");
 					}
 					else{

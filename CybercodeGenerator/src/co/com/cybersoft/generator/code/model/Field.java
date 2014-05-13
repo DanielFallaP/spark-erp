@@ -12,11 +12,18 @@ public class Field {
 	private Boolean autocomplete=Boolean.FALSE;
 	private String spanishName;
 	private String defaultValue;
+	private Boolean labelField=Boolean.FALSE;
 	
 	//For references only
 	private String refType;
 	private String displayField;
 	
+	public Boolean getLabelField() {
+		return labelField;
+	}
+	public void setLabelField(Boolean labelField) {
+		this.labelField = labelField;
+	}
 	public String getDefaultValue() {
 		return defaultValue;
 	}
