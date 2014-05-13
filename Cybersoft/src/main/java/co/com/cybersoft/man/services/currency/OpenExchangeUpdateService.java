@@ -9,8 +9,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +35,6 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 		updateRatesForDay(new Date());
 	}
 	
-	@PostConstruct
-	private void updateRatesAtStart() throws Exception{
-		Date to=new Date();
-		GregorianCalendar init = new GregorianCalendar();
-		init.setTime(to);
-		init.add(Calendar.DATE, -30);
-		
-		updatePeriodRates(init.getTime(), to);
-	}
-
 	@Override
 	public void updatePeriodRates(Date from, Date to) throws Exception{
 		GregorianCalendar init = new GregorianCalendar();

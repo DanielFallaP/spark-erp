@@ -89,7 +89,20 @@ public class ReportingServiceImpl implements ReportingService {
 			Field field = fields[i];
 			if (!field.getName().equals(CyberUtils.idField)){
 				headerCell = headerRow.createCell(j);
-				headerCell.setCellValue(reloadableResourceBundleMessageSource.getMessage(CyberUtils.messageResourcePrefix+toLowerCamelCase(_class.getSimpleName())+toUpperCamelCase(fields[i].getName()),null,toLowerCamelCase(_class.getSimpleName())+toUpperCamelCase(fields[i].getName()),locale));
+				String fieldName="";
+				
+				//Special labels for audit fields
+				if (field.getName().equals(CyberUtils.defaultCreatingUser))
+					fieldName=CyberUtils.defaultCreatingUser;
+				else if(field.getName().equals(CyberUtils.defaultCreationDateName))
+					fieldName=CyberUtils.defaultCreationDateName;
+				else if (field.getName().equals(CyberUtils.defaultModificationDateName))
+					fieldName=CyberUtils.defaultModificationDateName;
+				else if (field.getName().equals(CyberUtils.defaultModifyingUser))
+					fieldName="userOfModification";
+				else
+					fieldName=toLowerCamelCase(_class.getSimpleName())+toUpperCamelCase(field.getName());
+				headerCell.setCellValue(reloadableResourceBundleMessageSource.getMessage(CyberUtils.messageResourcePrefix+fieldName,null,toLowerCamelCase(_class.getSimpleName())+toUpperCamelCase(fields[i].getName()),locale));
 				headerCell.setCellStyle(styles.get("header"));
 				j++;
 			}
