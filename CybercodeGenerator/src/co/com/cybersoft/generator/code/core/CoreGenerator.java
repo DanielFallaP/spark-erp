@@ -34,6 +34,7 @@ public class CoreGenerator {
 		template.setAttribute("allRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent");
 		template.setAttribute("className", className);
 		template.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("upperEntityName", CodeUtil.toCamelCase(table.getName()));
 		
 		//Generate all reference methods for all fields that can be referenced by other tables
 		List<Field> fields = table.getFields();
@@ -75,6 +76,7 @@ public class CoreGenerator {
 		template.setAttribute("singleRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"DetailsEvent");
 		template.setAttribute("allRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent");
 		template.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("upperEntityName", CodeUtil.toCamelCase(table.getName()));
 		
 		//Generate all reference methods for all fields that can be referenced by other tables
 		String requestImpl="";

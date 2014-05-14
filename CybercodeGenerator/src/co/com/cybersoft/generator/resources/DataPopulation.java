@@ -108,24 +108,27 @@ public class DataPopulation implements DBConstants{
 	}
 	
 	private void appendValue(BasicDBObject doc, Field field, String stringValue){
-		if (field.getType()!=null){
-			if (field.getType().equals(Cybersystems.doubleType))
-				doc.append(field.getName(), Double.parseDouble(stringValue));
-			else if (field.getType().equals(Cybersystems.booleanType))
-				doc.append(field.getName(), Boolean.parseBoolean(stringValue));
-			else if (field.getType().equals(Cybersystems.dateType))
-				doc.append(field.getName(), stringValue);
-			else if (field.getType().equals(Cybersystems.integerType))
-				doc.append(field.getName(), Integer.parseInt(stringValue));
-			else if (field.getType().equals(Cybersystems.longType))
-				doc.append(field.getName(), Long.parseLong(stringValue));
-			else
-				doc.append(field.getName(), stringValue);
-		}
-		else{
-			doc.append(field.getName(), stringValue);
-		}
-					
+			if (field.getType()!=null && !stringValue.equals("")){
+				if (field.getType().equals(Cybersystems.doubleType))
+					doc.append(field.getName(), Double.parseDouble(stringValue));
+				else if (field.getType().equals(Cybersystems.booleanType))
+					doc.append(field.getName(), Boolean.parseBoolean(stringValue));
+				else if (field.getType().equals(Cybersystems.dateType))
+					doc.append(field.getName(), stringValue);
+				else if (field.getType().equals(Cybersystems.integerType))
+					doc.append(field.getName(), Integer.parseInt(stringValue));
+				else if (field.getType().equals(Cybersystems.longType))
+					doc.append(field.getName(), Long.parseLong(stringValue));
+				else
+					doc.append(field.getName(), stringValue);
+			}
+			else{
+				if (field.getType()!=null && field.getType().equals(Cybersystems.stringType))
+					doc.append(field.getName(), stringValue);
+				if (field.getRefType()!=null)
+					doc.append(field.getName(), stringValue);
+			}
+			
 	}
-	
+					
 }

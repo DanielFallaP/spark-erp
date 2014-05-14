@@ -65,6 +65,17 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 		return new $entityName$DetailsEvent($tableName$.to$entityName$Details());
 	}
 	
+	@Override
+		public $entityName$DetailsEvent getOnlyRecord() throws Exception {
+			List<$entityName$> all = $tableName$Repository.findAll();
+			$entityName$Details single = new $entityName$Details();
+			for ($entityName$ $tableName$ : all) {
+				single=$tableName$.to$entityName$Details();
+				break;
+			}
+			return new $entityName$DetailsEvent(single);
+		}
+	
 	$requestAll$
 	
 	$autocompleteRequest$

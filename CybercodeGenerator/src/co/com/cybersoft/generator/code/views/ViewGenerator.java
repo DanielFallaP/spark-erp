@@ -26,15 +26,35 @@ public class ViewGenerator {
 	public void generate(){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
-			generateCreateView(table);
-			generateModifyView(table);
-			generateSearchView(table);
+			if (!table.getSingletonTable()){
+				generateCreateView(table);
+				generateModifyView(table);
+				generateSearchView(table);
+			}
+			else{
+				generateSetView(table);
+			}
 		}
 		
 		generateLinksView(cybersoft);
 		generateSettingsView(cybersoft);
 	}
 	
+	private void generateSetView(Table table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersystems.codePath+"views");
+		StringTemplate template = templateGroup.getInstanceOf("singletonView");
+		template.setAttribute("tableName", table.getName());
+		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("rows", generateFieldRows(table));
+		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
+		List<Field> fields = table.getFields();
+		if (!fields.isEmpty()){
+			template.setAttribute("firstField", fields.get(0).getName());
+		}
+		
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetViewPath+"/normal/configuration/"+table.getName(), "modify"+CodeUtil.toCamelCase(table.getName())+".html");
+	}
+
 	private void generateSettingsView(Cybersystems cybersoft2) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybersystems.codePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("settings");
@@ -45,7 +65,7 @@ public class ViewGenerator {
 		for (Table table : tables) {
 			if (table.getLabelTable() || table.getSingletonTable()){
 				StringTemplate linkTemplate = templateGroup.getInstanceOf("configurationLink");
-				
+				linkTemplate.setAttribute("option", table.getLabelTable()?"search":"set");
 				linkTemplate.setAttribute("tableName",table.getName());
 				linkTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 				links+=linkTemplate.toString()+"\n";
@@ -302,7 +322,7 @@ public class ViewGenerator {
 		for (Table table : tables) {
 			if (!table.getLabelTable() && !table.getSingletonTable()){
 				StringTemplate linkTemplate = templateGroup.getInstanceOf("configurationLink");
-				
+				linkTemplate.setAttribute("option", "search");
 				linkTemplate.setAttribute("tableName",table.getName());
 				linkTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 				links+=linkTemplate.toString()+"\n";

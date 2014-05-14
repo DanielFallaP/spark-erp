@@ -13,6 +13,8 @@ import co.com.cybersoft.events.$entityName$.$allRequestEvent$;
  *
  */
 public interface $className$ {
+	$upperEntityName$DetailsEvent requestOnlyRecord() throws Exception;
+
 	$singleResponseEvent$ create$entityUppercaseName$($createEvent$ event ) throws Exception;
 	
 	$allResponseEvent$ request$entityUppercaseName$Page($allRequestEvent$ event) throws Exception;

@@ -26,4 +26,6 @@ public interface $entityName$PersistenceService {
 	
 	$autocompleteRequest$
 	
+	$entityName$DetailsEvent getOnlyRecord() throws Exception;
+	
 }

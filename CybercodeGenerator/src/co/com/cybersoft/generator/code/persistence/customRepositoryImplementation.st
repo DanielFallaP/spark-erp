@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 
@@ -19,6 +21,8 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 
 	@Autowired
 	private MongoOperations mongo;
+	
+	$startupSingletonRecord$
 	
 	$byContainingFields$
 	

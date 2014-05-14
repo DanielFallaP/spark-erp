@@ -68,16 +68,16 @@ public class LabelGenerator implements DBConstants{
 			LabelGenerator labelGenerator = new LabelGenerator(cybersoft,insertionPst, englishUpdatePst, spanishUpdatePst, db);
 
 			//Inserts all labels found in the views directory
-//			labelGenerator.insertLabels(rootDirectory);
+			labelGenerator.insertLabels(rootDirectory);
 			
 			//Inserts all labels found in label tables
 			labelGenerator.insertLabelTablesContent();
 			
 			//Updates English default messages for empty messages in the DB
-//			labelGenerator.updateDefaultEnglishMessages();
+			labelGenerator.updateDefaultEnglishMessages();
 			
 			//Updates Spanish default messages for empty messages in the DB
-//			labelGenerator.updateDefaultSpanishMessages();
+			labelGenerator.updateDefaultSpanishMessages();
 			
 		} catch (Exception e) {
 			e.printStackTrace();

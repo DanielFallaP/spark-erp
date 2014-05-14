@@ -46,6 +46,11 @@ public class $entityUppercaseName$ServiceImpl implements $entityUppercaseName$Se
 	public $singleResponseEvent$ modify$entityUppercaseName$($modifyEvent$ event) throws Exception {
 		return $entityName$PersistenceService.modify$entityUppercaseName$(event);
 	}
+	
+	@Override
+	public $upperEntityName$DetailsEvent requestOnlyRecord() throws Exception {
+		return $entityName$PersistenceService.getOnlyRecord();
+	}
 
 	$requestAll$
 	

@@ -21,9 +21,15 @@ public class WebGenerator {
 	public void generate(Cybersystems cybersoft){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
-			generateSearchController(table);
-			generateModifyController(table);
-			generateCreateController(table);
+			if (!table.getSingletonTable()){
+				generateSearchController(table);
+				generateModifyController(table);
+				generateCreateController(table);
+			}
+			else{
+				generateSingletonController(table);
+			}
+			
 			generateDomain(table);
 			List<Field> fields = table.getFields();
 			for (Field field : fields) {
@@ -31,11 +37,29 @@ public class WebGenerator {
 					generateSearchByFieldController(table,field);
 				}
 			}
-			if (!table.getLabelTable())
+			if (!table.getLabelTable() && !table.getSingletonTable())
 				generateExcelController(table);
 		}
 	}
 	
+	private void generateSingletonController(Table table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybersystems.codePath+"web");
+		StringTemplate template = templateGroup.getInstanceOf("setController");
+		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
+		template.setAttribute("tableName", table.getName());
+		
+		//imports for references
+		template.setAttribute("referenceServicesImports", generateControllerReferenceImports(table));
+		
+		//reference services declarations
+		template.setAttribute("referenceServicesDeclarations", generateControllerReferencesServicesDeclarations(table));
+		
+		//reference lists
+		template.setAttribute("setReferencesLists", generateModificationControllerReferencesLists(table));
+		
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/web/controller/"+table.getName(), "Set"+CodeUtil.toCamelCase(table.getName())+"Controller.java");
+	}
+
 	private void generateExcelController(Table table) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybersystems.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("excelController");
