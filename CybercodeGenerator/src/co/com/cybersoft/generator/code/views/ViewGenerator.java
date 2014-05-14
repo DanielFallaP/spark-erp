@@ -32,8 +32,31 @@ public class ViewGenerator {
 		}
 		
 		generateLinksView(cybersoft);
+		generateSettingsView(cybersoft);
 	}
 	
+	private void generateSettingsView(Cybersystems cybersoft2) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybersystems.codePath+"views");
+		StringTemplate template = templateGroup.getInstanceOf("settings");
+		
+		List<Table> tables = cybersoft.getTables();
+		String links="";
+		
+		for (Table table : tables) {
+			if (table.getLabelTable() || table.getSingletonTable()){
+				StringTemplate linkTemplate = templateGroup.getInstanceOf("configurationLink");
+				
+				linkTemplate.setAttribute("tableName",table.getName());
+				linkTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+				links+=linkTemplate.toString()+"\n";
+			}
+		}
+		
+		template.setAttribute("links", links);
+		
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetViewPath+"normal", "settings.html");
+	}
+
 	private void generateCreateView(Table table){
 		
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybersystems.codePath+"views");
@@ -277,11 +300,13 @@ public class ViewGenerator {
 		String links="";
 		
 		for (Table table : tables) {
-			StringTemplate linkTemplate = templateGroup.getInstanceOf("configurationLink");
-			
-			linkTemplate.setAttribute("tableName",table.getName());
-			linkTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-			links+=linkTemplate.toString()+"\n";
+			if (!table.getLabelTable() && !table.getSingletonTable()){
+				StringTemplate linkTemplate = templateGroup.getInstanceOf("configurationLink");
+				
+				linkTemplate.setAttribute("tableName",table.getName());
+				linkTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+				links+=linkTemplate.toString()+"\n";
+			}
 		}
 		
 		template.setAttribute("links", links);
