@@ -37,7 +37,7 @@ $referenceServicesImports$
  *
  */
 @Controller
-@RequestMapping("/configuration/businessRules/set$entityName$")
+@RequestMapping("/configuration/$tableName$/set$entityName$")
 public class Set$entityName$Controller {
 	private static final Logger LOG=LoggerFactory.getLogger(Set$entityName$Controller.class);
 	

@@ -52,7 +52,7 @@ public class ViewGenerator {
 			template.setAttribute("firstField", fields.get(0).getName());
 		}
 		
-		CodeUtil.writeClass(template.toString(), Cybersystems.targetViewPath+"/normal/configuration/"+table.getName(), "modify"+CodeUtil.toCamelCase(table.getName())+".html");
+		CodeUtil.writeClass(template.toString(), Cybersystems.targetViewPath+"/normal/configuration/"+table.getName(), "set"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
 
 	private void generateSettingsView(Cybersystems cybersoft2) {
