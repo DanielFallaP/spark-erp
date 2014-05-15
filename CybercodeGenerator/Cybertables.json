@@ -93,20 +93,60 @@
 			"name":"balanceGroup",
 			"spanishName":"Grupo de balance",
 			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
 						{"name":"balanceGroup", "spanishName":"Grupo de balance", "type":"String", "unique":"true", "labelField":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
+			"labelTable":"true",		 	
+			"name":"accountNature",
+			"spanishName":"Naturaleza contable",
+			"fields":[
+						{"name":"nature", "spanishName":"Naturaleza contable", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"Sign", "spanishName":"Signo (+/-)", "type":"String", "unique":"true", "length":"1"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
 		 {	
-			"name":"groupAccount",
-			"spanishName":"Cuenta totalizadora",
+			"name":"localAccounTemplate",
+			"spanishName":"Cuenta local nivel 1",
+			"singletonTable":"true",
 			"fields":[
-						{"name":"groupAccount", "spanishName":"Cuenta totalizadora", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"12"},
-						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"level1Digits", "spanishName":"Dígitos nivel 1", "type":"integer", "length":"1"},
+						{"name":"level2Digits", "spanishName":"Dígitos nivel 2", "type":"integer", "length":"1"},
+						{"name":"level3Digits", "spanishName":"Dígitos nivel 3", "type":"integer", "length":"1"},
+						{"name":"level4Digits", "spanishName":"Dígitos nivel 4", "type":"integer", "length":"1"},
+						{"name":"level5Digits", "spanishName":"Dígitos nivel 5", "type":"integer", "length":"1"},
+						{"name":"level6Digits", "spanishName":"Dígitos nivel 6", "type":"integer", "length":"1"},
+						{"name":"level7Digits", "spanishName":"Dígitos nivel 7", "type":"integer", "length":"1"},
+						{"name":"level8Digits", "spanishName":"Dígitos nivel 8", "type":"integer", "length":"1"},
+						{"name":"level9Digits", "spanishName":"Dígitos nivel 9", "type":"integer", "length":"1"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
+			"name":"localAccountLevel1",
+			"spanishName":"Cuenta local nivel 1",
+			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"localAccountLevel1", "spanishName":"Cuenta local nivel 1", "type":"String", "unique":"true"},
+						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "length":"1"},
 						{"name":"balanceGroup", "spanishName":"Grupo de Balance", "refType":"balanceGroup", "displayField":"balanceGroup"},
-						{"name":"accountNature", "spanishName":"Naturaleza contable", "refType":"accountNature", "displayField":"accountNature"},
+						{"name":"accountSign", "spanishName":"Signo (+/-)", "refType":"accountNature", "displayField":"accountSign"},
+						{"name":"accountNature", "spanishName":"Naturaleza contable", "refType":"accountNature", "displayField":"code"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
+			"name":"localAccountChart",
+			"spanishName":"Plan de cuentas local",
+			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"10", "autocomplete":"true"},
+						{"name":"localAccount", "spanishName":"Cuenta local", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"localAccountLevel1", "spanishName":"Cuenta local nivel 1", "refType":"localAccountLevel1", "displayField":"code"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -114,12 +154,12 @@
 			"name":"account",
 			"spanishName":"Cuenta contable",
 			"fields":[
-						{"name":"account", "spanishName":"Cuenta contable", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"15"},
+						{"name":"account", "spanishName":"Cuenta contable", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "unique":"true"},
 						{"name":"balanceGroup", "spanishName":"Grupo de Balance", "refType":"balanceGroup", "displayField":"balanceGroup"},
 						{"name":"accountNature", "spanishName":"Naturaleza contable", "refType":"accountNature", "displayField":"accountNature"},
-						{"name":"groupAccount", "spanishName":"Cuenta totalizadora", "refType":"groupAccount", "displayField":"groupAccount"},
+						{"name":"accountLevel2", "spanishName":"Cuenta totalizadora", "refType":"accountLevel2", "displayField":"accountLevel2"},
 						{"name":"stockAccount", "spanishName":"Cuenta de inventario", "type":"Boolean"},
 						{"name":"localAccount", "spanishName":"Cuenta local", "type":"String", "length":"15"},
 						{"name":"internationalAccount", "spanishName":"Cuenta foranea", "type":"String", "length":"15"},
@@ -131,11 +171,24 @@
 			"name":"accountConcept",
 			"spanishName":"Concepto contable",
 			"fields":[
-						{"name":"accountConcept", "spanishName":"Concepto contable", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"4"},
+						{"name":"accountConcept", "spanishName":"Concepto contable", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "unique":"true"},
 						{"name":"usedInStock", "spanishName":"Se usa en inventario", "type":"Boolean"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
+		 },
+		 {	
+			"name":"inventoryAccount",
+			"spanishName":"Cuentas de nI",
+			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"10", "autocomplete":"true"},
+						{"name":"Account", "spanishName":"Cuenta", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"balanceGroup", "spanishName":"Grupo de Balance", "refType":"balanceGroup", "displayField":"code"},
+						{"name":"inventory", "spanishName":"Inventario", "type":"Boolean", "defaultValue":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
 		 },
 		 {  
 			"labelTable":"true",		 	
@@ -241,6 +294,7 @@
 			"spanishName":"Tipo de tercero",
 			"fields":[
 						{"name":"thirdPartyType", "spanishName":"thirdPartyType", "type":"String", "unique":"true", "autocomplete":"true", "labelField":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 						
 					]
@@ -249,8 +303,8 @@
 			"name":"thirdPartyClass",		
 			"spanishName":"Clase de tercero",
 			"fields":[
-						{"name":"thirdParty", "spanishName":"Identificación", "refType":"thirdParty", "displayField":"thirdParty"},
-						{"name":"thirdPartyType", "spanishName":"Tipo de tercero", "refType":"thirdPartyType", "displayField":"thirdPartyType"},
+						{"name":"thirdParty", "spanishName":"Identificación", "refType":"thirdParty", "displayField":"identification"},
+						{"name":"thirdPartyType", "spanishName":"Tipo de tercero", "refType":"thirdPartyType", "displayField":"code"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 						
 					]
@@ -259,8 +313,8 @@
 			"name":"partner",
 			"spanishName":"Socio",
 			"fields":[
-						{"name":"partner", "spanishName":"Identificación", "refType":"thirdParty", "displayField":"thirdParty"},
-						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},  
+						{"name":"partner", "spanishName":"Identificación", "refType":"thirdParty", "displayField":"identification"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},  
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -292,6 +346,7 @@
 			"spanishName":"Corporación",
 			"fields":[
 						{"name":"corporation", "spanishName":"Corporación", "refType":"thirdParty", "displayField":"thirdParty"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -346,19 +401,11 @@
 					]
 		 },
 		 {	
+			"labelTable":"true",		 	
 			"name":"priority",
 			"spanishName":"Prioridad",
 			"fields":[
 						{"name":"priority", "spanishName":"Prioridad", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
-					]
-		 },
-		 {	
-			"name":"accountNature",
-			"spanishName":"Naturaleza contable",
-			"fields":[
-						{"name":"accountNature", "spanishName":"Naturaleza contable", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
