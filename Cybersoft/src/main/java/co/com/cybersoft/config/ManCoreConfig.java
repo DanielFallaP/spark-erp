@@ -16,6 +16,7 @@ import co.com.cybersoft.man.services.timer.TimerService;
 @Configuration
 public class ManCoreConfig {
 	
+	
 	@Bean 
 	public ReportingService reportingService(){
 		return new ReportingServiceImpl();
