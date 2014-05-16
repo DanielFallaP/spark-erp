@@ -141,7 +141,7 @@ public class CodeUtil {
 		for (Field field : fields) {
 			if (!field.isReference() && field.getName().equals("description") && field.getUnique())
 				return true;
-			if (!field.isReference() && field.getName().equals("description") && !field.getUnique() && field.getAutocomplete())
+			if (!field.isReference() && field.getType().equals(Cybersystems.stringType) && field.getUnique() && field.getAutocomplete())
 				return true;
 		}
 		return false;
