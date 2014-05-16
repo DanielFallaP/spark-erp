@@ -110,7 +110,7 @@
 					]
 		 },
 		 {	
-			"name":"localAccounTemplate",
+			"name":"localAccountTemplate",
 			"spanishName":"Cuenta local nivel 1",
 			"singletonTable":"true",
 			"fields":[
@@ -328,6 +328,7 @@
 		 {	
 			"name":"customerTenancy",
 			"spanishName":"Cliente",
+			"singletonTable":"true",
 			"fields":[
 						{"name":"thirdParty", "spanishName":"Cliente", "refType":"thirdParty", "displayField":"thirdParty"},
 						{"name":"operatingSystem", "spanishName":"Sistema Operacional", "refType":"operatingSystem", "displayField":"operatingSystem"},
@@ -423,7 +424,7 @@
 						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"3"},
 						{"name":"stockTransaction", "spanishName":"Transacción de inventario", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"accountNature", "spanishName":"Naturaleza contable", "refType":"accountNature", "displayField":"code"},
-						{"name":"sigla", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"3"},
+						{"name":"sigla", "spanishName":"Código", "type":"String", "unique":"true", "length":"4"},
 						{"name":"requiresThirdParty", "spanishName":"Requiere tercero", "type":"Boolean"},
 						{"name":"requiresAccount", "spanishName":"Requiere cuenta", "type":"Boolean"},
 						{"name":"requiresAfe", "spanishName":"Requiere Afe", "type":"Boolean"},
@@ -441,7 +442,7 @@
 			"name":"contract",
 			"spanishName":"Contrato",
 			"fields":[
-						{"name":"code", "spanishName":"Contrato número", "type":"integer", "unique":"true"},
+						{"name":"code", "spanishName":"Contrato número", "type":"String", "unique":"true"},
 						{"name":"contract", "spanishName":"Contrato", "type":"String", "unique":"true", "autocomplete":"true"},
 					 	{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					] 
