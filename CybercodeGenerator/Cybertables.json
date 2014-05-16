@@ -460,7 +460,6 @@
 			"spanishName":"Pozo",
 			"fields":[
 						{"name":"field", "spanishName":"Campo", "refType":"field", "displayField":"field"},
-						{"name":"code", "spanishName":"Pozo", "type":"String", "unique":"true", "autocomplete":"10"},
 						{"name":"oilWell", "spanishName":"Pozo", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -496,14 +495,6 @@
 						{"name":"jointVenturePercentage", "spanishName":"Porcentaje de participación", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
-		 },
-		 { 	
-			"name":"contract",
-			"spanishName":"Contrato",
-			"fields":[
-						{"name":"contract", "spanishName":"Contrato", "type":"String", "unique":"true", "autocomplete":"true"},
-					 	{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
-					] 
 		 },
 		 {	
 			"name":"afeType",
