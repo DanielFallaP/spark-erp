@@ -104,7 +104,7 @@
 			"spanishName":"Naturaleza contable",
 			"fields":[
 						{"name":"nature", "spanishName":"Naturaleza contable", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"Sign", "spanishName":"Signo (+/-)", "type":"String", "unique":"true", "length":"1"},
+						{"name":"Sign", "spanishName":"Signo (+ -)", "type":"String", "unique":"true", "length":"1"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -134,7 +134,7 @@
 						{"name":"localAccountLevel1", "spanishName":"Cuenta local nivel 1", "type":"String", "unique":"true"},
 						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "length":"1"},
 						{"name":"balanceGroup", "spanishName":"Grupo de Balance", "refType":"balanceGroup", "displayField":"balanceGroup"},
-						{"name":"accountSign", "spanishName":"Signo (+/-)", "refType":"accountNature", "displayField":"accountSign"},
+						{"name":"accountSign", "spanishName":"Signo (+ -)", "refType":"accountNature", "displayField":"accountSign"},
 						{"name":"accountNature", "spanishName":"Naturaleza contable", "refType":"accountNature", "displayField":"code"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -180,7 +180,7 @@
 		 },
 		 {	
 			"name":"inventoryAccount",
-			"spanishName":"Cuentas de nI",
+			"spanishName":"Cuentas de inventario",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"10", "autocomplete":"true"},
 						{"name":"Account", "spanishName":"Cuenta", "type":"String", "unique":"true", "autocomplete":"true"},
@@ -422,19 +422,20 @@
 			"name":"stockTransaction",
 			"spanishName":"Transacción de inventario",
 			"fields":[
-						{"name":"stockTransaction", "spanishName":"Transacción de inventario", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"3"},
-						{"name":"accountNature", "spanishName":"Naturaleza contable", "refType":"accountNature", "displayField":"accountNature"},
-						{"name":"requiresVendor", "spanishName":"Requiere vendedor", "type":"Boolean"},
+						{"name":"stockTransaction", "spanishName":"Transacción de inventario", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"accountNature", "spanishName":"Naturaleza contable", "refType":"accountNature", "displayField":"code"},
+						{"name":"sigla", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"3"},
+						{"name":"requiresThirdParty", "spanishName":"Requiere tercero", "type":"Boolean"},
 						{"name":"requiresAccount", "spanishName":"Requiere cuenta", "type":"Boolean"},
 						{"name":"requiresAfe", "spanishName":"Requiere Afe", "type":"Boolean"},
 						{"name":"requiresObservations", "spanishName":"Requiere observaciones", "type":"Boolean"},
 	 					{"name":"affectsAverageCost", "spanishName":"Afecta costo promedio", "type":"Boolean"},
 						{"name":"affectsLastCost", "spanishName":"Afecta último costo", "type":"Boolean"},
 						{"name":"affectStock", "spanishName":"Afecta existencia", "type":"Boolean", "defaultValue":"true"},
-						{"name":"posted", "spanishName":"Contabiliza", "type":"Boolean", "defaultValue":"true"},
+						{"name":"toBePosted", "spanishName":"Contabiliza", "type":"Boolean", "defaultValue":"true"},
 						{"name":"acceptsSecondCurrencyChange", "spanishName":"Acepta segunda moneda", "type":"Boolean", "defaultValue":"true"},
-						{"name":"document", "spanishName":"Documento", "refType":"doc", "displayField":"document"},
+						{"name":"restricted", "spanishName":"Restringido", "type":"Boolean", "defaultValue":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
