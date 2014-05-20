@@ -121,8 +121,9 @@ public class CoreGenerator {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 			if (field.isEmbeddedReference()){
-				StringTemplate subTemp = new StringTemplate("$fieldName$Details = new $refType$Details();\n"+
-								"BeanUtils.copyProperties(entity.get$upperFieldName$Entity(), $fieldName$Details);");
+				StringTemplate subTemp = new StringTemplate("if (entity.get$upperFieldName$Entity()!=null){\n"
+						+ "$fieldName$Details = new $refType$Details();\n"+
+								"BeanUtils.copyProperties(entity.get$upperFieldName$Entity(), $fieldName$Details);}\n");
 				subTemp.setAttribute("fieldName", field.getName());
 				subTemp.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 				subTemp.setAttribute("refType", CodeUtil.toCamelCase(field.getRefType()));

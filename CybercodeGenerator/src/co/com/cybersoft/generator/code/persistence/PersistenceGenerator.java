@@ -57,8 +57,9 @@ public class PersistenceGenerator {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 			if (field.isEmbeddedReference()){
-				StringTemplate subTemp = new StringTemplate("$fieldName$Entity = new $refType$();\n"+
-								"BeanUtils.copyProperties(details.get$upperFieldName$Details(), $fieldName$Entity);\n");
+				StringTemplate subTemp = new StringTemplate("if (details.get$upperFieldName$Details()!=null){\n"
+						+ "$fieldName$Entity = new $refType$();\n"+
+								"BeanUtils.copyProperties(details.get$upperFieldName$Details(), $fieldName$Entity);}\n");
 				subTemp.setAttribute("fieldName", field.getName());
 				subTemp.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 				subTemp.setAttribute("refType", CodeUtil.toCamelCase(field.getRefType()));
