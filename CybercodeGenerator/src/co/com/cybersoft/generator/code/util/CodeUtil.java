@@ -71,6 +71,14 @@ public class CodeUtil {
 			template.setAttribute("name", field.getName());
 			template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 			text+=template.toString()+"\n";
+			
+			if (field.isEmbeddedReference()){
+				StringTemplate temp = templateGroup.getInstanceOf("getterSetter");
+				temp.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
+				temp.setAttribute("name", field.getName()+"Details");
+				temp.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName())+"Details");
+				text+=temp.toString()+"\n";
+			}
 		}
 		
 		return text;
@@ -90,6 +98,14 @@ public class CodeUtil {
 			fieldTemplate.setAttribute("name", field.getName());
 			text+=fieldTemplate.toString();
 			text+="\n";
+			
+			if (field.isEmbeddedReference()){
+				fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+				fieldTemplate.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
+				fieldTemplate.setAttribute("name", field.getName()+"Details");
+				text+=fieldTemplate.toString();
+				text+="\n";
+			}
 		}
 		
 		return text;

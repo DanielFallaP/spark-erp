@@ -67,16 +67,11 @@ public class $entityName$ {
 	
 	$gettersAndSetters$
 	
-	public static $entityName$ from$coreDomainClass$($coreDomainClass$ details){
-		$entityName$ $variableName$ = new $entityName$();
-		BeanUtils.copyProperties(details, $variableName$);
-		return $variableName$;
-	}
-	
-	public $coreDomainClass$ to$coreDomainClass$(){
-		$coreDomainClass$ details = new $coreDomainClass$();
-		BeanUtils.copyProperties(this, details);
-		return details;
+	public $entityName$ from$coreDomainClass$($coreDomainClass$ details){
+		BeanUtils.copyProperties(details, this);
+		$embeddedReferences$
+		
+		return this;
 	}
 
 }

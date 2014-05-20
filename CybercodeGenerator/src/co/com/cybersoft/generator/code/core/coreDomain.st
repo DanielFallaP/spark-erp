@@ -2,6 +2,10 @@ package co.com.cybersoft.core.domain;
 
 import java.util.Date;
 
+import org.springframework.beans.BeanUtils;
+import co.com.cybersoft.persistence.domain.$entityName$;
+
+
 /**
  * 
  * @author Cybersystems 2014. All rights reserved.
@@ -59,4 +63,9 @@ public class $coreDomainClass$ {
 	
 	$gettersAndSetters$
 	
+	public $entityName$Details to$entityName$Details($entityName$ entity){
+		BeanUtils.copyProperties(entity, this);
+		$embeddedReferences$
+		return this;
+	}
 }

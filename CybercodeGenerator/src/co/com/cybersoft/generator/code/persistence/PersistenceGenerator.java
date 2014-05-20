@@ -53,6 +53,19 @@ public class PersistenceGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("variableName", table.getName());
 		
+		//Write embedded references transformations
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (field.isEmbeddedReference()){
+				StringTemplate subTemp = new StringTemplate("$fieldName$Entity = new $refType$();\n"+
+								"BeanUtils.copyProperties(details.getLocal$refType$Details(), $fieldName$Entity);");
+				subTemp.setAttribute("fieldName", field.getName());
+				subTemp.setAttribute("refType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("embeddedReferences", subTemp.toString());
+			}
+		}
+		
+		
 		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/persistence/domain", CodeUtil.toCamelCase(table.getName())+".java");
 	}
 	
@@ -71,6 +84,14 @@ public class PersistenceGenerator {
 				template.setAttribute("name", field.getName());
 				body+=template.toString();
 				body+="\n";
+				
+				if (field.isEmbeddedReference()){
+					StringTemplate subTemp = new StringTemplate("private $type$ $name$;\n");
+					subTemp.setAttribute("type", CodeUtil.toCamelCase(field.getRefType()));
+					subTemp.setAttribute("name", field.getName()+"Entity");
+					body+=subTemp.toString();
+					body+="\n";
+				}
 		}
 		
 		
@@ -90,6 +111,14 @@ public class PersistenceGenerator {
 			template.setAttribute("name", field.getName());
 			template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 			text+=template.toString()+"\n";
+			
+			if (field.isEmbeddedReference()){
+				template = templateGroup.getInstanceOf("getterSetter");
+				template.setAttribute("type", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("name", field.getName()+"Entity");
+				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName())+"Entity");
+				text+=template.toString()+"\n";
+			}
 		}
 				
 		return text;

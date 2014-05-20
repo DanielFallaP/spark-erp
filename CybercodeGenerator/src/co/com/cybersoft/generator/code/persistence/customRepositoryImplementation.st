@@ -3,7 +3,6 @@ package co.com.cybersoft.persistence.repository.$tableName$;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +19,11 @@ import co.com.cybersoft.persistence.domain.$entityName$;
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
 
+/**
+ * 
+ * @author Cybersystems 2014. All rights reserved.
+ *
+ */
 public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 
 	@Autowired

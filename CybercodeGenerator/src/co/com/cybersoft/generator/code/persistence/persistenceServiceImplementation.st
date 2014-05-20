@@ -36,9 +36,9 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 	
 	@Override
 	public $entityName$DetailsEvent create$entityName$(Create$entityName$Event event) throws Exception{
-		$entityName$ $tableName$ = $entityName$.from$entityName$Details(event.get$entityName$Details());
+		$entityName$ $tableName$ = new $entityName$().from$entityName$Details(event.get$entityName$Details());
 		$tableName$ = $tableName$Repository.save($tableName$);
-		return new $entityName$DetailsEvent($tableName$.to$entityName$Details());
+		return new $entityName$DetailsEvent(new $entityName$Details().to$entityName$Details($tableName$));
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 		if (event.getId()!=null){
 			$entityName$ $tableName$ = $tableName$Repository.findOne(event.getId());
 			if ($tableName$!=null)
-				$tableName$Details = $tableName$.to$entityName$Details();
+				$tableName$Details = new $entityName$Details().to$entityName$Details($tableName$);
 		}
 		$queryByField$
 		return new $entityName$DetailsEvent($tableName$Details);
@@ -62,9 +62,9 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 
 	@Override
 	public $entityName$DetailsEvent modify$entityName$($entityName$ModificationEvent event) throws Exception {
-		$entityName$ $tableName$ = $entityName$.from$entityName$Details(event.get$entityName$Details());
+		$entityName$ $tableName$ = new $entityName$().from$entityName$Details(event.get$entityName$Details());
 		$tableName$ = $tableName$Repository.save($tableName$);
-		return new $entityName$DetailsEvent($tableName$.to$entityName$Details());
+		return new $entityName$DetailsEvent(new $entityName$Details().to$entityName$Details($tableName$));
 	}
 	
 	@Override
@@ -72,7 +72,7 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 			List<$entityName$> all = $tableName$Repository.findAll();
 			$entityName$Details single = new $entityName$Details();
 			for ($entityName$ $tableName$ : all) {
-				single=$tableName$.to$entityName$Details();
+				single=new $entityName$Details().to$entityName$Details($tableName$);
 				break;
 			}
 			return new $entityName$DetailsEvent(single);

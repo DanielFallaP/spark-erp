@@ -26,10 +26,6 @@ public class Cybersystems {
 	
 	public final static String arraySeparator="/////";
 	
-	public final static String decisionTableTrueValue="label.true";
-	
-	public final static String decisionTableFalseValue="label.false";
-	
 	public final static String activeFieldName="active";
 	
 	public final static String repoDirName="Cybersoft";

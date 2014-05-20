@@ -10,20 +10,19 @@ public List<$entityName$> findAllActiveBy$upperReferenceField$(EmbeddedField... 
 		String $referenceField$String=(String) object.get("$referenceField$");
 		$entityName$ $tableName$ = new $entityName$();
 		$tableName$.set$upperReferenceField$($referenceField$String);
-		$tableName$List.add($tableName$);
-		Field[] declaredFields = currency.getClass().getDeclaredFields();
+		java.lang.reflect.Field[] declaredFields = $tableName$.getClass().getDeclaredFields();
 		//FIXME improve my performance
 		for (int i = 0; i < declaredFields.length; i++) {
-			Field declaredField = declaredFields[i];
+			java.lang.reflect.Field declaredField = declaredFields[i];
 			for (int j = 0; j < fields.length; j++) {
-				String field=fields[j].getName();
-				if (declaredField.getName().equals(field)){
-					Method method = currency.getClass().getDeclaredMethod(CyberUtils.setMethodPrefix+toCamelCase(field), fields[j].getType());
-					method.invoke(currency,object.get(field));
+				String $tableName$Field=fields[j].getName();
+				if (declaredField.getName().equals($tableName$Field)){
+					Method method = $tableName$.getClass().getDeclaredMethod(CyberUtils.setMethodPrefix+toCamelCase($tableName$Field), fields[j].getType());
+					method.invoke($tableName$,object.get($tableName$Field));
 				}
 			}
 		}
-		currencyList.add(currency);
+		$tableName$List.add($tableName$);
 	}
 	return $tableName$List;
 }

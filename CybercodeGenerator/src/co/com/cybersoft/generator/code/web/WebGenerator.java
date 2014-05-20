@@ -387,15 +387,16 @@ public class WebGenerator {
 				fieldTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
 				fieldTemplate.setAttribute("tableName", field.getName());
 				body+=fieldTemplate.toString();
+				body+="\n";				
 				
 				if (field.isEmbeddedReference()){
 					fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
 					fieldTemplate.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
 					fieldTemplate.setAttribute("name", field.getName()+"Details");
 					body+=fieldTemplate.toString();
+					body+="\n";				
 				}
 				
-				body+="\n";				
 			}
 		}
 				
@@ -424,17 +425,20 @@ public class WebGenerator {
 				
 				if (field.isEmbeddedReference()){
 					StringTemplate addOps = new StringTemplate("\nfor ($referenceType$Details $referenceField$Details : $referenceField$List) {\n"+
-						"if ($referenceField$Details.get$upperDisplayName$().equals($referenceField$))\n"+
+						"if ($referenceField$Details.get$upperFieldName$().equals($referenceField$))\n"+
 							"this.$referenceField$Details=$referenceField$Details;}\n");
+					addOps.setAttribute("referenceType", CodeUtil.toCamelCase(field.getRefType()));
+					addOps.setAttribute("referenceField", field.getName());
+					addOps.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+					addOps.setAttribute("upperDisplayName", CodeUtil.toCamelCase(field.getName()));
 					template.setAttribute("addOps", addOps.toString());
-					
 				}
 				
 				body+=template.toString()+"\n\n";
 				
 				if (field.isEmbeddedReference()){
 					StringTemplate addGetterSetter=templateGroup.getInstanceOf("getterSetter");
-					addGetterSetter.setAttribute("type", CodeUtil.toCamelCase(field.getRefType()));
+					addGetterSetter.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
 					addGetterSetter.setAttribute("name", field.getName()+"Details");
 					addGetterSetter.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName())+"Details");
 					body+=addGetterSetter.toString()+"\n\n";

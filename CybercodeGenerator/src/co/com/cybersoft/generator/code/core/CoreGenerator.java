@@ -115,6 +115,19 @@ public class CoreGenerator {
 		template.setAttribute("fieldDeclaration", CodeUtil.getFieldDeclarations(table));
 		template.setAttribute("gettersAndSetters", CodeUtil.getGettersAndSetters(table));
 		template.setAttribute("coreDomainClass", CodeUtil.toCamelCase(table.getName())+"Details");
+		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+		
+		//Write embedded references transformations
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (field.isEmbeddedReference()){
+				StringTemplate subTemp = new StringTemplate("$fieldName$Details = new $refType$Details();\n"+
+								"BeanUtils.copyProperties(entity.getLocal$refType$Entity(), $fieldName$Details);");
+				subTemp.setAttribute("fieldName", field.getName());
+				subTemp.setAttribute("refType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("embeddedReferences", subTemp.toString());
+			}
+		}
 		
 		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/core/domain", CodeUtil.toCamelCase(table.getName())+"Details.java");
 	}
