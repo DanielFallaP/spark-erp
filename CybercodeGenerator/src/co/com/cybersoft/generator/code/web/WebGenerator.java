@@ -292,11 +292,12 @@ public class WebGenerator {
 					String requestParameters="";
 					int i=0;
 					for (String embeddedField : embeddedFields) {
-						StringTemplate temp = new StringTemplate("EmbeddedField $embeddedField$Field=new EmbeddedField(\"$embeddedField$\", $embeddedFieldType$.class);\n");
-						temp.setAttribute("embeddedField", CodeUtil.toCamelCase(embeddedField));
+						StringTemplate temp = new StringTemplate("EmbeddedField $embeddedField$Field=new EmbeddedField(\"$fieldName$\", $embeddedFieldType$.class);\n");
+						temp.setAttribute("embeddedField", embeddedField+CodeUtil.toCamelCase(field.getName()));
+						temp.setAttribute("fieldName", embeddedField);
 						temp.setAttribute("embeddedFieldType", CodeUtil.getFieldType(cybersystems,field.getRefType(), embeddedField));
 						decl+=temp.toString();
-						requestParameters+=embeddedField+"Field";
+						requestParameters+=embeddedField+CodeUtil.toCamelCase(field.getName())+"Field";
 						if (i!=embeddedFields.size()-1){
 							requestParameters+=",";
 						}
@@ -310,27 +311,8 @@ public class WebGenerator {
 					template.setAttribute("tableName", field.getRefType());
 					template.setAttribute("parentTableName", table.getName());
 					template.setAttribute("referenceField", CodeUtil.toCamelCase(field.getDisplayField()));
+					lists+=template.toString();
 				}
-			}
-		}
-		
-		return lists;
-	}
-	
-	private String generateModificationControllerReferencesLists(Table table){
-		List<Field> fields = table.getFields();
-		String lists="";
-		
-		for (Field field : fields) {
-			if (field.isReference()){
-				StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAllBy$referenceField$();\n"
-						+ "$parentTableName$Info.set$variableName$List(all$variableName$Event.get$entityName$List());\n");
-				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-				template.setAttribute("variableName", CodeUtil.toCamelCase(field.getName()));
-				template.setAttribute("tableName", field.getRefType());
-				template.setAttribute("parentTableName", table.getName());
-				template.setAttribute("referenceField", CodeUtil.toCamelCase(field.getDisplayField()));
-				lists+=template.toString();
 			}
 		}
 		
