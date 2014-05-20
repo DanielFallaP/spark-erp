@@ -1,5 +1,8 @@
 package co.com.cybersoft.generator.code.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Field {
 	private String name;
 	private String type;
@@ -14,10 +17,18 @@ public class Field {
 	private String defaultValue;
 	private Boolean labelField=Boolean.FALSE;
 	
+	
 	//For references only
 	private String refType;
 	private String displayField;
+	private List<String> embeddedFields=new ArrayList<String>();
 	
+	public List<String> getEmbeddedFields() {
+		return embeddedFields;
+	}
+	public void setEmbeddedFields(List<String> embeddedFields) {
+		this.embeddedFields = embeddedFields;
+	}
 	public Boolean getLabelField() {
 		return labelField;
 	}
@@ -105,6 +116,10 @@ public class Field {
 	
 	public boolean isReference(){
 		return this.type==null;
+	}
+	
+	public boolean isEmbeddedReference(){
+		return !embeddedFields.isEmpty(); 
 	}
 
 }

@@ -6,6 +6,7 @@ import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;
 import co.com.cybersoft.events.$tableName$.$entityName$ModificationEvent;
 import co.com.cybersoft.events.$tableName$.Request$entityName$DetailsEvent;
 import co.com.cybersoft.events.$tableName$.Request$entityName$PageEvent;
+import co.com.cybersoft.util.EmbeddedField;
 
 /**
  * 

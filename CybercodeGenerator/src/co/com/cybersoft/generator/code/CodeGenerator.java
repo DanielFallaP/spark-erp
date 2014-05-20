@@ -25,11 +25,11 @@ public class CodeGenerator {
 	private ObjectMapper mapper=new ObjectMapper();
 	
 	public void generate() throws JsonParseException, JsonMappingException, IOException{
-		Cybersystems cybersoft=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybersystems.class);
+		Cybersystems cybersystems=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybersystems.class);
 		System.out.println("Finished reading file");
 		
 		//Set singleton tables fields as not required
-		List<Table> tables = cybersoft.getTables();
+		List<Table> tables = cybersystems.getTables();
 		for (Table table : tables) {
 			if (table.getSingletonTable()){
 				List<Field> fields = table.getFields();
@@ -40,15 +40,15 @@ public class CodeGenerator {
 				
 		}
 		
-		if (!cybersoft.getTables().isEmpty()){
-			new DirectoryCleaner(cybersoft).initialClean();
-			new WebGenerator().generate(cybersoft);
-			new CoreGenerator().generate(cybersoft);
-			new PersistenceGenerator().generate(cybersoft);
-			new ViewGenerator(cybersoft).generate();
-			new EventGenerator().generate(cybersoft);
-			new ConfigGenerator().generate(cybersoft);
-			new DirectoryCleaner(cybersoft).clean();
+		if (!cybersystems.getTables().isEmpty()){
+			new DirectoryCleaner(cybersystems).initialClean();
+			new WebGenerator(cybersystems).generate();
+			new CoreGenerator().generate(cybersystems);
+			new PersistenceGenerator().generate(cybersystems);
+			new ViewGenerator(cybersystems).generate();
+			new EventGenerator().generate(cybersystems);
+			new ConfigGenerator().generate(cybersystems);
+			new DirectoryCleaner(cybersystems).clean();
 		}
 	}
 }

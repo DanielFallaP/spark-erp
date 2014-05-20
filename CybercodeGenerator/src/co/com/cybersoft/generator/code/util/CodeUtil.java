@@ -259,4 +259,18 @@ public class CodeUtil {
 		return !field.isReference()&&field.getUnique()&&field.getAutocomplete()&&field.getType().equals(Cybersystems.stringType);
 	}
 	
+	public static String getFieldType(Cybersystems cybersystems, String tableName, String fieldName){
+		List<Table> tables = cybersystems.getTables();
+		for (Table table : tables) {
+			if (table.getName().equals(tableName)){
+				List<Field> fields = table.getFields();
+				for (Field field : fields) {
+					if (field.getName().equals(fieldName))
+						return field.getType();
+				}
+			}
+		}
+		return "";
+	}
+	
 }

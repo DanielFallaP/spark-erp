@@ -23,6 +23,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
 import co.com.cybersoft.util.CyberUtils;
+import co.com.cybersoft.util.EmbeddedField;
 import co.com.cybersoft.core.domain.$entityName$Details;
 import co.com.cybersoft.core.services.$tableName$.$entityName$Service;
 import co.com.cybersoft.events.$tableName$.$entityName$DetailsEvent;

@@ -3,6 +3,8 @@ package co.com.cybersoft.persistence.repository.$tableName$;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import javax.annotation.PostConstruct;
 
@@ -16,6 +18,7 @@ import com.mongodb.DBObject;
 
 import co.com.cybersoft.persistence.domain.$entityName$;
 import co.com.cybersoft.util.CyberUtils;
+import co.com.cybersoft.util.EmbeddedField;
 
 public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 
@@ -27,5 +30,10 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 	$byContainingFields$
 	
 	$findAllActive$
+	
+	private String toCamelCase(String name){
+		Character character= name.charAt(0);
+		return character.toString().toUpperCase()+name.substring(1);
+	}
 
 }

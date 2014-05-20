@@ -4,4 +4,5 @@ public $type$ get$fieldName$() {
 	
 public void set$fieldName$($type$ $name$) {
 	this.$name$ = $name$;	
+	$addOps$
 }

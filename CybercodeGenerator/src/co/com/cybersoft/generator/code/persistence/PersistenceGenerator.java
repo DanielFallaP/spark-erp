@@ -106,7 +106,7 @@ public class PersistenceGenerator {
 		String autocompleteRequests="";
 		for (Field field : fields) {
 			if (CodeUtil.generateQueryForReferences(field)){
-				StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$referencedField$() throws Exception;\n");
+				StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$referencedField$(EmbeddedField... fields) throws Exception;\n");
 				stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 				stringTemplate.setAttribute("referencedField", CodeUtil.toCamelCase(field.getName()));
 				requestAll+=stringTemplate.toString();
@@ -206,7 +206,7 @@ public class PersistenceGenerator {
 		String autocompleteQueries="";
 		for (Field field : fields) {
 			if (CodeUtil.generateQueryForReferences(field)){
-				StringTemplate stringTemplate = new StringTemplate("List<$entityName$> findAllActiveBy$upperReferenceField$();\n");
+				StringTemplate stringTemplate = new StringTemplate("List<$entityName$> findAllActiveBy$upperReferenceField$(EmbeddedField ...fields) throws Exception;\n");
 				stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 				stringTemplate.setAttribute("upperReferenceField", CodeUtil.toCamelCase(field.getName()));
 				findAllActive+=stringTemplate.toString();

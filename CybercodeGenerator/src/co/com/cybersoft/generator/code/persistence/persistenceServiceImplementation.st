@@ -16,6 +16,8 @@ import co.com.cybersoft.persistence.repository.$tableName$.$entityName$CustomRep
 import java.util.ArrayList;
 import java.util.List;
 
+import co.com.cybersoft.util.EmbeddedField;
+
 /**
  * 
  * @author Cybersystems 2014. All rights reserved.

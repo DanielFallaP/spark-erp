@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+$imports$
 import co.com.cybersoft.core.domain.$coreDomainClass$;
 
 /**

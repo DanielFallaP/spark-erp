@@ -42,7 +42,7 @@ public class CoreGenerator {
 		String autocompleteRequests="";
 		for (Field field : fields) {
 			if (CodeUtil.generateQueryForReferences(field)){
-				StringTemplate stringTemplate = new StringTemplate("$entityUppercaseName$PageEvent requestAllBy$referencedField$() throws Exception;\n");
+				StringTemplate stringTemplate = new StringTemplate("$entityUppercaseName$PageEvent requestAllBy$referencedField$(EmbeddedField... fields) throws Exception;\n");
 				stringTemplate.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
 				stringTemplate.setAttribute("referencedField", CodeUtil.toCamelCase(field.getName()));
 				requestDeclarations+=stringTemplate.toString();

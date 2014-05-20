@@ -7,7 +7,7 @@ import co.com.cybersoft.events.$entityName$.$modifyEvent$;
 import co.com.cybersoft.events.$entityName$.$singleRequestEvent$;
 import co.com.cybersoft.events.$entityName$.$allRequestEvent$;
 import co.com.cybersoft.persistence.services.$entityName$.$entityUppercaseName$PersistenceService;
-
+import co.com.cybersoft.util.EmbeddedField;
 
 /**
  * 

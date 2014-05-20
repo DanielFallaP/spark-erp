@@ -1,4 +1,4 @@
 @Override
-public $entityUppercaseName$PageEvent requestAllBy$referencedField$() throws Exception {
-	return $entityName$PersistenceService.requestAllBy$referencedField$();
+public $entityUppercaseName$PageEvent requestAllBy$referencedField$(EmbeddedField... fields) throws Exception {
+	return $entityName$PersistenceService.requestAllBy$referencedField$(EmbeddedField... fields);
 }
