@@ -46,15 +46,21 @@
 
     </style>
 	<link rel="stylesheet" th:href="@{/resources/css/bootstrap-responsive.min.css}" />
+	<script>
+	function setFocus()
+	{
+	document.getElementById("username").focus();
+	}
+</script>
   </head>
 
-  <body>
+  <body onload="setFocus()">
 
     <div class="container">
 
       <form class="form-signin" th:action="@{/login}" method="post">
         <h2 class="form-signin-heading"><img align="middle" th:src="@{/resources/img/spark_large.png}" /></h2>
-        <input type="text" name="username" class="input-block-level" th:placeholder="#{label.userName}"/>
+        <input id="username" type="text" name="username" class="input-block-level" th:placeholder="#{label.userName}"/>
         <input type="password" name="password" class="input-block-level" th:placeholder="#{label.password}"/>
         <button class="btn btn-large btn-primary" type="submit" th:value="#{label.signin}">Sign in</button>
       </form>

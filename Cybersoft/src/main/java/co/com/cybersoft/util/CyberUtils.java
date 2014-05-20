@@ -38,4 +38,6 @@ public class CyberUtils {
 	
 	public final static String defaultCreatingUser="createdBy";
 	
+	public final static String setMethodPrefix="set";
+	
 }
