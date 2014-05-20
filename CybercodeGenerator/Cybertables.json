@@ -313,7 +313,9 @@
 			"spanishName":"Socio",
 			"fields":[
 						{"name":"partner", "spanishName":"Identificación", "refType":"thirdParty", "displayField":"identification"},
+						{"name":"name", "spanishName":"Nombre", "refType":"thirdParty", "displayField":"thirdParty"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},  
+						{"name":"oparator", "spanishName":"Operador", "type":"Boolean", "defaultValue":"false"},  
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -466,10 +468,11 @@
 					]
 		 },
 		 {	
+			"labelTable":"true",		 	
 			"name":"itemCondition",
 			"spanishName":"Condición de item",
 			"fields":[
-						{"name":"itemCondition", "spanishName":"Descripción", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"itemCondition", "spanishName":"Descripción", "type":"String", "unique":"true", "length":"1"},
 						{"name":"conditionPercentage", "spanishName":"Porcentaje de cálculo", "type":"Double"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -481,6 +484,8 @@
 			"fields":[
 						{"name":"billingCode", "spanishName":"Código de facturacion", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
+						{"name":"fromDate", "spanishName":"Desde fecha", "type":"Date"},
+						{"name":"toDate", "spanishName":"Hasta Fecha", "type":"Date"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -488,11 +493,8 @@
 			"name":"jointVenture",		
 			"spanishName":"Participación conjunta",
 			"fields":[
-						{"name":"jointVenture", "spanishName":"Participación conjunta", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"billingCode", "spanishName":"Código de facturacion", "refType":"billingCode", "displayField":"billingCode"},
 						{"name":"partner", "spanishName":"Socio", "refType":"partner", "displayField":"code"},
-						{"name":"fromDate", "spanishName":"Desde fecha", "type":"Date"},
-						{"name":"toDate", "spanishName":"Hasta Fecha", "type":"Date"},
 						{"name":"jointVenturePercentage", "spanishName":"Porcentaje de participación", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
