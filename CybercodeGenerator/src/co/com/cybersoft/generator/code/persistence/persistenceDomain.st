@@ -2,6 +2,8 @@ package co.com.cybersoft.persistence.domain;
 
 import java.util.Date;
 
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -16,6 +18,7 @@ import co.com.cybersoft.core.domain.$coreDomainClass$;
  *
  */
 @Document(collection="$variableName$")
+$compoundIndex$
 public class $entityName$ {
 
 	@Id

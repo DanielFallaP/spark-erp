@@ -1,5 +1,6 @@
 package co.com.cybersoft.generator.code.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import co.com.cybersoft.generator.code.util.CodeUtil;
@@ -47,6 +48,23 @@ public class Table {
 			return true;
 		else
 			return false;
+	}
+	
+	public boolean hasCompoundIndex(){
+		for (Field field:fields) {
+			if (field.getKeyCompound())
+				return true;
+		}
+		return false;
+	}
+	
+	public List<Field> getCompoundIndex(){
+		ArrayList<Field> compoundIndex = new ArrayList<Field>();
+		for (Field field:fields) {
+			if (field.getKeyCompound())
+				compoundIndex.add(field);
+		}
+		return compoundIndex;
 	}
 	
 }

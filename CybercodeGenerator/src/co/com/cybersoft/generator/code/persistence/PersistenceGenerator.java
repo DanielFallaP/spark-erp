@@ -53,6 +53,23 @@ public class PersistenceGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("variableName", table.getName());
 		
+		if (table.hasCompoundIndex()){
+			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");
+			List<Field> compoundIndex = table.getCompoundIndex();
+			String dec="";
+			int i=0;
+			for (Field field : compoundIndex) {
+				dec+="'"+field.getName()+"':1";
+				if (i!=compoundIndex.size()-1)
+					dec+=",";
+				i++;
+			}
+			subTemplate.setAttribute("tableName", table.getName());
+			subTemplate.setAttribute("fields", dec);
+			
+			template.setAttribute("compoundIndex", subTemplate.toString());
+		}
+		
 		//Write embedded references transformations
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {

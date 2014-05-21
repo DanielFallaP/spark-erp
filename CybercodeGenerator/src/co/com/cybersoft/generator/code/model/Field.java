@@ -16,13 +16,19 @@ public class Field {
 	private String spanishName;
 	private String defaultValue;
 	private Boolean labelField=Boolean.FALSE;
-	
+	private Boolean keyCompound=Boolean.FALSE;
 	
 	//For references only
 	private String refType;
 	private String displayField;
 	private List<String> embeddedFields=new ArrayList<String>();
 	
+	public Boolean getKeyCompound() {
+		return keyCompound;
+	}
+	public void setKeyCompound(Boolean keyCompound) {
+		this.keyCompound = keyCompound;
+	}
 	public List<String> getEmbeddedFields() {
 		return embeddedFields;
 	}
