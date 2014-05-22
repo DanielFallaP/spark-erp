@@ -7,25 +7,27 @@
 		    <div class="navbar navbar-inverse navbar-fixed-top">
 		        <div class="navbar-inner">
 		            <div class="container-fluid">
+					<form hidden="" id="navBarLogout" th:action="@{/logout}" method="post">
+					</form>
 		                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 		                    <span class="icon-bar"></span>
 		                    <span class="icon-bar"></span>
 		                    <span class="icon-bar"></span>
 		                </a>
 		                <a class="brand" th:href="@{/}" ><img alt="" th:src="@{/resources/img/spark.png}" /></a>
-		                <div class="nav-collapse collapse">
-		                    <p class="navbar-text pull-right">
-		
-		                    </p>
-		                    <ul class="nav">
-		                        <li><a th:href="@{/requisition}" th:text="#{label.requisitionsOption}"></a></li>
-		                        <li><a th:href="@{/providerAssignment}" th:text="#{label.providerAssignment}"></a></li>
-		                        <li><a th:href="@{/purchase}" th:text="#{label.purchaseOrders}"></a></li>
-		                        <li><a th:href="@{/configuration}" th:text="#{label.navbarConfiguration}"></a></li>
-		                        <li><a th:href="@{/settings}" th:text="#{label.settingsOption}"></a></li>
-		                        <li ><a th:href="@{/logout}"><img alt="" th:src="@{/resources/img/logout.png}"/></a></li>
-		                    </ul>
-		                </div> <!--/.nav-collapse -->
+			                <div class="nav-collapse collapse">
+			                    <p class="navbar-text pull-right">
+			
+			                    </p>
+			                    <ul class="nav">
+			                        <li><a th:href="@{/requisition}" th:text="#{label.requisitionsOption}"></a></li>
+			                        <li><a th:href="@{/providerAssignment}" th:text="#{label.providerAssignment}"></a></li>
+			                        <li><a th:href="@{/purchase}" th:text="#{label.purchaseOrders}"></a></li>
+			                        <li><a th:href="@{/configuration}" th:text="#{label.navbarConfiguration}"></a></li>
+			                        <li><a th:href="@{/settings}" th:text="#{label.settingsOption}"></a></li>
+			                        <li><a><img onclick="document.getElementById('navBarLogout').submit();" th:src="@{/resources/img/logout.png}"/></a></li>
+			                    </ul>
+			                </div> <!--/.nav-collapse -->
 		            </div>
 		        </div>
 		    </div>

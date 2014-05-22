@@ -54,9 +54,9 @@ dependencies {
   compile 'org.springframework:spring-webmvc:3.2.3.RELEASE'
 
   //{!begin deps}
-  compile 'org.springframework.security:spring-security-web:3.2.0.M2'
-  compile 'org.springframework.security:spring-security-core:3.2.0.M2'
-  compile 'org.springframework.security:spring-security-config:3.2.0.M2'
+  compile 'org.springframework.security:spring-security-web:3.2.4.RELEASE'
+  compile 'org.springframework.security:spring-security-core:3.2.4.RELEASE'
+  compile 'org.springframework.security:spring-security-config:3.2.4.RELEASE'
   //{!end deps}
 
   compile 'org.springframework:spring-tx'
@@ -64,7 +64,7 @@ dependencies {
   compile 'org.slf4j:slf4j-api:1.7.5'
   runtime 'org.slf4j:slf4j-log4j12:1.7.5'
 
-  compile 'org.thymeleaf:thymeleaf-spring3:2.0.18'
+  compile 'org.thymeleaf:thymeleaf-spring3:2.1.3.RELEASE'
   
   //MySQL
   compile 'mysql:mysql-connector-java:5.1.6'
