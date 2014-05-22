@@ -59,6 +59,8 @@
 						{"name":"localName", "spanishName":"Nombre local", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"frenchName", "spanishName":"Nombre francés", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+		
+		
 					]
 		 },
 		 
