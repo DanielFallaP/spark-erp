@@ -206,7 +206,7 @@
 						{"name":"withholding", "spanishName":"Retención en la fuente", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"withholdingPercentage", "spanishName":"Porcentaje de retención", "type":"Double", "unique":"true"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
-						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"double"},
+						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
 		 },
@@ -217,7 +217,7 @@
 						{"name":"tax", "spanishName":"Impuesto de venta", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"taxPercentage", "spanishName":"Porcentaje de impuesto", "type":"Double", "unique":"true"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
-						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"double"},
+						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"Double"},
 						{"name":"withholding", "spanishName":"Retención", "refType":"withholding", "displayField":"withholding"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
@@ -230,7 +230,7 @@
 						{"name":"commerceWithholding", "spanishName":"Retención de ICA", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"CommerceWithholdingPercentage", "spanishName":"Porcentaje de retención de ICA", "type":"Double", "unique":"true"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
-						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"double"},
+						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
 		 },
@@ -241,7 +241,7 @@
 						{"name":"consignmentWithholding", "spanishName":"Retención de remesa", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"consignmentWithholdingPercentage", "spanishName":"Porcentaje de retención de remesa", "type":"Double", "unique":"true"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
-						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"double"},
+						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
 		 },
@@ -252,7 +252,7 @@
 						{"name":"stampDuty", "spanishName":"Impuesto de timbre", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"stampDutyPercentage", "spanishName":"Porcentaje de impuesto de timbre", "type":"Double", "unique":"true"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
-						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"double"},
+						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
 		 },
@@ -774,7 +774,7 @@
 			"name":"supplierSelectionReason",
 			"spanishName":"Razón de selección de proveedor",
 			"fields":[
-						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":""},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
 						{"name":"supplierSelectionReason", "spanishName":"Descripción", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -783,16 +783,15 @@
 			"name":"deliveryLocations",
 			"spanishName":"Lugar de destino",
 			"fields":[
-						{"name":"deliveryLocations", "spanishName":"Lugar de destino", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"address", "spanishName":"Dirección", "type":"String"},
-						{"name":"zipCode", "spanishName":"Código postal", "type":"String"},
-						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "displayField":"populatedPlace"},
-						{"name":"pob", "spanishName":"Zona postal", "type":"String"},
-						{"name":"email", "spanishName":"email", "type":"String"},
-						{"name":"phoneNumber", "spanishName":"Número de teléfono", "type":"String"},
-						{"name":"celularNumber", "spanishName":"Número de celular", "type":"String"},
-						{"name":"faxNumber", "spanishName":"Número de fax", "type":"String"},
-						{"name":"contactPerson", "spanishName":"Persona contacto", "type":"String"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"address", "spanishName":"Dirección", "type":"String", "required":"false", "autocomplete":"true"},
+						{"name":"zipCode", "spanishName":"Código postal", "type":"String", "required":"false"},
+						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "displayField":"populatedPlace", "required":"false"},
+						{"name":"pob", "spanishName":"Zona postal", "type":"String", "required":"false"},
+						{"name":"email", "spanishName":"email", "type":"String", "required":"false"},
+						{"name":"phoneNumber", "spanishName":"Número de teléfono", "type":"String", "required":"false"},
+						{"name":"celularNumber", "spanishName":"Número de celular", "type":"String", "required":"false"},
+						{"name":"contactPerson", "spanishName":"Persona contacto", "type":"String", "required":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -800,8 +799,12 @@
 			"name":"person",
 			"spanishName":"Persona",
 			"fields":[
-						{"name":"thirdParty", "spanishName":"Tercero", "refType":"thirdParty", "displayField":"thirdParty"},
-						{"name":"section", "spanishName":"Sección", "refType":"section", "displayField":"section"},
+						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"thirdParty", "spanishName":"Tercero", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"identification", "spanishName":"Identificación", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"address", "spanishName":"Dirección", "type":"String", "required":"false", "autocomplete":"true"},
+						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "displayField":"populatedPlace", "required":"false"},
+						{"name":"phoneNumber", "spanishName":"Número de teléfono", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -809,9 +812,9 @@
 			"name":"consecutive",
 			"spanishName":"Consecutivo",
 			"fields":[
-						{"name":"document", "spanishName":"Documento", "refType":"doc", "displayField":"document"},
+						{"name":"document", "spanishName":"Documento", "refType":"doc", "displayField":"code"},
 						{"name":"consecutive", "spanishName":"Número consecutivo", "type":"Integer", "unique":"true"},
-						{"name":"consecutiveName", "spanishName":"Nombre del consecutivo", "type":"String", "unique":"true"},
+						{"name":"consecutiveName", "spanishName":"Nombre del consecutivo", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 }
