@@ -26,7 +26,7 @@
 			"spanishName":"Tasa de cambio",		
 			"fields":[
 						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "keyCompound":"true","displayField":"code"},
-						{"name":"foreingCurrency", "spanishName":"Moneda foranea", "refType":"currency", "keyCompound":"true", "displayField":"code"},
+						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "keyCompound":"true", "displayField":"code"},
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "keyCompound":"true", "defaultValue":"today"},
 						{"name":"rate", "spanishName":"Tasa", "type":"Double"},
 						{"name":"variation", "spanishName":"Variación", "type":"Double"},
@@ -74,7 +74,7 @@
 						{"name":"area", "spanishName":"Area", "type":"Integer", "required":"false"},
 						{"name":"population", "spanishName":"Población", "type":"Integer", "required":"false"},
 						{"name":"dateOfEstablishment", "spanishName":"Fecha de creación", "type":"Date", "required":"false"},
-						{"name":"abreviation", "spanishName":"Letras", "type":"String", "required":"false"},
+						{"name":"abbreviation", "spanishName":"Abreviación", "type":"String", "required":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -142,7 +142,7 @@
 			"spanishName":"Cuenta local nivel 1",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
-						{"name":"localAccountLevel1", "spanishName":"Cuenta local nivel 1", "type":"String", "unique":"true"},
+						{"name":"localAccountLevel1", "spanishName":"Cuenta local nivel 1", "type":"String"},
 						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "length":"1"},
 						{"name":"balanceGroup", "spanishName":"Grupo de Balance", "refType":"balanceGroup", "displayField":"balanceGroup"},
 						{"name":"accountSign", "spanishName":"Signo (+ -)", "refType":"accountNature", "displayField":"sign"},
@@ -155,7 +155,7 @@
 			"spanishName":"Plan de cuentas local",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"10", "autocomplete":"true"},
-						{"name":"localAccount", "spanishName":"Cuenta local", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"localAccount", "spanishName":"Cuenta local", "type":"String"},
 						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"localAccountLevel1", "spanishName":"Cuenta local nivel 1", "refType":"localAccountLevel1", "displayField":"code"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -166,8 +166,8 @@
 			"spanishName":"Cuenta contable",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"15"},
-						{"name":"account", "spanishName":"Cuenta contable", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "unique":"true"},
+						{"name":"account", "spanishName":"Cuenta contable", "type":"String"},
+						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String"},
 						{"name":"balanceGroup", "spanishName":"Grupo de Balance", "refType":"balanceGroup", "displayField":"balanceGroup"},
 						{"name":"accountNature", "spanishName":"Naturaleza contable", "refType":"accountNature", "displayField":"nature"},
 						{"name":"stockAccount", "spanishName":"Cuenta de inventario", "type":"Boolean"},
@@ -183,7 +183,7 @@
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"4"},
 						{"name":"accountConcept", "spanishName":"Concepto contable", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "unique":"true"},
+						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String"},
 						{"name":"usedInStock", "spanishName":"Se usa en inventario", "type":"Boolean"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
@@ -215,7 +215,7 @@
 			"spanishName":"Retención en la fuente",
 			"fields":[
 						{"name":"withholding", "spanishName":"Retención en la fuente", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"withholdingPercentage", "spanishName":"Porcentaje de retención", "type":"Double", "unique":"true"},
+						{"name":"withholdingPercentage", "spanishName":"Porcentaje de retención", "type":"Double"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
 						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -226,7 +226,7 @@
 			"spanishName":"Impuesto de venta",
 			"fields":[
 						{"name":"tax", "spanishName":"Impuesto de venta", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"taxPercentage", "spanishName":"Porcentaje de impuesto", "type":"Double", "unique":"true"},
+						{"name":"taxPercentage", "spanishName":"Porcentaje de impuesto", "type":"Double"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
 						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"Double"},
 						{"name":"withholding", "spanishName":"Retención", "refType":"withholding", "displayField":"withholding"},
@@ -238,8 +238,8 @@
 			"spanishName":"Retención de ICA",
 			"fields":[
 						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "displayField":"populatedPlace"},
-						{"name":"commerceWithholding", "spanishName":"Retención de ICA", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"CommerceWithholdingPercentage", "spanishName":"Porcentaje de retención de ICA", "type":"Double", "unique":"true"},
+						{"name":"commerceWithholding", "spanishName":"Retención de ICA", "type":"String"},
+						{"name":"CommerceWithholdingPercentage", "spanishName":"Porcentaje de retención de ICA", "type":"Double"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
 						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -261,7 +261,7 @@
 			"spanishName":"Impuesto de timbre",
 			"fields":[
 						{"name":"stampDuty", "spanishName":"Impuesto de timbre", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"stampDutyPercentage", "spanishName":"Porcentaje de impuesto de timbre", "type":"Double", "unique":"true"},
+						{"name":"stampDutyPercentage", "spanishName":"Porcentaje de impuesto de timbre", "type":"Double"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
 						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -388,7 +388,7 @@
 			"name":"department",		
 			"spanishName":"Departamento",
 			"fields":[
-						{"name":"brach", "spanishName":"Sucursal", "refType":"branch", "displayField":"branch"},
+						{"name":"branch", "spanishName":"Sucursal", "refType":"branch", "displayField":"branch"},
 						{"name":"department", "spanishName":"Departamento", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -398,9 +398,9 @@
 			"name":"section",		
 			"spanishName":"Sección",
 			"fields":[
-						{"name":"department", "spanishName":"Departmento", "refType":"department", "displayField":"department"},
+						{"name":"department", "spanishName":"Departamento", "refType":"department", "displayField":"department"},
 						{"name":"section", "spanishName":"Sección", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
+						{"name":"code", "spanishName":"Código", "type":"String", "length":"3"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -438,7 +438,7 @@
 						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"3"},
 						{"name":"stockTransaction", "spanishName":"Transacción de inventario", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"accountNature", "spanishName":"Naturaleza contable", "refType":"accountNature", "displayField":"code"},
-						{"name":"sigla", "spanishName":"Código", "type":"String", "unique":"true", "length":"4"},
+						{"name":"abbreviation", "spanishName":"Abreviación", "type":"String", "unique":"true", "length":"4"},
 						{"name":"requiresThirdParty", "spanishName":"Requiere tercero", "type":"Boolean"},
 						{"name":"requiresAccount", "spanishName":"Requiere cuenta", "type":"Boolean"},
 						{"name":"requiresAfe", "spanishName":"Requiere Afe", "type":"Boolean"},
@@ -484,9 +484,9 @@
 			"name":"itemCondition",
 			"spanishName":"Condición de item",
 			"fields":[
-						{"name":"itemCondition", "spanishName":"Descripción", "type":"String", "unique":"true", "length":"1"},
-						{"name":"conditionPercentage", "spanishName":"Porcentaje de cálculo", "type":"Double"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"itemCondition", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"conditionPercentage", "spanishName":"Porcentaje de cálculo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -494,8 +494,8 @@
 			"name":"billingCode",	
 			"spanishName":"Código de facturacion",
 			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "length":"3", "unique":"true"},
 						{"name":"billingCode", "spanishName":"Código de facturacion", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
 						{"name":"fromDate", "spanishName":"Desde fecha", "type":"Date"},
 						{"name":"toDate", "spanishName":"Hasta Fecha", "type":"Date"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -527,7 +527,7 @@
 						{"name":"afeCode", "spanishName":"Código de afe", "type":"String", "unique":"true", "length":"10", "autocomplete":"true"},
 						{"name":"afe", "spanishName":"Afe", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"company", "spanishName":"Compañía", "refType":"company", "displayField":"letter"},
-						{"name":"year", "spanishName":"Año", "type":"String", "unique":"true", "length":"4"},
+						{"name":"year", "spanishName":"Año", "type":"String", "length":"4"},
 						{"name":"afeType", "spanishName":"Tipo de Afe", "refType":"afeType", "displayField":"afeType"},
 						{"name":"contract", "spanishName":"Contrato", "refType":"contract", "displayField":"contract"},
 						{"name":"number", "spanishName":"Número", "type":"Integer","length":"3"},
@@ -563,8 +563,7 @@
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
 						{"name":"stockGroup", "spanishName":"Grupo de inventario", "type":"String", "unique":"true", "autocomplete":"true"},
-					 	{"name":"departmentCode", "spanishName":"Código departamento", "refType":"department", "displayField":"code"},
-						{"name":"department", "spanishName":"Departamento", "refType":"department", "displayField":"department"},
+					 	{"name":"department", "spanishName":"Departamento", "refType":"department", "displayField":"department"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
 		 },
@@ -573,7 +572,7 @@
 			"spanishName":"Subgrupo de inventario",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3", "autocomplete":"true"},
-						{"name":"stockSubGroup", "spanishName":"Subgrupo de inventario", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"stockSubGroup", "spanishName":"Subgrupo de inventario", "type":"String"},
 						{"name":"stockGroup", "spanishName":"Grupo", "refType":"stockGroup", "displayField":"code"},
 						{"name":"useDivision", "spanishName":"Usa división", "type":"Boolean"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -594,7 +593,7 @@
 			"spanishName":"Tipo de ítem",
 			"fields":[
 						{"name":"itemType", "spanishName":"Tipo de ítem", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"1"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
 		 },
@@ -606,7 +605,7 @@
 						{"name":"itemDescription", "spanishName":"Descripción del ítem", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"largeName", "spanishName":"Descripción larga",  "type":"String", "largeText":"true"},
 						{"name":"stockGroup", "spanishName":"Grupo de inventario", "refType":"stockGroup", "displayField":"stockGroup"},
-						{"name":"stockSubGroup", "spanishName":"Subgrupo de inventario", "refType":"stockSubGroup", "displayField":"stockSubGroup"},
+						{"name":"stockSubGroup", "spanishName":"Subgrupo de inventario", "refType":"stockSubGroup", "displayField":"stockSubGroup","required":"false"},
 						{"name":"division", "spanishName":"División", "refType":"division", "displayField":"division","required":"false"},
 						{"name":"inputMeasurementUnit", "spanishName":"Unidad de medida entrada", "refType":"measurementUnit", "displayField":"measurementUnit"},
 						{"name":"packingUnits", "spanishName":"Unidades por empaque", "type":"Double"},
@@ -632,8 +631,8 @@
 			"name":"itemTradeMark",
 			"spanishName":"Marca de ítem",
 			"fields":[
-						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"itemDescription", "autocomplete":"true"},
-						{"name":"tradeMark", "spanishName":"Marca", "type":"String", "unique":"true"},
+						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code", "autocomplete":"true", "keyCompound":"true"},
+						{"name":"tradeMark", "spanishName":"Marca", "type":"String", "keyCompound":"true"},
 					 	{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
 		 },
@@ -686,16 +685,16 @@
 						{"name":"outputStockTransaction", "spanishName":"Transacción de inventario para salidas", "refType":"stockTransaction", "displayField":"stockTransaction"},
 						{"name":"inputBorrowTransaction", "spanishName":"Transacción para entradas de préstamo", "refType":"stockTransaction", "displayField":"stockTransaction"},
 						{"name":"outputBorrowTransaction", "spanishName":"Transacción para salidas de préstamo", "refType":"stockTransaction", "displayField":"stockTransaction"},
-						{"name":"inputBorrowDevolutionTransaction", "spanishName":"Transacción para entradas de devolución préstamo", "refType":"stockTransaction", "displayField":"stockTransaction"},
-						{"name":"outputBorrowDevolutionTransaction", "spanishName":"Transacción para salidas de devolución préstamo", "refType":"stockTransaction", "displayField":"stockTransaction"},
-						{"name":"inputTransferenceTransaction", "spanishName":"Transacción para entradas de devolución préstamo", "refType":"stockTransaction", "displayField":"stockTransaction"},
-						{"name":"outputTransferenceTransaction", "spanishName":"Transacción para salidas de devolución préstamo", "refType":"stockTransaction", "displayField":"stockTransaction"},
+						{"name":"inputBorrowReturnTransaction", "spanishName":"Transacción para entradas de devolución préstamo", "refType":"stockTransaction", "displayField":"stockTransaction"},
+						{"name":"outputBorrowReturnTransaction", "spanishName":"Transacción para salidas de devolución préstamo", "refType":"stockTransaction", "displayField":"stockTransaction"},
+						{"name":"inputTransferenceTransaction", "spanishName":"Transacción para entradas de transferencia", "refType":"stockTransaction", "displayField":"stockTransaction"},
+						{"name":"outputTransferenceTransaction", "spanishName":"Transacción para salidas de transferencia", "refType":"stockTransaction", "displayField":"stockTransaction"},
 						{"name":"yearEndInventoryCutoffDate", "spanishName":"Fecha de corte anual de inventario", "type":"Date", "unique":"true"},
 						{"name":"percentOfLargerQuantityIssuingItemReception", "spanishName":"Porcentaje de mayor cantidad al recibir items", "type":"Double", "unique":"true"},
 						{"name":"createExchangeRate", "spanishName":"Crea tasa de cambio", "type":"Boolean", "defaultValue":"false"},
 						{"name":"inventoryGroupForConsumptionItems", "spanishName":"Grupo de inventario para ítems de consumo", "refType":"stockGroup", "displayField":"stockGroup"},
 						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "displayField":"currency"},
-						{"name":"foreingCurrency", "spanishName":"Moneda foranea", "refType":"currency", "displayField":"currency"},
+						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "displayField":"currency"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -725,8 +724,8 @@
 						{"name":"periodType", "spanishName":"Tipo de período", "refType":"periodType", "displayField":"periodType"},
 						{"name":"period", "spanishName":"Período", "type":"String", "autocomplete":"true"},
 						{"name":"code", "spanishName":"Código", "type":"String", "length":"6"},
-						{"name":"year", "spanishName":"Año", "type":"Integer", "unique":"true", "length":"4"},
-						{"name":"month", "spanishName":"Mes", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"year", "spanishName":"Año", "type":"Integer", "length":"4"},
+						{"name":"month", "spanishName":"Mes", "type":"Integer", "length":"2"},
 						{"name":"fromDate", "spanishName":"Desde fecha", "type":"Date", "unique":"true"},
 						{"name":"toDate", "spanishName":"Hasta fecha", "type":"Date", "unique":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -768,7 +767,7 @@
 			"fields":[
 						{"name":"country", "spanishName":"País", "refType":"country", "displayField":"country"},
 						{"name":"holiday", "spanishName":"Festivo", "type":"Date"},
-						{"name":"holidyName", "spanishName":"Nombre del festivo", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"holidayName", "spanishName":"Nombre del festivo", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -785,7 +784,7 @@
 			"name":"supplierSelectionReason",
 			"spanishName":"Razón de selección de proveedor",
 			"fields":[
-						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
 						{"name":"supplierSelectionReason", "spanishName":"Descripción", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -801,7 +800,7 @@
 						{"name":"pob", "spanishName":"Zona postal", "type":"String", "required":"false"},
 						{"name":"email", "spanishName":"email", "type":"String", "required":"false"},
 						{"name":"phoneNumber", "spanishName":"Número de teléfono", "type":"String", "required":"false"},
-						{"name":"celularNumber", "spanishName":"Número de celular", "type":"String", "required":"false"},
+						{"name":"cellularNumber", "spanishName":"Número de celular", "type":"String", "required":"false"},
 						{"name":"contactPerson", "spanishName":"Persona contacto", "type":"String", "required":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -813,6 +812,7 @@
 						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
 						{"name":"thirdParty", "spanishName":"Tercero", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"identification", "spanishName":"Identificación", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"section", "spanishName":"Sección", "refType":"section", "displayField":"section"},
 						{"name":"address", "spanishName":"Dirección", "type":"String", "required":"false", "autocomplete":"true"},
 						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "displayField":"populatedPlace", "required":"false"},
 						{"name":"phoneNumber", "spanishName":"Número de teléfono", "type":"String", "unique":"true", "autocomplete":"true"},
@@ -820,12 +820,12 @@
 					]
 		 },
 		 {	
-			"name":"consecutive",
-			"spanishName":"Consecutivo",
+			"labelTable":"true",
+			"name":"transportationType",
+			"spanishName":"Tipo de transporte",
 			"fields":[
-						{"name":"document", "spanishName":"Documento", "refType":"doc", "displayField":"code"},
-						{"name":"consecutive", "spanishName":"Número consecutivo", "type":"Integer", "unique":"true"},
-						{"name":"consecutiveName", "spanishName":"Nombre del consecutivo", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"transportationType", "spanishName":"Tipo de transporte", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 }
