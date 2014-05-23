@@ -448,7 +448,7 @@
 			"name":"contract",
 			"spanishName":"Contrato",
 			"fields":[
-						{"name":"code", "spanishName":"Contrato número", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"code", "spanishName":"Contrato número", "type":"String", "unique":"true", "length":"3"},
 						{"name":"contract", "spanishName":"Contrato", "type":"String", "unique":"true", "autocomplete":"true"},
 					 	{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					] 
@@ -532,8 +532,8 @@
 			"fields":[
 						{"name":"costCenterCode", "spanishName":"Código", "type":"String", "unique":"true", "length":"10"},
 						{"name":"costCenter", "spanishName":"Centro de costo", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"company", "spanishName":"Compañía", "refType":"company", "displayField":"letter"},
-						{"name":"company", "spanishName":"Compañía", "refType":"company", "displayField":"code", "length":"3"},
+						{"name":"companyLetter", "spanishName":"Letra de compañía", "refType":"company", "displayField":"letter"},
+						{"name":"companyCode", "spanishName":"Código de compañía", "refType":"company", "displayField":"code"},
 						{"name":"contract", "spanishName":"Contrato", "refType":"contract", "displayField":"contract"},
 						{"name":"number", "spanishName":"Número", "type":"Integer", "length":"3"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -692,7 +692,7 @@
 					]
 		 },
 		 {	
-			"lableTable":"true",
+			"labelTable":"true",
 			"name":"modules",
 			"spanishName":"Módulos",
 			"fields":[
@@ -729,7 +729,7 @@
 			"spanishName":"Mínimo Máximo",
 			"fields":[
 						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"c"},
-						{"name":"warehouse", "spanishName":"Bodega", "refType":"warehouse", "displayField":"warehouse"},
+						{"name":"warehouse", "spanishName":"Bodega", "refType":"warehouse", "displayField":"warehouse","required":"false"},
 						{"name":"minimumQuantity", "spanishName":"Cantidad mínima", "type":"Double"},
 						{"name":"maximumQuantity", "spanishName":"Cantidad máxima", "type":"Double"},
 						{"name":"orderQuantity", "spanishName":"Cantidad a pedir", "type":"Double"},
