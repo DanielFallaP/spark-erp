@@ -92,6 +92,14 @@
 					]
 		 },
 		 {	
+			"name":"docSite",
+			"spanishName":"Sitio Documental",
+			"fields":[
+						{"name":"documentalSite", "spanishName":"Sitio documental", "refType":"populatedPlace", "displayField":"populatedPlace"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
 			"labelTable":"true",		 	
 			"name":"balanceGroup",
 			"spanishName":"Grupo de balance",
