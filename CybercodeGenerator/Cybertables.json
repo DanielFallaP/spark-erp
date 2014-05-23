@@ -555,7 +555,7 @@
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
 						{"name":"stockGroup", "spanishName":"Grupo de inventario", "type":"String", "unique":"true", "autocomplete":"true"},
-					 	{"name":"departmentCode", "spanishName":"Código departamento", "refType":"department", "displayField":"departmentCode"},
+					 	{"name":"departmentCode", "spanishName":"Código departamento", "refType":"department", "displayField":"code"},
 						{"name":"department", "spanishName":"Departamento", "refType":"department", "displayField":"department"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
@@ -728,7 +728,7 @@
 			"name":"miniMax",	
 			"spanishName":"Mínimo Máximo",
 			"fields":[
-						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"c"},
+						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code"},
 						{"name":"warehouse", "spanishName":"Bodega", "refType":"warehouse", "displayField":"warehouse","required":"false"},
 						{"name":"minimumQuantity", "spanishName":"Cantidad mínima", "type":"Double"},
 						{"name":"maximumQuantity", "spanishName":"Cantidad máxima", "type":"Double"},
