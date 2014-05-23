@@ -12,9 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 
 $imports$
@@ -38,26 +35,6 @@ public class PersistenceConfig {
 	
 	$repoFields$
 	
-	@Bean
-    public DataSource dataSource() {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUsername("daniel");
-		dataSource.setPassword("daniel");
-		dataSource.setUrl("jdbc:mysql://localhost/cybersoft");
-		return dataSource;
-    }
-
-	@Bean
-    JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        return jdbcTemplate;
-    }
-	
 	$beans$
-	
-	 @Bean
-     public PlatformTransactionManager txManager() {
-         return new DataSourceTransactionManager(dataSource());
-     }
+
 }
