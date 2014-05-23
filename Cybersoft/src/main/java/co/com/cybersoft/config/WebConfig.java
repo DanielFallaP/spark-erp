@@ -62,6 +62,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".html");
 		resolver.setTemplateMode(StandardTemplateModeHandlers.HTML5.getTemplateModeName());
+		resolver.setCharacterEncoding("UTF-8");
 		//FIXME In a production environment, caching should be enabled
 		resolver.setCacheable(false);
 		return resolver;
@@ -78,6 +79,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	public LiteDeviceDelegatingViewResolver viewResolver(){
 		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
 		viewResolver.setTemplateEngine(templateEngine());
+		viewResolver.setCharacterEncoding("UTF-8");
 //		viewResolver.setOrder(1);
 //		viewResolver.setViewNames(new String[]{"*"});
 		//FIXME In a production environment, caching should be enabled
@@ -93,7 +95,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasenames("classpath:messages");
 		messageSource.setUseCodeAsDefaultMessage(true);
-		messageSource.setDefaultEncoding("ISO-8859-1");
+		messageSource.setDefaultEncoding("UTF-8");
 		messageSource.setCacheSeconds(0);
 		return messageSource;
 	}

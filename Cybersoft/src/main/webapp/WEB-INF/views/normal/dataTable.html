@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-	<meta charset="ISO-8859-1" />
+	<meta charset="UTF-8" />
 	<body>
 		<div th:fragment='paginationbar'>
 			  <div class='pagination pagination-centered'>
@@ -11,16 +11,16 @@
 			        <a th:if='${not page.firstPage}' th:href='@{${page.url}(page.page=1,page.size=${page.size})}' th:text='#{label.firstPage}'>First</a>
 			      </li>
 			      <li id="_previousPage" >
-			        <span th:if='${not page.hasPreviousPage}'>«</span>
-			        <a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page.page=${page.number-1})}' th:title='#{label.previousPage}'>«</a>
+			        <span th:if='${not page.hasPreviousPage}'>Â«</span>
+			        <a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page.page=${page.number-1})}' th:title='#{label.previousPage}'>Â«</a>
 			      </li>
 			      <li>
 <!-- 			        <span th:if='${item.current}' th:text='${item.number}'>1</span> -->
 			        <span th:text="${page.number}+'/'+${page.totalPages}">1</span>
 			      </li>
 			      <li id="_nextPage" >
-			        <span th:if='${not page.hasNextPage}'>»</span>
-			        <a th:if='${page.hasNextPage}' th:href='@{${page.url}(page.page=${page.number+1})}' th:title='#{label.nextPage}'>»</a>
+			        <span th:if='${not page.hasNextPage}'>Â»</span>
+			        <a th:if='${page.hasNextPage}' th:href='@{${page.url}(page.page=${page.number+1})}' th:title='#{label.nextPage}'>Â»</a>
 			      </li>
 			      <li id="_lastPage" >
 			        <span th:if='${page.lastPage}' th:text='#{label.lastPage}'>Last</span>

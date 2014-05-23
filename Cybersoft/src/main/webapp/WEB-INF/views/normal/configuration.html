@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:spring="http://www.springframework.org/tags" >
 <head>
-	<meta charset="ISO-8859-1"/>
+	<meta charset="UTF-8"/>
 	<title  th:text="#{label.configurationTitle}"></title>
 	<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
 		<style type="text/css">
@@ -22,25 +22,8 @@
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 			<div class="hero-unit span9">
-				<div><a th:href="@{/configuration/items/searchItem}" th:text="#{label.itemConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/active/searchActive}" th:text="#{label.activeConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/partner/searchPartner}" th:text="#{label.partnerConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/corporation/searchCorporation}" th:text="#{label.corporationConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/company/searchCompany}" th:text="#{label.companyConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/branch/searchBranch}" th:text="#{label.branchConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/measurementUnits/searchMeasurementUnits}" th:text="#{label.measurementUnitsConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/items/searchItems}" th:text="#{label.itemsConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/bill/searchBill}" th:text="#{label.billConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/jointVenture/searchJointVenture}" th:text="#{label.jointVentureConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/contract/searchContract}" th:text="#{label.contractConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/afeType/searchAfeType}" th:text="#{label.afeTypeConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/afe/searchAfe}" th:text="#{label.afeConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/costCenter/searchCostCenter}" th:text="#{label.costCenterConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/calculusType/searchCalculusType}" th:text="#{label.calculusTypeConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/operationType/searchOperationType}" th:text="#{label.operationTypeConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/wareHouse/searchWareHouse}" th:text="#{label.wareHouseConfiguration}"></a> </div>
+				<div><a th:href="@{/configuration/exchangeRate/searchExchangeRate}" th:text="#{label.exchangeRateConfiguration}"></a> </div>
 
-				<div><a th:href="@{/configuration/language}" th:text="#{label.languageConfiguration}"></a> </div>
 			</div>
 	</div>
 	<div th:include="normal/layout :: footer"></div>

@@ -42,7 +42,7 @@ public class ManCoreConfig {
 		ReloadableResourceBundleMessageSource eloadableResourceBundleMessageSource = new ReloadableResourceBundleMessageSource();
 		eloadableResourceBundleMessageSource.setBasenames("classpath:messages");
 		eloadableResourceBundleMessageSource.setUseCodeAsDefaultMessage(true);
-		eloadableResourceBundleMessageSource.setDefaultEncoding("ISO-8859-1");
+		eloadableResourceBundleMessageSource.setDefaultEncoding("UTF-8");
 		eloadableResourceBundleMessageSource.setCacheSeconds(0);
 		return eloadableResourceBundleMessageSource;
 	}

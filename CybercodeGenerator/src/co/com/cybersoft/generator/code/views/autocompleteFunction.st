@@ -23,7 +23,7 @@
 	    	    		if (path[1].localeCompare("configuration")!=0){
 	    	    			prefix="/"+path[1];	
 	    	    		}
-	    	    		window.open(prefix+"/configuration/$tableName$/create$entityName$/fromList?field=$fieldName$&value="+b.item.value,"_self");
+	    	    		window.open(prefix+"/configuration/$tableName$/create$entityName$/fromList?field=$fieldName$&value="+encodeURIComponent(b.item.value),"_self");
 	    	    	}
 		    	});
 		    	 

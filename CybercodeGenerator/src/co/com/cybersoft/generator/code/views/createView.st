@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:spring="http://www.springframework.org/tags" >
     <head>
-    	<meta charset="ISO-8859-1" />
+    	<meta charset="UTF-8" />
         <title th:text="#{label.$tableName$CreationTitle}"></title>
         
         <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
