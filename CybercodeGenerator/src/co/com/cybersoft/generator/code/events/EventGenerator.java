@@ -5,13 +5,13 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
-import co.com.cybersoft.generator.code.model.Cybersystems;
+import co.com.cybersoft.generator.code.model.Spark;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class EventGenerator {
 	
-	public void generate(Cybersystems cybersoft){
+	public void generate(Spark cybersoft){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			generateRequestCreateEvent(table);
@@ -34,42 +34,42 @@ public class EventGenerator {
 	}
 
 	private void generateRequestCreateEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybersystems.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Spark.codePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("requestCreateEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
-		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/events/"+table.getName(), "Create"+CodeUtil.toCamelCase(table.getName())+"Event.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), "Create"+CodeUtil.toCamelCase(table.getName())+"Event.java");
 	}
 	
 	private void generateDetailsEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybersystems.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Spark.codePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("requestDetailsEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/events/"+table.getName(), "Request"+CodeUtil.toCamelCase(table.getName())+"DetailsEvent.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), "Request"+CodeUtil.toCamelCase(table.getName())+"DetailsEvent.java");
 	}
 	
 	private void generateResponseDetailsEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybersystems.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Spark.codePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("responseDetailsEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
-		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"DetailsEvent.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"DetailsEvent.java");
 	}
 	
 	private void generatePageEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybersystems.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Spark.codePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("requestPageEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
-		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/events/"+table.getName(), "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent.java");
 	}
 	
 	private void generateResponsePageEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybersystems.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Spark.codePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("responsePageEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
@@ -78,7 +78,7 @@ public class EventGenerator {
 		template.setAttribute("referencesConstructors", generateResponsePageReferencesConstructors(table));
 		template.setAttribute("referencesGettersSetters", generateResponsePageGetter(table));
 		
-		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PageEvent.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PageEvent.java");
 
 	}
 	
@@ -121,12 +121,12 @@ public class EventGenerator {
 	}
 		
 	private void generateRequestModificationEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybersystems.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Spark.codePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("requestModificationEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
-		CodeUtil.writeClass(template.toString(), Cybersystems.targetClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationEvent.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationEvent.java");
 
 	}
 }

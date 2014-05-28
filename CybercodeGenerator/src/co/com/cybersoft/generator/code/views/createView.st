@@ -42,6 +42,8 @@
 		   		document.getElementById("$firstField$").focus();
 		   } 
 		   
+		   $compoundSelectionFunctions$
+		   
 	       /* ]]> */
 	     </script>
 	    $datePickerConfig$

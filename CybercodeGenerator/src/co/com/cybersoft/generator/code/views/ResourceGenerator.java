@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-import co.com.cybersoft.generator.code.model.Cybersystems;
+import co.com.cybersoft.generator.code.model.Spark;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
@@ -24,9 +24,9 @@ public class ResourceGenerator {
 	
 	private PreparedStatement pst;
 	
-	private final Cybersystems cybersoft;
+	private final Spark cybersoft;
 	
-	public ResourceGenerator(Cybersystems cybersoft){
+	public ResourceGenerator(Spark cybersoft){
 		this.cybersoft=cybersoft;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");

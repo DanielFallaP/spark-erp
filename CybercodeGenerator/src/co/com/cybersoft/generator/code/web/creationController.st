@@ -58,6 +58,7 @@ public class $entityName$CreationController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String create$entityName$(@Valid @ModelAttribute("$tableName$Info") $entityName$Info $tableName$Info, Model model, HttpServletRequest request) throws Exception{
+		$compoundReferences$
 		$tableName$Info.setCreated(false);
 		$entityName$Details $tableName$Details = create$entityName$Details($tableName$Info);
 		$tableName$Details.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -72,6 +73,9 @@ public class $entityName$CreationController {
 		$tableName$Info.setCreated(true);
 		$tableName$Info.setCalledFrom(calledFrom);
 		$setReferencesLists$
+		$setCompoundLists$
+		
+		$setDefaults$
 		
 		model.addAttribute("$tableName$Info", $tableName$Info);
 		return "/configuration/$tableName$/create$entityName$";
@@ -89,6 +93,7 @@ public class $entityName$CreationController {
 		
 		String value = request.getParameter("value");
 		String field = request.getParameter("field");
+		$compoundReferencesParameters$
 		
 		if (value!=null){
 			Request$entityName$DetailsEvent event = new Request$entityName$DetailsEvent(null);
@@ -102,6 +107,8 @@ public class $entityName$CreationController {
 		$tableName$Info.setId(null);
 		
 		$setReferencesLists$
+		$setCompoundLists$
+		
 		$setDefaults$
 		
 		$tableName$Info.setCalledFrom(calledFrom);

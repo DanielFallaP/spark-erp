@@ -44,7 +44,7 @@ public class Table {
 	}
 	
 	public boolean isActiveReference(){
-		if (CodeUtil.containsField(this, Cybersystems.activeFieldName))
+		if (CodeUtil.containsField(this, Spark.activeFieldName))
 			return true;
 		else
 			return false;
@@ -65,6 +65,23 @@ public class Table {
 				compoundIndex.add(field);
 		}
 		return compoundIndex;
+	}
+	
+	public boolean hasCompoundReference(){
+		for (Field field: fields) {
+			if (field.getCompoundReference())
+				return true;
+		}
+		return false;
+	}
+	
+	public List<Field> getCompositeFields(){
+		ArrayList<Field> list = new ArrayList<Field>();
+		for (Field field: fields) {
+			if (field.getCompoundReference())
+				list.add(field);
+		}
+		return list;
 	}
 	
 }

@@ -2,7 +2,7 @@ package co.com.cybersoft.generator.code.model;
 
 import java.util.List;
 
-public class Cybersystems {
+public class Spark {
 	
 	private List<Table> tables;
 	

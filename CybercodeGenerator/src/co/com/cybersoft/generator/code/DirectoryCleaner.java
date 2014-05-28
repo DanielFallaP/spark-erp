@@ -8,12 +8,12 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
-import co.com.cybersoft.generator.code.model.Cybersystems;
+import co.com.cybersoft.generator.code.model.Spark;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class DirectoryCleaner {
 
-	private final Cybersystems cybersoft;
+	private final Spark cybersoft;
 	
 	private final List<String> packagedirectories=new ArrayList<String>(Arrays.asList("src/main/java/co/com/cybersoft/core/services",
 																			   "src/main/java/co/com/cybersoft/events", 
@@ -26,13 +26,13 @@ public class DirectoryCleaner {
 	private final List<String> fileDirectories=new ArrayList<String>(Arrays.asList("src/main/java/co/com/cybersoft/core/domain",
 																			       "src/main/java/co/com/cybersoft/persistence/domain"));
 			
-	public DirectoryCleaner(Cybersystems cybersoft){
+	public DirectoryCleaner(Spark cybersoft){
 		this.cybersoft=cybersoft;
 	}
 	
 	public void clean() throws IOException{
 		for(String directory:packagedirectories){
-			File dir= new File("../"+Cybersystems.repoDirName+"/"+directory);
+			File dir= new File("../"+Spark.repoDirName+"/"+directory);
 			File[] packages = dir.listFiles();
 			for (int i = 0; i < packages.length; i++) {
 				File pack = packages[i];
@@ -41,7 +41,7 @@ public class DirectoryCleaner {
 		}
 		
 		for(String directory:fileDirectories){
-			File dir = new File("../"+Cybersystems.repoDirName+"/"+directory);
+			File dir = new File("../"+Spark.repoDirName+"/"+directory);
 			File[] files = dir.listFiles();
 			for (int i = 0; i < files.length; i++) {
 				File file = files[i];
@@ -52,7 +52,7 @@ public class DirectoryCleaner {
 	}
 	
 	public void initialClean() throws IOException{
-		File buildDir = new File (Cybersystems.targetClassPath.split("/")[0]);
+		File buildDir = new File (Spark.targetClassPath.split("/")[0]);
 		File[] files = buildDir.listFiles();
 		for (File file : files) {
 			FileUtils.deleteDirectory(file);

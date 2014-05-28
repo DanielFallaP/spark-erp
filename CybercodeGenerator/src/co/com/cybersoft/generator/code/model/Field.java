@@ -17,12 +17,26 @@ public class Field {
 	private String defaultValue;
 	private Boolean labelField=Boolean.FALSE;
 	private Boolean keyCompound=Boolean.FALSE;
+	private Boolean compoundReference=Boolean.FALSE;
 	
 	//For references only
 	private String refType;
 	private String displayField;
 	private List<String> embeddedFields=new ArrayList<String>();
+	private String tableName;
 	
+	public String getTableName() {
+		return tableName;
+	}
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+	public Boolean getCompoundReference() {
+		return compoundReference;
+	}
+	public void setCompoundReference(Boolean compoundReference) {
+		this.compoundReference = compoundReference;
+	}
 	public Boolean getKeyCompound() {
 		return keyCompound;
 	}

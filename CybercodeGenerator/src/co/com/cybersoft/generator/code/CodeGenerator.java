@@ -12,7 +12,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import co.com.cybersoft.generator.code.config.ConfigGenerator;
 import co.com.cybersoft.generator.code.core.CoreGenerator;
 import co.com.cybersoft.generator.code.events.EventGenerator;
-import co.com.cybersoft.generator.code.model.Cybersystems;
+import co.com.cybersoft.generator.code.model.Spark;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.persistence.PersistenceGenerator;
@@ -25,7 +25,7 @@ public class CodeGenerator {
 	private ObjectMapper mapper=new ObjectMapper();
 	
 	public void generate() throws JsonParseException, JsonMappingException, IOException{
-		Cybersystems cybersystems=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybersystems.class);
+		Spark cybersystems=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Spark.class);
 		System.out.println("Finished reading file");
 		
 		//Set singleton tables fields as not required
@@ -42,10 +42,10 @@ public class CodeGenerator {
 		
 		if (!cybersystems.getTables().isEmpty()){
 			new DirectoryCleaner(cybersystems).initialClean();
+			new CoreGenerator(cybersystems).generate();
 			new WebGenerator(cybersystems).generate();
-			new CoreGenerator().generate(cybersystems);
-			new PersistenceGenerator().generate(cybersystems);
 			new ViewGenerator(cybersystems).generate();
+			new PersistenceGenerator().generate(cybersystems);
 			new EventGenerator().generate(cybersystems);
 			new ConfigGenerator().generate(cybersystems);
 			new DirectoryCleaner(cybersystems).clean();
