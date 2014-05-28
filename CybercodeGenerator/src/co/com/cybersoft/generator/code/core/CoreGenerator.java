@@ -76,7 +76,7 @@ public class CoreGenerator {
 				List<Field> compoundKey = CodeUtil.getCompoundKey(spark, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType())){
-						StringTemplate stringTemplate = new StringTemplate("$entityName$Event requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
+						StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
 						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
 						stringTemplate.setAttribute("fieldName", compoundField.getName());
@@ -166,8 +166,8 @@ public class CoreGenerator {
 	private void generateCoreDomainClass(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Spark.codePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreDomain");
-		template.setAttribute("fieldDeclaration", CodeUtil.getFieldDeclarations(table));
-		template.setAttribute("gettersAndSetters", CodeUtil.getGettersAndSetters(table));
+		template.setAttribute("fieldDeclaration", CodeUtil.getFieldDeclarations(spark,table));
+		template.setAttribute("gettersAndSetters", CodeUtil.getGettersAndSetters(spark,table));
 		template.setAttribute("coreDomainClass", CodeUtil.toCamelCase(table.getName())+"Details");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		

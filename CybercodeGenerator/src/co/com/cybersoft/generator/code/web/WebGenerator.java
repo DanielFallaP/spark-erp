@@ -165,9 +165,13 @@ public class WebGenerator {
 			int i=0;
 			for (Field field : compoundReference) {
 				if (i<compoundReference.size()-1){
-					StringTemplate stringTemplate = new StringTemplate("String $fieldName$ = request.getParameter(\"$fieldName$\");\n");
+					StringTemplate stringTemplate = new StringTemplate("String $fieldName$ = request.getParameter(\"$fieldName$\");\n"
+							+ "if ($fieldName$!=null) $tableName$Info.set$upperFieldName$($fieldName$);\n");
 					stringTemplate.setAttribute("fieldName", field.getName());
+					stringTemplate.setAttribute("tableName", table.getName());
+					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 					variables+=stringTemplate.toString();
+					
 				}
 				
 				i++;

@@ -58,11 +58,13 @@ public class Table {
 		return false;
 	}
 	
-	public List<Field> getCompoundIndex(){
+	public List<Field> getCompoundIndex(Spark spark){
 		ArrayList<Field> compoundIndex = new ArrayList<Field>();
 		for (Field field:fields) {
-			if (field.getKeyCompound())
+			if (field.getKeyCompound()&&!field.getCompoundReference())
 				compoundIndex.add(field);
+			if (field.getKeyCompound()&&field.getCompoundReference())
+				compoundIndex.addAll(CodeUtil.getCompoundKey(spark, field.getRefType()));
 		}
 		return compoundIndex;
 	}

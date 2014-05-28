@@ -44,8 +44,8 @@ public class CodeGenerator {
 			new DirectoryCleaner(cybersystems).initialClean();
 			new CoreGenerator(cybersystems).generate();
 			new WebGenerator(cybersystems).generate();
+			new PersistenceGenerator(cybersystems).generate();
 			new ViewGenerator(cybersystems).generate();
-			new PersistenceGenerator().generate(cybersystems);
 			new EventGenerator().generate(cybersystems);
 			new ConfigGenerator().generate(cybersystems);
 			new DirectoryCleaner(cybersystems).clean();

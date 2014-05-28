@@ -246,6 +246,7 @@ public class ViewGenerator {
 		List<Field> fields = table.getFields();
 		String text="";
 		for (Field field : fields) {
+			if (!field.getCompoundReference()){
 				if (!field.isReference() && field.getVisible() && !field.getLargeText() && !field.getType().equals(Spark.booleanType)){
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
 					template.setAttribute("fieldName", field.getName());
@@ -270,6 +271,15 @@ public class ViewGenerator {
 					template.setAttribute("fieldName", field.getName());
 					text+=template.toString()+"\n";
 				}
+			}
+			else{
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
+					template.setAttribute("fieldName", compoundField.getName());
+					text+=template.toString()+"\n";
+				}
+			}
 		}
 		
 		
@@ -300,20 +310,32 @@ public class ViewGenerator {
 		
 		String text="";
 		for (Field field : fields) {
-			if (!field.isReference() && field.getVisible() && !field.getLargeText()){
-				StringTemplate template = templateGroup.getInstanceOf("columnHeader");
-				template.setAttribute("fieldName", field.getName());
-				template.setAttribute("tableName", table.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				text+=template.toString()+"\n";
+			if (!field.getCompoundReference()){
+				if (!field.isReference() && field.getVisible() && !field.getLargeText()){
+					StringTemplate template = templateGroup.getInstanceOf("columnHeader");
+					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					text+=template.toString()+"\n";
+				}
+				
+				if (field.isReference()){
+					StringTemplate template = templateGroup.getInstanceOf("columnHeader");
+					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					text+=template.toString()+"\n";
+				}
 			}
-			
-			if (field.isReference()){
-				StringTemplate template = templateGroup.getInstanceOf("columnHeader");
-				template.setAttribute("fieldName", field.getName());
-				template.setAttribute("tableName", table.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				text+=template.toString()+"\n";
+			else{
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					StringTemplate template = templateGroup.getInstanceOf("columnHeader");
+					template.setAttribute("fieldName", compoundField.getName());
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					text+=template.toString()+"\n";
+				}
 			}
 		}
 		

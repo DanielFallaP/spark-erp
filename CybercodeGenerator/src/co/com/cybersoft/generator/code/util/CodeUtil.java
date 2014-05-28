@@ -60,24 +60,36 @@ public class CodeUtil {
 		}
 	}
 	
-	public static String getGettersAndSetters(Table table){
+	public static String getGettersAndSetters(Spark spark,Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("util",Spark.codePath+"util");
 		List<Field> fields = table.getFields();
 		
 		String text="";
 		for (Field field : fields) {
-			StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-			template.setAttribute("type", field.isReference()?Spark.stringType:field.getType());
-			template.setAttribute("name", field.getName());
-			template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
-			text+=template.toString()+"\n";
-			
-			if (field.isEmbeddedReference()){
-				StringTemplate temp = templateGroup.getInstanceOf("getterSetter");
-				temp.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
-				temp.setAttribute("name", field.getName()+"Details");
-				temp.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName())+"Details");
-				text+=temp.toString()+"\n";
+			if (!field.getCompoundReference()){
+				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
+				template.setAttribute("type", field.isReference()?Spark.stringType:field.getType());
+				template.setAttribute("name", field.getName());
+				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				text+=template.toString()+"\n";
+				
+				if (field.isEmbeddedReference()){
+					StringTemplate temp = templateGroup.getInstanceOf("getterSetter");
+					temp.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
+					temp.setAttribute("name", field.getName()+"Details");
+					temp.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName())+"Details");
+					text+=temp.toString()+"\n";
+				}
+			}
+			else{
+				List<Field> compoundKey = CodeUtil.getCompoundKey(spark, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
+					template.setAttribute("type", Spark.stringType);
+					template.setAttribute("name", compoundField.getName());
+					template.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					text+=template.toString()+"\n";
+				}
 			}
 		}
 		
@@ -88,23 +100,35 @@ public class CodeUtil {
 		return (long) Math.pow(10, digitNumber)-1;
 	}
 	
-	public static String getFieldDeclarations(Table table){
+	public static String getFieldDeclarations(Spark spark, Table table){
 		String text="";
 		List<Field> fields = table.getFields();
 		
 		for (Field field : fields) {
-			StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-			fieldTemplate.setAttribute("type", field.isReference()?Spark.stringType:field.getType());
-			fieldTemplate.setAttribute("name", field.getName());
-			text+=fieldTemplate.toString();
-			text+="\n";
-			
-			if (field.isEmbeddedReference()){
-				fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-				fieldTemplate.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
-				fieldTemplate.setAttribute("name", field.getName()+"Details");
+			if (!field.getCompoundReference()){
+				StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+				fieldTemplate.setAttribute("type", field.isReference()?Spark.stringType:field.getType());
+				fieldTemplate.setAttribute("name", field.getName());
 				text+=fieldTemplate.toString();
 				text+="\n";
+				
+				if (field.isEmbeddedReference()){
+					fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+					fieldTemplate.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
+					fieldTemplate.setAttribute("name", field.getName()+"Details");
+					text+=fieldTemplate.toString();
+					text+="\n";
+				}
+			}
+			else{
+				List<Field> compoundKey = CodeUtil.getCompoundKey(spark, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+					fieldTemplate.setAttribute("type", Spark.stringType);
+					fieldTemplate.setAttribute("name", compoundField.getName());
+					text+=fieldTemplate.toString();
+					text+="\n";
+				}
 			}
 		}
 		
@@ -184,7 +208,7 @@ public class CodeUtil {
 	public static boolean containsField(Table table, String fieldName){
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
-			if (field.getName().equals(fieldName)){
+			if (!field.getCompoundReference() && field.getName().equals(fieldName)){
 				return true;
 			}
 		}
