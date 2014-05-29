@@ -214,6 +214,7 @@ public class PersistenceGenerator {
 				
 			}
 			else{
+				
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersoft, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
