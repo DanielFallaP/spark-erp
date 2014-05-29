@@ -49,7 +49,10 @@
 	    	function setFocus(){
 		   		document.getElementById("$firstField$").focus();
 		   }
+
+		    $modificationCompoundSelectionFunctions$
 	     </script>
+	     
     
     	$datePickerConfig$
     </head>

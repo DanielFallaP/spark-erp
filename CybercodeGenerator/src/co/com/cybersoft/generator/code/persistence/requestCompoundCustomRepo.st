@@ -10,7 +10,7 @@
 			DBObject object = cursor.next();
 			String $tableName$String = (String) object.get("$tableName$");
 			$entityName$ $tableName$ = new $entityName$();
-			$tableName$.set$entityName$($tableName$String);
+			$tableName$.set$upperKeyField$($tableName$String);
 			$tableName$List.add($tableName$);
 		}
 		return $tableName$List;

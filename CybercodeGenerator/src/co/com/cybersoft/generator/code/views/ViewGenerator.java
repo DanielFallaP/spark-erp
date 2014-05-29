@@ -159,6 +159,8 @@ public class ViewGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("rows", generateFieldRows(table));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
+		template.setAttribute("modificationCompoundSelectionFunctions", generateModificationCompoundSelectionFunctions(table));
+
 		List<Field> fields = table.getFields();
 		if (!fields.isEmpty()){
 			template.setAttribute("firstField", fields.get(0).getName());
@@ -167,6 +169,27 @@ public class ViewGenerator {
 		CodeUtil.writeClass(template.toString(), Spark.targetViewPath+"/normal/configuration/"+table.getName(), "modify"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
 	
+
+	private String generateModificationCompoundSelectionFunctions(Table table) {
+		String functions="";
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (field.getCompoundReference()){
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				for (int i=0; i< compoundKey.size()-1; i++) {
+					Field compoundField = compoundKey.get(i);
+					StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+					StringTemplate template = templateGroup.getInstanceOf("modificationCompoundSelection");
+					template.setAttribute("fieldName", compoundField.getName());
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					
+					functions+=template.toString()+"\n";
+				}
+			}
+		}
+		return functions;
+	}
 
 	private void generateSearchView(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");

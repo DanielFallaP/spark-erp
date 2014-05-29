@@ -6,8 +6,8 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
-import co.com.cybersoft.generator.code.model.Spark;
 import co.com.cybersoft.generator.code.model.Field;
+import co.com.cybersoft.generator.code.model.Spark;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
@@ -211,9 +211,83 @@ public class WebGenerator {
 		//reference lists
 		template.setAttribute("setReferencesLists", generateControllerReferencesLists(table));
 		
+		//compound references variables
+		template.setAttribute("compoundReferences", generateCompoundReferenceVariables(table));
+		
+		//compound references parameters
+		template.setAttribute("compoundReferencesParameters", generateCompoundReferenceParameters(table));
+		
+		//compound reference lists
+		template.setAttribute("setCompoundLists", generateModificationControllerCompoundLists(table));
+		
 		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationController.java");
 	}
 	
+	
+	
+	private Object generateModificationControllerCompoundLists(Table table) {
+		List<Field> fields = table.getFields();
+		
+		String compound="";
+		if (table.hasCompoundReference()){
+			StringTemplate stringTemplate = new StringTemplate("if ($tableName$InfoSession==null)request$entityName$Details = $tableName$Service.request$entityName$Details(new Request$entityName$DetailsEvent(id));\n"
+					+ "		else BeanUtils.copyProperties($tableName$InfoSession, $tableName$Info);\n");
+			stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+			stringTemplate.setAttribute("tableName", table.getName());
+			compound=stringTemplate.toString();
+		}
+			
+//		int suffix=1;
+		for (Field field : fields) {
+			if (field.getCompoundReference()){
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				if (compoundKey.size()>1){
+					StringTemplateGroup templateGroup = new StringTemplateGroup("web",Spark.codePath+"web");
+					StringTemplate stringTemplate = templateGroup.getInstanceOf("compoundReferenceList");
+					String compoundOps="";
+					String fieldStateEvents="";
+					
+					for (Field compoundField : compoundKey) {
+						StringTemplate template = new StringTemplate("$upperFieldName$PageEvent all$upperFieldName$Event = null;\n");
+						template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+						fieldStateEvents+=template.toString();
+						
+					}
+					
+					for (int i=0;i<compoundKey.size()-1;i++) {
+							Field compoundField=compoundKey.get(i);
+							Field nextCompoundField=compoundKey.get(i+1);
+							
+						    StringTemplate template = templateGroup.getInstanceOf("compoundOp");
+							template.setAttribute("fieldName", compoundField.getName());
+							template.setAttribute("nextField", nextCompoundField.getName());
+							template.setAttribute("tableName", table.getName());
+							template.setAttribute("nextUpperField", CodeUtil.toCamelCase(nextCompoundField.getName()));
+							template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+
+
+							compoundOps+=template.toString()+"\n";
+					}
+					
+					
+					stringTemplate.setAttribute("compoundOps", compoundOps);
+					stringTemplate.setAttribute("fieldStateEvents", fieldStateEvents);
+					stringTemplate.setAttribute("tableName", table.getName());
+					stringTemplate.setAttribute("upperFirstField", CodeUtil.toCamelCase(compoundKey.get(0).getName()));
+					stringTemplate.setAttribute("firstField", compoundKey.get(0).getName());
+					stringTemplate.setAttribute("upperLastField", CodeUtil.toCamelCase(compoundKey.get(compoundKey.size()-1).getName()));
+
+					
+					compound+=stringTemplate.toString()+"\n";
+					
+//					suffix++;
+				}
+			}
+		}
+				
+		return compound;
+	}
+
 	private String generateControllerCompoundLists(Table table) {
 		List<Field> fields = table.getFields();
 				

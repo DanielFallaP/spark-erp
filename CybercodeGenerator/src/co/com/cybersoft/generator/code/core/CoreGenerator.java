@@ -1,5 +1,6 @@
 package co.com.cybersoft.generator.code.core;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
@@ -46,6 +47,9 @@ public class CoreGenerator {
 		List<Field> fields = table.getFields();
 		String requestDeclarations="";
 		String autocompleteRequests="";
+		
+		HashSet<String> references = new HashSet<String>();
+		int i=0;
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				if (CodeUtil.generateQueryForReferences(field)){
@@ -64,18 +68,21 @@ public class CoreGenerator {
 					autocompleteRequests+=stringTemplate.toString();
 				}
 				
-				if (field.isReference()){
+				if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField())){
 					StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
 					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
 					stringTemplate.setAttribute("fieldName", field.getDisplayField());
 					requestDeclarations+=stringTemplate.toString();
+					
+					references.add(field.getRefType()+field.getDisplayField());
 				}
 			}
 			else{
 				List<Field> compoundKey = CodeUtil.getCompoundKey(spark, field.getRefType());
+				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
-					if (compoundField.getTableName().equals(field.getRefType())){
+					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
 						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
@@ -85,6 +92,7 @@ public class CoreGenerator {
 					
 				}
 			}
+			i++;
 		}
 		template.setAttribute("requestAll", requestDeclarations);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
@@ -108,9 +116,11 @@ public class CoreGenerator {
 		template.setAttribute("upperEntityName", CodeUtil.toCamelCase(table.getName()));
 		
 		//Generate all reference methods for all fields that can be referenced by other tables
+		HashSet<String> references = new HashSet<String>();
 		String requestImpl="";
 		String autocompleteRequest="";
 		List<Field> fields = table.getFields();
+		int i=0;
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				if (CodeUtil.generateQueryForReferences(field)){
@@ -130,19 +140,22 @@ public class CoreGenerator {
 					autocompleteRequest+=stringTemplate.toString();
 				}
 				
-				if (field.isReference()){
+				if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField())){
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompound");
 					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
 					stringTemplate.setAttribute("fieldName", field.getDisplayField());
 					stringTemplate.setAttribute("tableName", table.getName());
 					requestImpl+=stringTemplate.toString();
+					
+					references.add(field.getRefType()+field.getDisplayField());
 				}
 			}
 			else{
 				List<Field> compoundKey = CodeUtil.getCompoundKey(spark, field.getRefType());
+				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
-					if (compoundField.getTableName().equals(field.getRefType())){
+					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompound");
 						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
@@ -153,6 +166,7 @@ public class CoreGenerator {
 					
 				}
 			}
+			i++;
 		}
 		
 		
