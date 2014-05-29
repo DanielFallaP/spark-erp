@@ -805,7 +805,7 @@
 						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
 						{"name":"address", "spanishName":"Dirección", "type":"String", "required":"false", "autocomplete":"true"},
 						{"name":"zipCode", "spanishName":"Código postal", "type":"String", "required":"false"},
-						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "compoundReference":"true", "required":"false"},
+						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "compoundReference":"true"},
 						{"name":"pob", "spanishName":"Zona postal", "type":"String", "required":"false"},
 						{"name":"email", "spanishName":"email", "type":"String", "required":"false"},
 						{"name":"phoneNumber", "spanishName":"Número de teléfono", "type":"String", "required":"false"},
