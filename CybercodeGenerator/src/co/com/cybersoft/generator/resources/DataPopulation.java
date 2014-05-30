@@ -81,9 +81,19 @@ public class DataPopulation implements DBConstants{
 			List<Field> fields = table.getFields();
 			DBCollection collection = mongoDB.getCollection(table.getName());
 			BasicDBObject doc=new BasicDBObject();
-			for (int i = 0; i < fields.size(); i++) {
-				Field field=fields.get(i);
-				appendValue(doc, field, data[i+1]);
+			int i=0;
+			for (Field field:fields) {
+				if (!field.getCompoundReference()){
+					appendValue(doc, field, data[i+1]);
+					i++;
+				}
+				else{
+					List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+					for (Field compoundField : compoundKey) {
+						appendValue(doc, compoundField, data[i+1]);
+						i++;
+					}
+				}
 			}
 			
 			doc.append("dateOfCreation", new Date());

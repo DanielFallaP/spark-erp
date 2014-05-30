@@ -68,14 +68,17 @@ public class CoreGenerator {
 					autocompleteRequests+=stringTemplate.toString();
 				}
 				
-				if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField())){
-					StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
-					stringTemplate.setAttribute("fieldName", field.getDisplayField());
-					requestDeclarations+=stringTemplate.toString();
-					
-					references.add(field.getRefType()+field.getDisplayField());
+				if (i<fields.size()-1){
+					Field keyCompound = fields.get(i+1);
+					if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
+						StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
+						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("fieldName", field.getDisplayField());
+						requestDeclarations+=stringTemplate.toString();
+						
+						references.add(field.getRefType()+field.getDisplayField());
+					}
 				}
 			}
 			else{
@@ -140,15 +143,18 @@ public class CoreGenerator {
 					autocompleteRequest+=stringTemplate.toString();
 				}
 				
-				if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField())){
-					StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompound");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
-					stringTemplate.setAttribute("fieldName", field.getDisplayField());
-					stringTemplate.setAttribute("tableName", table.getName());
-					requestImpl+=stringTemplate.toString();
-					
-					references.add(field.getRefType()+field.getDisplayField());
+				if (i<fields.size()-1){
+					Field keyCompound = fields.get(i+1);
+					if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
+						StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompound");
+						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("fieldName", field.getDisplayField());
+						stringTemplate.setAttribute("tableName", table.getName());
+						requestImpl+=stringTemplate.toString();
+						
+						references.add(field.getRefType()+field.getDisplayField());
+					}
 				}
 			}
 			else{

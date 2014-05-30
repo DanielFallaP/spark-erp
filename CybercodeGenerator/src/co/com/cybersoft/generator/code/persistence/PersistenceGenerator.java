@@ -201,15 +201,18 @@ public class PersistenceGenerator {
 					autocompleteRequests+=stringTemplate.toString();
 				}
 				
-				if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField())){
-					StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
-					stringTemplate.setAttribute("fieldName", field.getDisplayField());
-					requestAll+=stringTemplate.toString();
-					
-					references.add(field.getRefType()+field.getDisplayField());
-
+				if (i<fields.size()-1){
+					Field keyCompound = fields.get(i+1);
+					if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
+						StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
+						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("fieldName", field.getDisplayField());
+						requestAll+=stringTemplate.toString();
+						
+						references.add(field.getRefType()+field.getDisplayField());
+						
+					}
 				}
 				
 			}
@@ -277,15 +280,18 @@ public class PersistenceGenerator {
 					autocompleteRequests+=stringTemplate.toString();
 				}
 				
-				if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField())){
-					StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompound");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("tableName", table.getName());
-					stringTemplate.setAttribute("upperReferencedField", CodeUtil.toCamelCase(field.getDisplayField()));
-					stringTemplate.setAttribute("referencedField", field.getDisplayField());
-					requestImpl+=stringTemplate.toString();
-					
-					references.add(field.getRefType()+field.getDisplayField());
+				if (i<fields.size()-1){
+					Field keyCompound = fields.get(i+1);
+					if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
+						StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompound");
+						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("tableName", table.getName());
+						stringTemplate.setAttribute("upperReferencedField", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("referencedField", field.getDisplayField());
+						requestImpl+=stringTemplate.toString();
+						
+						references.add(field.getRefType()+field.getDisplayField());
+					}
 				}
 			}
 			else{
@@ -365,22 +371,25 @@ public class PersistenceGenerator {
 					autocompleteQueries+=stringTemplate.toString();
 				}
 				
-				if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField())){
-					StringTemplate stringTemplate = new StringTemplate("List<$entityName$> findBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
-					stringTemplate.setAttribute("fieldName", field.getDisplayField());
-					findAllActive+=stringTemplate.toString();
-					
-					references.add(field.getRefType()+field.getDisplayField());
-
+				if (i<fields.size()-1){
+					Field keyCompound = fields.get(i+1);
+					if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
+						StringTemplate stringTemplate = new StringTemplate("List<$entityName$> findBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
+						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("fieldName", field.getDisplayField());
+						findAllActive+=stringTemplate.toString();
+						
+						references.add(field.getRefType()+field.getDisplayField());
+						
+					}
 				}
 			}
 			else{
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersoft, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
-					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
+					if (compoundField.getTableName().equals(field.getRefType()) && keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = new StringTemplate("List<$entityName$> findBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
 						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
@@ -434,17 +443,19 @@ public class PersistenceGenerator {
 					autocompleteQueries+=subTemplate.toString();
 				}
 				
-				if (field.isReference() &&!references.contains(field.getRefType()+field.getDisplayField())){
+				if (i<fields.size()-1){
 					Field keyCompound = fields.get(i+1);
-					StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompoundCustomRepo");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
-					stringTemplate.setAttribute("fieldName", field.getDisplayField());
-					stringTemplate.setAttribute("tableName", table.getName());
-					stringTemplate.setAttribute("upperKeyField", CodeUtil.toCamelCase(keyCompound.getName()));
-					findAllActive+=stringTemplate.toString();
-					
-					references.add(field.getRefType()+field.getDisplayField());
+					if (field.isReference() &&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
+						StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompoundCustomRepo");
+						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("fieldName", field.getDisplayField());
+						stringTemplate.setAttribute("tableName", table.getName());
+						stringTemplate.setAttribute("upperKeyField", CodeUtil.toCamelCase(keyCompound.getName()));
+						findAllActive+=stringTemplate.toString();
+						
+						references.add(field.getRefType()+field.getDisplayField());
+					}
 				}
 			}
 			else{
