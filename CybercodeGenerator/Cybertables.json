@@ -526,7 +526,7 @@
 			"spanishName":"Afe",
 			"fields":[
 						{"name":"afeCode", "spanishName":"Código de afe", "type":"String", "unique":"true", "length":"10", "autocomplete":"true"},
-						{"name":"afe", "spanishName":"Afe", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"afe", "spanishName":"Afe", "type":"String"},
 						{"name":"company", "spanishName":"Compañía", "refType":"company", "displayField":"letter"},
 						{"name":"year", "spanishName":"Año", "type":"String", "length":"4"},
 						{"name":"afeType", "spanishName":"Tipo de Afe", "refType":"afeType", "displayField":"afeType"},
@@ -550,7 +550,7 @@
 			"spanishName":"Centro de costo",
 			"fields":[
 						{"name":"costCenterCode", "spanishName":"Código", "type":"String", "unique":"true", "length":"10"},
-						{"name":"costCenter", "spanishName":"Centro de costo", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"costCenter", "spanishName":"Centro de costo", "type":"String"},
 						{"name":"companyLetter", "spanishName":"Letra de compañía", "refType":"company", "displayField":"letter"},
 						{"name":"companyCode", "spanishName":"Código de compañía", "refType":"company", "displayField":"code"},
 						{"name":"contract", "spanishName":"Contrato", "refType":"contract", "displayField":"contract"},
@@ -572,7 +572,7 @@
 			"spanishName":"Grupo de inventario",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
-						{"name":"stockGroup", "spanishName":"Grupo de inventario", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"stockGroup", "spanishName":"Grupo de inventario", "type":"String"},
 					 	{"name":"department", "spanishName":"Departamento", "refType":"department", "displayField":"department"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
@@ -625,11 +625,11 @@
 						{"name":"useMiniMaxByItem", "spanishName":"Usa minimax por ítem", "type":"Boolean", "defaultValue":"true"},
 						{"name":"tax", "spanishName":"Impuesto de venta", "refType":"tax", "displayField":"tax"},
 						{"name":"itemType", "spanishName":"Tipo de ítem", "refType":"itemType", "displayField":"itemType"},
-						{"name":"partNumber", "spanishName":"Número de parte", "type":"String", "unique":"true", "autocomplete":"false"},
-						{"name":"commodity", "spanishName":"Producto", "type":"String"},
-						{"name":"lastItemUsedDate", "spanishName":"Fecha última de utilización", "type":"Date", "readOnly":"true"},
-						{"name":"oldItem", "spanishName":"Código anterior", "type":"String"},
-		                {"name":"tradeMark", "spanishName":"Marca registrada", "type":"String"},
+						{"name":"partNumber", "spanishName":"Número de parte", "type":"String", "required":"false"},
+						{"name":"commodity", "spanishName":"Producto", "type":"String"}, "required":"false",
+						{"name":"lastItemUsedDate", "spanishName":"Fecha última de utilización", "type":"Date", "readOnly":"true", "required":"false"},
+						{"name":"oldItem", "spanishName":"Código anterior", "type":"String", "required":"false"},
+		                {"name":"tradeMark", "spanishName":"Marca registrada", "type":"String", "required":"false"},
 						{"name":"array", "spanishName":"Arreglo", "type":"String", "required":"false"},
 						{"name":"set", "spanishName":"Conjunto", "type":"String", "required":"false"},
 						{"name":"permitsLargerQuantityIssuingItemReception",  "spanishName":"Permite mayor cantidad al recibir el item", "type":"Boolean", "defaultValue":"false"},
@@ -732,11 +732,11 @@
 			"spanishName":"Período",
 			"fields":[
 						{"name":"periodType", "spanishName":"Tipo de período", "refType":"periodType", "displayField":"periodType"},
-						{"name":"period", "spanishName":"Período", "type":"String", "autocomplete":"true"},
+						{"name":"period", "spanishName":"Período", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"code", "spanishName":"Código", "type":"String", "length":"6"},
 						{"name":"year", "spanishName":"Año", "type":"Integer", "length":"4"},
 						{"name":"month", "spanishName":"Mes", "type":"Integer", "length":"2"},
-						{"name":"fromDate", "spanishName":"Desde fecha", "type":"Date", "unique":"true"},
+						{"name":"fromDate", "spanishName":"Desde fecha", "type":"Date"},
 						{"name":"toDate", "spanishName":"Hasta fecha", "type":"Date", "unique":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
