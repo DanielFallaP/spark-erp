@@ -626,7 +626,7 @@
 						{"name":"tax", "spanishName":"Impuesto de venta", "refType":"tax", "displayField":"tax"},
 						{"name":"itemType", "spanishName":"Tipo de ítem", "refType":"itemType", "displayField":"itemType"},
 						{"name":"partNumber", "spanishName":"Número de parte", "type":"String", "unique":"true", "autocomplete":"false"},
-						{"name":"commodity", "spanishName":"Producto", "type":"String", "unique":"true"},
+						{"name":"commodity", "spanishName":"Producto", "type":"String"},
 						{"name":"lastItemUsedDate", "spanishName":"Fecha última de utilización", "type":"Date", "readOnly":"true"},
 						{"name":"oldItem", "spanishName":"Código anterior", "type":"String"},
 		                {"name":"tradeMark", "spanishName":"Marca registrada", "type":"String"},
