@@ -156,7 +156,7 @@
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"10", "autocomplete":"true"},
 						{"name":"localAccount", "spanishName":"Cuenta local", "type":"String"},
-						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String"},
 						{"name":"localAccountLevel1", "spanishName":"Cuenta local nivel 1", "refType":"localAccountLevel1", "displayField":"code"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -193,8 +193,8 @@
 			"spanishName":"Cuentas de inventario",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"10", "autocomplete":"true"},
-						{"name":"account", "spanishName":"Cuenta", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"account", "spanishName":"Cuenta", "type":"String"},
+						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String"},
 						{"name":"balanceGroup", "spanishName":"Grupo de Balance", "refType":"balanceGroup", "displayField":"code"},
 						{"name":"inventory", "spanishName":"Inventario", "type":"Boolean", "defaultValue":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -251,7 +251,7 @@
 			"spanishName":"Retención de remesa",
 			"fields":[
 						{"name":"consignmentWithholding", "spanishName":"Retención de remesa", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"consignmentWithholdingPercentage", "spanishName":"Porcentaje de retención de remesa", "type":"Double", "unique":"true"},
+						{"name":"consignmentWithholdingPercentage", "spanishName":"Porcentaje de retención de remesa", "type":"Double"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
 						{"name":"minimumValue", "spanishName":"Valor mínimo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
