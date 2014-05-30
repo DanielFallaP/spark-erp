@@ -736,10 +736,11 @@
 						{"name":"year", "spanishName":"Año", "type":"Integer", "length":"4"},
 						{"name":"month", "spanishName":"Mes", "type":"Integer", "length":"2"},
 						{"name":"fromDate", "spanishName":"Desde fecha", "type":"Date"},
-						{"name":"toDate", "spanishName":"Hasta fecha", "type":"Date", "unique":"true"},
+						{"name":"toDate", "spanishName":"Hasta fecha", "type":"Date"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
+		 
 		 {
 			"name":"miniMax",	
 			"spanishName":"Mínimo Máximo",
