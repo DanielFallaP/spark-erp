@@ -615,7 +615,7 @@
 						{"name":"itemDescription", "spanishName":"Descripción del ítem", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"largeName", "spanishName":"Descripción larga",  "type":"String", "largeText":"true"},
 						{"name":"stockGroup", "spanishName":"Grupo de inventario", "refType":"stockGroup", "displayField":"stockGroup"},
-						{"name":"stockSubGroup", "spanishName":"Subgrupo de inventario", "refType":"stockSubGroup", "displayField":"stockSubGroup","required":"false"},
+						{"name":"stockSubGroup", "spanishName":"Código de subgrupo", "refType":"stockSubGroup", "displayField":"code", "embeddedFields":["stockSubGroup"]},
 						{"name":"division", "spanishName":"División", "refType":"division", "displayField":"division","required":"false"},
 						{"name":"inputMeasurementUnit", "spanishName":"Unidad de medida entrada", "refType":"measurementUnit", "displayField":"measurementUnit"},
 						{"name":"packingUnits", "spanishName":"Unidades por empaque", "type":"Double"},
