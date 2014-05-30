@@ -238,6 +238,7 @@
 			"spanishName":"Retención de ICA",
 			"fields":[
 						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "compoundReference":"true"},
+						{"name":"code", "spanishName":"Codigo de ICA", "type":"String", "unique":"true"},
 						{"name":"commerceWithholding", "spanishName":"Retención de ICA", "type":"String"},
 						{"name":"CommerceWithholdingPercentage", "spanishName":"Porcentaje de retención de ICA", "type":"Double"},
 						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
@@ -290,8 +291,8 @@
 						{"name":"autoWithholderDate", "spanishName":"Fecha autoretenedor", "type":"Date", "required":"false"},
 						{"name":"principalWithholding", "spanishName":"Retención en la fuente principal", "refType":"withholding", "displayField":"withholding", "required":"false"},
 						{"name":"principalConsignmentWithholding", "spanishName":"Retención de remesas principal", "refType":"consignmentWithholding", "displayField":"consignmentWithholding", "required":"false"},
-						{"name":"principalCommerceWithholding", "spanishName":"Retención de Industria y Comercio principal", "refType":"commerceWithholding", "displayField":"commerceWithholding", "required":"false"},
-						{"name":"CommerceActivity", "spanishName":"Actividad de Industria y Comercio", "type":"String", "length":"10", "required":"false"},
+						{"name":"principalCommerceWithholding", "spanishName":"Retención de Industria y Comercio principal", "refType":"commerceWithholding", "displayField":"code", "required":"false", "embeddedFields":["commerceWithholding"]},
+						{"name":"commerceActivity", "spanishName":"Actividad de Industria y Comercio", "type":"String", "length":"10", "required":"false"},
 						{"name":"paymentByBank", "spanishName":"Pagos por banco", "type":"Boolean", "defaultValue":"true", "required":"false"},
 						{"name":"contactPerson", "spanishName":"Persona contacto", "type":"String", "largeText":"true", "required":"false"},
 						{"name":"lastDateOfContact", "spanishName":"Ultima fecha de Contacto", "type":"Date", "defaultValue":"today", "required":"false"},
@@ -593,7 +594,7 @@
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
 						{"name":"division", "spanishName":"Descripción", "type":"String", "unique":"true", "autocomplete":"true"},
-					 	{"name":"stockSubGroup", "spanishName":"Subgrupo", "refType":"stockSubGroup", "displayField":"stockSubGroup"},
+					 	{"name":"stockSubGroup", "spanishName":"Código de subgrupo", "refType":"stockSubGroup", "displayField":"code", "embeddedFields":["stockSubGroup"]},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
 		 },
@@ -651,7 +652,7 @@
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"6"},
 						{"name":"warehouse", "spanishName":"Descripción", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"account"},
+						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code", "embeddedFields":["account"]},
 					    {"name":"accountConcept", "spanishName":"Concepto contable", "refType":"accountConcept", "displayField":"accountConcept"},
 						{"name":"afe", "spanishName":"Afe", "refType":"afe", "displayField":"afe"},
 					    {"name":"jointVentureOperation", "spanishName":"Operación conjunta", "type":"Boolean", "defaultValue":"false"},
