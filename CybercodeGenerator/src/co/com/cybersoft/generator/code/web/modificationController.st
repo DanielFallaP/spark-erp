@@ -86,6 +86,9 @@ public class $entityName$ModificationController {
 			
 		$entityName$DetailsEvent request$entityName$Details = null;
 		
+		$setReferencesLists$
+		$setCompoundLists$
+
 		if ($tableName$InfoSession==null){
 			request$entityName$Details = $tableName$Service.request$entityName$Details(new Request$entityName$DetailsEvent(id));
 		}
@@ -93,9 +96,6 @@ public class $entityName$ModificationController {
 		{
 			BeanUtils.copyProperties($tableName$InfoSession, $tableName$Info);
 		}
-		
-		$setReferencesLists$
-		$setCompoundLists$
 		
 		if (request$entityName$Details!=null) 
 			BeanUtils.copyProperties(request$entityName$Details.get$entityName$Details(), $tableName$Info);

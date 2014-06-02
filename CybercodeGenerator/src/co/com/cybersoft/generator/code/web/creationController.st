@@ -95,6 +95,9 @@ public class $entityName$CreationController {
 		String field = request.getParameter("field");
 		$compoundReferencesParameters$
 		
+		$setReferencesLists$
+		$setCompoundLists$
+		
 		if (value!=null){
 			Request$entityName$DetailsEvent event = new Request$entityName$DetailsEvent(null);
 			event.setField(field);
@@ -104,11 +107,8 @@ public class $entityName$CreationController {
 				BeanUtils.copyProperties(responseEvent.get$entityName$Details(), $tableName$Info);
 		}
 		
+		
 		$tableName$Info.setId(null);
-		
-		$setReferencesLists$
-		$setCompoundLists$
-		
 		$setDefaults$
 		
 		$tableName$Info.setCalledFrom(calledFrom);

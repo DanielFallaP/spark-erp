@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -19,6 +20,8 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
@@ -84,13 +87,13 @@ public class DataPopulation implements DBConstants{
 			int i=0;
 			for (Field field:fields) {
 				if (!field.getCompoundReference()){
-					appendValue(doc, field, data[i+1]);
+					appendValue(doc, field, data[i+1],mongoDB);
 					i++;
 				}
 				else{
 					List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
 					for (Field compoundField : compoundKey) {
-						appendValue(doc, compoundField, data[i+1]);
+						appendValue(doc, compoundField, data[i+1], mongoDB);
 						i++;
 					}
 				}
@@ -117,7 +120,7 @@ public class DataPopulation implements DBConstants{
 		throw exception;
 	}
 	
-	private void appendValue(BasicDBObject doc, Field field, String stringValue){
+	private void appendValue(BasicDBObject doc, Field field, String stringValue, DB mongo){
 			if (field.getType()!=null && !stringValue.equals("")){
 				if (field.getType().equals(Spark.doubleType))
 					doc.append(field.getName(), Double.parseDouble(stringValue));
@@ -139,6 +142,26 @@ public class DataPopulation implements DBConstants{
 					doc.append(field.getName(), stringValue);
 			}
 			
+			if (!field.getEmbeddedFields().isEmpty()){
+				
+				BasicDBObject queryObject = new BasicDBObject();
+				queryObject.put(field.getDisplayField(), stringValue);
+				DBCollection collection = mongo.getCollection(field.getRefType());
+				DBCursor cursor = collection.find(queryObject);
+				HashMap<String, Object> embeddedMap = new HashMap<>();
+				while (cursor.hasNext()){
+					DBObject object = cursor.next();
+					List<String> embeddedFields = field.getEmbeddedFields();
+					for (String embeddedField : embeddedFields) {
+						embeddedMap.put(embeddedField, object.get(embeddedField));
+					}
+				}
+				
+				if (!embeddedMap.values().isEmpty()){
+					String fieldName=field.getRefType()+"Entity";
+					doc.append(fieldName, embeddedMap);
+				}
+			}
 	}
 					
 }
