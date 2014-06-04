@@ -45,8 +45,6 @@ public class $entityName$ModificationController {
 	@Autowired
 	private $entityName$Service $tableName$Service;
 	
-	private String id;
-	
 	$referenceServicesDeclarations$
 	
 	
@@ -63,7 +61,7 @@ public class $entityName$ModificationController {
 		$tableName$Details.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		$tableName$Details.setDateOfModification(new Date());
 		
-		request.getSession().setAttribute("$tableName$Info"+id, $tableName$Info);
+		request.getSession().setAttribute("$tableName$Info", $tableName$Info);
 		$tableName$Service.modify$entityName$(new $entityName$ModificationEvent($tableName$Details));
 		return "redirect:/configuration/$tableName$/search$entityName$";
 	}
@@ -77,30 +75,16 @@ public class $entityName$ModificationController {
 	@ModelAttribute("$tableName$Info")
 	private $entityName$Info get$entityName$Info(@PathVariable("id") String id, HttpServletRequest request) throws Exception {
 		LOG.debug("Retrieving the $tableName$ "+id);
-		this.id=id;
-		
-		$compoundReferencesParameters$
 		
 		$entityName$Info $tableName$Info = new $entityName$Info();
-		$entityName$Info $tableName$InfoSession=($entityName$Info)request.getSession().getAttribute("$tableName$Info"+id);
 			
-		$entityName$DetailsEvent request$entityName$Details = null;
+		$entityName$DetailsEvent request$entityName$Details = $tableName$Service.request$entityName$Details(new Request$entityName$DetailsEvent(id));
 		
 		$setReferencesLists$
 		$setCompoundLists$
-
-		if ($tableName$InfoSession==null){
-			request$entityName$Details = $tableName$Service.request$entityName$Details(new Request$entityName$DetailsEvent(id));
-		}
-		else
-		{
-			BeanUtils.copyProperties($tableName$InfoSession, $tableName$Info);
-		}
 		
-		if (request$entityName$Details!=null) 
-			BeanUtils.copyProperties(request$entityName$Details.get$entityName$Details(), $tableName$Info);
-		
-		request.getSession().setAttribute("$tableName$Info"+id, $tableName$Info);
+		BeanUtils.copyProperties(request$entityName$Details.get$entityName$Details(), $tableName$Info);
+		request.getSession().setAttribute("$tableName$Info", $tableName$Info);
 		
 		return $tableName$Info;
 	}
@@ -109,14 +93,14 @@ public class $entityName$ModificationController {
 	public ModelAndView constraintError(HttpServletRequest req, Exception exception){
 		ModelAndView modelAndView = new ModelAndView();
 		if (exception instanceof BindException){
-			$entityName$Info $tableName$Info=($entityName$Info) req.getSession().getAttribute("$tableName$Info"+id);
+			$entityName$Info $tableName$Info=($entityName$Info) req.getSession().getAttribute("$tableName$Info");
 			modelAndView.addObject("$tableName$Info", $tableName$Info);
 			modelAndView.addObject("$tableName$ValidationException",true);
 			modelAndView = setErrors(modelAndView, (BindException) exception, $tableName$Info);
 			modelAndView.setViewName("/configuration/$tableName$/modify$entityName$");
 		}
 		else{
-			modelAndView.addObject("$tableName$Info", req.getSession().getAttribute("$tableName$Info"+id));
+			modelAndView.addObject("$tableName$Info", req.getSession().getAttribute("$tableName$Info"));
 			modelAndView.addObject("$tableName$ModificationException",true);
 			modelAndView.setViewName("/configuration/$tableName$/modify$entityName$");
 		}

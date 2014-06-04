@@ -25,6 +25,8 @@
 	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
     
     	<script type="text/javascript">
+    	/* <![CDATA[ */
+    	
 	     \$(document).on("click", "a", function(event){
 	    	  var link = \$(this);
 	    	  var target = link.attr("target");
@@ -51,6 +53,8 @@
 		   }
 
 		    $modificationCompoundSelectionFunctions$
+		    
+		 /* ]]> */
 	     </script>
 	     
     

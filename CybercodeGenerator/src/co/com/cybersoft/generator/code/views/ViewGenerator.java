@@ -106,13 +106,27 @@ public class ViewGenerator {
 					Field compoundField = compoundKey.get(i);
 					StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
 					StringTemplate template = templateGroup.getInstanceOf("compoundSelection");
-					template.setAttribute("fieldName", compoundField.getName());
+					template.setAttribute("field", compoundField.getName());
 					template.setAttribute("tableName", table.getName());
-					template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					template.setAttribute("compoundReference", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("setOptions", generateSelectFunctions(field, i+1));
 					
 					functions+=template.toString()+"\n";
 				}
 			}
+		}
+		return functions;
+	}
+
+	private String generateSelectFunctions(Field compoundField, int i) {
+		List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, compoundField.getRefType());
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		String functions="";
+		for (;i<compoundKey.size();i++) {
+			StringTemplate template = templateGroup.getInstanceOf("selectOptions");
+			Field field = compoundKey.get(i);
+			template.setAttribute("field", field.getName());
+			functions+=template.toString()+"\n";
 		}
 		return functions;
 	}
@@ -159,7 +173,7 @@ public class ViewGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("rows", generateFieldRows(table));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
-		template.setAttribute("modificationCompoundSelectionFunctions", generateModificationCompoundSelectionFunctions(table));
+		template.setAttribute("modificationCompoundSelectionFunctions", generateCompoundSelectionFunctions(table));
 
 		List<Field> fields = table.getFields();
 		if (!fields.isEmpty()){

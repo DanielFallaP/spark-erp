@@ -93,9 +93,9 @@ public class $entityName$CreationController {
 		
 		String value = request.getParameter("value");
 		String field = request.getParameter("field");
-		$compoundReferencesParameters$
 		
 		$setReferencesLists$
+		
 		$setCompoundLists$
 		
 		if (value!=null){

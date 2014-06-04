@@ -35,7 +35,8 @@ public class WebGenerator {
 			else{
 				generateSingletonController(table);
 			}
-			
+			generateCompoundReferenceControllers(table);
+
 			generateDomain(table);
 			List<Field> fields = table.getFields();
 			for (Field field : fields) {
@@ -48,6 +49,26 @@ public class WebGenerator {
 		}
 	}
 	
+	private void generateCompoundReferenceControllers(Table table) {
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (field.getCompoundReference()){
+					StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Spark.codePath+"web");
+					StringTemplate template = templateGroup.getInstanceOf("compoundFieldController");
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("referenceServicesDeclarations", generateCompoundControllerReferenceServicesDeclarations(table));
+					template.setAttribute("referenceServicesImports", generateCompoundControllerImports(table));
+					template.setAttribute("compoundReferences", generateCompoundReferenceVariables(table));
+					template.setAttribute("setCompoundLists", generateCompoundControllerLists(field,table));
+
+					CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+CodeUtil.toCamelCase(field.getName())+"Controller.java");
+			}
+		}
+	}
+
+
 	private void generateSingletonController(Table table) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Spark.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("setController");
@@ -126,17 +147,12 @@ public class WebGenerator {
 		//default values
 		template.setAttribute("setDefaults", generateDefaults(table));
 		
-		//compound references variables
-		template.setAttribute("compoundReferences", generateCompoundReferenceVariables(table));
-		
-		//compound references parameters
-		template.setAttribute("compoundReferencesParameters", generateCompoundReferenceParameters(table));
-		
 		//compound reference lists
 		template.setAttribute("setCompoundLists", generateControllerCompoundLists(table));
 
 		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CreationController.java");
 	}
+
 	
 	private String generateCompoundReferenceParameters(Table table) {
 		List<Field> compositeFields = table.getCompositeFields();
@@ -165,8 +181,7 @@ public class WebGenerator {
 			int i=0;
 			for (Field field : compoundReference) {
 				if (i<compoundReference.size()-1){
-					StringTemplate stringTemplate = new StringTemplate("String $fieldName$ = request.getParameter(\"$fieldName$\");\n"
-							+ "if ($fieldName$!=null) $tableName$Info.set$upperFieldName$($fieldName$);\n");
+					StringTemplate stringTemplate = new StringTemplate("String $fieldName$ = request.getParameter(\"$fieldName$\");\n");
 					stringTemplate.setAttribute("fieldName", field.getName());
 					stringTemplate.setAttribute("tableName", table.getName());
 					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
@@ -210,33 +225,60 @@ public class WebGenerator {
 		
 		//reference lists
 		template.setAttribute("setReferencesLists", generateControllerReferencesLists(table));
-		
-		//compound references variables
-		template.setAttribute("compoundReferences", generateCompoundReferenceVariables(table));
-		
-		//compound references parameters
-		template.setAttribute("compoundReferencesParameters", generateCompoundReferenceParameters(table));
-		
+
 		//compound reference lists
 		template.setAttribute("setCompoundLists", generateModificationControllerCompoundLists(table));
 		
 		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationController.java");
 	}
 	
+	private String generateCompoundControllerLists(Field field, Table table) {
+		String compound="";
+			if (field.getCompoundReference()){
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+					if (compoundKey.size()>1){
+						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Spark.codePath+"web");
+						StringTemplate stringTemplate = templateGroup.getInstanceOf("compoundControllerLists");
+						String compoundOps="";
+						String fieldStateEvents="";
+						
+						for (Field compoundField : compoundKey) {
+							StringTemplate template = new StringTemplate("$upperFieldName$PageEvent all$upperFieldName$PageEvent = null;\n");
+							template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+							fieldStateEvents+=template.toString();
+							
+						}
+						
+						for (int i=0;i<compoundKey.size()-1;i++) {
+								Field compoundField=compoundKey.get(i);
+								Field nextCompoundField=compoundKey.get(i+1);
+								
+							    StringTemplate template = templateGroup.getInstanceOf("compoundControllerOp");
+								template.setAttribute("fieldName", compoundField.getName());
+								template.setAttribute("nextField", nextCompoundField.getName());
+								template.setAttribute("tableName", table.getName());
+								template.setAttribute("nextUpperField", CodeUtil.toCamelCase(nextCompoundField.getName()));
+								template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+
+
+								compoundOps+=template.toString()+"\n";
+						}
+						
+						stringTemplate.setAttribute("compoundOps", compoundOps);
+						stringTemplate.setAttribute("fieldStateEvents", fieldStateEvents);
+						compound=stringTemplate.toString();
+						
+					}
+			}
+		return compound;
+	}
 	
 	
 	private Object generateModificationControllerCompoundLists(Table table) {
 		List<Field> fields = table.getFields();
 		
 		String compound="";
-		if (table.hasCompoundReference()){
-			StringTemplate stringTemplate = new StringTemplate("if ($tableName$InfoSession==null)request$entityName$Details = $tableName$Service.request$entityName$Details(new Request$entityName$DetailsEvent(id));\n"
-					+ "		else BeanUtils.copyProperties($tableName$InfoSession, $tableName$Info);\n");
-			stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-			stringTemplate.setAttribute("tableName", table.getName());
-			compound=stringTemplate.toString();
-		}
-			
+				
 //		int suffix=1;
 		for (Field field : fields) {
 			if (field.getCompoundReference()){
@@ -248,7 +290,7 @@ public class WebGenerator {
 					String fieldStateEvents="";
 					
 					for (Field compoundField : compoundKey) {
-						StringTemplate template = new StringTemplate("$upperFieldName$PageEvent all$upperFieldName$Event = null;\n");
+						StringTemplate template = new StringTemplate("$upperFieldName$PageEvent all$upperFieldName$PageEvent = null;\n");
 						template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
 						fieldStateEvents+=template.toString();
 						
@@ -261,6 +303,7 @@ public class WebGenerator {
 						    StringTemplate template = templateGroup.getInstanceOf("compoundOp");
 							template.setAttribute("fieldName", compoundField.getName());
 							template.setAttribute("nextField", nextCompoundField.getName());
+							template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 							template.setAttribute("tableName", table.getName());
 							template.setAttribute("nextUpperField", CodeUtil.toCamelCase(nextCompoundField.getName()));
 							template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
@@ -268,7 +311,6 @@ public class WebGenerator {
 
 							compoundOps+=template.toString()+"\n";
 					}
-					
 					
 					stringTemplate.setAttribute("compoundOps", compoundOps);
 					stringTemplate.setAttribute("fieldStateEvents", fieldStateEvents);
@@ -292,12 +334,6 @@ public class WebGenerator {
 		List<Field> fields = table.getFields();
 				
 		String compound="";
-		if (table.hasCompoundReference()){
-			StringTemplate stringTemplate = new StringTemplate("$entityName$Info $tableName$InfoSession=($entityName$Info)request.getSession().getAttribute(\"$tableName$Info\");\n");
-			stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-			stringTemplate.setAttribute("tableName", table.getName());
-			compound=stringTemplate.toString();
-		}
 			
 //		int suffix=1;
 		for (Field field : fields) {
@@ -310,7 +346,7 @@ public class WebGenerator {
 					String fieldStateEvents="";
 					
 					for (Field compoundField : compoundKey) {
-						StringTemplate template = new StringTemplate("$upperFieldName$PageEvent all$upperFieldName$Event = null;\n");
+						StringTemplate template = new StringTemplate("$upperFieldName$PageEvent all$upperFieldName$PageEvent = null;\n");
 						template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
 						fieldStateEvents+=template.toString();
 						
@@ -320,7 +356,7 @@ public class WebGenerator {
 							Field compoundField=compoundKey.get(i);
 							Field nextCompoundField=compoundKey.get(i+1);
 							
-						    StringTemplate template = templateGroup.getInstanceOf("compoundOp");
+						    StringTemplate template = templateGroup.getInstanceOf("compoundCreationOp");
 							template.setAttribute("fieldName", compoundField.getName());
 							template.setAttribute("nextField", nextCompoundField.getName());
 							template.setAttribute("tableName", table.getName());
@@ -432,6 +468,25 @@ public class WebGenerator {
 		return imports;
 	}
 	
+	private String generateCompoundControllerReferenceServicesDeclarations(Table table){
+		String declarations="";
+
+		List<Field> compositeFields = table.getCompositeFields();
+		for (Field compositeField : compositeFields) {
+			List<Field> compoundReference = CodeUtil.getCompoundKey(cybersystems, compositeField.getRefType());
+			for (Field field : compoundReference) {
+					StringTemplate template = new StringTemplate("@Autowired\n"
+							+ "	private $entityName$Service $tableName$Service;");
+					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("tableName", field.getName());
+					declarations+=template.toString()+"\n\n";
+				}
+		}
+		
+		
+		return declarations;
+	}
+	
 	private String generateControllerReferencesServicesDeclarations(Table table){
 		
 		String declarations="";
@@ -466,6 +521,27 @@ public class WebGenerator {
 		}
 		
 		return declarations;
+	}
+	
+	private String generateCompoundControllerImports(Table table){
+		String  imports="";
+		HashSet<String> referenceImports = new HashSet<String>();
+		List<Field> compositeFields = table.getCompositeFields();
+		for (Field compositeField : compositeFields) {
+			List<Field> compoundReference = CodeUtil.getCompoundKey(cybersystems, compositeField.getRefType());
+			for (Field field : compoundReference) {
+				if (!referenceImports.contains(field.getName())){
+					StringTemplate template = new StringTemplate("import co.com.cybersoft.core.services.$tableName$.$entityName$Service;\n"
+							+ "import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;\n");
+					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("tableName", field.getName());
+					imports+=template.toString();
+					referenceImports.add(field.getName());
+				}
+			}
+		}
+		
+		return imports;
 	}
 	
 	private String generateControllerReferenceImports(Table table){
