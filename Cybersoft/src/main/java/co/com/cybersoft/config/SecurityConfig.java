@@ -26,7 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
-            .anyRequest().hasRole("USER")
+			.antMatchers("/resources/js/jquery-1.11.0.min.js","/resources/css/bootstrap-responsive.min.css", "/resources/css/bootstrap.min.css", "/resources/img/spark_large.png").permitAll()
+            .anyRequest().authenticated()
             .and()
        .formLogin()
             .loginPage("/login").permitAll().and().logout().permitAll()
