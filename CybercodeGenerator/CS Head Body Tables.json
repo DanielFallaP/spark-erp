@@ -2,7 +2,8 @@
 	"tables":[
 		 {  
 			"name":"requisitionHead",		
-			"spanishName":"Requisición",		
+			"spanishName":"Requisiciï¿½n",		
+			
 			"fields":[
 						{"name":"consecutive", "spanishName":"consecutivo", "type":"Integer", "unique":"true", "length":"8"},
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "keyCompound":"true", "defaultValue":"today","readOnly":"true"},
@@ -19,7 +20,7 @@
 		 },
 		 {  
 			"name":"requisitionBody",		
-			"spanishName":"Requisición cuerpo",		
+			"spanishName":"Requisiciï¿½n cuerpo",		
 			"fields":[
 						{"name":"consecutive", "spanishName":"Consecutivo","refType":"requisitionHead", "displayField":"consecutive","keyCompound":"true"},
 						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code", "keyCompound":"true"},
@@ -33,13 +34,13 @@
 		 },
 		 {  
 			"name":"requisitionDistribution",		
-			"spanishName":"Requisición distribución",		
+			"spanishName":"Requisiciï¿½n distribuciï¿½n",		
 			"fields":[
 						{"name":"consecutive", "spanishName":"Consecutivo","refType":"requisitionHead", "displayField":"consecutive","keyCompound":"true"},
 						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code", "keyCompound":"true"},
 						{"name":"inventoryAccount", "spanishName":"Cuenta de inventario", "refType":"inventoryAccount", "displayField":"account"},
 						{"name":"afe", "spanishName":"Afe", "refType":"afe", "displayField":"afe"},
-						{"name":"distributionPorcentage", "spanishName":"Porcentaje de distribución", "type":"Double"},
+						{"name":"distributionPorcentage", "spanishName":"Porcentaje de distribuciï¿½n", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 }
