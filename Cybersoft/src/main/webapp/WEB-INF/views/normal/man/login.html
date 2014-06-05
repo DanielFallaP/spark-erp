@@ -10,7 +10,6 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
 
-    <!-- Le styles -->
     <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
     <style type="text/css">
       body {
@@ -46,6 +45,7 @@
 
     </style>
 	<link rel="stylesheet" th:href="@{/resources/css/bootstrap-responsive.min.css}" />
+	<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
 	<script>
 	function setFocus()
 	{
@@ -59,18 +59,12 @@
     <div class="container">
 
       <form class="form-signin" th:action="@{/login}" method="post">
-        <h2 class="form-signin-heading"><img align="middle" th:src="@{/resources/img/spark_large.png}" /></h2>
+        <img align="middle" th:src="@{/resources/img/spark_large.png}" />
         <input id="username" type="text" name="username" class="input-block-level" th:placeholder="#{label.userName}"/>
         <input type="password" name="password" class="input-block-level" th:placeholder="#{label.password}"/>
         <button class="btn btn-large btn-primary" type="submit" th:value="#{label.signin}">Sign in</button>
       </form>
 
     </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-	<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
-
   </body>
 </html>
