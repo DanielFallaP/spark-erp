@@ -3,7 +3,6 @@
 		 {  
 			"name":"requisitionHead",		
 			"spanishName":"Requisici�n",		
-			
 			"fields":[
 						{"name":"consecutive", "spanishName":"consecutivo", "type":"Integer", "unique":"true", "length":"8"},
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "keyCompound":"true", "defaultValue":"today","readOnly":"true"},
