@@ -21,14 +21,28 @@
 <!-- 	      For production purposes, min version should be used -->
 		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
 		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		<script th:src="@{/resources/js/jquery.dataTables.js}"></script>
+		<script th:src="@{/resources/js/jquery.dataTables.editable.js}"></script>
+		<script th:src="@{/resources/js/jquery.jeditable.js}"></script>
+		<script th:src="@{/resources/js/jquery.validation.js}"></script>
 	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/jquery.dataTables.css}" rel="stylesheet" />
 	    <script type="text/javascript">
 	      /* <![CDATA[ */
-	        	     
+	      	    			    
+		$( function () {
+			$( "#requiredOnDate" ).datepicker();
+		} );
+
+		$( function () {
+			$( "#date" ).datepicker();
+		} );
+
 		     
 		  function setFocus(){
 		   		document.getElementById("consecutive").focus();
-		   } 
+		   }
+	      
 		   
 		   $(function(){
 		   	  			$("#country").change(function(){
@@ -39,7 +53,7 @@
 		   	  	 		   	if (path[1].localeCompare("configuration")!=0){
 		   	  	 		   			prefix="/"+path[1];	
 		   	  	 		   	}
-		   	  	 		   	var url=prefix+"/configuration/requisitionHead/retrieveCity/retrieve?country="+country;
+		   	  	 		   	var url=prefix+"/configuration/requisition/retrieveCity/retrieve?country="+country;
 		   	  	 		 $.ajax({
 		   		  	 		  url: url,
 		   		  	 		  beforeSend: function(xhr) {
@@ -87,7 +101,7 @@
 		   	  	 		   	if (path[1].localeCompare("configuration")!=0){
 		   	  	 		   			prefix="/"+path[1];	
 		   	  	 		   	}
-		   	  	 		   	var url=prefix+"/configuration/requisitionHead/retrieveCity/retrieve?state="+state;
+		   	  	 		   	var url=prefix+"/configuration/requisition/retrieveCity/retrieve?state="+state;
 		   	  	 		 $.ajax({
 		   		  	 		  url: url,
 		   		  	 		  beforeSend: function(xhr) {
@@ -115,83 +129,125 @@
 		   	  	 		  });
 		   			});
 
+		   $(document).ready( function () {
+				$('#requisitionItemList').dataTable().makeEditable({
+											sUpdateURL: function(value){return value},
+											sAddURL: function(value){return value},
+                   							sDeleteURL: function(){return 'ok';},
+                                               			sDeleteHttpMethod: "GET" //Default post method is not allowed on the google code
+
+										});
+				
+			} );
+
 		   
 	       /* ]]> */
 	     </script>
-	    <script>
-	    			  $(function() {
-	    			    $( "#date" ).datepicker();
-	    			  });
-	    </script>
-	    <script>
-	    			  $(function() {
-	    			    $( "#requiredOnDate" ).datepicker();
-	    			  });
-	    </script>
 
     </head>
-    <body onload="setFocus()">
+    <body >
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
-		        <form th:object="${requisitionHeadInfo}" method="post">
-		        	<h3 th:text="#{label.requisitionHeadCreationTitle}"></h3>
+		        <form th:object="${requisitionInfo}" method="post">
+		        	<h3 th:text="#{label.requisitionCreationTitle}"></h3>
 		        	<table>		        			        			
 		        		<tr>
-        		 			<td th:text="#{label.requisitionHeadStock}+': '"></td>
+        		 			<td style="padding:0 15px;"><b th:text="#{label.requisitionStock}+': '"></b></td>
         		   			<td ><input type="checkbox" th:field="*{stock}" /></td>
-		        			<td th:text="#{label.requisitionHeadRequiredOnDate}+': '"></td>
-		        			<td><input id="requiredOnDate" type="text" th:field="*{requiredOnDate}" /></td>
+		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionRequiredOnDate}+': '"></b></td>
+		        			<td ><input id="requiredOnDate" type="text" th:field="*{requiredOnDate}" /></td>
 		        			<td th:if="${requiredOnDateException}"><div class="alert alert-error" th:text="#{${requiredOnDateValidationErrorMessage}}"></div></td>
+		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionPriority}+': '"></b></td>
+		        			<td ><select th:field="*{priority}"><option th:each="reference : ${requisitionInfo.priorityList}" th:value="${reference.priority}" th:text="#{${reference.priority}}"></option></select></td>
+		        			<td th:if="${priorityException}"><div class="alert alert-error" th:text="#{${priorityValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
-		        			<td th:text="#{label.requisitionHeadCountry}+': '"></td>
-		        			<td><select id="country" onChange="countrySelectedRefresh()" th:field="*{country}"><option th:each="reference : ${requisitionHeadInfo.countryList}" th:value="${reference.country}" th:text="${reference.country}"></option></select></td>
-		        			<td th:text="#{label.requisitionHeadState}+': '"></td>
-		        			<td><select id="state" onChange="stateSelectedRefresh()" th:field="*{state}"><option th:each="reference : ${requisitionHeadInfo.stateList}" th:value="${reference.state}" th:text="${reference.state}"></option></select></td>
+		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionCountry}+': '"></b></td>
+		        			<td><select id="country" onChange="countrySelectedRefresh()" th:field="*{country}"><option th:each="reference : ${requisitionInfo.countryList}" th:value="${reference.country}" th:text="${reference.country}"></option></select></td>
+		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionState}+': '"></b></td>
+		        			<td ><select id="state" onChange="stateSelectedRefresh()" th:field="*{state}"><option th:each="reference : ${requisitionInfo.stateList}" th:value="${reference.state}" th:text="${reference.state}"></option></select></td>
 		        			<td th:if="${stateException}"><div class="alert alert-error" th:text="#{${stateValidationErrorMessage}}"></div></td>
-		        			<td th:text="#{label.requisitionHeadPopulatedPlace}+': '"></td>
-		        			<td><select id="populatedPlace" onChange="populatedPlaceSelectedRefresh()" th:field="*{populatedPlace}"><option th:each="reference : ${requisitionHeadInfo.populatedPlaceList}" th:value="${reference.populatedPlace}" th:text="${reference.populatedPlace}"></option></select></td>
+		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionPopulatedPlace}+': '"></b></td>
+		        			<td><select id="populatedPlace" onChange="populatedPlaceSelectedRefresh()" th:field="*{populatedPlace}"><option th:each="reference : ${requisitionInfo.populatedPlaceList}" th:value="${reference.populatedPlace}" th:text="${reference.populatedPlace}"></option></select></td>
 		        			<td th:if="${populatedPlaceException}"><div class="alert alert-error" th:text="#{${populatedPlaceValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
-		        			<td th:text="#{label.requisitionHeadPriority}+': '"></td>
-		        			<td><select th:field="*{priority}"><option th:each="reference : ${requisitionHeadInfo.priorityList}" th:value="${reference.priority}" th:text="#{${reference.priority}}"></option></select></td>
-		        			<td th:if="${priorityException}"><div class="alert alert-error" th:text="#{${priorityValidationErrorMessage}}"></div></td>
-		        			<td th:text="#{label.requisitionHeadRequestingDepartment}+': '"></td>
-		        			<td><select id="requestingDepartment" onChange="requestingDepartmentSelectedRefresh()" th:field="*{requestingDepartment}"><option th:each="reference : ${requisitionHeadInfo.requestingDepartmentList}" th:value="${reference.department}" th:text="${reference.department}"></option></select></td>
+		        			<td style="padding:0 15px;"><b th:text="#{label.date}+': '"></b></td>
+		        			<td><input id="date" type="text" th:field="*{date}" /></td>
+		        			<td th:if="${dateException}"><div class="alert alert-error" th:text="#{${dateValidationErrorMessage}}"></div></td>
+		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionRequestingDepartment}+': '"></b></td>
+		        			<td><select id="requestingDepartment" onChange="requestingDepartmentSelectedRefresh()" th:field="*{requestingDepartment}"><option th:each="reference : ${requisitionInfo.requestingDepartmentList}" th:value="${reference.department}" th:text="${reference.department}"></option></select></td>
 		        			<td th:if="${requestingDepartmentException}"><div class="alert alert-error" th:text="#{${requestingDepartmentValidationErrorMessage}}"></div></td>
-		        		</tr>
-		        		<tr>
-		        			<td th:text="#{label.requisitionHeadExpenseType}+': '"></td>
-		        			<td><select id="expenseType" onChange="expenseTypeSelectedRefresh()" th:field="*{expenseType}"><option th:each="reference : ${requisitionHeadInfo.expenseTypeList}" th:value="${reference.expenseType}" th:text="${reference.expenseType}"></option></select></td>
+		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionExpenseType}+': '"></b></td>
+		        			<td><select id="expenseType" onChange="expenseTypeSelectedRefresh()" th:field="*{expenseType}"><option th:each="reference : ${requisitionInfo.expenseTypeList}" th:value="${reference.expenseType}" th:text="${reference.expenseType}"></option></select></td>
 		        			<td th:if="${expenseTypeException}"><div class="alert alert-error" th:text="#{${expenseTypeValidationErrorMessage}}"></div></td>
-		        			<td th:text="#{label.requisitionHeadTransportationType}+': '"></td>
-		        			<td><select th:field="*{transportationType}"><option th:each="reference : ${requisitionHeadInfo.transportationTypeList}" th:value="${reference.transportationType}" th:text="#{${reference.transportationType}}"></option></select></td>
+		        		</tr>
+		        		<tr>
+		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionTransportationType}+': '"></b></td>
+		        			<td><select th:field="*{transportationType}"><option th:each="reference : ${requisitionInfo.transportationTypeList}" th:value="${reference.transportationType}" th:text="#{${reference.transportationType}}"></option></select></td>
 		        			<td th:if="${transportationTypeException}"><div class="alert alert-error" th:text="#{${transportationTypeValidationErrorMessage}}"></div></td>
-		        		</tr>
-		        		<tr>
-		        			<td th:text="#{label.requisitionHeadReceivingWarehouse}+': '"></td>
-		        			<td><select id="receivingWarehouse" onChange="receivingWarehouseSelectedRefresh()" th:field="*{receivingWarehouse}"><option th:each="reference : ${requisitionHeadInfo.receivingWarehouseList}" th:value="${reference.warehouse}" th:text="${reference.warehouse}"></option></select></td>
+		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionReceivingWarehouse}+': '"></b></td>
+		        			<td><select id="receivingWarehouse" onChange="receivingWarehouseSelectedRefresh()" th:field="*{receivingWarehouse}"><option th:each="reference : ${requisitionInfo.receivingWarehouseList}" th:value="${reference.warehouse}" th:text="${reference.warehouse}"></option></select></td>
 		        			<td th:if="${receivingWarehouseException}"><div class="alert alert-error" th:text="#{${receivingWarehouseValidationErrorMessage}}"></div></td>
-	       		 			<td th:text="#{label.requisitionHeadActive}+': '"></td>
-	       		   			<td ><input type="checkbox" th:field="*{active}" /></td>
-		        		</tr>
-		        		<tr>
-		        			<td>
-		        				<input type="submit" th:value="#{label.save}" />
-		        			</td>
 		        		</tr>
 		        	</table>
+<!-- 		        	<button id="btnDeleteRow" th:text="#{label.deleteButton}"></button> -->
+		        	<table id="requisitionItemList" class="table table-striped">
+		        		<thead>
+							<tr>
+								<th th:text="#{label.requisitionItemItem}"></th>
+								<th th:text="#{label.requisitionItemRequiredOnDate}"></th>
+								<th th:text="#{label.requisitionItemPriority}"></th>
+								<th th:text="#{label.requisitionItemQuantity}"></th>
+								<th th:text="#{label.requisitionItemLocalCurrencyUnitValue}"></th>
+								<th th:text="#{label.requisitionItemForeignCurrencyUnitValue}"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="object: ${requisitionItemInfoList}" id="1">
+								<td th:text="${object.item}"></td>
+								<td th:text="${object.requiredOnDate}"></td>
+								<td th:text="${object.priority}"></td>
+								<td th:text="${object.quantity}"></td>
+								<td class="read_only" th:text="${object.localCurrencyUnitValue}"></td>
+								<td class="read_only" th:text="${object.foreignCurrencyUnitValue}"></td>
+							</tr>
+						</tbody>
+		        	</table>
+		        	<div class="add_delete_toolbar" />
+
+       				<input type="submit" th:value="#{label.save}" />
 		        </form>
+			 <!-- Custom form for adding new records -->
 		    </div>
-		    <div th:if='${requisitionHeadInfo.created}' class="alert alert-info" th:text="#{label.created}">
+		    <div th:if='${requisitionInfo.created}' class="alert alert-info" th:text="#{label.created}">
             </div>
-            <div th:if='${requisitionHeadCreateException}' class="alert alert-error" th:text="#{label.requisitionHeadCreationError}">
+            <div th:if='${requisitionCreateException}' class="alert alert-error" th:text="#{label.requisitionCreationError}">
             </div>
-            <div th:if='${requisitionHeadValidationException}' class="alert alert-error" th:text="#{label.requisitionHeadValidationError}">
+            <div th:if='${requisitionValidationException}' class="alert alert-error" th:text="#{label.requisitionValidationError}">
             </div>
 	    </div>
+			 <form id="formAddNewRow" action="#" title="Add new record">
+			        <label th:for="#{label.requisitionItemItem}" ><b th:text="#{label.requisitionItemItem}"></b></label><br />
+				<input type="text" th:name="#{label.requisitionItemRequiredOnDate}" th:id="#{label.requisitionItemRequiredOnDate}" class="required" rel="0" />
+			        <br />
+			        <label th:for="#{label.requisitionItemRequiredOnDate}">Browser</label><br />
+				<input type="text" th:name="#{label.requisitionItemRequiredOnDate}" th:id="#{label.requisitionItemRequiredOnDate}" rel="1" />
+			        <br />
+			        <label th:for="#{label.requisitionItemPriority}">Browser</label><br />
+				<input type="text" th:name="#{label.requisitionItemPriority}" th:id="#{label.requisitionItemPriority}" rel="2" />
+			        <br />
+			        <label th:for="#{label.requisitionItemQuantity}">Browser</label><br />
+				<input type="text" th:name="#{label.requisitionItemQuantity}" th:id="#{label.requisitionItemQuantity}" rel="3" />
+			        <br />
+			        <label th:for="#{label.requisitionItemLocalCurrencyUnitValue}">Browser</label><br />
+				<input type="text" th:name="#{label.requisitionItemLocalCurrencyUnitValue}" th:id="#{label.requisitionItemLocalCurrencyUnitValue}" rel="4" />
+			        <br />
+			        <label th:for="#{label.requisitionItemForeignCurrencyUnitValue}">Browser</label><br />
+				<input type="text" th:name="#{label.requisitionItemForeignCurrencyUnitValue}" th:id="#{label.requisitionItemForeignCurrencyUnitValue}" rel="5" />
+			        <br />
+			</form>
 		<div th:include="normal/layout :: footer"></div>    
     </body>
 </html>
