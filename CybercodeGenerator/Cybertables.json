@@ -315,7 +315,7 @@
 			"spanishName":"Clase de tercero",
 			"fields":[
 						{"name":"thirdParty", "spanishName":"Tercero", "keyCompound":"true", "refType":"thirdParty", "displayField":"thirdParty", "embedded":["identification"]},
-						{"name":"thirdPartyType", "spanishName":"Tipo de tercero", "keyCompound":"thru", "refType":"thirdPartyType", "displayField":"thirdPartyType", "embedded":["code"]},
+						{"name":"thirdPartyType", "spanishName":"Tipo de tercero", "keyCompound":"true", "refType":"thirdPartyType", "displayField":"thirdPartyType", "embedded":["code"]},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 						
 					]
