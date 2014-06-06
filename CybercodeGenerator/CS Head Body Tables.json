@@ -18,11 +18,10 @@
 					]
 		 },
 		 {  
-			"name":"requisitionBody",		
+			"name":"requisitionItem",		
 			"spanishName":"Requisición cuerpo",		
 			"fields":[
-						{"name":"consecutive", "spanishName":"Consecutivo","refType":"requisitionHead", "displayField":"consecutive","keyCompound":"true"},
-						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code", "keyCompound":"true"},
+						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code", "unique":"true"},
 						{"name":"requiredOnDate", "spanishName":"Requerido en Fecha", "type":"Date", "keyCompound":"true", "defaultValue":"today"},
 						{"name":"priority", "spanishName":"Prioridad", "refType":"priority", "displayField":"priority"},
 						{"name":"quantity", "spanishName":"Cantidad", "type":"Double"},
@@ -35,7 +34,7 @@
 			"name":"requisitionDistribution",		
 			"spanishName":"Requisición distribución",		
 			"fields":[
-						{"name":"consecutive", "spanishName":"Consecutivo","refType":"requisitionHead", "displayField":"consecutive","keyCompound":"true"},
+						{"name":"consecutive", "spanishName":"Consecutivo","refType":"requisition", "displayField":"consecutive","keyCompound":"true"},
 						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code", "keyCompound":"true"},
 						{"name":"inventoryAccount", "spanishName":"Cuenta de inventario", "refType":"inventoryAccount", "displayField":"account"},
 						{"name":"afe", "spanishName":"Afe", "refType":"afe", "displayField":"afe"},

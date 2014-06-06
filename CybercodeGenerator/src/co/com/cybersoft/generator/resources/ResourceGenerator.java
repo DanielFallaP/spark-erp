@@ -96,7 +96,7 @@ public class ResourceGenerator {
 		HashMap<String, BufferedWriter> result = new HashMap<String, BufferedWriter>();
 		Set<String> set = filesMap.keySet();
 		for (String string : set) {
-			File file = new File(resourcePath+"messages_"+string+".properties");
+			File file = new File("messages_"+string+".properties");
 			if (file.exists())
 				file.delete();
 			if (!file.exists()){

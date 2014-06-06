@@ -5,7 +5,7 @@ public interface DBConstants {
 	
 	public static final String mongoDBName="cybersoft";
 	
-	public static final String dataTablePath="CyberSystems table data.csv";
+	public static final String dataTablePath="CS table data.csv";
 	
 	public static final String dataFileSeparator=",";
 }
