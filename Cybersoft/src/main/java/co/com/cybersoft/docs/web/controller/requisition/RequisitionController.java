@@ -42,6 +42,7 @@ import co.com.cybersoft.events.state.StatePageEvent;
 import co.com.cybersoft.events.transportationType.TransportationTypePageEvent;
 import co.com.cybersoft.events.warehouse.WarehousePageEvent;
 
+
 @Controller
 @RequestMapping("/requisition")
 public class RequisitionController {
