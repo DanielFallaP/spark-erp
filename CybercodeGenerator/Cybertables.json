@@ -54,7 +54,7 @@
 			"name":"country",
 			"spanishName":"País",		
 			"fields":[
-						{"name":"region", "spanishName":"Región", "refType":"region", "displayField":"region", "embeddedFields":["continent"]},
+						{"name":"region", "spanishName":"Región", "refType":"region", "displayField":"region"},
 						{"name":"country", "spanishName":"País", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"localName", "spanishName":"Nombre local", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"frenchName", "spanishName":"Nombre francés", "type":"String", "unique":"true", "autocomplete":"true"},
@@ -291,7 +291,7 @@
 						{"name":"autoWithholderDate", "spanishName":"Fecha autoretenedor", "type":"Date", "required":"false"},
 						{"name":"principalWithholding", "spanishName":"Retención en la fuente principal", "refType":"withholding", "displayField":"withholding", "required":"false"},
 						{"name":"principalConsignmentWithholding", "spanishName":"Retención de remesas principal", "refType":"consignmentWithholding", "displayField":"consignmentWithholding", "required":"false"},
-						{"name":"principalCommerceWithholding", "spanishName":"Retención de Industria y Comercio principal", "refType":"commerceWithholding", "displayField":"commerceWithholding", "embeddedFields":["code"], "required":"false"},
+						{"name":"principalCommerceWithholding", "spanishName":"Retención de Industria y Comercio principal", "refType":"commerceWithholding", "displayField":"code", "embeddedFields":["commerceWithholding"], "required":"false"},
 						{"name":"commerceActivity", "spanishName":"Actividad de Industria y Comercio", "type":"String", "length":"10", "required":"false"},
 						{"name":"paymentByBank", "spanishName":"Pagos por banco", "type":"Boolean", "defaultValue":"true", "required":"false"},
 						{"name":"contactPerson", "spanishName":"Persona contacto", "type":"String", "largeText":"true", "required":"false"},
@@ -474,7 +474,7 @@
 			"name":"oilWell",
 			"spanishName":"Pozo",
 			"fields":[
-						{"name":"field", "spanishName":"Campo", "refType":"field", "displayField":"field", "embeddedFields":["contract"]},
+						{"name":"field", "spanishName":"Campo", "refType":"field", "displayField":"field"},
 						{"name":"oilWell", "spanishName":"Pozo", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -525,7 +525,7 @@
 			"spanishName":"Afe",
 			"fields":[
 						{"name":"afeCode", "spanishName":"Código de afe", "type":"String", "unique":"true", "length":"10", "autocomplete":"true"},
-						{"name":"afe", "spanishName":"Afe", "type":"String"},
+						{"name":"afe", "spanishName":"Afe", "type":"String", "unique":"true"},
 						{"name":"company", "spanishName":"Compañía", "refType":"company", "displayField":"letter", "embeddedFields":["company", "code"]},
 						{"name":"year", "spanishName":"Año", "type":"String", "length":"4"},
 						{"name":"afeType", "spanishName":"Tipo de Afe", "refType":"afeType", "displayField":"afeType", "embeddedFields":["code"]},
@@ -611,7 +611,7 @@
 			"spanishName":"Item",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"15", "unique":"true", "autocomplete":"true"},
-						{"name":"itemDescription", "spanishName":"Descripción del ítem", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"description", "spanishName":"Descripción del ítem", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"largeName", "spanishName":"Descripción larga",  "type":"String", "largeText":"true"},
 						{"name":"stockSubGroup", "spanishName":"Código de subgrupo", "refType":"stockSubGroup", "displayField":"code", "embeddedFields":["stockSubGroup"]},
 						{"name":"division", "spanishName":"División", "refType":"division", "displayField":"code","required":"false"},
@@ -638,7 +638,7 @@
 			"name":"itemTradeMark",
 			"spanishName":"Marca de ítem",
 			"fields":[
-						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"item", "embeddedFields":["code"], "autocomplete":"true", "keyCompound":"true"},
+						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"item", "embeddedFields":["code"], "keyCompound":"true"},
 						{"name":"tradeMark", "spanishName":"Marca", "type":"String", "keyCompound":"true"},
 					 	{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					 ]
@@ -743,7 +743,7 @@
 			"name":"miniMax",	
 			"spanishName":"Mínimo Máximo",
 			"fields":[
-						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"item", "embeddedFields":["code"]},
+						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"description", "embeddedFields":["code"]},
 						{"name":"warehouse", "spanishName":"Bodega", "refType":"warehouse", "displayField":"warehouse","required":"false", "embeddedFields":["code"]},
 						{"name":"minimumQuantity", "spanishName":"Cantidad mínima", "type":"Double"},
 						{"name":"maximumQuantity", "spanishName":"Cantidad máxima", "type":"Double"},
@@ -831,7 +831,7 @@
 			"name":"itemPurchaseHistory",
 			"spanishName":"Compra histórica de item",
 			"fields":[
-						{"name":"item", "spanishName":"item", "refType":"item", "displayField":"code", "embeddedFields":["itemDescription"]},
+						{"name":"item", "spanishName":"item", "refType":"item", "displayField":"code", "embeddedFields":["description"]},
 						{"name":"thirdParty", "spanishName":"Tercero", "refType":"thirdParty", "displayField":"thirdParty", "embeddedFields":["identification"]},
 						{"name":"purchaseOrder", "spanishName":"Orden de compra", "type":"Integer"},
 						{"name":"purchaseDate", "spanishName":"Fecha de compra", "type":"Date"},
