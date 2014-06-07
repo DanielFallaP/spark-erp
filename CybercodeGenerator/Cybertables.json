@@ -45,8 +45,8 @@
 			"name":"region",
 			"spanishName":"Región",		
 			"fields":[
-						{"name":"continent", "spanishName":"Continente", "keyCompound":"true", "refType":"continent", "displayField":"continent"},
-						{"name":"region", "spanishName":"Región", "type":"String", "keyCompound":"true", "unique":"true", "autocomplete":"true"},
+						{"name":"continent", "spanishName":"Continente", "refType":"continent", "displayField":"continent"},
+						{"name":"region", "spanishName":"Región", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -314,8 +314,8 @@
 			"name":"thirdPartyClass",		
 			"spanishName":"Clase de tercero",
 			"fields":[
-						{"name":"thirdParty", "spanishName":"Tercero", "keyCompound":"true", "refType":"thirdParty", "displayField":"thirdParty", "enbeddedFields":["identification"]},
-						{"name":"thirdPartyType", "spanishName":"Tipo de tercero", "keyCompound":"true", "refType":"thirdPartyType", "displayField":"thirdPartyType", "enbeddedFields":["code"]},
+						{"name":"thirdParty", "spanishName":"Tercero", "keyCompound":"true", "refType":"thirdParty", "displayField":"thirdParty", "embeddedFields":["identification"]},
+						{"name":"thirdPartyType", "spanishName":"Tipo de tercero", "keyCompound":"true", "refType":"thirdPartyType", "displayField":"thirdPartyType", "embeddedFields":["code"]},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 						
 					]
@@ -324,7 +324,7 @@
 			"name":"partner",
 			"spanishName":"Socio",
 			"fields":[
-						{"name":"partner", "spanishName":"Socio", "refType":"thirdParty", "displayField":"thirdParty", "enbeddedFields":["identification"]},
+						{"name":"partner", "spanishName":"Socio", "refType":"thirdParty", "displayField":"thirdParty", "embeddedFields":["identification"]},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},  
 						{"name":"oparator", "spanishName":"Operador", "type":"Boolean", "defaultValue":"false"},  
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -343,14 +343,14 @@
 			"spanishName":"Cliente",
 			"singletonTable":"true",
 			"fields":[
-						{"name":"thirdParty", "spanishName":"Cliente", "refType":"thirdParty", "displayField":"thirdParty", "enbeddedFields":["identification"]},
+						{"name":"thirdParty", "spanishName":"Cliente", "refType":"thirdParty", "displayField":"thirdParty", "embeddedFields":["identification"]},
 						{"name":"operatingSystem", "spanishName":"Sistema Operacional", "refType":"operatingSystem", "displayField":"operatingSystem"},
 						{"name":"softwareTradeMark", "spanishName":"Marca de software", "type":"String", "unique":"true"},
 						{"name":"softwareVersion", "spanishName":"Versión de software", "type":"String", "unique":"true"},
 						{"name":"softwareSerialNo", "spanishName":"No.Serial", "type":"String", "unique":"true"},
 						{"name":"doubleCurrency", "spanishName":"Doble moneda", "type":"Boolean", "defaultValue":"true"},
-						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "displayField":"currency", "enbeddedFields":["code"]},
-						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "displayField":"currency", "enbeddedFields":["code"]},
+						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "displayField":"currency", "embeddedFields":["code"]},
+						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "displayField":"currency", "embeddedFields":["code"]},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -367,7 +367,7 @@
 			"name":"company",
 			"spanishName":"Compañia",
 			"fields":[
-						{"name":"corporation", "spanishName":"Corporación", "refType":"corporation", "displayField":"corporation", "enbeddedFields":["code"]},
+						{"name":"corporation", "spanishName":"Corporación", "refType":"corporation", "displayField":"corporation", "embeddedFields":["code"]},
 						{"name":"company", "spanishName":"Compañia", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"letter", "spanishName":"Letra", "type":"String", "unique":"true", "length":"1"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
@@ -378,13 +378,13 @@
 			"name":"branch",
 			"spanishName":"Sucursal",
 			"fields":[
-						{"name":"company", "spanishName":"Compañía", "refType":"company", "displayField":"company", "enbeddedFields":["code"]},
+						{"name":"company", "spanishName":"Compañía", "refType":"company", "displayField":"company", "embeddedFields":["code"]},
 						{"name":"branch", "spanishName":"Sucursal", "type":"String", "unique":"true", "autocomplete":"true"}, 
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
-	     {  
+	     {
 			"name":"department",		
 			"spanishName":"Departamento",
 			"fields":[
