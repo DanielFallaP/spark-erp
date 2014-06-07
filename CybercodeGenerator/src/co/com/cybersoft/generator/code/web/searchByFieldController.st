@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -24,7 +23,7 @@ public class $entityName$SearchBy$upperFieldName$Controller {
 	private $entityName$Service $tableName$Service;
 	
 	@RequestMapping(method=RequestMethod.GET)
-		public void get$entityName$List(@PathVariable("$fieldName$") String $fieldName$, HttpServletResponse response) throws Exception{
+		public void get$entityName$List(String $fieldName$, HttpServletResponse response) throws Exception{
 		$entityName$PageEvent $fieldName$Event = $tableName$Service.requestByContaining$upperFieldName$($fieldName$);
 		
 		List<$entityName$Details> $fieldName$List = $fieldName$Event.get$entityName$List();

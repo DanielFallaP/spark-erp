@@ -7,7 +7,7 @@
 		    	    			prefix="/"+path[1];	
 		    	    		}
 		    	    		
-							\$.get(prefix+"/configuration/$tableName$/get$upperFieldName$List/"+request.term, {}, function (data) {
+							\$.get(prefix+"/configuration/$tableName$/get$upperFieldName$List?$tableName$="+request.term, {}, function (data) {
 		    	            var array=data.split("$arraySeparator$");
 		    	            if (data!="")
 		    	            	response(array);
