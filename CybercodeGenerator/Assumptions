@@ -1,0 +1,16 @@
+Assumptions:
+
+	- Company information is in a Amazon tenancy database.
+	- COL USD exchange rate is automatically updated each day.
+	- In the configuration tables nothing is deleted, only is marked as an inactive register. There are not delete option.
+	- When a table is referenced in another table, only active registers are showed.
+	- Item Table: if use MiniMax is true and use MiniMax By Item is false, then MiniMax is used by warehouse.
+	- Warehouse table: joint Venture Operation equals false then the operation is company 100%
+	- Warehouse	table: average Cost equals false then the cost evaluation is FIFO (First In, First Out).				
+	- Priority in requisition is part of head or body, as it is defined in the business rules.
+	- Required on date in requisition is part of head or body, as it is defined in the business rules.
+	- Use Cost Discrimination By Item in requisition is part of head or body, as it is defined in the business rules.
+	- Business rules table: Priority by item defined as false implies priority is in the head of requisition.
+	- Business rules table: Required on date by item defined as false implies Required on date is in the head of requisition.
+	- Business rules table: Use Cost Discrimination By Item defined as false implies Cost Discrimination is in the head of requisition.
+	- Business rules table: Use MiniMax By Item defined as false implies MiniMax by warehouse

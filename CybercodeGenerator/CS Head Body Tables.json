@@ -1,12 +1,12 @@
 { 
 	"tables":[
 		 {  
-			"name":"requisitionHead",		
+			"name":"requisition",		
 			"spanishName":"Requisición",		
 			"fields":[
 						{"name":"consecutive", "spanishName":"consecutivo", "type":"Integer", "unique":"true", "length":"8"},
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "keyCompound":"true", "defaultValue":"today","readOnly":"true"},
-						{"name":"stock", "spanishName":"Inventario", "type":"Boolean", "defaultValue":"true"}
+						{"name":"stock", "spanishName":"Inventario", "type":"Boolean", "defaultValue":"true"},
 						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"docSite"},
 						{"name":"requiredOnDate", "spanishName":"Requerido en Fecha", "type":"Date", "defaultValue":"today"},
 						{"name":"priority", "spanishName":"Prioridad", "refType":"priority", "displayField":"priority"},
