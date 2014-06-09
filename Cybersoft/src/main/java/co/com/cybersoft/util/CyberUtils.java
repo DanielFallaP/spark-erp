@@ -1,5 +1,8 @@
 package co.com.cybersoft.util;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class CyberUtils {
 
 	public static final String arraySeparator="/////";
@@ -39,5 +42,16 @@ public class CyberUtils {
 	public final static String defaultCreatingUser="createdBy";
 	
 	public final static String setMethodPrefix="set";
+	
+	private final static List<Character> PCREEscapeCharacters=Arrays.asList('.','^','$','*','+','?','(',')','[','{','|','^','-',']');
+	
+	public final static String stringLiteralEscape="\\\\";
+	
+	public static String escapePCRECharacters(String string){
+		for (Character escapeCharacter : PCREEscapeCharacters) {
+			string=string.replace(escapeCharacter.toString(), stringLiteralEscape+escapeCharacter);
+		}
+		return string;
+	}
 	
 }
