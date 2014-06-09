@@ -754,7 +754,8 @@
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
-		{	
+		 
+		 {	
 			"name":"person",
 			"spanishName":"Persona",
 			"fields":[
