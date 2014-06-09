@@ -15,9 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import co.com.cybersoft.man.jobs.UpdateTodayRateJob;
 import co.com.cybersoft.man.services.currency.CurrencyUpdateService;
+import co.com.cybersoft.man.services.tenancy.TenantConfigurationService;
 import co.com.cybersoft.man.services.timer.TimerService;
 
-public class CurrencyStartupServiceImpl implements CurrencyStartupService{
+public class SparkStartupServiceImpl implements SparkStartupService{
 
 	@Autowired
 	CurrencyUpdateService currencyUpdateService;
@@ -25,9 +26,17 @@ public class CurrencyStartupServiceImpl implements CurrencyStartupService{
 	@Autowired
 	TimerService timerService;
 
+	@Autowired
+	private TenantConfigurationService tenantConfigService;
+
 	@PostConstruct
 	@Override
-	public void bootCurrencyConfig() throws Exception{
+	public void bootSPARK() throws Exception {
+		bootTenantConfig();
+		bootCurrencyConfig();
+	}
+
+	private void bootCurrencyConfig() throws Exception{
 	
 		Date to=new Date();
 		GregorianCalendar init = new GregorianCalendar();
@@ -46,6 +55,10 @@ public class CurrencyStartupServiceImpl implements CurrencyStartupService{
 		
 		//Schedule daily jobs for continuous updates
 		timerService.scheduleFirstThingDailyJob(job);
+	}
+	
+	private void bootTenantConfig() throws Exception {
+		tenantConfigService.updateTenantConfig();
 	}
 
 }

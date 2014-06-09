@@ -411,13 +411,6 @@ public class PersistenceGenerator {
 		template = templateGroup.getInstanceOf("customRepositoryImplementation");
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		
-		//Set single record for singleton tables
-		if (table.getSingletonTable()){
-			StringTemplate stringTemplate = templateGroup.getInstanceOf("startupSingletonRecord");
-			stringTemplate.setAttribute("tableName", table.getName());
-			template.setAttribute("startupSingletonRecord", stringTemplate.toString());
-		}
 
 		references = new HashSet<String>();
 		findAllActive="";

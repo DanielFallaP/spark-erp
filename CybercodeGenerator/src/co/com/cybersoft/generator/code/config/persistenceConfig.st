@@ -1,10 +1,12 @@
 package co.com.cybersoft.config;
 
-
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.UnknownHostException;
 
 import javax.sql.DataSource;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -30,7 +32,20 @@ public class PersistenceConfig {
 	
 	@Bean
 	public  Mongo mongo() throws UnknownHostException{
-		return new Mongo("localhost");
+		return new Mongo(getDBAddress());
+	}
+	
+	private String getDBAddress(){
+		InputStream stream = getClass().getClassLoader().getResourceAsStream("db.json");
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			DBConfig dbConfig = (DBConfig) mapper.readValue(new InputStreamReader(stream, "UTF8"), DBConfig.class);
+			return dbConfig.getAddress();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		return null;
 	}
 	
 	$repoFields$

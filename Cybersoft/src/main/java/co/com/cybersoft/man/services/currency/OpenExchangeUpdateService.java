@@ -82,8 +82,8 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 				ExchangeRate yesterdayRate = exchangeRateRepo.findByDate(cal.getTime());
 				
 				CustomerTenancy tenancy = tenancyList.get(0);
-				String baseCurrency=tenancy.getForeignCurrency();
-				String localCurrency=tenancy.getLocalCurrency();
+				String baseCurrency=tenancy.getForeignCurrencyEntity().getCode();
+				String localCurrency=tenancy.getLocalCurrencyEntity().getCode();
 				
 				Integer year = cal.get(Calendar.YEAR);
 				String month = String.format("%02d", cal.get(Calendar.MONTH)+1);

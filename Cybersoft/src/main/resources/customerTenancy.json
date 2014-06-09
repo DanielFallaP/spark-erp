@@ -1,0 +1,9 @@
+{
+	"doubleCurrency":"true",		 	
+	"localCurrencyEntity":{
+		"code":"COP"
+	},
+	"foreignCurrencyEntity":{
+		"code":"USD"
+	}
+}

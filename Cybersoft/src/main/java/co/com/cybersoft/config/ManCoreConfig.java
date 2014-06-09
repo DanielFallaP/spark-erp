@@ -8,8 +8,10 @@ import co.com.cybersoft.man.services.currency.CurrencyUpdateService;
 import co.com.cybersoft.man.services.currency.OpenExchangeUpdateService;
 import co.com.cybersoft.man.services.excel.ReportingService;
 import co.com.cybersoft.man.services.excel.ReportingServiceImpl;
-import co.com.cybersoft.man.services.startup.CurrencyStartupService;
-import co.com.cybersoft.man.services.startup.CurrencyStartupServiceImpl;
+import co.com.cybersoft.man.services.startup.SparkStartupService;
+import co.com.cybersoft.man.services.startup.SparkStartupServiceImpl;
+import co.com.cybersoft.man.services.tenancy.TenantConfigurationService;
+import co.com.cybersoft.man.services.tenancy.TenantConfigurationServiceImpl;
 import co.com.cybersoft.man.services.timer.QuartzTimer;
 import co.com.cybersoft.man.services.timer.TimerService;
 
@@ -28,8 +30,13 @@ public class ManCoreConfig {
 	}
 	
 	@Bean
-	public CurrencyStartupService currencyStartupService() throws Exception{
-		return new CurrencyStartupServiceImpl();
+	public SparkStartupService currencyStartupService() throws Exception{
+		return new SparkStartupServiceImpl();
+	}
+	
+	@Bean
+	public TenantConfigurationService tenantConfigurationService() throws Exception{
+		return new TenantConfigurationServiceImpl();
 	}
 	
 	@Bean
