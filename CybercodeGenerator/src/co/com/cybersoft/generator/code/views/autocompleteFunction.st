@@ -6,7 +6,6 @@
 		    	    		if (path[1].localeCompare("configuration")!=0){
 		    	    			prefix="/"+path[1];	
 		    	    		}
-		    	    		
 							\$.get(prefix+"/configuration/$tableName$/get$upperFieldName$List?$fieldName$="+request.term, {}, function (data) {
 		    	            var array=data.split("$arraySeparator$");
 		    	            if (data!="")
