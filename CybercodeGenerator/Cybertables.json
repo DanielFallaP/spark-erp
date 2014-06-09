@@ -525,7 +525,7 @@
 			"spanishName":"Afe",
 			"fields":[
 						{"name":"afeCode", "spanishName":"Código de afe", "type":"String", "unique":"true", "length":"10", "autocomplete":"true"},
-						{"name":"afe", "spanishName":"Afe", "type":"String", "unique":"true"},
+						{"name":"afe", "spanishName":"Afe", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"company", "spanishName":"Compañía", "refType":"company", "displayField":"letter", "embeddedFields":["company", "code"]},
 						{"name":"year", "spanishName":"Año", "type":"String", "length":"4"},
 						{"name":"afeType", "spanishName":"Tipo de Afe", "refType":"afeType", "displayField":"afeType", "embeddedFields":["code"]},
