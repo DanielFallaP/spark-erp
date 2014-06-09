@@ -598,52 +598,6 @@
 					 ]
 		 },
 		 {	
-			"name":"itemType",
-			"spanishName":"Tipo de ítem",
-			"fields":[
-						{"name":"itemType", "spanishName":"Tipo de ítem", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
-						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
-					 ]
-		 },
-		 {	
-			"name":"item",		
-			"spanishName":"Item",
-			"fields":[
-						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"15", "autocomplete":"true"},
-						{"name":"description", "spanishName":"Descripción del ítem", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"largeName", "spanishName":"Descripción larga",  "type":"String", "largeText":"true"},
-						{"name":"stockSubGroup", "spanishName":"Código de subgrupo", "refType":"stockSubGroup", "displayField":"code", "embeddedFields":["stockSubGroup"]},
-						{"name":"division", "spanishName":"División", "refType":"division", "displayField":"code","required":"false"},
-						{"name":"inputMeasurementUnit", "spanishName":"Unidad de medida entrada", "refType":"measurementUnit", "displayField":"measurementUnit", "embeddedFields":["code"]},
-						{"name":"packingUnits", "spanishName":"Unidades por empaque", "type":"Double"},
-						{"name":"conversionFactor", "spanishName":"Factor de conversión", "type":"Double"},
-						{"name":"outputMeasurementUnit", "spanishName":"Unidad de medida salida", "refType":"measurementUnit", "displayField":"measurementUnit", "embeddedFields":["code"]},
-						{"name":"useMiniMax", "spanishName":"Usa Minimax", "type":"Boolean", "defaultValue":"false"},
-						{"name":"useMiniMaxByItem", "spanishName":"Usa minimax por ítem", "type":"Boolean", "defaultValue":"true"},
-						{"name":"tax", "spanishName":"Impuesto de venta", "refType":"tax", "displayField":"tax"},
-						{"name":"itemType", "spanishName":"Tipo de ítem", "refType":"itemType", "displayField":"itemType", "embeddedFields":["code"]},
-						{"name":"partNumber", "spanishName":"Número de parte", "type":"String", "required":"false"},
-						{"name":"commodity", "spanishName":"Producto", "type":"String", "required":"false"},
-						{"name":"lastItemUsedDate", "spanishName":"Fecha última de utilización", "type":"Date", "readOnly":"true", "required":"false"},
-						{"name":"oldItem", "spanishName":"Código anterior", "type":"String", "required":"false"},
-		                {"name":"array", "spanishName":"Arreglo", "type":"String", "required":"false"},
-						{"name":"set", "spanishName":"Conjunto", "type":"String", "required":"false"},
-						{"name":"permitsLargerQuantityIssuingItemReception",  "spanishName":"Permite mayor cantidad al recibir el item", "type":"Boolean", "defaultValue":"false"},
-						{"name":"blocked", "spanishName":"Bloqueado", "type":"Boolean", "defaultValue":"false"},
-						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
-					 ]
-		 },
-		 {	
-			"name":"itemTradeMark",
-			"spanishName":"Marca de ítem",
-			"fields":[
-						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"description", "embeddedFields":["code"], "keyCompound":"true"},
-						{"name":"tradeMark", "spanishName":"Marca", "type":"String", "keyCompound":"true"},
-					 	{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
-					 ]
-		 },
-		 {	
 			"name":"warehouse",
 			"spanishName":"Bodega",
 			"fields":[
@@ -738,19 +692,6 @@
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
-		 
-		 {
-			"name":"miniMax",	
-			"spanishName":"Mínimo Máximo",
-			"fields":[
-						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"description", "embeddedFields":["code"]},
-						{"name":"warehouse", "spanishName":"Bodega", "refType":"warehouse", "displayField":"warehouse","required":"false", "embeddedFields":["code"]},
-						{"name":"minimumQuantity", "spanishName":"Cantidad mínima", "type":"Double"},
-						{"name":"maximumQuantity", "spanishName":"Cantidad máxima", "type":"Double"},
-						{"name":"orderQuantity", "spanishName":"Cantidad a pedir", "type":"Double"},
-						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
-					]
-		 },
 		 {	
 			"name":"quality",
 			"spanishName":"Calidad",
@@ -828,6 +769,64 @@
 					]
 		 },
 		{	
+			"name":"itemType",
+			"spanishName":"Tipo de ítem",
+			"fields":[
+						{"name":"itemType", "spanishName":"Tipo de ítem", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					 ]
+		 },
+		 {	
+			"name":"item",		
+			"spanishName":"Item",
+			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"15", "autocomplete":"true"},
+						{"name":"description", "spanishName":"Descripción del ítem", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"largeName", "spanishName":"Descripción larga",  "type":"String", "largeText":"true"},
+						{"name":"stockSubGroup", "spanishName":"Código de subgrupo", "refType":"stockSubGroup", "displayField":"code", "embeddedFields":["stockSubGroup"]},
+						{"name":"division", "spanishName":"División", "refType":"division", "displayField":"code","required":"false"},
+						{"name":"inputMeasurementUnit", "spanishName":"Unidad de medida entrada", "refType":"measurementUnit", "displayField":"measurementUnit", "embeddedFields":["code"]},
+						{"name":"packingUnits", "spanishName":"Unidades por empaque", "type":"Double"},
+						{"name":"conversionFactor", "spanishName":"Factor de conversión", "type":"Double"},
+						{"name":"outputMeasurementUnit", "spanishName":"Unidad de medida salida", "refType":"measurementUnit", "displayField":"measurementUnit", "embeddedFields":["code"]},
+						{"name":"useMiniMax", "spanishName":"Usa Minimax", "type":"Boolean", "defaultValue":"false"},
+						{"name":"useMiniMaxByItem", "spanishName":"Usa minimax por ítem", "type":"Boolean", "defaultValue":"true"},
+						{"name":"tax", "spanishName":"Impuesto de venta", "refType":"tax", "displayField":"tax"},
+						{"name":"itemType", "spanishName":"Tipo de ítem", "refType":"itemType", "displayField":"itemType", "embeddedFields":["code"]},
+						{"name":"partNumber", "spanishName":"Número de parte", "type":"String", "required":"false"},
+						{"name":"commodity", "spanishName":"Producto", "type":"String", "required":"false"},
+						{"name":"lastItemUsedDate", "spanishName":"Fecha última de utilización", "type":"Date", "readOnly":"true", "required":"false"},
+						{"name":"oldItem", "spanishName":"Código anterior", "type":"String", "required":"false"},
+		                {"name":"array", "spanishName":"Arreglo", "type":"String", "required":"false"},
+						{"name":"set", "spanishName":"Conjunto", "type":"String", "required":"false"},
+						{"name":"permitsLargerQuantityIssuingItemReception",  "spanishName":"Permite mayor cantidad al recibir el item", "type":"Boolean", "defaultValue":"false"},
+						{"name":"blocked", "spanishName":"Bloqueado", "type":"Boolean", "defaultValue":"false"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					 ]
+		 },
+		 {	
+			"name":"itemTradeMark",
+			"spanishName":"Marca de ítem",
+			"fields":[
+						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"description", "embeddedFields":["code"], "keyCompound":"true"},
+						{"name":"tradeMark", "spanishName":"Marca", "type":"String", "keyCompound":"true"},
+					 	{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					 ]
+		 },
+		 {
+			"name":"miniMax",	
+			"spanishName":"Mínimo Máximo",
+			"fields":[
+						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"description", "embeddedFields":["code"]},
+						{"name":"warehouse", "spanishName":"Bodega", "refType":"warehouse", "displayField":"warehouse","required":"false", "embeddedFields":["code"]},
+						{"name":"minimumQuantity", "spanishName":"Cantidad mínima", "type":"Double"},
+						{"name":"maximumQuantity", "spanishName":"Cantidad máxima", "type":"Double"},
+						{"name":"orderQuantity", "spanishName":"Cantidad a pedir", "type":"Double"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
 			"name":"itemPurchaseHistory",
 			"spanishName":"Compra histórica de item",
 			"fields":[
