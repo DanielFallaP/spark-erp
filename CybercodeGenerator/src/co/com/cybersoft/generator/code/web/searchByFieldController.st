@@ -16,7 +16,7 @@ import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;
 import co.com.cybersoft.util.CyberUtils;
 
 @Controller
-@RequestMapping("/configuration/$tableName$/get$upperFieldName$List/{$fieldName$}")
+@RequestMapping("/configuration/$tableName$/get$upperFieldName$List")
 public class $entityName$SearchBy$upperFieldName$Controller {
 
 	@Autowired
