@@ -833,7 +833,7 @@
 			"fields":[
 						{"name":"item", "spanishName":"item", "refType":"item", "displayField":"code", "embeddedFields":["description"]},
 						{"name":"thirdParty", "spanishName":"Tercero", "refType":"thirdParty", "displayField":"thirdParty", "embeddedFields":["identification"]},
-						{"name":"purchaseOrder", "spanishName":"Orden de compra", "type":"Integer"},
+						{"name":"purchaseOrder", "spanishName":"Orden de compra", "type":"String"},
 						{"name":"purchaseDate", "spanishName":"Fecha de compra", "type":"Date"},
 						{"name":"Quantity", "spanishName":"Cantidad", "type":"Double"},
 						{"name":"localCurrencyValue", "spanishName":"Valor en moneda local", "type":"Double"},
