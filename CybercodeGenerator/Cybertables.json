@@ -15,6 +15,7 @@
 			"name":"currency",		
 			"spanishName":"Moneda",		
 			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3", "autocomplete":"true"},
 						{"name":"currency", "spanishName":"Nombre", "type":"String", "unique":"true", "length":"40", "autocomplete":"true", "labelField":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 						
