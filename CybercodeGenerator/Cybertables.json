@@ -15,7 +15,6 @@
 			"name":"currency",		
 			"spanishName":"Moneda",		
 			"fields":[
-						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},  
 						{"name":"currency", "spanishName":"Nombre", "type":"String", "unique":"true", "length":"40", "autocomplete":"true", "labelField":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 						
@@ -25,8 +24,8 @@
 			"name":"exchangeRate",		
 			"spanishName":"Tasa de cambio",		
 			"fields":[
-						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "keyCompound":"true", "displayField":"currency", "embeddedFields":["code"]},
-						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "keyCompound":"true", "displayField":"currency", "embeddedFields":["code"]},
+						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "keyCompound":"true", "displayField":"code", "embeddedFields":["currency"]},
+						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "keyCompound":"true", "displayField":"code", "embeddedFields":["currency"]},
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "keyCompound":"true", "defaultValue":"today"},
 						{"name":"rate", "spanishName":"Tasa", "type":"Double"},
 						{"name":"variation", "spanishName":"Variación", "type":"Double"},
@@ -63,7 +62,6 @@
 		
 					]
 		 },
-		 
 		 {	
 			"name":"state",
 			"spanishName":"DepartamentoEstado",
@@ -349,8 +347,8 @@
 						{"name":"softwareVersion", "spanishName":"Versión de software", "type":"String", "unique":"true"},
 						{"name":"softwareSerialNo", "spanishName":"No.Serial", "type":"String", "unique":"true"},
 						{"name":"doubleCurrency", "spanishName":"Doble moneda", "type":"Boolean", "defaultValue":"true"},
-						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "displayField":"currency", "embeddedFields":["code"]},
-						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "displayField":"currency", "embeddedFields":["code"]},
+						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "displayField":"code", "embeddedFields":["currency"]},
+						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "displayField":"code", "embeddedFields":["currency"]},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -654,8 +652,8 @@
 						{"name":"percentOfLargerQuantityIssuingItemReception", "spanishName":"Porcentaje de mayor cantidad al recibir items", "type":"Double", "unique":"true"},
 						{"name":"createExchangeRate", "spanishName":"Crea tasa de cambio", "type":"Boolean", "defaultValue":"false"},
 						{"name":"inventoryGroupForConsumptionItems", "spanishName":"Grupo de inventario para ítems de consumo", "refType":"stockGroup", "displayField":"stockGroup", "embeddedFields":["code"]},
-						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "displayField":"currency", "embeddedFields":["code"]},
-						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "displayField":"currency", "embeddedFields":["code"]},
+						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "displayField":"code", "embeddedFields":["currency"]},
+						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "displayField":"code", "embeddedFields":["currency"]},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -787,10 +785,10 @@
 						{"name":"largeName", "spanishName":"Descripción larga",  "type":"String", "largeText":"true"},
 						{"name":"stockSubGroup", "spanishName":"Código de subgrupo", "refType":"stockSubGroup", "displayField":"code", "embeddedFields":["stockSubGroup"]},
 						{"name":"division", "spanishName":"División", "refType":"division", "displayField":"code","required":"false"},
-						{"name":"inputMeasurementUnit", "spanishName":"Unidad de medida entrada", "refType":"measurementUnit", "displayField":"measurementUnit", "embeddedFields":["code"]},
+						{"name":"inputMeasurementUnit", "spanishName":"Unidad de medida entrada", "refType":"measurementUnit", "displayField":"code", "embeddedFields":["measurementUnit"]},
 						{"name":"packingUnits", "spanishName":"Unidades por empaque", "type":"Double"},
 						{"name":"conversionFactor", "spanishName":"Factor de conversión", "type":"Double"},
-						{"name":"outputMeasurementUnit", "spanishName":"Unidad de medida salida", "refType":"measurementUnit", "displayField":"measurementUnit", "embeddedFields":["code"]},
+						{"name":"outputMeasurementUnit", "spanishName":"Unidad de medida salida", "refType":"measurementUnit", "displayField":"code", "embeddedFields":["measurementUnit"]},
 						{"name":"useMiniMax", "spanishName":"Usa Minimax", "type":"Boolean", "defaultValue":"false"},
 						{"name":"useMiniMaxByItem", "spanishName":"Usa minimax por ítem", "type":"Boolean", "defaultValue":"true"},
 						{"name":"tax", "spanishName":"Impuesto de venta", "refType":"tax", "displayField":"tax"},
