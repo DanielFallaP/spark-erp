@@ -29,18 +29,20 @@
     	/* <![CDATA[ */
     	
 	     \$(document).on("click", "a", function(event){
-	    	  var link = \$(this);
-	    	  var target = link.attr("target");
-	    	  if(\$.trim(target).length > 0)
-	    	  {
-	    	    window.open(link.attr("href"), target);
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = \$(this);
+		    	  var target = link.attr("target");
+		    	  if(\$.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
 	    	  }
-	    	  else
-	    	  {
-	    	     window.location = link.attr("href");
-	    	  }
-
-	    	  event.preventDefault();
 	    	});
 	     
 	     \$(document).keyup(function(e) {

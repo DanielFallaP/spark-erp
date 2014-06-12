@@ -36,7 +36,10 @@
 		$( function () {
 			$( "#date" ).datepicker();
 		} );
-
+		
+		$( function () {
+			$( "#requiredOnDateItem" ).datepicker();
+		} );
 		     
 		  function setFocus(){
 		   		document.getElementById("consecutive").focus();
@@ -138,7 +141,28 @@
 				$('.about-ajax-popup').magnificPopup({
 					type: 'ajax'
 				});
-			} );   
+			} );
+		   
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
 
 		   
 	       /* ]]> */
@@ -204,9 +228,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="object: ${requisitionItemInfoList}" id="1">
+							<tr th:each="object: ${requisitionItemInfoList}">
 								<td th:text="${object.item}"></td>
-								<td th:text="${object.requiredOnDate}"></td>
+								<td th:text="${object.bodyRequiredOnDate}"></td>
 								<td th:text="${object.priority}"></td>
 								<td th:text="${object.quantity}"></td>
 								<td class="read_only" th:text="${object.localCurrencyUnitValue}"></td>
@@ -214,10 +238,56 @@
 							</tr>
 						</tbody>
 		        	</table>
+       				<a class="popup-with-form" href="#requisition-body-form" th:text="#{label.newEntryDocTable}"></a>
 
-       				<input type="submit" th:value="#{label.save}" />
+       				<div align="right" ><input type="submit" th:value="#{label.save}" /></div>
 		        </form>
 			 <!-- Custom form for adding new records -->
+			 <form id="requisition-body-form" class="white-popup mfp-hide" th:object="${requisitionItemInfo}" method="post">
+		        	<h3 th:text="#{label.requisitionItemCreationTitle}"></h3>
+		        	<table>		        			        			
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionItemItem}+': '"></b></td>
+		        			<td><select id="item" onChange="itemSelectedRefresh()" th:field="*{item}"><option th:each="reference : ${requisitionItemInfo.itemList}" th:value="${reference.code}" th:text="${reference.code}"></option></select></td>
+		        			<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionItemRequiredOnDate}+': '"></b></td>
+		        				<td><input id="requiredOnDateItem" type="text" th:field="*{bodyRequiredOnDate}" /></td>
+		        				<td th:if="${requiredOnDateException}"><div class="alert alert-error" th:text="#{${requiredOnDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionItemPriority}+': '"></b></td>
+		        			<td><select th:field="*{priority}"><option th:each="reference : ${requisitionItemInfo.priorityList}" th:value="${reference.priority}" th:text="#{${reference.priority}}"></option></select></td>
+		        			<td th:if="${priorityException}"><div class="alert alert-error" th:text="#{${priorityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionItemQuantity}+': '"></b></td>
+		        				<td><input id="quantity" type="text" th:field="*{quantity}" /></td>
+		        				<td th:if="${quantityException}"><div class="alert alert-error" th:text="#{${quantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionItemLocalCurrencyUnitValue}+': '"></b></td>
+		        				<td><input id="localCurrencyUnitValue" type="text" th:field="*{localCurrencyUnitValue}" /></td>
+		        				<td th:if="${localCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${localCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionItemForeignCurrencyUnitValue}+': '"></b></td>
+		        				<td><input id="foreignCurrencyUnitValue" type="text" th:field="*{foreignCurrencyUnitValue}" /></td>
+		        				<td th:if="${foreignCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td><b th:text="#{label.requisitionItemActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
 		    </div>
 		    <div th:if='${requisitionInfo.created}' class="alert alert-info" th:text="#{label.created}">
             </div>

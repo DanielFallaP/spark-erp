@@ -27,6 +27,7 @@ import co.com.cybersoft.core.domain.CountryDetails;
 import co.com.cybersoft.core.domain.StateDetails;
 import co.com.cybersoft.core.domain.PopulatedPlaceDetails;
 import co.com.cybersoft.docs.persistence.domain.Requisition;
+import co.com.cybersoft.docs.persistence.domain.RequisitionItem;
 
 
 /**
@@ -51,6 +52,8 @@ public class RequisitionInfo implements Serializable{
 	private String createdBy;
 	
 	private List<RequisitionItemInfo> requisitionItemList=new ArrayList<RequisitionItemInfo>();
+	
+	private RequisitionItemInfo currentRequisitionItemInfo;
 	
 	@NotNull
 	@Range(max=99999999)
@@ -81,16 +84,6 @@ public class RequisitionInfo implements Serializable{
 	private Date requiredOnDate;
 	
 	public RequisitionInfo(){
-		RequisitionItemInfo requisitionItemInfo = new RequisitionItemInfo();
-		requisitionItemInfo.setItem("Tuerca");
-		requisitionItemInfo.setPriority("label.urgent");
-		requisitionItemInfo.setId("1");
-//		RequisitionItemInfo requisitionItemInfo2 = new RequisitionItemInfo();
-//		requisitionItemInfo2.setItem("Tornillo");
-//		requisitionItemInfo2.setPriority("label.urgent");
-//		requisitionItemInfo2.setId("2");
-//		requisitionItemInfoList.add(requisitionItemInfo2);
-		requisitionItemList.add(requisitionItemInfo);
 	}
 	
 	public List<RequisitionItemInfo> getRequisitionItemList() {
@@ -128,6 +121,14 @@ public class RequisitionInfo implements Serializable{
 	private List<WarehouseDetails> receivingWarehouseList;
 	private Boolean active;
 
+	public RequisitionItemInfo getCurrentRequisitionItemInfo() {
+		return currentRequisitionItemInfo;
+	}
+
+	public void setCurrentRequisitionItemInfo(
+			RequisitionItemInfo currentRequisitionItemInfo) {
+		this.currentRequisitionItemInfo = currentRequisitionItemInfo;
+	}
 
 	public Integer getConsecutive() {
 		return consecutive;	
@@ -357,6 +358,14 @@ public class RequisitionInfo implements Serializable{
 
 	public RequisitionInfo toRequisitionInfo(Requisition entity){
 		BeanUtils.copyProperties(entity, this);
+		List<RequisitionItemInfo> bodyList = new ArrayList<RequisitionItemInfo>();
+		List<RequisitionItem> requisitionItemEntityList = entity.getRequisitionItemEntityList();
+		for (RequisitionItem requisitionItem : requisitionItemEntityList) {
+			RequisitionItemInfo requisitionItemInfo = new RequisitionItemInfo();
+			BeanUtils.copyProperties(requisitionItem, requisitionItemInfo);
+			bodyList.add(requisitionItemInfo);
+			this.setRequisitionItemList(bodyList);
+		}
 		return this;
 	}
 	

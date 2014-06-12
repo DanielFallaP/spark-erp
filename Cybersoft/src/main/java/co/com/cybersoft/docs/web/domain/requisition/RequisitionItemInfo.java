@@ -41,7 +41,7 @@ public class RequisitionItemInfo implements Serializable{
 
 
 	private List<ItemDetails> itemList;
-	private Date requiredOnDate;
+	private Date bodyRequiredOnDate;
 
 
 	@NotEmpty
@@ -81,12 +81,12 @@ public class RequisitionItemInfo implements Serializable{
 		this.item = item;	
 	}
 
-	public Date getRequiredOnDate() {
-		return requiredOnDate;	
+	public Date getBodyRequiredOnDate() {
+		return bodyRequiredOnDate;
 	}
-		
-	public void setRequiredOnDate(Date requiredOnDate) {
-		this.requiredOnDate = requiredOnDate;	
+
+	public void setBodyRequiredOnDate(Date bodyRequiredOnDate) {
+		this.bodyRequiredOnDate = bodyRequiredOnDate;
 	}
 
 	public List<PriorityDetails> getPriorityList() {

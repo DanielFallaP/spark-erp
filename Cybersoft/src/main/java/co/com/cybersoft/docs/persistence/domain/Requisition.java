@@ -1,5 +1,6 @@
 package co.com.cybersoft.docs.persistence.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
-import co.com.cybersoft.persistence.domain.RequisitionItem;
+import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemInfo;
 
 /**
  * 
@@ -27,7 +28,7 @@ public class Requisition {
 //	@Indexed(unique=true)
 	private Integer consecutive;
 	
-	private List<RequisitionItem> requisitionItemList;
+	private List<RequisitionItem> requisitionItemEntityList;
 
 	private Date date;
 
@@ -62,11 +63,12 @@ public class Requisition {
 	
 	private String createdBy;
 	
-	public List<RequisitionItem> getRequisitionItemList() {
-		return requisitionItemList;
+	public List<RequisitionItem> getRequisitionItemEntityList() {
+		return requisitionItemEntityList;
 	}
-	public void setRequisitionItemList(List<RequisitionItem> requisitionItemList) {
-		this.requisitionItemList = requisitionItemList;
+	public void setRequisitionItemEntityList(
+			List<RequisitionItem> requisitionItemEntityList) {
+		this.requisitionItemEntityList = requisitionItemEntityList;
 	}
 	public Date getDateOfModification() {
 		return dateOfModification;
@@ -196,9 +198,16 @@ public class Requisition {
 	}
 
 	
-	public Requisition fromRequisitionInfo(RequisitionInfo details){
-		BeanUtils.copyProperties(details, this);
-		
+	public Requisition fromRequisitionInfo(RequisitionInfo webInfo){
+		BeanUtils.copyProperties(webInfo, this);
+		ArrayList<RequisitionItem> bodyList = new ArrayList<RequisitionItem>();
+		List<RequisitionItemInfo> requisitionItemList = webInfo.getRequisitionItemList();
+		for (RequisitionItemInfo requisitionItemInfo : requisitionItemList) {
+			RequisitionItem requisitionItem = new RequisitionItem();
+			BeanUtils.copyProperties(requisitionItemInfo, requisitionItem);
+			bodyList.add(requisitionItem);
+			this.setRequisitionItemEntityList(bodyList);
+		}
 		return this;
 	}
 

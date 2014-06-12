@@ -26,7 +26,7 @@
 			                        <li><a th:href="@{/purchase}" th:text="#{label.purchaseOrders}"></a></li>
 			                        <li><a th:href="@{/configuration}" th:text="#{label.navbarConfiguration}"></a></li>
 			                        <li><a th:href="@{/settings}" th:text="#{label.settingsOption}"></a></li>
-			                        <li><a class="about-ajax-popup" th:href="@{/about}" th:text="#{label.aboutOption}"></a></li>
+			                        <li><a id="about-ajax-popup" class="about-ajax-popup" th:href="@{/about}" th:text="#{label.aboutOption}"></a></li>
 			                        <li><a href=""><img onclick="var url=$('#logoutURL').val();$.ajax({type: 'POST',url: url});" th:src="@{/resources/img/logout.png}"/></a></li>
 			                    </ul>
 			                </div> <!--/.nav-collapse -->
