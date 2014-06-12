@@ -3,6 +3,7 @@ package co.com.cybersoft.docs.web.domain.requisition;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import co.com.cybersoft.core.domain.CountryDetails;
 import co.com.cybersoft.core.domain.StateDetails;
 import co.com.cybersoft.core.domain.PopulatedPlaceDetails;
+import co.com.cybersoft.docs.persistence.domain.Requisition;
 
 
 /**
@@ -48,7 +50,7 @@ public class RequisitionInfo implements Serializable{
 	
 	private String createdBy;
 	
-	private List<RequisitionItemInfo> requisitionItemInfoList=new ArrayList<RequisitionItemInfo>();
+	private List<RequisitionItemInfo> requisitionItemList=new ArrayList<RequisitionItemInfo>();
 	
 	@NotNull
 	@Range(max=99999999)
@@ -88,16 +90,15 @@ public class RequisitionInfo implements Serializable{
 //		requisitionItemInfo2.setPriority("label.urgent");
 //		requisitionItemInfo2.setId("2");
 //		requisitionItemInfoList.add(requisitionItemInfo2);
-		requisitionItemInfoList.add(requisitionItemInfo);
+		requisitionItemList.add(requisitionItemInfo);
 	}
 	
-	public List<RequisitionItemInfo> getRequisitionItemInfoList() {
-		return requisitionItemInfoList;
+	public List<RequisitionItemInfo> getRequisitionItemList() {
+		return requisitionItemList;
 	}
 
-	public void setRequisitionItemInfoList(
-			List<RequisitionItemInfo> requisitionItemInfoList) {
-		this.requisitionItemInfoList = requisitionItemInfoList;
+	public void setRequisitionItemList(List<RequisitionItemInfo> requisitionItemList) {
+		this.requisitionItemList = requisitionItemList;
 	}
 
 	@NotEmpty
@@ -351,6 +352,12 @@ public class RequisitionInfo implements Serializable{
 
 	public void setCreated(Boolean created) {
 		this.created = created;
+	}
+	
+
+	public RequisitionInfo toRequisitionInfo(Requisition entity){
+		BeanUtils.copyProperties(entity, this);
+		return this;
 	}
 	
 }

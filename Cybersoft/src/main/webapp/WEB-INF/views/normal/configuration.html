@@ -17,6 +17,20 @@
 	        }
 	    </style>
 	 <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+	 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	 <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	 <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	 <script type="text/javascript">
+	      /* <![CDATA[ */
+	      	$(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );   
+	      /* ]]> */
+	 </script>
 </head>
 <body>
 	<div th:include="normal/layout :: header" ></div>
@@ -63,13 +77,9 @@
 				<div><a th:href="@{/configuration/stockGroup/searchStockGroup}" th:text="#{label.stockGroupConfiguration}"></a> </div>
 				<div><a th:href="@{/configuration/stockSubGroup/searchStockSubGroup}" th:text="#{label.stockSubGroupConfiguration}"></a> </div>
 				<div><a th:href="@{/configuration/division/searchDivision}" th:text="#{label.divisionConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/itemType/searchItemType}" th:text="#{label.itemTypeConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/item/searchItem}" th:text="#{label.itemConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/itemTradeMark/searchItemTradeMark}" th:text="#{label.itemTradeMarkConfiguration}"></a> </div>
 				<div><a th:href="@{/configuration/warehouse/searchWarehouse}" th:text="#{label.warehouseConfiguration}"></a> </div>
 				<div><a th:href="@{/configuration/periodType/searchPeriodType}" th:text="#{label.periodTypeConfiguration}"></a> </div>
 				<div><a th:href="@{/configuration/period/searchPeriod}" th:text="#{label.periodConfiguration}"></a> </div>
-				<div><a th:href="@{/configuration/miniMax/searchMiniMax}" th:text="#{label.miniMaxConfiguration}"></a> </div>
 				<div><a th:href="@{/configuration/quality/searchQuality}" th:text="#{label.qualityConfiguration}"></a> </div>
 				<div><a th:href="@{/configuration/expenseType/searchExpenseType}" th:text="#{label.expenseTypeConfiguration}"></a> </div>
 				<div><a th:href="@{/configuration/holiday/searchHoliday}" th:text="#{label.holidayConfiguration}"></a> </div>
@@ -77,7 +87,13 @@
 				<div><a th:href="@{/configuration/supplierSelectionReason/searchSupplierSelectionReason}" th:text="#{label.supplierSelectionReasonConfiguration}"></a> </div>
 				<div><a th:href="@{/configuration/deliveryLocations/searchDeliveryLocations}" th:text="#{label.deliveryLocationsConfiguration}"></a> </div>
 				<div><a th:href="@{/configuration/person/searchPerson}" th:text="#{label.personConfiguration}"></a> </div>
+				<div><a th:href="@{/configuration/itemType/searchItemType}" th:text="#{label.itemTypeConfiguration}"></a> </div>
+				<div><a th:href="@{/configuration/item/searchItem}" th:text="#{label.itemConfiguration}"></a> </div>
+				<div><a th:href="@{/configuration/itemTradeMark/searchItemTradeMark}" th:text="#{label.itemTradeMarkConfiguration}"></a> </div>
+				<div><a th:href="@{/configuration/miniMax/searchMiniMax}" th:text="#{label.miniMaxConfiguration}"></a> </div>
 				<div><a th:href="@{/configuration/itemPurchaseHistory/searchItemPurchaseHistory}" th:text="#{label.itemPurchaseHistoryConfiguration}"></a> </div>
+				<div><a th:href="@{/configuration/requisition/searchRequisition}" th:text="#{label.requisitionConfiguration}"></a> </div>
+				<div><a th:href="@{/configuration/requisitionItem/searchRequisitionItem}" th:text="#{label.requisitionItemConfiguration}"></a> </div>
 
 			</div>
 	</div>

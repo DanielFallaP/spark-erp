@@ -6,6 +6,12 @@ import java.net.UnknownHostException;
 
 import javax.sql.DataSource;
 
+import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionCustomRepo;
+import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionCustomRepoImpl;
+import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionRepository;
+import co.com.cybersoft.docs.persistence.services.RequisitionPersistenceService;
+import co.com.cybersoft.docs.persistence.services.RequisitionPersistenceServiceImpl;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +27,8 @@ $imports$
 import com.mongodb.Mongo;
 
 @Configuration
-@EnableMongoRepositories(basePackages="co.com.cybersoft.persistence.repository",
-includeFilters=@ComponentScan.Filter(value={$repos$},type=FilterType.ASSIGNABLE_TYPE))
+@EnableMongoRepositories(basePackages={"co.com.cybersoft.persistence.repository","co.com.cybersoft.docs.persistence.repository"},
+includeFilters=@ComponentScan.Filter(value={RequisitionRepository.class,$repos$},type=FilterType.ASSIGNABLE_TYPE))
 public class PersistenceConfig {
 	
 	@Bean
@@ -48,8 +54,21 @@ public class PersistenceConfig {
 		return null;
 	}
 	
+	@Autowired
+	private RequisitionRepository requisitionRepository;
+	
+	@Bean
+	public RequisitionCustomRepo requisitionCustomRepo(){
+		return new RequisitionCustomRepoImpl();
+	}
+	
 	$repoFields$
 	
 	$beans$
+	
+	@Bean 
+	public RequisitionPersistenceService requisitionPersistenceService(){
+		return new RequisitionPersistenceServiceImpl(requisitionRepository, requisitionCustomRepo());
+	}
 
 }
