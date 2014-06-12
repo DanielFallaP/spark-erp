@@ -118,8 +118,7 @@
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
-		 },
-		 
+		 }, 
 		 {	
 			"name":"localAccountTemplate",
 			"spanishName":"Cuenta local nivel 1",
