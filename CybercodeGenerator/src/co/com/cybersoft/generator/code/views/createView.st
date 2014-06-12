@@ -22,6 +22,8 @@
 		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
 		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
 	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
 	    <script type="text/javascript">
 	      /* <![CDATA[ */
 	     
@@ -43,6 +45,13 @@
 		   } 
 		   
 		   $compoundSelectionFunctions$
+		   
+		   \$(document).ready( function () {
+				
+				\$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
 		   
 	       /* ]]> */
 	     </script>

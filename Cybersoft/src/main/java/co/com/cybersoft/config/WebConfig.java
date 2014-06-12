@@ -116,6 +116,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		registry.addViewController("/configuration").setViewName("configuration");
 		registry.addViewController("/configuration/language").setViewName("language");
 		registry.addViewController("/login").setViewName("man/login");
+		registry.addViewController("/about").setViewName("man/about");
 	}
 	
 	@Override

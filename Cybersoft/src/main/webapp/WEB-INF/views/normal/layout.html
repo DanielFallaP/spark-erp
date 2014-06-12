@@ -20,14 +20,14 @@
 			                    <p class="navbar-text pull-right">
 			
 			                    </p>
-			                    <ul class="nav">
+			                    <ul class="nav" id="navigationBar">
 			                        <li><a th:href="@{/requisition}" th:text="#{label.requisitionsOption}"></a></li>
 			                        <li><a th:href="@{/providerAssignment}" th:text="#{label.providerAssignment}"></a></li>
 			                        <li><a th:href="@{/purchase}" th:text="#{label.purchaseOrders}"></a></li>
 			                        <li><a th:href="@{/configuration}" th:text="#{label.navbarConfiguration}"></a></li>
 			                        <li><a th:href="@{/settings}" th:text="#{label.settingsOption}"></a></li>
-			                        <li><a class="popup-with-zoom-anim" href="#about-dialog" th:text="#{label.aboutOption}"></a></li>
-			                        <li><a><img onclick="var url=$('#logoutURL').val();$.ajax({type: 'POST',url: url});" th:src="@{/resources/img/logout.png}"/></a></li>
+			                        <li><a class="about-ajax-popup" th:href="@{/about}" th:text="#{label.aboutOption}"></a></li>
+			                        <li><a href=""><img onclick="var url=$('#logoutURL').val();$.ajax({type: 'POST',url: url});" th:src="@{/resources/img/logout.png}"/></a></li>
 			                    </ul>
 			                </div> <!--/.nav-collapse -->
 		            </div>
@@ -41,10 +41,10 @@
 	    </footer>
 	</div>
 	
-	<div th:fragment="about" id="about-dialog" class="zoom-anim-dialog mfp-hide">
-		<h1>Spark</h1>
-		<p>v1.0</p>
-		<p>&copy; Cybersystems 2014. All Rights Reserved.</p>
-	</div>
+	<div th:fragment="about" id="small-dialog" class="zoom-anim-dialog mfp-hide">
+			<h1 align="center"><img alt="" th:src="@{/resources/img/cybersystems.jpg}"/></h1>
+			<p>Spark build: 1.0.</p>
+			<p>Spark is a registered trademark of Cybersystems Inc. All Rights Reserved.</p>
+	</div>	
 	</body>
 </html>
