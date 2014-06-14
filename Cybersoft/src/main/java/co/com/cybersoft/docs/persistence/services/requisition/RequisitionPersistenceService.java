@@ -1,4 +1,4 @@
-package co.com.cybersoft.docs.persistence.services;
+package co.com.cybersoft.docs.persistence.services.requisition;
 
 import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.RequestRequisitionEvent;

@@ -29,7 +29,7 @@ import co.com.cybersoft.core.services.warehouse.WarehouseService;
 import co.com.cybersoft.docs.events.requisition.RequestRequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.RequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
-import co.com.cybersoft.docs.persistence.services.RequisitionPersistenceService;
+import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersistenceService;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemInfo;
 import co.com.cybersoft.events.country.CountryPageEvent;
