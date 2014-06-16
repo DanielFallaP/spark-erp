@@ -36,7 +36,7 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	@Override
 	public RequisitionEvent saveRequisition(SaveRequisitionEvent event) throws Exception {
 		Requisition requisition = new Requisition().fromRequisitionInfo(event.getRequisitionInfo());
-		requisition = requisitionRepository.save(requisition);
+		requisition = requisitionCustomRepo.save(requisition);
 		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
 	}
 	

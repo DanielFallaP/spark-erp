@@ -89,8 +89,11 @@ public class RequisitionController {
 		RequisitionEvent requisitionEvent = requisitionService.saveRequisition(new SaveRequisitionEvent(requisitionInfo));
 		requisitionInfo.setId(requisitionEvent.getRequisition().getId());
 		requisitionInfo.setRequisitionItemList(requisitionEvent.getRequisition().getRequisitionItemList());
+		requisitionInfo.setNumericId(requisitionEvent.getRequisition().getNumericId());
+		
 		model.addAttribute("requisitionInfo",requisitionInfo);
 		model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
+//		request.getSession().setAttribute("requisitionInfo", requisitionInfo);
 
 		return "/docs/requisition/createRequisition";
 	}

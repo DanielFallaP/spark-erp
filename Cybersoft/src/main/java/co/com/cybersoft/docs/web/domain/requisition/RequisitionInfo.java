@@ -39,6 +39,8 @@ import co.com.cybersoft.docs.persistence.domain.RequisitionItem;
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
 public class RequisitionInfo implements Serializable{
 	
+	private Long numericId;
+	
 	private Boolean created;
 	
 	private String calledFrom;
@@ -120,6 +122,14 @@ public class RequisitionInfo implements Serializable{
 
 	private List<WarehouseDetails> receivingWarehouseList;
 	private Boolean active;
+
+	public Long getNumericId() {
+		return numericId;
+	}
+
+	public void setNumericId(Long numericId) {
+		this.numericId = numericId;
+	}
 
 	public RequisitionItemInfo getCurrentRequisitionItemInfo() {
 		return currentRequisitionItemInfo;

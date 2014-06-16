@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemInfo;
@@ -24,6 +25,9 @@ public class Requisition {
 
 	@Id
 	private String id;
+	
+	@Field(value="_numericId")
+	private Long numericId;
 	
 //	@Indexed(unique=true)
 	private Integer consecutive;
@@ -63,6 +67,12 @@ public class Requisition {
 	
 	private String createdBy;
 	
+	public Long getNumericId() {
+		return numericId;
+	}
+	public void setNumericId(Long numericId) {
+		this.numericId = numericId;
+	}
 	public List<RequisitionItem> getRequisitionItemEntityList() {
 		return requisitionItemEntityList;
 	}
