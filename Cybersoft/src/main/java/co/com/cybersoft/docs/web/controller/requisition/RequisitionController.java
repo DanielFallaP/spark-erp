@@ -87,6 +87,7 @@ public class RequisitionController {
 		if (current!=null){
 			requisitionInfo.getRequisitionItemList().add(current);
 		}
+		
 		RequisitionEvent requisitionEvent = requisitionService.saveRequisition(new SaveRequisitionEvent(requisitionInfo));
 		requisitionInfo.setId(requisitionEvent.getRequisition().getId());
 		requisitionInfo.setRequisitionItemList(requisitionEvent.getRequisition().getRequisitionItemList());
