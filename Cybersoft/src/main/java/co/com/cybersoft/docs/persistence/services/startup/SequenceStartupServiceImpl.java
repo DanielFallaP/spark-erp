@@ -21,7 +21,6 @@ public class SequenceStartupServiceImpl implements SequenceStartupService{
 	public void startupSequences() throws Exception {
 	
 		checkAndStart("requisition_id", 1);
-		checkAndStart("requisition_body_id", 1);
 		
 	}
 	

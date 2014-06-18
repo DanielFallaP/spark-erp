@@ -32,6 +32,7 @@ import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersistenceService;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemInfo;
+import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemModificationInfo;
 import co.com.cybersoft.events.country.CountryPageEvent;
 import co.com.cybersoft.events.department.DepartmentPageEvent;
 import co.com.cybersoft.events.expenseType.ExpenseTypePageEvent;
@@ -82,7 +83,7 @@ public class RequisitionController {
 	private static final Logger LOG = LoggerFactory.getLogger(RequisitionController.class);
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public String saveRequisition(@ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionItemInfo") RequisitionItemInfo current, Model model, HttpServletRequest request) throws Exception{
+	public String saveRequisition(@ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionItemInfo") RequisitionItemInfo current, @ModelAttribute("requisitionItemModificationInfo") RequisitionItemModificationInfo modified, Model model, HttpServletRequest request) throws Exception{
 		if (current!=null){
 			requisitionInfo.getRequisitionItemList().add(current);
 		}
@@ -93,7 +94,6 @@ public class RequisitionController {
 		
 		model.addAttribute("requisitionInfo",requisitionInfo);
 		model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
-//		request.getSession().setAttribute("requisitionInfo", requisitionInfo);
 
 		return "/docs/requisition/createRequisition";
 	}
@@ -116,10 +116,14 @@ public class RequisitionController {
 
 		if (requisitionInfoSession!=null && requisitionInfoSession.getId()!=null){
 			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);	
+			RequisitionItemModificationInfo requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
 			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
+			requisitionInfo.setRequisitionItemModificationInfo(requisitionItemModificationInfo);
+			
 			model.addAttribute("requisitionInfo",requisitionInfoSession);
 			model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
 			model.addAttribute("requisitionItemInfo", requisitionItemInfo);
+			model.addAttribute("requisitionItemModificationInfo",requisitionItemModificationInfo);
 			
 			return requisitionInfo;
 		}
@@ -179,11 +183,14 @@ public class RequisitionController {
 			
 			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);	
 			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
+			RequisitionItemModificationInfo requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
+			requisitionInfo.setRequisitionItemModificationInfo(requisitionItemModificationInfo);
 		
 			request.getSession().setAttribute("requisitionInfo", requisitionInfo);
 			model.addAttribute("requisitionInfo",requisitionInfo);
 			model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
 			model.addAttribute("requisitionItemInfo", requisitionItemInfo);
+			model.addAttribute("requisitionItemModificationInfo",requisitionItemModificationInfo);
 			
 			return requisitionInfo;
 		}
@@ -208,4 +215,16 @@ public class RequisitionController {
 		}
 		
 
+		private RequisitionItemModificationInfo getRequisitionItemModificationInfo(HttpServletRequest request) throws Exception{
+			RequisitionItemModificationInfo requisitionItemModificationInfo = new RequisitionItemModificationInfo();
+			
+			ItemPageEvent allItemEvent = itemService.requestAllByCode();
+			requisitionItemModificationInfo.setItemList(allItemEvent.getItemList());
+			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
+			requisitionItemModificationInfo.setPriorityList(allPriorityEvent.getPriorityList());
+
+			request.getSession().setAttribute("requisitionItemModificationInfo", requisitionItemModificationInfo);
+			
+			return requisitionItemModificationInfo;
+		}
 }

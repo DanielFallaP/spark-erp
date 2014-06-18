@@ -1,5 +1,6 @@
 package co.com.cybersoft.docs.persistence.services.requisition;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
@@ -12,9 +13,11 @@ import co.com.cybersoft.docs.events.requisition.RequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.RequisitionModificationEvent;
 import co.com.cybersoft.docs.events.requisition.RequisitionPageEvent;
 import co.com.cybersoft.docs.persistence.domain.Requisition;
+import co.com.cybersoft.docs.persistence.domain.RequisitionItem;
 import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionCustomRepo;
 import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionRepository;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
+import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemInfo;
 import co.com.cybersoft.util.EmbeddedField;
 
 /**
@@ -33,9 +36,23 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 		this.requisitionCustomRepo=requisitionCustomRepo;
 	}
 	
+	private Requisition updateBody(Requisition requisition, RequisitionItem modified){
+		List<RequisitionItem> bodyList = requisition.getRequisitionItemEntityList();
+		for (RequisitionItem requisitionItem : bodyList) {
+			if (requisitionItem.getItem().equals(modified.getItem())){
+				BeanUtils.copyProperties(modified, requisitionItem);
+			}
+		}
+		return requisition;
+	}
+	
 	@Override
 	public RequisitionEvent saveRequisition(SaveRequisitionEvent event) throws Exception {
-		Requisition requisition = new Requisition().fromRequisitionInfo(event.getRequisitionInfo());
+		RequisitionItem modified = new RequisitionItem();
+		BeanUtils.copyProperties(event.getRequisitionInfo().getRequisitionItemModificationInfo(), modified);
+		Requisition requisition=new Requisition().fromRequisitionInfo(event.getRequisitionInfo());
+		if (event.getRequisitionInfo().getRequisitionItemModificationInfo().getItem()!=null)
+			requisition = updateBody(requisition,modified);
 		requisition = requisitionCustomRepo.save(requisition);
 		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
 	}

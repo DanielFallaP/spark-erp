@@ -57,6 +57,8 @@ public class RequisitionInfo implements Serializable{
 	
 	private RequisitionItemInfo currentRequisitionItemInfo;
 	
+	private RequisitionItemModificationInfo requisitionItemModificationInfo;
+	
 	@NotNull
 	@Range(max=99999999)
 	private Integer consecutive;
@@ -95,6 +97,18 @@ public class RequisitionInfo implements Serializable{
 	public void setRequisitionItemList(List<RequisitionItemInfo> requisitionItemList) {
 		this.requisitionItemList = requisitionItemList;
 	}
+
+	
+
+	public RequisitionItemModificationInfo getRequisitionItemModificationInfo() {
+		return requisitionItemModificationInfo;
+	}
+
+	public void setRequisitionItemModificationInfo(
+			RequisitionItemModificationInfo requisitionItemModificationInfo) {
+		this.requisitionItemModificationInfo = requisitionItemModificationInfo;
+	}
+
 
 	@NotEmpty
 	private String priority;
