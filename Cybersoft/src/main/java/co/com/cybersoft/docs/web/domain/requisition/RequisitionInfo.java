@@ -39,6 +39,8 @@ import co.com.cybersoft.docs.persistence.domain.RequisitionItem;
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
 public class RequisitionInfo implements Serializable{
 	
+	private Long numericId;
+	
 	private Boolean created;
 	
 	private String calledFrom;
@@ -54,6 +56,8 @@ public class RequisitionInfo implements Serializable{
 	private List<RequisitionItemInfo> requisitionItemList=new ArrayList<RequisitionItemInfo>();
 	
 	private RequisitionItemInfo currentRequisitionItemInfo;
+	
+	private RequisitionItemInfo requisitionItemModificationInfo;
 	
 	@NotNull
 	@Range(max=99999999)
@@ -86,13 +90,7 @@ public class RequisitionInfo implements Serializable{
 	public RequisitionInfo(){
 	}
 	
-	public List<RequisitionItemInfo> getRequisitionItemList() {
-		return requisitionItemList;
-	}
 
-	public void setRequisitionItemList(List<RequisitionItemInfo> requisitionItemList) {
-		this.requisitionItemList = requisitionItemList;
-	}
 
 	@NotEmpty
 	private String priority;
@@ -120,6 +118,31 @@ public class RequisitionInfo implements Serializable{
 
 	private List<WarehouseDetails> receivingWarehouseList;
 	private Boolean active;
+	
+	public RequisitionItemInfo getRequisitionItemModificationInfo() {
+		return requisitionItemModificationInfo;
+	}
+
+	public void setRequisitionItemModificationInfo(
+			RequisitionItemInfo requisitionItemModificationInfo) {
+		this.requisitionItemModificationInfo = requisitionItemModificationInfo;
+	}
+
+	public List<RequisitionItemInfo> getRequisitionItemList() {
+		return requisitionItemList;
+	}
+	
+	public void setRequisitionItemList(List<RequisitionItemInfo> requisitionItemList) {
+		this.requisitionItemList = requisitionItemList;
+	}
+	
+	public Long getNumericId() {
+		return numericId;
+	}
+
+	public void setNumericId(Long numericId) {
+		this.numericId = numericId;
+	}
 
 	public RequisitionItemInfo getCurrentRequisitionItemInfo() {
 		return currentRequisitionItemInfo;

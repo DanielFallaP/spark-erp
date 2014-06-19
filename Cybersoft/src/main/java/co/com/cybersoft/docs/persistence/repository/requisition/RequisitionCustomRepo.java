@@ -12,7 +12,7 @@ import co.com.cybersoft.util.EmbeddedField;
  */
 public interface RequisitionCustomRepo {
 
-
+	Requisition save(Requisition requisition) throws Exception;
 	List<Requisition> findAllActiveByPriority(EmbeddedField ...fields) throws Exception;
 	List<Requisition> findAllActiveByRequestingDepartment(EmbeddedField ...fields) throws Exception;
 	List<Requisition> findAllActiveByExpenseType(EmbeddedField ...fields) throws Exception;

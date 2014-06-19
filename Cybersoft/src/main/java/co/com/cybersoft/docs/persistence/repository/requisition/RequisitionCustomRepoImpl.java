@@ -5,14 +5,17 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.lang.reflect.Method;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 
 import co.com.cybersoft.docs.persistence.domain.Requisition;
 import co.com.cybersoft.util.CyberUtils;
@@ -28,7 +31,11 @@ public class RequisitionCustomRepoImpl implements RequisitionCustomRepo {
 	@Autowired
 	private MongoOperations mongo;
 	
+	@Autowired
+	private RequisitionRepository repo;
 	
+	@Autowired
+	private DB mongoDB;
 	
 	@Override
 	public List<Requisition> findAllActiveByPriority(EmbeddedField... fields) throws Exception {
@@ -170,6 +177,28 @@ public class RequisitionCustomRepoImpl implements RequisitionCustomRepo {
 	private String toCamelCase(String name){
 		Character character= name.charAt(0);
 		return character.toString().toUpperCase()+name.substring(1);
+	}
+	
+	@Override
+	public Requisition save(Requisition requisition) throws Exception{
+		String id=requisition.getId();
+		Requisition requisition2 = repo.save(requisition);
+		if (id==null){
+			DBCollection requisitionCollection = mongoDB.getCollection("requisition");
+			
+			Double numericID = (Double) mongoDB.eval(CyberUtils.getNextSequence, "requisition_id");
+			requisition.setNumericId(numericID.longValue());
+			
+			BasicDBObject newDocument = new BasicDBObject();
+			newDocument.append("$set", new BasicDBObject("_numericId", numericID.longValue()));
+			
+			BasicDBObject searchQuery = new BasicDBObject();
+			searchQuery.put("_id", new ObjectId(requisition2.getId()) );
+			
+			requisitionCollection.update(searchQuery, newDocument);
+		}
+		
+		return requisition2;
 	}
 
 }
