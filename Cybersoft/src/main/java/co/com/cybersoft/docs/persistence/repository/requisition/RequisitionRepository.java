@@ -31,6 +31,7 @@ public interface RequisitionRepository extends MongoRepository<Requisition, Stri
 	Requisition findByReceivingWarehouse(String value);
 
 	Requisition findByActive(Boolean value);
-
+	
+	Requisition findByNumericId(Long value);
 
 }

@@ -32,7 +32,7 @@ public class Requisition {
 //	@Indexed(unique=true)
 	private Integer consecutive;
 	
-	private List<RequisitionItem> requisitionItemEntityList;
+	private List<RequisitionItem> requisitionItemEntityList=new ArrayList<RequisitionItem>();
 
 	private Date date;
 

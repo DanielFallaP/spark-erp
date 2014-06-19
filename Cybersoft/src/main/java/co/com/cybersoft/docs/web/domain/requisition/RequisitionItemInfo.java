@@ -26,6 +26,8 @@ public class RequisitionItemInfo implements Serializable{
 	
 	private Boolean created;
 	
+	private String submit;
+	
 	private String calledFrom;
 	
 	private String id;
@@ -62,7 +64,25 @@ public class RequisitionItemInfo implements Serializable{
 
 
 	private Boolean active;
+	
+	private RequisitionItemInfo requisitionItemModificationInfo;
 
+	public String getSubmit() {
+		return submit;
+	}
+
+	public void setSubmit(String submit) {
+		this.submit = submit;
+	}
+
+	public RequisitionItemInfo getRequisitionItemModificationInfo() {
+		return requisitionItemModificationInfo;
+	}
+
+	public void setRequisitionItemModificationInfo(
+			RequisitionItemInfo requisitionItemModificationInfo) {
+		this.requisitionItemModificationInfo = requisitionItemModificationInfo;
+	}
 
 	public List<ItemDetails> getItemList() {
 		return itemList;

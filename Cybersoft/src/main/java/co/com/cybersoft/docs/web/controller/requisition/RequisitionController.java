@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,15 +31,12 @@ import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersistenceService;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemInfo;
-import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemModificationInfo;
 import co.com.cybersoft.events.country.CountryPageEvent;
 import co.com.cybersoft.events.department.DepartmentPageEvent;
 import co.com.cybersoft.events.expenseType.ExpenseTypePageEvent;
 import co.com.cybersoft.events.item.ItemPageEvent;
 import co.com.cybersoft.events.populatedPlace.PopulatedPlacePageEvent;
 import co.com.cybersoft.events.priority.PriorityPageEvent;
-import co.com.cybersoft.events.requisitionItem.RequestRequisitionItemDetailsEvent;
-import co.com.cybersoft.events.requisitionItem.RequisitionItemDetailsEvent;
 import co.com.cybersoft.events.state.StatePageEvent;
 import co.com.cybersoft.events.transportationType.TransportationTypePageEvent;
 import co.com.cybersoft.events.warehouse.WarehousePageEvent;
@@ -83,12 +79,22 @@ public class RequisitionController {
 	private static final Logger LOG = LoggerFactory.getLogger(RequisitionController.class);
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public String saveRequisition(@ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionItemInfo") RequisitionItemInfo current, @ModelAttribute("requisitionItemModificationInfo") RequisitionItemModificationInfo modified, Model model, HttpServletRequest request) throws Exception{
-		if (current!=null){
-			requisitionInfo.getRequisitionItemList().add(current);
+	public String saveRequisition(@ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionItemInfo") RequisitionItemInfo current, @ModelAttribute("requisitionItemModificationInfo") RequisitionItemInfo modified,Model model, HttpServletRequest request) throws Exception{
+		RequisitionEvent requisitionEvent=null;
+		if (modified.getRequisitionItemModificationInfo().getSubmit().equals("modification")){
+			requisitionInfo.setRequisitionItemModificationInfo(modified.getRequisitionItemModificationInfo());
+			requisitionEvent = requisitionService.updateRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
 		}
-		
-		RequisitionEvent requisitionEvent = requisitionService.saveRequisition(new SaveRequisitionEvent(requisitionInfo));
+		else if (modified.getRequisitionItemModificationInfo().getSubmit().equals("creation")){
+			requisitionInfo.setCurrentRequisitionItemInfo(current);
+			requisitionEvent = requisitionService.saveRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
+		}
+		else if (modified.getRequisitionItemModificationInfo().getSubmit().equals("deletion")){
+			//TODO
+		}
+		else{
+			requisitionEvent = requisitionService.saveRequisition(new SaveRequisitionEvent(requisitionInfo));
+		}
 		requisitionInfo.setId(requisitionEvent.getRequisition().getId());
 		requisitionInfo.setRequisitionItemList(requisitionEvent.getRequisition().getRequisitionItemList());
 		requisitionInfo.setNumericId(requisitionEvent.getRequisition().getNumericId());
@@ -107,6 +113,7 @@ public class RequisitionController {
 	@ExceptionHandler(Exception.class)
 	public ModelAndView constraintError(HttpServletRequest req, Exception exception){
 		//TODO
+		exception.printStackTrace();
 		LOG.debug(exception.getMessage());
 		return null;
 	}
@@ -117,9 +124,13 @@ public class RequisitionController {
 
 		if (requisitionInfoSession!=null && requisitionInfoSession.getId()!=null){
 			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);	
-			RequisitionItemModificationInfo requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
+			RequisitionItemInfo requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
 			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
 			requisitionInfo.setRequisitionItemModificationInfo(requisitionItemModificationInfo);
+			requisitionItemInfo.setSubmit("");
+			RequisitionItemInfo submitModification = new RequisitionItemInfo();
+			submitModification.setSubmit("");
+			requisitionItemModificationInfo.setRequisitionItemModificationInfo(submitModification);
 			
 			model.addAttribute("requisitionInfo",requisitionInfoSession);
 			model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
@@ -131,9 +142,6 @@ public class RequisitionController {
 		else{
 			
 			requisitionInfo = new RequisitionInfo();
-			
-			String value = request.getParameter("value");
-			String field = request.getParameter("field");
 			
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
 			requisitionInfo.setPriorityList(allPriorityEvent.getPriorityList());
@@ -164,18 +172,6 @@ public class RequisitionController {
 				requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
 			}
 			
-			
-			
-			if (value!=null){
-				RequestRequisitionEvent event = new RequestRequisitionEvent(null);
-				event.setField(field);
-				event.setValue(value);
-				RequisitionEvent responseEvent = requisitionService.requestRequisitionDetails(event);
-				if (responseEvent.getRequisition()!=null)
-					BeanUtils.copyProperties(responseEvent.getRequisition(), requisitionInfo);
-			}
-			
-			
 			requisitionInfo.setId(null);
 			requisitionInfo.setDate(new Date());
 			requisitionInfo.setStock(true);
@@ -184,8 +180,12 @@ public class RequisitionController {
 			
 			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);	
 			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
-			RequisitionItemModificationInfo requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
+			RequisitionItemInfo requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
 			requisitionInfo.setRequisitionItemModificationInfo(requisitionItemModificationInfo);
+			requisitionItemInfo.setSubmit("");
+			RequisitionItemInfo submitModification = new RequisitionItemInfo();
+			submitModification.setSubmit("");
+			requisitionItemModificationInfo.setRequisitionItemModificationInfo(submitModification);
 		
 			request.getSession().setAttribute("requisitionInfo", requisitionInfo);
 			model.addAttribute("requisitionInfo",requisitionInfo);
@@ -216,8 +216,8 @@ public class RequisitionController {
 		}
 		
 
-		private RequisitionItemModificationInfo getRequisitionItemModificationInfo(HttpServletRequest request) throws Exception{
-			RequisitionItemModificationInfo requisitionItemModificationInfo = new RequisitionItemModificationInfo();
+		private RequisitionItemInfo getRequisitionItemModificationInfo(HttpServletRequest request) throws Exception{
+			RequisitionItemInfo requisitionItemModificationInfo = new RequisitionItemInfo();
 			
 			ItemPageEvent allItemEvent = itemService.requestAllByCode();
 			requisitionItemModificationInfo.setItemList(allItemEvent.getItemList());

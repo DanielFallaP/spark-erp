@@ -57,7 +57,7 @@ public class RequisitionInfo implements Serializable{
 	
 	private RequisitionItemInfo currentRequisitionItemInfo;
 	
-	private RequisitionItemModificationInfo requisitionItemModificationInfo;
+	private RequisitionItemInfo requisitionItemModificationInfo;
 	
 	@NotNull
 	@Range(max=99999999)
@@ -90,24 +90,6 @@ public class RequisitionInfo implements Serializable{
 	public RequisitionInfo(){
 	}
 	
-	public List<RequisitionItemInfo> getRequisitionItemList() {
-		return requisitionItemList;
-	}
-
-	public void setRequisitionItemList(List<RequisitionItemInfo> requisitionItemList) {
-		this.requisitionItemList = requisitionItemList;
-	}
-
-	
-
-	public RequisitionItemModificationInfo getRequisitionItemModificationInfo() {
-		return requisitionItemModificationInfo;
-	}
-
-	public void setRequisitionItemModificationInfo(
-			RequisitionItemModificationInfo requisitionItemModificationInfo) {
-		this.requisitionItemModificationInfo = requisitionItemModificationInfo;
-	}
 
 
 	@NotEmpty
@@ -136,7 +118,24 @@ public class RequisitionInfo implements Serializable{
 
 	private List<WarehouseDetails> receivingWarehouseList;
 	private Boolean active;
+	
+	public RequisitionItemInfo getRequisitionItemModificationInfo() {
+		return requisitionItemModificationInfo;
+	}
 
+	public void setRequisitionItemModificationInfo(
+			RequisitionItemInfo requisitionItemModificationInfo) {
+		this.requisitionItemModificationInfo = requisitionItemModificationInfo;
+	}
+
+	public List<RequisitionItemInfo> getRequisitionItemList() {
+		return requisitionItemList;
+	}
+	
+	public void setRequisitionItemList(List<RequisitionItemInfo> requisitionItemList) {
+		this.requisitionItemList = requisitionItemList;
+	}
+	
 	public Long getNumericId() {
 		return numericId;
 	}

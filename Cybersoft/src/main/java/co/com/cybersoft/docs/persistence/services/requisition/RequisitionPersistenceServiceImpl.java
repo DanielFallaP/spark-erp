@@ -1,17 +1,17 @@
 package co.com.cybersoft.docs.persistence.services.requisition;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Page;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+
 import co.com.cybersoft.docs.events.requisition.RequestRequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.RequestRequisitionPageEvent;
 import co.com.cybersoft.docs.events.requisition.RequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.RequisitionModificationEvent;
 import co.com.cybersoft.docs.events.requisition.RequisitionPageEvent;
+import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docs.persistence.domain.Requisition;
 import co.com.cybersoft.docs.persistence.domain.RequisitionItem;
 import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionCustomRepo;
@@ -48,13 +48,35 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	
 	@Override
 	public RequisitionEvent saveRequisition(SaveRequisitionEvent event) throws Exception {
-		RequisitionItem modified = new RequisitionItem();
-		BeanUtils.copyProperties(event.getRequisitionInfo().getRequisitionItemModificationInfo(), modified);
 		Requisition requisition=new Requisition().fromRequisitionInfo(event.getRequisitionInfo());
-		if (event.getRequisitionInfo().getRequisitionItemModificationInfo().getItem()!=null)
-			requisition = updateBody(requisition,modified);
 		requisition = requisitionCustomRepo.save(requisition);
 		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
+	}
+
+	@Override
+	public RequisitionEvent saveRequisitionBody(SaveRequisitionEvent event)	throws Exception {
+		Requisition requisition = requisitionRepository.findByNumericId(event.getRequisitionInfo().getNumericId());
+		RequisitionItem requisitionItem = new RequisitionItem();
+		BeanUtils.copyProperties(event.getRequisitionInfo().getCurrentRequisitionItemInfo(), requisitionItem);
+		requisition.getRequisitionItemEntityList().add(requisitionItem);
+		requisition = requisitionCustomRepo.save(requisition);
+		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
+	}
+	
+	@Override
+	public RequisitionEvent updateRequisitionBody(SaveRequisitionEvent event) throws Exception {
+		Requisition requisition = requisitionRepository.findByNumericId(event.getRequisitionInfo().getNumericId());
+		RequisitionItem modified=new RequisitionItem();
+		BeanUtils.copyProperties(event.getRequisitionInfo().getRequisitionItemModificationInfo(), modified);
+		requisition=updateBody(requisition, modified);
+		requisition=requisitionCustomRepo.save(requisition);
+		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
+	}
+	
+	@Override
+	public RequisitionEvent deleteRequisition(SaveRequisitionEvent event) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override
@@ -131,6 +153,5 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 			return new RequisitionPageEvent(list);
 		}
 
-	
-	
+
 }

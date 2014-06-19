@@ -16,8 +16,14 @@ import co.com.cybersoft.util.EmbeddedField;
 public interface RequisitionPersistenceService {
 	
 	RequisitionEvent saveRequisition(SaveRequisitionEvent event) throws Exception;
+	
+	RequisitionEvent saveRequisitionBody(SaveRequisitionEvent event) throws Exception;
+	
+	RequisitionEvent updateRequisitionBody(SaveRequisitionEvent event) throws Exception;
 
 	RequisitionEvent createRequisition(SaveRequisitionEvent event) throws Exception;
+	
+	RequisitionEvent deleteRequisition(SaveRequisitionEvent event) throws Exception;
 
 	RequisitionPageEvent requestRequisitionPage(RequestRequisitionPageEvent event) throws Exception;
 
