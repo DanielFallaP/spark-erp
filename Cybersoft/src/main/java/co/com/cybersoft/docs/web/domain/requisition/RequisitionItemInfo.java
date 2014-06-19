@@ -40,7 +40,8 @@ public class RequisitionItemInfo implements Serializable{
 	
 	@NotEmpty
 	private String item;
-
+	
+	private Boolean selected;
 
 	private List<ItemDetails> itemList;
 	private Date bodyRequiredOnDate;
@@ -66,6 +67,14 @@ public class RequisitionItemInfo implements Serializable{
 	private Boolean active;
 	
 	private RequisitionItemInfo requisitionItemModificationInfo;
+	
+	public Boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
 
 	public String getSubmit() {
 		return submit;

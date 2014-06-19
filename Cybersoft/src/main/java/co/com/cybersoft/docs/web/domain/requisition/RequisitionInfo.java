@@ -41,7 +41,7 @@ public class RequisitionInfo implements Serializable{
 	
 	private Long numericId;
 	
-	private Boolean created;
+	private Boolean created=Boolean.FALSE;
 	
 	private String calledFrom;
 	
@@ -58,6 +58,8 @@ public class RequisitionInfo implements Serializable{
 	private RequisitionItemInfo currentRequisitionItemInfo;
 	
 	private RequisitionItemInfo requisitionItemModificationInfo;
+	
+	private String deletion;
 	
 	@NotNull
 	@Range(max=99999999)
@@ -142,6 +144,14 @@ public class RequisitionInfo implements Serializable{
 
 	public void setNumericId(Long numericId) {
 		this.numericId = numericId;
+	}
+	
+	public String getDeletion() {
+		return deletion;
+	}
+
+	public void setDeletion(String deletion) {
+		this.deletion = deletion;
 	}
 
 	public RequisitionItemInfo getCurrentRequisitionItemInfo() {

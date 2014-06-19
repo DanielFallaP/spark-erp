@@ -2,6 +2,7 @@ package co.com.cybersoft.docs.persistence.services.requisition;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -39,8 +40,19 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	private Requisition updateBody(Requisition requisition, RequisitionItem modified){
 		List<RequisitionItem> bodyList = requisition.getRequisitionItemEntityList();
 		for (RequisitionItem requisitionItem : bodyList) {
-			if (requisitionItem.getItem().equals(modified.getItem())){
+			if (requisitionItem.getId().equals(modified.getId())){
 				BeanUtils.copyProperties(modified, requisitionItem);
+			}
+		}
+		return requisition;
+	}
+
+	private Requisition deleteFromBody(Requisition requisition, List<String> toDelete) {
+		List<RequisitionItem> entityList = requisition.getRequisitionItemEntityList();
+		List<RequisitionItem> copy = new ArrayList<>(entityList);
+		for (RequisitionItem requisitionItem : copy) {
+			if (toDelete.contains(requisitionItem.getId())){
+				entityList.remove(requisitionItem);
 			}
 		}
 		return requisition;
@@ -58,6 +70,10 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 		Requisition requisition = requisitionRepository.findByNumericId(event.getRequisitionInfo().getNumericId());
 		RequisitionItem requisitionItem = new RequisitionItem();
 		BeanUtils.copyProperties(event.getRequisitionInfo().getCurrentRequisitionItemInfo(), requisitionItem);
+		UUID id = UUID.randomUUID();
+		requisitionItem.setId(id.toString());
+		if (requisition.getRequisitionItemEntityList()==null)
+			requisition.setRequisitionItemEntityList(new ArrayList<RequisitionItem>());
 		requisition.getRequisitionItemEntityList().add(requisitionItem);
 		requisition = requisitionCustomRepo.save(requisition);
 		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
@@ -74,11 +90,13 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	}
 	
 	@Override
-	public RequisitionEvent deleteRequisition(SaveRequisitionEvent event) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public RequisitionEvent deleteRequisition(SaveRequisitionEvent event, List<String> toDelete) throws Exception {
+		Requisition requisition = requisitionRepository.findByNumericId(event.getRequisitionInfo().getNumericId());
+		requisition = deleteFromBody(requisition, toDelete);
+		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisitionCustomRepo.save(requisition)));
 	}
-	
+
+
 	@Override
 	public RequisitionEvent createRequisition(SaveRequisitionEvent event) throws Exception{
 		Requisition requisition = new Requisition().fromRequisitionInfo(event.getRequisitionInfo());
@@ -152,6 +170,7 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 			}
 			return new RequisitionPageEvent(list);
 		}
+
 
 
 }

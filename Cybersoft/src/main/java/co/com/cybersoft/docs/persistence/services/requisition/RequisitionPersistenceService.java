@@ -1,5 +1,7 @@
 package co.com.cybersoft.docs.persistence.services.requisition;
 
+import java.util.List;
+
 import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.RequestRequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.RequestRequisitionPageEvent;
@@ -23,7 +25,7 @@ public interface RequisitionPersistenceService {
 
 	RequisitionEvent createRequisition(SaveRequisitionEvent event) throws Exception;
 	
-	RequisitionEvent deleteRequisition(SaveRequisitionEvent event) throws Exception;
+	RequisitionEvent deleteRequisition(SaveRequisitionEvent event, List<String> toDelete) throws Exception;
 
 	RequisitionPageEvent requestRequisitionPage(RequestRequisitionPageEvent event) throws Exception;
 

@@ -1,12 +1,13 @@
 package co.com.cybersoft.docs.web.controller.requisition;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,6 @@ import co.com.cybersoft.core.services.priority.PriorityService;
 import co.com.cybersoft.core.services.state.StateService;
 import co.com.cybersoft.core.services.transportationType.TransportationTypeService;
 import co.com.cybersoft.core.services.warehouse.WarehouseService;
-import co.com.cybersoft.docs.events.requisition.RequestRequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.RequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersistenceService;
@@ -90,11 +90,13 @@ public class RequisitionController {
 			requisitionEvent = requisitionService.saveRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
 		}
 		else if (modified.getRequisitionItemModificationInfo().getSubmit().equals("deletion")){
-			//TODO
+			List<String> toDelete = Arrays.asList(requisitionInfo.getDeletion().split(","));
+			requisitionEvent=requisitionService.deleteRequisition(new SaveRequisitionEvent(requisitionInfo), toDelete);			
 		}
 		else{
 			requisitionEvent = requisitionService.saveRequisition(new SaveRequisitionEvent(requisitionInfo));
 		}
+		requisitionInfo.setCreated(true);
 		requisitionInfo.setId(requisitionEvent.getRequisition().getId());
 		requisitionInfo.setRequisitionItemList(requisitionEvent.getRequisition().getRequisitionItemList());
 		requisitionInfo.setNumericId(requisitionEvent.getRequisition().getNumericId());
