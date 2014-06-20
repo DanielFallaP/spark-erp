@@ -59,6 +59,7 @@ public class RequisitionController {
 	@Autowired
 		private TransportationTypeService transportationTypeService;
 
+	
 	@Autowired
 		private WarehouseService warehouseService;
 
