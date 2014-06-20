@@ -2,12 +2,7 @@ package co.com.cybersoft.docs.persistence.domain;
 
 import java.util.Date;
 
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import co.com.cybersoft.core.domain.RequisitionItemDetails;
 

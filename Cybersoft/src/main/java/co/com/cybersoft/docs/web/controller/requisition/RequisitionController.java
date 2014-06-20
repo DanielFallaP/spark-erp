@@ -20,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import co.com.cybersoft.core.services.country.CountryService;
 import co.com.cybersoft.core.services.department.DepartmentService;
 import co.com.cybersoft.core.services.expenseType.ExpenseTypeService;
-import co.com.cybersoft.core.services.item.ItemService;
 import co.com.cybersoft.core.services.populatedPlace.PopulatedPlaceService;
 import co.com.cybersoft.core.services.priority.PriorityService;
 import co.com.cybersoft.core.services.state.StateService;
@@ -34,7 +33,6 @@ import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemInfo;
 import co.com.cybersoft.events.country.CountryPageEvent;
 import co.com.cybersoft.events.department.DepartmentPageEvent;
 import co.com.cybersoft.events.expenseType.ExpenseTypePageEvent;
-import co.com.cybersoft.events.item.ItemPageEvent;
 import co.com.cybersoft.events.populatedPlace.PopulatedPlacePageEvent;
 import co.com.cybersoft.events.priority.PriorityPageEvent;
 import co.com.cybersoft.events.state.StatePageEvent;
@@ -73,9 +71,6 @@ public class RequisitionController {
 	@Autowired
 		private PopulatedPlaceService populatedPlaceService;
 	
-	@Autowired
-	private ItemService itemService;
-
 	private static final Logger LOG = LoggerFactory.getLogger(RequisitionController.class);
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -203,8 +198,6 @@ public class RequisitionController {
 		private RequisitionItemInfo getRequisitionItemInfo(HttpServletRequest request) throws Exception {
 			RequisitionItemInfo requisitionItemInfo = new RequisitionItemInfo();
 			
-			ItemPageEvent allItemEvent = itemService.requestAllByCode();
-			requisitionItemInfo.setItemList(allItemEvent.getItemList());
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
 			requisitionItemInfo.setPriorityList(allPriorityEvent.getPriorityList());
 			
@@ -221,8 +214,6 @@ public class RequisitionController {
 		private RequisitionItemInfo getRequisitionItemModificationInfo(HttpServletRequest request) throws Exception{
 			RequisitionItemInfo requisitionItemModificationInfo = new RequisitionItemInfo();
 			
-			ItemPageEvent allItemEvent = itemService.requestAllByCode();
-			requisitionItemModificationInfo.setItemList(allItemEvent.getItemList());
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
 			requisitionItemModificationInfo.setPriorityList(allPriorityEvent.getPriorityList());
 

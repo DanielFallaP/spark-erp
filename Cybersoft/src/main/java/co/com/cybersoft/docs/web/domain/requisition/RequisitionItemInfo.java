@@ -1,18 +1,17 @@
 package co.com.cybersoft.docs.web.domain.requisition;
 
 import java.io.Serializable;
-
 import java.util.Date;
+import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import org.hibernate.validator.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import co.com.cybersoft.core.domain.ItemDetails;
+
 import co.com.cybersoft.core.domain.PriorityDetails;
-import java.util.List;
-import java.util.ArrayList;
 
 
 /**
@@ -43,9 +42,7 @@ public class RequisitionItemInfo implements Serializable{
 	
 	private Boolean selected;
 
-	private List<ItemDetails> itemList;
 	private Date bodyRequiredOnDate;
-
 
 	@NotEmpty
 	private String priority;
@@ -91,15 +88,6 @@ public class RequisitionItemInfo implements Serializable{
 	public void setRequisitionItemModificationInfo(
 			RequisitionItemInfo requisitionItemModificationInfo) {
 		this.requisitionItemModificationInfo = requisitionItemModificationInfo;
-	}
-
-	public List<ItemDetails> getItemList() {
-		return itemList;
-	}
-
-	public void setItemList(
-				List<ItemDetails> itemList) {
-			this.itemList = itemList;
 	}
 
 	public String getItem() {

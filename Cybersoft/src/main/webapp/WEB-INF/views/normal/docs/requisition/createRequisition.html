@@ -17,7 +17,6 @@
 	            padding: 9px 0;
 	        }
 	    </style>
-	    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> 
 	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
 <!-- 	      For production purposes, min version should be used -->
 		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
@@ -242,6 +241,57 @@
 					}
 				});
 			});
+		   
+		   
+		   $(function(){
+	   		     $("#item").autocomplete({
+	   		    	    source: function (request, response) {
+	   		    	    		var path=window.location.pathname.split("/");
+	   		    	    		var prefix="";
+	   		    	    		if (path[1].localeCompare("configuration")!=0){
+	   		    	    			prefix="/"+path[1];	
+	   		    	    		}
+	   							$.get(prefix+"/configuration/item/getDescriptionList?description="+request.term, {}, function (data) {
+	   		    	            var array=data.split("/////");
+	   		    	            if (data!="")
+	   		    	            	response(array);
+	   		    	            else
+	   		    	            	response(null);
+	   		    	        });
+	   		    	    },
+	   		    	    minLength: 3,
+	   	    	    		select: function(a, b){
+	   	    	    		$(this).val(b.item.value);
+	   	    	    	}
+	   		    	});
+	   		    	 
+	   		     });
+		   
+		   $(function(){
+	   		     $("#_itemModification").autocomplete({
+	   		    	    source: function (request, response) {
+	   		    	    		var path=window.location.pathname.split("/");
+	   		    	    		var prefix="";
+	   		    	    		if (path[1].localeCompare("configuration")!=0){
+	   		    	    			prefix="/"+path[1];	
+	   		    	    		}
+	   							$.get(prefix+"/configuration/item/getDescriptionList?description="+request.term, {}, function (data) {
+	   		    	            var array=data.split("/////");
+	   		    	            if (data!="")
+	   		    	            	response(array);
+	   		    	            else
+	   		    	            	response(null);
+	   		    	        });
+	   		    	    },
+	   		    	    minLength: 3,
+	   	    	    		select: function(a, b){
+	   	    	    		$(this).val(b.item.value);
+	   	    	    	}
+	   		    	});
+	   		    	 
+	   		     });
+		   
+		   
 
 		   
 	       /* ]]> */
@@ -303,7 +353,7 @@
 		        	<table th:if='${requisitionInfo.created}' id="requisitionItemList" class="table table-striped">
 		        		<thead>
 							<tr>
-								<th th:text="#{label.requisitionItemSelection}"></th>
+								<th ></th>
 								<th th:text="#{label.requisitionItemItem}"></th>
 								<th th:text="#{label.requisitionItemRequiredOnDate}"></th>
 								<th th:text="#{label.requisitionItemPriority}"></th>
@@ -331,13 +381,13 @@
        				<div align="right" ><input type="submit" th:value="#{label.save}" /></div>
 		        </form>
 			 <!-- Custom form for adding new records -->
-			 <form id="requisition-body-form" class="white-popup mfp-hide" th:object="${requisitionItemInfo}" method="post">
+			 <form id="requisition-body-form" class="white-popup mfp-hide"  th:object="${requisitionItemInfo}" method="post">
 		        	<h3 th:text="#{label.requisitionItemCreationTitle}"></h3>
 		        	<input id="_submit" hidden="" th:field="*{requisitionItemModificationInfo.submit}"></input>
 		        	<table>		        			        			
 		        		<tr>
 		        			<td ><b th:text="#{label.requisitionItemItem}+': '"></b></td>
-		        			<td><select id="item" onChange="itemSelectedRefresh()" th:field="*{item}"><option th:each="reference : ${requisitionItemInfo.itemList}" th:value="${reference.code}" th:text="${reference.code}"></option></select></td>
+		        			<td><input id="item" type="text" th:field="*{item}" /></td>
 		        			<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
@@ -375,7 +425,7 @@
 		        	<table >		        			        			
 		        		<tr>
 		        			<td ><b th:text="#{label.requisitionItemItem}+': '"></b></td>
-		        			<td><select id="_itemModification" onChange="itemSelectedRefresh()" th:field="*{requisitionItemModificationInfo.item}"><option th:each="reference : ${requisitionItemModificationInfo.itemList}" th:value="${reference.code}" th:text="${reference.code}"></option></select></td>
+		        			<td><input id="_itemModification" type="text" th:field="*{requisitionItemModificationInfo.item}" /></td>
 		        			<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
