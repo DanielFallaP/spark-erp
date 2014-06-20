@@ -32,13 +32,13 @@ public class SpanishDefaultGenerator {
 	}
 
 	private void updateDefaultEnglishCreationName(Table table) throws SQLException {
-		updatePst.setString(1, "Creación de "+table.getSpanishName());
+		updatePst.setString(1, "CreaciÃ³n de "+table.getSpanishName());
 		updatePst.setString(2, table.getName()+"CreationTitle");
 		updatePst.execute();
 	}
 
 	private void updateDefaultEnglishModificationName(Table table) throws SQLException {
-		updatePst.setString(1, "Modificación de "+table.getSpanishName());
+		updatePst.setString(1, "ModificaciÃ³n de "+table.getSpanishName());
 		updatePst.setString(2, table.getName()+"ModificationTitle");
 		updatePst.execute();
 	}
