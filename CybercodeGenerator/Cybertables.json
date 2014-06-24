@@ -738,7 +738,7 @@
 					]
 		 },
 		 {	
-			"name":"deliveryLocations",
+			"name":"deliveryLocation",
 			"spanishName":"Lugar de destino",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},

@@ -285,7 +285,13 @@ public class ViewGenerator {
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				if (!field.isReference() && field.getVisible() && !field.getLargeText() && !field.getType().equals(Spark.booleanType)){
-					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
+					StringTemplate template;
+					if (field.getType().equals(Spark.dateType)){
+						template = templateGroup.getInstanceOf("otherDateColumn");
+					}
+					else{
+						template = templateGroup.getInstanceOf("otherColumn");
+					}
 					template.setAttribute("fieldName", field.getName());
 					text+=template.toString()+"\n";
 				}
@@ -321,7 +327,7 @@ public class ViewGenerator {
 		
 		
 		//Generation of audit fields columns (date of last modification and user of last modification)
-		StringTemplate template = templateGroup.getInstanceOf("otherColumn");
+		StringTemplate template = templateGroup.getInstanceOf("otherDateColumn");
 		template.setAttribute("fieldName", "dateOfModification");
 		text+=template.toString()+"\n";
 		
@@ -330,7 +336,7 @@ public class ViewGenerator {
 		text+=template.toString()+"\n";
 		
 		//Generation of audit fields columns (date of creation and user of creation)
-		template = templateGroup.getInstanceOf("otherColumn");
+		template = templateGroup.getInstanceOf("otherDateColumn");
 		template.setAttribute("fieldName", "dateOfCreation");
 		text+=template.toString()+"\n";
 
