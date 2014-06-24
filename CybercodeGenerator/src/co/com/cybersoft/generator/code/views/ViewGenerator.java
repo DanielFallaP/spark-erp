@@ -301,7 +301,6 @@ public class ViewGenerator {
 					template.setAttribute("fieldName", field.getName());
 					text+=template.toString()+"\n";
 				}
-				
 				if (field.isReference()){
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
 					if (CodeUtil.referencesLabelTable(field, cybersystems)){
