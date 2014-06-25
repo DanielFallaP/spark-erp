@@ -39,6 +39,8 @@
 	    	});
 	        	     
 		   $autocompleteFunctions$
+		   
+		   $autocompleteReferenceFunctions$
 		     
 		  function setFocus(){
 		   		document.getElementById("$firstField$").focus();
