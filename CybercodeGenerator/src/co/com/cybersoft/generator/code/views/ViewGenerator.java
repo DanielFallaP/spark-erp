@@ -326,7 +326,7 @@ public class ViewGenerator {
 		
 		
 		//Generation of audit fields columns (date of last modification and user of last modification)
-		StringTemplate template = templateGroup.getInstanceOf("otherDateColumn");
+		StringTemplate template = templateGroup.getInstanceOf("readOnlyDateColumn");
 		template.setAttribute("fieldName", "dateOfModification");
 		text+=template.toString()+"\n";
 		
@@ -335,7 +335,7 @@ public class ViewGenerator {
 		text+=template.toString()+"\n";
 		
 		//Generation of audit fields columns (date of creation and user of creation)
-		template = templateGroup.getInstanceOf("otherDateColumn");
+		template = templateGroup.getInstanceOf("readOnlyDateColumn");
 		template.setAttribute("fieldName", "dateOfCreation");
 		text+=template.toString()+"\n";
 

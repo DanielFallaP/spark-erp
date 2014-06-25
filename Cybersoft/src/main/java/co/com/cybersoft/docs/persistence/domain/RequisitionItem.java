@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.springframework.beans.BeanUtils;
 
-import co.com.cybersoft.core.domain.RequisitionItemDetails;
 
 /**
  * 
@@ -125,10 +124,6 @@ public class RequisitionItem {
 	}
 
 	
-	public RequisitionItem fromRequisitionItemDetails(RequisitionItemDetails details){
-		BeanUtils.copyProperties(details, this);
-		
-		return this;
-	}
+	
 
 }
