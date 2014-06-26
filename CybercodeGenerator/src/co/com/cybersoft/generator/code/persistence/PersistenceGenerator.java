@@ -246,6 +246,9 @@ public class PersistenceGenerator {
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("active", table.isActiveReference()?"Active":"");
+		template.setAttribute("autocompleteRepos", generateAutoCompleteRepos(table));
+		template.setAttribute("checkReferences", generateReferenceCheck(table));
+		template.setAttribute("imports", generateImports(table));
 		
 		StringTemplateGroup subTemplateGroup=new StringTemplateGroup("persistence",Spark.codePath+"persistence");
 		if(CodeUtil.generateDescriptionAutocomplete(table)){
@@ -319,6 +322,62 @@ public class PersistenceGenerator {
 		
 	}
 	
+	private String generateReferenceCheck(Table table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		
+		String checks="";
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (CodeUtil.generateAutoCompleteReference(field)){
+				StringTemplate template = templateGroup.getInstanceOf("referenceCheck");
+				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("refType", field.getRefType());
+				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				checks+=template.toString()+"\n";
+			}
+		}
+		
+		
+		return checks;
+	}
+
+	private String generateImports(Table table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		
+		String imports="";
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (CodeUtil.generateAutoCompleteReference(field)){
+				StringTemplate template = templateGroup.getInstanceOf("referenceImport");
+				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("refType", field.getRefType());
+				imports+=template.toString()+"\n";
+			}
+		}
+		
+		return imports;
+	}
+
+	private String generateAutoCompleteRepos(Table table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		
+		String declarations="";
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (CodeUtil.generateAutoCompleteReference(field)){
+				StringTemplate template = templateGroup.getInstanceOf("referenceDeclaration");
+				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("refType", field.getRefType());
+				declarations+=template.toString()+"\n";
+			}
+		}
+		
+		return declarations;
+	}
+
 	private void generateRepositories(Table table){
 		
 		//Repository interface generation

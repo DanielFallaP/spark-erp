@@ -1,6 +1,7 @@
 package co.com.cybersoft.persistence.services.$tableName$;
 
 import org.springframework.data.domain.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import co.com.cybersoft.core.domain.$entityName$Details;
 import co.com.cybersoft.events.$tableName$.Create$entityName$Event;
@@ -12,6 +13,7 @@ import co.com.cybersoft.events.$tableName$.Request$entityName$PageEvent;
 import co.com.cybersoft.persistence.domain.$entityName$;
 import co.com.cybersoft.persistence.repository.$tableName$.$entityName$Repository;
 import co.com.cybersoft.persistence.repository.$tableName$.$entityName$CustomRepo;
+$imports$
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,8 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 	
 	private final $entityName$CustomRepo $tableName$CustomRepo;
 	
+	$autocompleteRepos$
+	
 	public $entityName$PersistenceServiceImpl(final $entityName$Repository $tableName$Repository, final $entityName$CustomRepo $tableName$CustomRepo) {
 		this.$tableName$Repository=$tableName$Repository;
 		this.$tableName$CustomRepo=$tableName$CustomRepo;
@@ -36,6 +40,7 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 	
 	@Override
 	public $entityName$DetailsEvent create$entityName$(Create$entityName$Event event) throws Exception{
+		$checkReferences$
 		$entityName$ $tableName$ = new $entityName$().from$entityName$Details(event.get$entityName$Details());
 		$tableName$ = $tableName$Repository.save($tableName$);
 		return new $entityName$DetailsEvent(new $entityName$Details().to$entityName$Details($tableName$));
@@ -62,6 +67,7 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 
 	@Override
 	public $entityName$DetailsEvent modify$entityName$($entityName$ModificationEvent event) throws Exception {
+		$checkReferences$
 		$entityName$ $tableName$ = new $entityName$().from$entityName$Details(event.get$entityName$Details());
 		$tableName$ = $tableName$Repository.save($tableName$);
 		return new $entityName$DetailsEvent(new $entityName$Details().to$entityName$Details($tableName$));

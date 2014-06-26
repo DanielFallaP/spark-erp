@@ -18,6 +18,7 @@ public class Field {
 	private Boolean labelField=Boolean.FALSE;
 	private Boolean keyCompound=Boolean.FALSE;
 	private Boolean compoundReference=Boolean.FALSE;
+	private Boolean displayable=Boolean.FALSE;
 	
 	//For references only
 	private String refType;
@@ -25,6 +26,12 @@ public class Field {
 	private List<String> embeddedFields=new ArrayList<String>();
 	private String tableName;
 	
+	public Boolean getDisplayable() {
+		return displayable;
+	}
+	public void setDisplayable(Boolean displayable) {
+		this.displayable = displayable;
+	}
 	public String getTableName() {
 		return tableName;
 	}
