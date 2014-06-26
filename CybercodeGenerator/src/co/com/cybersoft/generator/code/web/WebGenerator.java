@@ -584,7 +584,7 @@ public class WebGenerator {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 			if (field.isReference()){
-				if (!field.isEmbeddedReference() && !field.getCompoundReference()){
+				if (!field.isEmbeddedReference() && !field.getCompoundReference() && !CodeUtil.generateAutoCompleteReference(field)){
 					StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAllBy$referenceField$();\n"
 							+ "$parentTableName$Info.set$variableName$List(all$variableName$Event.get$entityName$List());\n");
 					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
@@ -595,7 +595,7 @@ public class WebGenerator {
 					lists+=template.toString();
 				}
 				else{
-					if (field.isEmbeddedReference()){
+					if (field.isEmbeddedReference() && !CodeUtil.generateAutoCompleteReference(field)){
 						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Spark.codePath+"web");
 						StringTemplate template = templateGroup.getInstanceOf("setEmbeddedReferences");
 						List<String> embeddedFields=field.getEmbeddedFields();

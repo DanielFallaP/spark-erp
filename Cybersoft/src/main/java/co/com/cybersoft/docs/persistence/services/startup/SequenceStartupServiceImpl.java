@@ -26,7 +26,6 @@ public class SequenceStartupServiceImpl implements SequenceStartupService{
 	
 	private void checkAndStart(String sequenceName, Integer startingNumber){
 		DBCollection counters = mongo.getCollection(CyberUtils.countersCollection);
-
 		BasicDBObject object = new BasicDBObject();
 		
 		object.append("_id", sequenceName);

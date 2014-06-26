@@ -31,7 +31,7 @@ import com.mongodb.ServerAddress;
 
 public class LabelGenerator implements DBConstants{
 
-	public static final String viewsAbsolutePath="C:\\Users\\Raul\\git2\\Cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views";
+	public static final String viewsAbsolutePath="C:\\Users\\daniel\\git\\co.com.cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views";
 	
 	public final PreparedStatement insertionPst;
 	
@@ -183,7 +183,7 @@ public class LabelGenerator implements DBConstants{
 		while (cursor.hasNext()){
 			DBObject object = cursor.next();
 			String label = (String) object.get(labelField);
-			if (label.startsWith(labelPrefix+".")){
+			if (label!=null && label.startsWith(labelPrefix+".")){
 				label=label.replace(labelPrefix+".", "");
 			}
 			ArrayList<String> messages = new ArrayList<String>();

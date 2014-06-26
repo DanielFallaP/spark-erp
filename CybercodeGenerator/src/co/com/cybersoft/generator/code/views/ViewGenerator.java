@@ -86,6 +86,7 @@ public class ViewGenerator {
 		template.setAttribute("rows", generateFieldRows(table));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
 		template.setAttribute("autocompleteFunctions", generateAutocompleteFunctions(table));
+		template.setAttribute("autocompleteReferenceFunctions", generateAutocompleteReferenceFunctions(table));
 		template.setAttribute("compoundSelectionFunctions", generateCompoundSelectionFunctions(table));
 		
 		List<Field> fields = table.getFields();
@@ -96,6 +97,7 @@ public class ViewGenerator {
 		CodeUtil.writeClass(template.toString(), Spark.targetViewPath+"/normal/configuration/"+table.getName(), "create"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
 	
+
 	private String generateCompoundSelectionFunctions(Table table) {
 		String functions="";
 		List<Field> fields = table.getFields();
@@ -115,6 +117,27 @@ public class ViewGenerator {
 				}
 			}
 		}
+		return functions;
+	}
+
+	private Object generateAutocompleteReferenceFunctions(Table table) {
+		List<Field> fields = table.getFields();
+		String functions="";
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		for (Field field : fields) {
+			if (CodeUtil.generateAutoCompleteReference(field)){
+				StringTemplate template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("displayField", field.getDisplayField());
+				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("referenceType", field.getRefType());
+				template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+				template.setAttribute("arraySeparator", Spark.arraySeparator);
+
+				functions+="\n"+template.toString();
+			}
+		}
+		
 		return functions;
 	}
 
@@ -173,6 +196,7 @@ public class ViewGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("rows", generateFieldRows(table));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
+		template.setAttribute("autocompleteReferenceFunctions", generateAutocompleteReferenceFunctions(table));
 		template.setAttribute("modificationCompoundSelectionFunctions", generateCompoundSelectionFunctions(table));
 
 		List<Field> fields = table.getFields();
@@ -181,28 +205,6 @@ public class ViewGenerator {
 		}
 		
 		CodeUtil.writeClass(template.toString(), Spark.targetViewPath+"/normal/configuration/"+table.getName(), "modify"+CodeUtil.toCamelCase(table.getName())+".html");
-	}
-	
-
-	private String generateModificationCompoundSelectionFunctions(Table table) {
-		String functions="";
-		List<Field> fields = table.getFields();
-		for (Field field : fields) {
-			if (field.getCompoundReference()){
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
-				for (int i=0; i< compoundKey.size()-1; i++) {
-					Field compoundField = compoundKey.get(i);
-					StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
-					StringTemplate template = templateGroup.getInstanceOf("modificationCompoundSelection");
-					template.setAttribute("fieldName", compoundField.getName());
-					template.setAttribute("tableName", table.getName());
-					template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					
-					functions+=template.toString()+"\n";
-				}
-			}
-		}
-		return functions;
 	}
 
 	private void generateSearchView(Table table){
@@ -251,9 +253,14 @@ public class ViewGenerator {
 					template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
 				}
 				else{
-					template = stringTemplateGroup.getInstanceOf("referenceTableRow");
-					if (!field.getRequired()){
-						template.setAttribute("optionalReference", "<option value=\"\"></option>");
+					if (CodeUtil.generateAutoCompleteReference(field)){
+						template = stringTemplateGroup.getInstanceOf("referenceTableAutocompleteRow");
+					}
+					else{
+						template = stringTemplateGroup.getInstanceOf("referenceTableRow");
+						if (!field.getRequired()){
+							template.setAttribute("optionalReference", "<option value=\"\"></option>");
+						}
 					}
 				}
 				template.setAttribute("tableName", table.getName());
@@ -326,7 +333,7 @@ public class ViewGenerator {
 		
 		
 		//Generation of audit fields columns (date of last modification and user of last modification)
-		StringTemplate template = templateGroup.getInstanceOf("otherDateColumn");
+		StringTemplate template = templateGroup.getInstanceOf("readOnlyDateColumn");
 		template.setAttribute("fieldName", "dateOfModification");
 		text+=template.toString()+"\n";
 		
@@ -335,7 +342,7 @@ public class ViewGenerator {
 		text+=template.toString()+"\n";
 		
 		//Generation of audit fields columns (date of creation and user of creation)
-		template = templateGroup.getInstanceOf("otherDateColumn");
+		template = templateGroup.getInstanceOf("readOnlyDateColumn");
 		template.setAttribute("fieldName", "dateOfCreation");
 		text+=template.toString()+"\n";
 

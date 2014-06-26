@@ -57,6 +57,9 @@
 
 		    $modificationCompoundSelectionFunctions$
 		    
+		    $autocompleteReferenceFunctions$
+		    
+		    
 		    \$(document).ready( function () {
 				
 				\$('.about-ajax-popup').magnificPopup({

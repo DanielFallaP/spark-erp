@@ -299,6 +299,10 @@ public class CodeUtil {
 		return !field.isReference()&&field.getUnique()&&field.getAutocomplete()&&field.getType().equals(Spark.stringType);
 	}
 	
+	public static boolean generateAutoCompleteReference(Field field){
+		return field.isReference()&&field.getAutocomplete();
+	}
+	
 	public static String getFieldType(Spark cybersystems, String tableName, String fieldName){
 		List<Table> tables = cybersystems.getTables();
 		for (Table table : tables) {

@@ -2,8 +2,9 @@ package co.com.cybersoft.generator.resources;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -103,8 +104,9 @@ public class ResourceGenerator {
 				file.createNewFile();
 			}
 			
-			FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
-			BufferedWriter bw = new BufferedWriter(fileWriter);
+			FileOutputStream outputStream = new FileOutputStream(file.getAbsoluteFile());
+			OutputStreamWriter streamWriter = new OutputStreamWriter(outputStream,"UTF-8");
+			BufferedWriter bw = new BufferedWriter(streamWriter);
 			result.put(string, bw);
 		}
 		return result;
