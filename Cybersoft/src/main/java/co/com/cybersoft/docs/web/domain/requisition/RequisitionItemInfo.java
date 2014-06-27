@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
-import co.com.cybersoft.core.domain.PriorityDetails;
+import co.com.cybersoft.tables.core.domain.PriorityDetails;
 
 
 /**

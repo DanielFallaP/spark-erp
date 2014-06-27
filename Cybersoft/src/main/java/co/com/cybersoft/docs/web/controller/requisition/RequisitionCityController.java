@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
-import co.com.cybersoft.core.services.country.CountryService;
-import co.com.cybersoft.events.country.CountryPageEvent;
-import co.com.cybersoft.core.services.state.StateService;
-import co.com.cybersoft.events.state.StatePageEvent;
-import co.com.cybersoft.core.services.populatedPlace.PopulatedPlaceService;
+import co.com.cybersoft.tables.core.services.country.CountryService;
+import co.com.cybersoft.tables.events.country.CountryPageEvent;
+import co.com.cybersoft.tables.core.services.state.StateService;
+import co.com.cybersoft.tables.events.state.StatePageEvent;
+import co.com.cybersoft.tables.core.services.populatedPlace.PopulatedPlaceService;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
-import co.com.cybersoft.events.populatedPlace.PopulatedPlacePageEvent;
+import co.com.cybersoft.tables.events.populatedPlace.PopulatedPlacePageEvent;
 
 
 

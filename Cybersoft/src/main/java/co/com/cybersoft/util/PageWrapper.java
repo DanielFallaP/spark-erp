@@ -1,4 +1,4 @@
-package co.com.cybersoft.core.util;
+package co.com.cybersoft.util;
 
 import java.util.ArrayList;
 import java.util.List;

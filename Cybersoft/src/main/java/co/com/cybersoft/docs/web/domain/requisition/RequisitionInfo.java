@@ -1,33 +1,29 @@
 package co.com.cybersoft.docs.web.domain.requisition;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Range;
-
-import co.com.cybersoft.core.domain.DocSiteDetails;
-import co.com.cybersoft.core.domain.PriorityDetails;
-import co.com.cybersoft.core.domain.DepartmentDetails;
-import co.com.cybersoft.core.domain.ExpenseTypeDetails;
-import co.com.cybersoft.core.domain.TransportationTypeDetails;
-import co.com.cybersoft.core.domain.WarehouseDetails;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import co.com.cybersoft.core.domain.CountryDetails;
-import co.com.cybersoft.core.domain.StateDetails;
-import co.com.cybersoft.core.domain.PopulatedPlaceDetails;
 import co.com.cybersoft.docs.persistence.domain.Requisition;
 import co.com.cybersoft.docs.persistence.domain.RequisitionItem;
+import co.com.cybersoft.tables.core.domain.CountryDetails;
+import co.com.cybersoft.tables.core.domain.DepartmentDetails;
+import co.com.cybersoft.tables.core.domain.ExpenseTypeDetails;
+import co.com.cybersoft.tables.core.domain.PopulatedPlaceDetails;
+import co.com.cybersoft.tables.core.domain.PriorityDetails;
+import co.com.cybersoft.tables.core.domain.StateDetails;
+import co.com.cybersoft.tables.core.domain.TransportationTypeDetails;
+import co.com.cybersoft.tables.core.domain.WarehouseDetails;
 
 
 /**

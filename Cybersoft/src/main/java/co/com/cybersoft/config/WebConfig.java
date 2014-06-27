@@ -36,7 +36,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages={"co.com.cybersoft.web.controller","co.com.cybersoft.web.domain","co.com.cybersoft.docs.web.controller"})
+@ComponentScan(basePackages={"co.com.cybersoft.tables.web.controller","co.com.cybersoft.tables.web.domain","co.com.cybersoft.docs.web.controller"})
 public class WebConfig extends WebMvcConfigurerAdapter{
 
 	@Override

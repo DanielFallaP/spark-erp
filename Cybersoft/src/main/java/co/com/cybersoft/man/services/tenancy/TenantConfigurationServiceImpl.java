@@ -7,10 +7,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 
-import co.com.cybersoft.persistence.domain.BusinessRules;
-import co.com.cybersoft.persistence.domain.CustomerTenancy;
-import co.com.cybersoft.persistence.repository.businessRules.BusinessRulesRepository;
-import co.com.cybersoft.persistence.repository.customerTenancy.CustomerTenancyRepository;
+import co.com.cybersoft.tables.persistence.domain.BusinessRules;
+import co.com.cybersoft.tables.persistence.domain.CustomerTenancy;
+import co.com.cybersoft.tables.persistence.repository.businessRules.BusinessRulesRepository;
+import co.com.cybersoft.tables.persistence.repository.customerTenancy.CustomerTenancyRepository;
 
 import com.mongodb.DBCollection;
 

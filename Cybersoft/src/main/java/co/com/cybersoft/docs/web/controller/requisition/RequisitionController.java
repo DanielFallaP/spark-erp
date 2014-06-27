@@ -17,27 +17,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import co.com.cybersoft.core.services.country.CountryService;
-import co.com.cybersoft.core.services.department.DepartmentService;
-import co.com.cybersoft.core.services.expenseType.ExpenseTypeService;
-import co.com.cybersoft.core.services.populatedPlace.PopulatedPlaceService;
-import co.com.cybersoft.core.services.priority.PriorityService;
-import co.com.cybersoft.core.services.state.StateService;
-import co.com.cybersoft.core.services.transportationType.TransportationTypeService;
-import co.com.cybersoft.core.services.warehouse.WarehouseService;
+import co.com.cybersoft.tables.core.services.country.CountryService;
+import co.com.cybersoft.tables.core.services.department.DepartmentService;
+import co.com.cybersoft.tables.core.services.expenseType.ExpenseTypeService;
+import co.com.cybersoft.tables.core.services.populatedPlace.PopulatedPlaceService;
+import co.com.cybersoft.tables.core.services.priority.PriorityService;
+import co.com.cybersoft.tables.core.services.state.StateService;
+import co.com.cybersoft.tables.core.services.transportationType.TransportationTypeService;
+import co.com.cybersoft.tables.core.services.warehouse.WarehouseService;
 import co.com.cybersoft.docs.events.requisition.RequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersistenceService;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemInfo;
-import co.com.cybersoft.events.country.CountryPageEvent;
-import co.com.cybersoft.events.department.DepartmentPageEvent;
-import co.com.cybersoft.events.expenseType.ExpenseTypePageEvent;
-import co.com.cybersoft.events.populatedPlace.PopulatedPlacePageEvent;
-import co.com.cybersoft.events.priority.PriorityPageEvent;
-import co.com.cybersoft.events.state.StatePageEvent;
-import co.com.cybersoft.events.transportationType.TransportationTypePageEvent;
-import co.com.cybersoft.events.warehouse.WarehousePageEvent;
+import co.com.cybersoft.tables.events.country.CountryPageEvent;
+import co.com.cybersoft.tables.events.department.DepartmentPageEvent;
+import co.com.cybersoft.tables.events.expenseType.ExpenseTypePageEvent;
+import co.com.cybersoft.tables.events.populatedPlace.PopulatedPlacePageEvent;
+import co.com.cybersoft.tables.events.priority.PriorityPageEvent;
+import co.com.cybersoft.tables.events.state.StatePageEvent;
+import co.com.cybersoft.tables.events.transportationType.TransportationTypePageEvent;
+import co.com.cybersoft.tables.events.warehouse.WarehousePageEvent;
 
 
 @Controller
@@ -96,10 +96,28 @@ public class RequisitionController {
 		requisitionInfo.setId(requisitionEvent.getRequisition().getId());
 		requisitionInfo.setRequisitionItemList(requisitionEvent.getRequisition().getRequisitionItemList());
 		requisitionInfo.setNumericId(requisitionEvent.getRequisition().getNumericId());
+		requisitionInfo.getRequisitionItemModificationInfo().getRequisitionItemModificationInfo().setSubmit("");
+		
+		CountryPageEvent allCountryPageEvent = null;
+		StatePageEvent allStatePageEvent = null;
+		PopulatedPlacePageEvent allPopulatedPlacePageEvent = null;
+
+			
+			allCountryPageEvent = countryService.requestAllByCountry();
+			requisitionInfo.setCountryList(allCountryPageEvent.getCountryList());
+
+			if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
+					allStatePageEvent = stateService.requestAllByCountryName(requisitionEvent.getRequisition().getCountry());
+					requisitionInfo.setStateList(allStatePageEvent.getStateList());
+			}
+			if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
+					allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(requisitionEvent.getRequisition().getState());
+					requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
+			}
+
 		
 		model.addAttribute("requisitionInfo",requisitionInfo);
 		model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
-
 		return "/docs/requisition/createRequisition";
 	}
 	

@@ -70,6 +70,12 @@
 			form.submit();
 		}
 		
+		function submitHeader(){
+			var form=document.forms['header-form'];
+			form.elements["_submit"].value="header";
+			form.submit();
+		}
+		
 		function submitModification(){
 			var form=document.forms['requisition-body-modification-form'];
 			form.elements["_modificationSubmit"].value="modification";
@@ -303,6 +309,7 @@
     	<div class="container-fluid">	
 			<div class="row-fluid">
 		        <form id="header-form" th:object="${requisitionInfo}" method="post">
+		        	<input id="_submit" hidden="" th:field="*{requisitionItemModificationInfo.submit}"></input>
 		        	<h3 th:text="#{label.requisitionCreationTitle}"></h3>
 		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
 		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{requisitionItemModificationInfo.submit}"></input>
@@ -377,8 +384,8 @@
        				<a th:if='${requisitionInfo.created}' class="popup-with-form" href="#requisition-body-form" ><button th:text="#{label.newEntryDocTable}"></button> </a>
        				<input th:if='${requisitionInfo.created}' type="button" th:value="#{label.deleteSelection}" onclick="submitDeletion();"/>
        				<a class="popup-with-form2" href="#requisition-body-modification-form" hidden=""></a>
-
-       				<div align="right" ><input type="submit" th:value="#{label.save}" /></div>
+							        				
+       				<div align="right" ><input type="button" th:value="#{label.save}" onclick="submitHeader();"/></div>
 		        </form>
 			 <!-- Custom form for adding new records -->
 			 <form id="requisition-body-form" class="white-popup mfp-hide"  th:object="${requisitionItemInfo}" method="post">
