@@ -1,4 +1,4 @@
-package co.com.cybersoft.events.$tableName$;
+package co.com.cybersoft.tables.events.$tableName$;
 
 /**
  * Event class for $entityName$

@@ -32,7 +32,7 @@ import com.mongodb.ServerAddress;
 
 
 @Configuration
-@EnableMongoRepositories(basePackages={"co.com.cybersoft.persistence.repository","co.com.cybersoft.docs.persistence.repository"},
+@EnableMongoRepositories(basePackages={"co.com.cybersoft.tables.persistence.repository","co.com.cybersoft.docs.persistence.repository"},
 includeFilters=@ComponentScan.Filter(value={RequisitionRepository.class,$repos$},type=FilterType.ASSIGNABLE_TYPE))
 public class PersistenceConfig {
 	

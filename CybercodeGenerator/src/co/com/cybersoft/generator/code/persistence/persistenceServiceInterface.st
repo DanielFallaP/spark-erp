@@ -1,11 +1,11 @@
-package co.com.cybersoft.persistence.services.$tableName$;
+package co.com.cybersoft.tables.persistence.services.$tableName$;
 
-import co.com.cybersoft.events.$tableName$.Create$entityName$Event;
-import co.com.cybersoft.events.$tableName$.$entityName$DetailsEvent;
-import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;
-import co.com.cybersoft.events.$tableName$.$entityName$ModificationEvent;
-import co.com.cybersoft.events.$tableName$.Request$entityName$DetailsEvent;
-import co.com.cybersoft.events.$tableName$.Request$entityName$PageEvent;
+import co.com.cybersoft.tables.events.$tableName$.Create$entityName$Event;
+import co.com.cybersoft.tables.events.$tableName$.$entityName$DetailsEvent;
+import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;
+import co.com.cybersoft.tables.events.$tableName$.$entityName$ModificationEvent;
+import co.com.cybersoft.tables.events.$tableName$.Request$entityName$DetailsEvent;
+import co.com.cybersoft.tables.events.$tableName$.Request$entityName$PageEvent;
 import co.com.cybersoft.util.EmbeddedField;
 
 /**

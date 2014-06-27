@@ -1,6 +1,6 @@
-package co.com.cybersoft.persistence.services.$tableName$;
+package co.com.cybersoft.tables.persistence.services.$tableName$;
 
-import co.com.cybersoft.persistence.repository.$tableName$.$entityName$Repository;
+import co.com.cybersoft.tables.persistence.repository.$tableName$.$entityName$Repository;
 
 /**
  * 
@@ -15,7 +15,7 @@ public class $entityName$PersistenceFactory {
 		this.$tableName$Repository=$tableName$Repository;
 	}
 	
-	public co.com.cybersoft.persistence.domain.$entityName$ get$entityName$ByField(String field, String value){
+	public co.com.cybersoft.tables.persistence.domain.$entityName$ get$entityName$ByField(String field, String value){
 		$queriesByFields$		
 		return null;
 	}

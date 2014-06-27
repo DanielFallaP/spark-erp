@@ -1,4 +1,4 @@
-package co.com.cybersoft.web.domain.$tableName$;
+package co.com.cybersoft.tables.web.domain.$tableName$;
 
 import java.io.Serializable;
 

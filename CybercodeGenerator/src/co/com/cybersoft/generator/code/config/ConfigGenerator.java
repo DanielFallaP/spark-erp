@@ -46,7 +46,7 @@ public class ConfigGenerator {
 		template.setAttribute("beanDeclarations", beans);
 
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/config", "CoreConfig.java");
+		CodeUtil.writeClass(template.toString(), Spark.rootClassPath+"/config", "CoreConfig.java");
 	}
 	
 	private void generatePersistenceConfig(Spark cybersoft){
@@ -102,6 +102,6 @@ public class ConfigGenerator {
 		template.setAttribute("repoFields", repoFields);
 		template.setAttribute("repos", repos);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/config", "PersistenceConfig.java");
+		CodeUtil.writeClass(template.toString(), Spark.rootClassPath+"/config", "PersistenceConfig.java");
 	}
 }

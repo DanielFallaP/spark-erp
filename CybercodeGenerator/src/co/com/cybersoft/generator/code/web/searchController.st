@@ -1,4 +1,4 @@
-package co.com.cybersoft.web.controller.$entityName$;
+package co.com.cybersoft.tables.web.controller.$entityName$;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,11 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import co.com.cybersoft.core.services.$entityName$.$coreService$;
-import co.com.cybersoft.core.util.PageWrapper;
-import co.com.cybersoft.events.$entityName$.$responseEvent$;
-import co.com.cybersoft.events.$entityName$.$requestEvent$;
-import co.com.cybersoft.persistence.domain.$entityUpperCaseName$;
+import co.com.cybersoft.tables.core.services.$entityName$.$coreService$;
+import co.com.cybersoft.util.PageWrapper;
+import co.com.cybersoft.tables.events.$entityName$.$responseEvent$;
+import co.com.cybersoft.tables.events.$entityName$.$requestEvent$;
+import co.com.cybersoft.tables.persistence.domain.$entityUpperCaseName$;
 
 /**
  * Search controller class for $entityName$

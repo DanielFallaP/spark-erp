@@ -1,9 +1,9 @@
-package co.com.cybersoft.core.domain;
+package co.com.cybersoft.tables.core.domain;
 
 import java.util.Date;
 
 import org.springframework.beans.BeanUtils;
-import co.com.cybersoft.persistence.domain.$entityName$;
+import co.com.cybersoft.tables.persistence.domain.$entityName$;
 
 
 /**

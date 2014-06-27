@@ -25,8 +25,8 @@ public class EventGenerator {
 	
 	private String generateResponsePageImports(Table table){
 		String imports="";
-			StringTemplate template = new StringTemplate("import co.com.cybersoft.core.domain.$entityName$Details;\n"+
-														 "import co.com.cybersoft.persistence.domain.$entityName$;\n");
+			StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.domain.$entityName$Details;\n"+
+														 "import co.com.cybersoft.tables.persistence.domain.$entityName$;\n");
 			template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 			imports+=template.toString();
 			imports+="import java.util.List;";
@@ -39,7 +39,7 @@ public class EventGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), "Create"+CodeUtil.toCamelCase(table.getName())+"Event.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/events/"+table.getName(), "Create"+CodeUtil.toCamelCase(table.getName())+"Event.java");
 	}
 	
 	private void generateDetailsEvent(Table table){
@@ -47,7 +47,7 @@ public class EventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("requestDetailsEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), "Request"+CodeUtil.toCamelCase(table.getName())+"DetailsEvent.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/events/"+table.getName(), "Request"+CodeUtil.toCamelCase(table.getName())+"DetailsEvent.java");
 	}
 	
 	private void generateResponseDetailsEvent(Table table){
@@ -56,7 +56,7 @@ public class EventGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"DetailsEvent.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"DetailsEvent.java");
 	}
 	
 	private void generatePageEvent(Table table){
@@ -65,7 +65,7 @@ public class EventGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/events/"+table.getName(), "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent.java");
 	}
 	
 	private void generateResponsePageEvent(Table table){
@@ -78,7 +78,7 @@ public class EventGenerator {
 		template.setAttribute("referencesConstructors", generateResponsePageReferencesConstructors(table));
 		template.setAttribute("referencesGettersSetters", generateResponsePageGetter(table));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PageEvent.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PageEvent.java");
 
 	}
 	
@@ -126,7 +126,7 @@ public class EventGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationEvent.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/events/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationEvent.java");
 
 	}
 }

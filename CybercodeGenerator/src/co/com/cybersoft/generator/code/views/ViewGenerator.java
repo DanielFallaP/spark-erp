@@ -290,7 +290,7 @@ public class ViewGenerator {
 		List<Field> fields = table.getFields();
 		String text="";
 		for (Field field : fields) {
-			if (!field.getCompoundReference()){
+			if (!field.getCompoundReference() && field.getDisplayable()){
 				if (!field.isReference() && field.getVisible() && !field.getLargeText() && !field.getType().equals(Spark.booleanType)){
 					StringTemplate template;
 					if (field.getType().equals(Spark.dateType)){
@@ -359,7 +359,7 @@ public class ViewGenerator {
 		
 		String text="";
 		for (Field field : fields) {
-			if (!field.getCompoundReference()){
+			if (!field.getCompoundReference() && field.getDisplayable()){
 				if (!field.isReference() && field.getVisible() && !field.getLargeText()){
 					StringTemplate template = templateGroup.getInstanceOf("columnHeader");
 					template.setAttribute("fieldName", field.getName());

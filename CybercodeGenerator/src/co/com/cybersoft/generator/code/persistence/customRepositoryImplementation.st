@@ -1,4 +1,4 @@
-package co.com.cybersoft.persistence.repository.$tableName$;
+package co.com.cybersoft.tables.persistence.repository.$tableName$;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-import co.com.cybersoft.persistence.domain.$entityName$;
+import co.com.cybersoft.tables.persistence.domain.$entityName$;
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
 

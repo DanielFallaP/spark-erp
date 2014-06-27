@@ -1,4 +1,4 @@
-package co.com.cybersoft.web.controller.$tableName$;
+package co.com.cybersoft.tables.web.controller.$tableName$;
 
 import java.io.PrintWriter;
 import java.util.List;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import co.com.cybersoft.core.domain.$entityName$Details;
-import co.com.cybersoft.core.services.$tableName$.$entityName$Service;
-import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;
+import co.com.cybersoft.tables.core.domain.$entityName$Details;
+import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;
+import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;
 import co.com.cybersoft.util.CyberUtils;
 
 /**

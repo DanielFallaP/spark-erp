@@ -1,18 +1,18 @@
-package co.com.cybersoft.persistence.services.$tableName$;
+package co.com.cybersoft.tables.persistence.services.$tableName$;
 
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import co.com.cybersoft.core.domain.$entityName$Details;
-import co.com.cybersoft.events.$tableName$.Create$entityName$Event;
-import co.com.cybersoft.events.$tableName$.$entityName$DetailsEvent;
-import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;
-import co.com.cybersoft.events.$tableName$.$entityName$ModificationEvent;
-import co.com.cybersoft.events.$tableName$.Request$entityName$DetailsEvent;
-import co.com.cybersoft.events.$tableName$.Request$entityName$PageEvent;
-import co.com.cybersoft.persistence.domain.$entityName$;
-import co.com.cybersoft.persistence.repository.$tableName$.$entityName$Repository;
-import co.com.cybersoft.persistence.repository.$tableName$.$entityName$CustomRepo;
+import co.com.cybersoft.tables.core.domain.$entityName$Details;
+import co.com.cybersoft.tables.events.$tableName$.Create$entityName$Event;
+import co.com.cybersoft.tables.events.$tableName$.$entityName$DetailsEvent;
+import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;
+import co.com.cybersoft.tables.events.$tableName$.$entityName$ModificationEvent;
+import co.com.cybersoft.tables.events.$tableName$.Request$entityName$DetailsEvent;
+import co.com.cybersoft.tables.events.$tableName$.Request$entityName$PageEvent;
+import co.com.cybersoft.tables.persistence.domain.$entityName$;
+import co.com.cybersoft.tables.persistence.repository.$tableName$.$entityName$Repository;
+import co.com.cybersoft.tables.persistence.repository.$tableName$.$entityName$CustomRepo;
 $imports$
 
 import java.util.ArrayList;

@@ -48,7 +48,7 @@ public class PersistenceGenerator {
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("queriesByFields", byFields);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceFactory.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceFactory.java");
 	}
 
 	public void generateDomainClass(Table table){
@@ -92,7 +92,7 @@ public class PersistenceGenerator {
 		}
 		
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/persistence/domain", CodeUtil.toCamelCase(table.getName())+".java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/domain", CodeUtil.toCamelCase(table.getName())+".java");
 	}
 	
 	private String generateDomainClassFieldDeclaration(Table table){
@@ -236,7 +236,7 @@ public class PersistenceGenerator {
 		template.setAttribute("requestAll", requestAll);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceService.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceService.java");
 	
 	}
 	
@@ -318,7 +318,7 @@ public class PersistenceGenerator {
 		template.setAttribute("requestAll", requestImpl);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceServiceImpl.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceServiceImpl.java");
 		
 	}
 	
@@ -401,7 +401,7 @@ public class PersistenceGenerator {
 		
 		template.setAttribute("findByFields", methods);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"Repository.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"Repository.java");
 		
 		//Custom repository interface generation
 		template = templateGroup.getInstanceOf("customRepositoryInterface");
@@ -464,7 +464,7 @@ public class PersistenceGenerator {
 		template.setAttribute("findAllActive", findAllActive);
 		template.setAttribute("autocompleteQuery", autocompleteQueries);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepo.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepo.java");
 		
 		//Custom repository implementation generation
 		template = templateGroup.getInstanceOf("customRepositoryImplementation");
@@ -533,7 +533,7 @@ public class PersistenceGenerator {
 		template.setAttribute("findAllActive", findAllActive);
 		template.setAttribute("byContainingFields", autocompleteQueries);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepoImpl.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepoImpl.java");
 		
 	}
 

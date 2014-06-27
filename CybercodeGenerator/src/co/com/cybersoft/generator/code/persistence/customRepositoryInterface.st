@@ -1,8 +1,8 @@
-package co.com.cybersoft.persistence.repository.$tableName$;
+package co.com.cybersoft.tables.persistence.repository.$tableName$;
 
 import java.util.List;
 
-import co.com.cybersoft.persistence.domain.$entityName$;
+import co.com.cybersoft.tables.persistence.domain.$entityName$;
 import co.com.cybersoft.util.EmbeddedField;
 
 /**

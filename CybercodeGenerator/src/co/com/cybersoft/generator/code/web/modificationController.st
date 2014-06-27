@@ -1,4 +1,4 @@
-package co.com.cybersoft.web.controller.$tableName$;
+package co.com.cybersoft.tables.web.controller.$tableName$;
 
 import java.util.Date;
 import java.util.List;
@@ -24,12 +24,12 @@ import org.springframework.validation.ObjectError;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
-import co.com.cybersoft.core.domain.$entityName$Details;
-import co.com.cybersoft.core.services.$tableName$.$entityName$Service;
-import co.com.cybersoft.events.$tableName$.$entityName$DetailsEvent;
-import co.com.cybersoft.events.$tableName$.$entityName$ModificationEvent;
-import co.com.cybersoft.events.$tableName$.Request$entityName$DetailsEvent;
-import co.com.cybersoft.web.domain.$tableName$.$entityName$Info;
+import co.com.cybersoft.tables.core.domain.$entityName$Details;
+import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;
+import co.com.cybersoft.tables.events.$tableName$.$entityName$DetailsEvent;
+import co.com.cybersoft.tables.events.$tableName$.$entityName$ModificationEvent;
+import co.com.cybersoft.tables.events.$tableName$.Request$entityName$DetailsEvent;
+import co.com.cybersoft.tables.web.domain.$tableName$.$entityName$Info;
 $referenceServicesImports$
 
 /**

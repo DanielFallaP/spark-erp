@@ -8,7 +8,9 @@ public class Spark {
 	
 	public final static String codePath="src/co/com/cybersoft/generator/code/";
 	
-	public final static String targetClassPath="build/java/co/com/cybersoft/";
+	public final static String targetTableClassPath="build/java/co/com/cybersoft/tables";
+	
+	public final static String rootClassPath="build/java/co/com/cybersoft/";
 	
 	public final static String targetViewPath="build/webapp/WEB-INF/views/";
 

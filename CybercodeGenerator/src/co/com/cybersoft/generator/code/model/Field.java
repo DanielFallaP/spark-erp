@@ -18,7 +18,7 @@ public class Field {
 	private Boolean labelField=Boolean.FALSE;
 	private Boolean keyCompound=Boolean.FALSE;
 	private Boolean compoundReference=Boolean.FALSE;
-	private Boolean displayable=Boolean.FALSE;
+	private Boolean displayable=Boolean.TRUE;
 	
 	//For references only
 	private String refType;

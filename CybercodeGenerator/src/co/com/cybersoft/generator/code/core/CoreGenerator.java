@@ -100,7 +100,7 @@ public class CoreGenerator {
 		template.setAttribute("requestAll", requestDeclarations);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/core/services/"+table.getName(), className+".java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/core/services/"+table.getName(), className+".java");
 	}
 	
 	private void generateCoreServiceImplementation(Table table){
@@ -180,7 +180,7 @@ public class CoreGenerator {
 		template.setAttribute("requestAll", requestImpl);
 		template.setAttribute("autocompleteRequest", autocompleteRequest);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/core/services/"+table.getName(), className+"Impl.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/core/services/"+table.getName(), className+"Impl.java");
 	}
 	
 	private void generateCoreDomainClass(Table table){
@@ -205,6 +205,6 @@ public class CoreGenerator {
 			}
 		}
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/core/domain", CodeUtil.toCamelCase(table.getName())+"Details.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/core/domain", CodeUtil.toCamelCase(table.getName())+"Details.java");
 	}
 }

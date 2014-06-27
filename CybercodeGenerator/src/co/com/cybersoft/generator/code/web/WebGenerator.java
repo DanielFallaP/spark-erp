@@ -63,7 +63,7 @@ public class WebGenerator {
 					template.setAttribute("compoundReferences", generateCompoundReferenceVariables(table));
 					template.setAttribute("setCompoundLists", generateCompoundControllerLists(field,table));
 
-					CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+CodeUtil.toCamelCase(field.getName())+"Controller.java");
+					CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+CodeUtil.toCamelCase(field.getName())+"Controller.java");
 			}
 		}
 	}
@@ -84,7 +84,7 @@ public class WebGenerator {
 		//reference lists
 		template.setAttribute("setReferencesLists", generateControllerReferencesLists(table));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/web/controller/"+table.getName(), "Set"+CodeUtil.toCamelCase(table.getName())+"Controller.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), "Set"+CodeUtil.toCamelCase(table.getName())+"Controller.java");
 	}
 
 	private void generateExcelController(Table table) {
@@ -93,7 +93,7 @@ public class WebGenerator {
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ExcelController.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ExcelController.java");
 	}
 
 	private void generateSearchByFieldController(Table table, Field field){
@@ -104,7 +104,7 @@ public class WebGenerator {
 		template.setAttribute("fieldName", field.getName());
 		template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchBy"+CodeUtil.toCamelCase(field.getName())+"Controller.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchBy"+CodeUtil.toCamelCase(field.getName())+"Controller.java");
 	}
 	
 	private void generateSearchController(Table table){
@@ -121,7 +121,7 @@ public class WebGenerator {
 		template.setAttribute("requestMethodName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("viewURL", "/configuration/"+table.getName()+"/search"+CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchController.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchController.java");
 	}
 	
 	private void generateCreateController(Table table){
@@ -150,7 +150,7 @@ public class WebGenerator {
 		//compound reference lists
 		template.setAttribute("setCompoundLists", generateControllerCompoundLists(table));
 
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CreationController.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CreationController.java");
 	}
 
 	
@@ -229,7 +229,7 @@ public class WebGenerator {
 		//compound reference lists
 		template.setAttribute("setCompoundLists", generateModificationControllerCompoundLists(table));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationController.java");
+		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationController.java");
 	}
 	
 	private String generateCompoundControllerLists(Field field, Table table) {
@@ -394,7 +394,7 @@ public class WebGenerator {
 		template.setAttribute("bodyDomainClass", generateDomainBody(table));
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("referencesImports", generateDomainClassImports(table));
-		CodeUtil.writeClass(template.toString(),Spark.targetClassPath+"/web/domain/"+table.getName(), className+".java");
+		CodeUtil.writeClass(template.toString(),Spark.targetTableClassPath+"/web/domain/"+table.getName(), className+".java");
 	}
 	
 	
@@ -442,7 +442,7 @@ public class WebGenerator {
 		for (Field field : fields) {
 			
 			if (field.isReference()){
-				StringTemplate template = new StringTemplate("import co.com.cybersoft.core.domain.$entityName$Details;\n");
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.domain.$entityName$Details;\n");
 				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
 				imports+=template.toString();
 			}
@@ -458,7 +458,7 @@ public class WebGenerator {
 			if (field.getCompoundReference()){
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
 				for (Field compoundField : compoundKey) {
-					StringTemplate stringTemplate = new StringTemplate("import co.com.cybersoft.core.domain.$fieldName$Details;\n");
+					StringTemplate stringTemplate = new StringTemplate("import co.com.cybersoft.tables.core.domain.$fieldName$Details;\n");
 					stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
 					imports+=stringTemplate.toString();
 				}
@@ -531,8 +531,8 @@ public class WebGenerator {
 			List<Field> compoundReference = CodeUtil.getCompoundKey(cybersystems, compositeField.getRefType());
 			for (Field field : compoundReference) {
 				if (!referenceImports.contains(field.getName())){
-					StringTemplate template = new StringTemplate("import co.com.cybersoft.core.services.$tableName$.$entityName$Service;\n"
-							+ "import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;\n");
+					StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
+							+ "import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;\n");
 					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
 					template.setAttribute("tableName", field.getName());
 					imports+=template.toString();
@@ -551,8 +551,8 @@ public class WebGenerator {
 		HashSet<String> referenceImports = new HashSet<String>();
 		for (Field field : fields) {
 			if (field.isReference() && !referenceImports.contains(field.getRefType())){
-				StringTemplate template = new StringTemplate("import co.com.cybersoft.core.services.$tableName$.$entityName$Service;\n"
-						+ "import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;\n");
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
+						+ "import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;\n");
 				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
 				template.setAttribute("tableName", field.getRefType());
 				imports+=template.toString();
@@ -565,8 +565,8 @@ public class WebGenerator {
 			List<Field> compoundReference = CodeUtil.getCompoundKey(cybersystems, compositeField.getRefType());
 			for (Field field : compoundReference) {
 				if (!referenceImports.contains(field.getName())){
-					StringTemplate template = new StringTemplate("import co.com.cybersoft.core.services.$tableName$.$entityName$Service;\n"
-							+ "import co.com.cybersoft.events.$tableName$.$entityName$PageEvent;\n");
+					StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
+							+ "import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;\n");
 					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
 					template.setAttribute("tableName", field.getName());
 					imports+=template.toString();

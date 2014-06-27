@@ -1,6 +1,6 @@
-package co.com.cybersoft.events.$tableName$;
+package co.com.cybersoft.tables.events.$tableName$;
 
-import co.com.cybersoft.core.domain.$entityName$Details;
+import co.com.cybersoft.tables.core.domain.$entityName$Details;
 
 /**
  * Event class for $entityName$

@@ -1,4 +1,4 @@
-package co.com.cybersoft.web.controller.$tableName$;
+package co.com.cybersoft.tables.web.controller.$tableName$;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import co.com.cybersoft.man.services.excel.ReportingService;
-import co.com.cybersoft.persistence.domain.$entityName$;
+import co.com.cybersoft.tables.persistence.domain.$entityName$;
 import java.util.Locale;
 
 @Controller
