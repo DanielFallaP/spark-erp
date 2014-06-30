@@ -14,3 +14,4 @@ Assumptions:
 	- Business rules table: Required on date by item defined as false implies Required on date is in the head of requisition.
 	- Business rules table: Use Cost Discrimination By Item defined as false implies Cost Discrimination is in the head of requisition.
 	- Business rules table: Use MiniMax By Item defined as false implies MiniMax by warehouse
+	- Displayable = false aplies to web an movile table display, aditional fieds not displayable in mobile equipments must have movileDisplayable = false
