@@ -1,11 +1,13 @@
 package co.com.cybersoft.docs.persistence.services.requisition;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import co.com.cybersoft.docs.events.requisition.RequestRequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.RequestRequisitionPageEvent;
@@ -18,7 +20,6 @@ import co.com.cybersoft.docs.persistence.domain.RequisitionItem;
 import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionCustomRepo;
 import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionRepository;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
-import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemInfo;
 import co.com.cybersoft.util.EmbeddedField;
 
 /**
@@ -61,6 +62,13 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	@Override
 	public RequisitionEvent saveRequisition(SaveRequisitionEvent event) throws Exception {
 		Requisition requisition=new Requisition().fromRequisitionInfo(event.getRequisitionInfo());
+		requisition.setDateOfModification(new Date());
+		requisition.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+		if (requisition.getId()==null){
+			requisition.setDateOfCreation(new Date());
+			requisition.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+		}
+		
 		requisition = requisitionCustomRepo.save(requisition);
 		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
 	}
@@ -75,6 +83,9 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 		if (requisition.getRequisitionItemEntityList()==null)
 			requisition.setRequisitionItemEntityList(new ArrayList<RequisitionItem>());
 		requisition.getRequisitionItemEntityList().add(requisitionItem);
+
+		requisition.setDateOfModification(new Date());
+		requisition.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		requisition = requisitionCustomRepo.save(requisition);
 		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
 	}
@@ -85,6 +96,9 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 		RequisitionItem modified=new RequisitionItem();
 		BeanUtils.copyProperties(event.getRequisitionInfo().getRequisitionItemModificationInfo(), modified);
 		requisition=updateBody(requisition, modified);
+	
+		requisition.setDateOfModification(new Date());
+		requisition.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		requisition=requisitionCustomRepo.save(requisition);
 		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
 	}
@@ -93,6 +107,9 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	public RequisitionEvent deleteRequisition(SaveRequisitionEvent event, List<String> toDelete) throws Exception {
 		Requisition requisition = requisitionRepository.findByNumericId(event.getRequisitionInfo().getNumericId());
 		requisition = deleteFromBody(requisition, toDelete);
+		
+		requisition.setDateOfModification(new Date());
+		requisition.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisitionCustomRepo.save(requisition)));
 	}
 
@@ -100,6 +117,8 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	@Override
 	public RequisitionEvent createRequisition(SaveRequisitionEvent event) throws Exception{
 		Requisition requisition = new Requisition().fromRequisitionInfo(event.getRequisitionInfo());
+		requisition.setDateOfModification(new Date());
+		requisition.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		requisition = requisitionRepository.save(requisition);
 		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
 	}

@@ -49,6 +49,8 @@ public class RequisitionInfo implements Serializable{
 	
 	private String createdBy;
 	
+	private Date dateOfModification;
+	
 	private List<RequisitionItemInfo> requisitionItemList=new ArrayList<RequisitionItemInfo>();
 	
 	private RequisitionItemInfo currentRequisitionItemInfo;
@@ -157,6 +159,14 @@ public class RequisitionInfo implements Serializable{
 	public void setCurrentRequisitionItemInfo(
 			RequisitionItemInfo currentRequisitionItemInfo) {
 		this.currentRequisitionItemInfo = currentRequisitionItemInfo;
+	}
+	
+	public Date getDateOfModification() {
+		return dateOfModification;
+	}
+
+	public void setDateOfModification(Date dateOfModification) {
+		this.dateOfModification = dateOfModification;
 	}
 
 	public Integer getConsecutive() {
