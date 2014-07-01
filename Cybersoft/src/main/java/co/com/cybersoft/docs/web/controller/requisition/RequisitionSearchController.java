@@ -25,7 +25,7 @@ import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersist
  *
  */
 @Controller
-@RequestMapping("/searchRequisition")
+@RequestMapping("/docs/searchRequisition")
 public class RequisitionSearchController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(RequisitionSearchController.class);
@@ -61,7 +61,7 @@ public class RequisitionSearchController {
 			info = requisitionService.requestRequisitionPage(new RequestRequisitionPageEvent(pageRequest));
 		}
 		
-		PageWrapper<Requisition> page=new PageWrapper<Requisition>(info.getRequisitionPage(),"/configuration/requisition/searchRequisition");
+		PageWrapper<Requisition> page=new PageWrapper<Requisition>(info.getRequisitionPage(),"/docs/searchRequisition");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
 		return "/docs/requisition/searchRequisition";

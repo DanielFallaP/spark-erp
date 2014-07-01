@@ -60,9 +60,6 @@ public class RequisitionItemInfo implements Serializable{
 	@NotNull
 	private Double foreignCurrencyUnitValue;
 
-
-	private Boolean active;
-	
 	private RequisitionItemInfo requisitionItemModificationInfo;
 	
 	public Boolean getSelected() {
@@ -145,14 +142,6 @@ public class RequisitionItemInfo implements Serializable{
 		
 	public void setForeignCurrencyUnitValue(Double foreignCurrencyUnitValue) {
 		this.foreignCurrencyUnitValue = foreignCurrencyUnitValue;	
-	}
-
-	public Boolean getActive() {
-		return active;	
-	}
-		
-	public void setActive(Boolean active) {
-		this.active = active;	
 	}
 
 

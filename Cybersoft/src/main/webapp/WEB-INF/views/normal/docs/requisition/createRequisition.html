@@ -28,7 +28,30 @@
 	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
 	    <script type="text/javascript">
 	      /* <![CDATA[ */
-	      	    			    
+	      	    			  
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id=="back"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  $('#back a').trigger('click');
+	    	  }
+	    	});
+	                   
 		$( function () {
 			$( "#requiredOnDate" ).datepicker();
 		} );
@@ -88,7 +111,7 @@
 		   	  	 		   	var country=e.options[e.selectedIndex].value;
 		   	  	 		   	var path=window.location.pathname.split("/");
 		   	  	 		    var prefix="";
-		   	  	 		   	if (path[1].localeCompare("configuration")!=0){
+		   	  	 		   	if (path[1].localeCompare("docs")!=0){
 		   	  	 		   			prefix="/"+path[1];	
 		   	  	 		   	}
 		   	  	 		   	var url=prefix+"/docs/requisition/retrieveCity/retrieve?country="+country;
@@ -136,7 +159,7 @@
 		   	  	 		   	var state=e.options[e.selectedIndex].value;
 		   	  	 		   	var path=window.location.pathname.split("/");
 		   	  	 		    var prefix="";
-		   	  	 		   	if (path[1].localeCompare("configuration")!=0){
+		   	  	 		   	if (path[1].localeCompare("docs")!=0){
 		   	  	 		   			prefix="/"+path[1];	
 		   	  	 		   	}
 		   	  	 		   	var url=prefix+"/docs/requisition/retrieveCity/retrieve?state="+state;
@@ -254,7 +277,7 @@
 	   		    	    source: function (request, response) {
 	   		    	    		var path=window.location.pathname.split("/");
 	   		    	    		var prefix="";
-	   		    	    		if (path[1].localeCompare("configuration")!=0){
+	   		    	    		if (path[1].localeCompare("docs")!=0){
 	   		    	    			prefix="/"+path[1];	
 	   		    	    		}
 	   							$.get(prefix+"/configuration/item/getDescriptionList?description="+request.term, {}, function (data) {
@@ -278,7 +301,7 @@
 	   		    	    source: function (request, response) {
 	   		    	    		var path=window.location.pathname.split("/");
 	   		    	    		var prefix="";
-	   		    	    		if (path[1].localeCompare("configuration")!=0){
+	   		    	    		if (path[1].localeCompare("docs")!=0){
 	   		    	    			prefix="/"+path[1];	
 	   		    	    		}
 	   							$.get(prefix+"/configuration/item/getDescriptionList?description="+request.term, {}, function (data) {
@@ -310,6 +333,9 @@
 			<div class="row-fluid">
 		        <form id="header-form" th:object="${requisitionInfo}" method="post">
 		        	<input id="_submit" hidden="" th:field="*{requisitionItemModificationInfo.submit}"></input>
+		        	<input th:if='${requisitionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<div ><a id="back" th:text="#{label.back}" th:href="@{/docs/searchRequisition}"></a></div>
+		        	
 		        	<h3 th:text="#{label.requisitionCreationTitle}"></h3>
 		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
 		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{requisitionItemModificationInfo.submit}"></input>
@@ -392,6 +418,8 @@
 			 <form id="requisition-body-form" class="white-popup mfp-hide"  th:object="${requisitionItemInfo}" method="post">
 		        	<h3 th:text="#{label.requisitionItemCreationTitle}"></h3>
 		        	<input id="_submit" hidden="" th:field="*{requisitionItemModificationInfo.submit}"></input>
+		        	<input th:if='${requisitionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	
 		        	<table>		        			        			
 		        		<tr>
 		        			<td ><b th:text="#{label.requisitionItemItem}+': '"></b></td>
@@ -413,10 +441,6 @@
 		        				<td><input id="quantity" type="text" th:field="*{quantity}" /></td>
 		        				<td th:if="${quantityException}"><div class="alert alert-error" th:text="#{${quantityValidationErrorMessage}}"></div></td>
 		        		</tr>
-		        		<tr>
-		        		 			<td><b th:text="#{label.requisitionItemActive}+': '"></b></td>
-		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
-		        		</tr>
 
 		        		<tr>
 		        			<td>
@@ -430,6 +454,8 @@
 		        	<h3 th:text="#{label.requisitionItemModificationTitle}"></h3>
 		        	<input id="_id" hidden="" th:field="*{requisitionItemModificationInfo.id}"></input>
 		        	<input id="_modificationSubmit" hidden="hidden" th:field="*{requisitionItemModificationInfo.submit}"></input>
+		        	<input th:if='${requisitionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	
 		        	<table >		        			        			
 		        		<tr>
 		        			<td ><b th:text="#{label.requisitionItemItem}+': '"></b></td>
@@ -451,10 +477,6 @@
 		        				<td><input id="_quantityModification" type="text" th:field="*{requisitionItemModificationInfo.quantity}" /></td>
 		        				<td th:if="${quantityException}"><div class="alert alert-error" th:text="#{${quantityValidationErrorMessage}}"></div></td>
 		        		</tr>
-		        		<tr>
-		        		 			<td><b th:text="#{label.requisitionItemActive}+': '"></b></td>
-		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
-		        		</tr>
 
 		        		<tr>
 		        			<td>
@@ -464,7 +486,7 @@
 		        	</table>
 		        </form>
 		    </div>
-		    <div th:if='${requisitionInfo.created}' class="alert alert-info" th:text="#{label.created}">
+		    <div th:if='${requisitionInfo.created}' class="alert alert-info" th:text="#{label.saved}">
             </div>
             <div th:if='${requisitionCreateException}' class="alert alert-error" th:text="#{label.requisitionCreationError}">
             </div>

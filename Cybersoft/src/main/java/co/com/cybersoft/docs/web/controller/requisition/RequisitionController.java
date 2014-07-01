@@ -25,6 +25,7 @@ import co.com.cybersoft.tables.core.services.priority.PriorityService;
 import co.com.cybersoft.tables.core.services.state.StateService;
 import co.com.cybersoft.tables.core.services.transportationType.TransportationTypeService;
 import co.com.cybersoft.tables.core.services.warehouse.WarehouseService;
+import co.com.cybersoft.docs.events.requisition.RequestRequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.RequisitionEvent;
 import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersistenceService;
@@ -41,7 +42,7 @@ import co.com.cybersoft.tables.events.warehouse.WarehousePageEvent;
 
 
 @Controller
-@RequestMapping("/requisition")
+@RequestMapping("/docs/requisition")
 public class RequisitionController {
 	
 	@Autowired
@@ -85,18 +86,21 @@ public class RequisitionController {
 			requisitionInfo.setCurrentRequisitionItemInfo(current);
 			requisitionEvent = requisitionService.saveRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
 		}
-		else if (modified.getRequisitionItemModificationInfo().getSubmit().equals("deletion")){
+		else if (modified.getRequisitionItemModificationInfo().getSubmit().endsWith("deletion")){
 			List<String> toDelete = Arrays.asList(requisitionInfo.getDeletion().split(","));
 			requisitionEvent=requisitionService.deleteRequisition(new SaveRequisitionEvent(requisitionInfo), toDelete);			
 		}
 		else{
 			requisitionEvent = requisitionService.saveRequisition(new SaveRequisitionEvent(requisitionInfo));
 		}
+		
 		requisitionInfo.setCreated(true);
 		requisitionInfo.setId(requisitionEvent.getRequisition().getId());
 		requisitionInfo.setRequisitionItemList(requisitionEvent.getRequisition().getRequisitionItemList());
 		requisitionInfo.setNumericId(requisitionEvent.getRequisition().getNumericId());
-		requisitionInfo.getRequisitionItemModificationInfo().getRequisitionItemModificationInfo().setSubmit("");
+		requisitionInfo.setDateOfCreation(requisitionEvent.getRequisition().getDateOfCreation());
+		requisitionInfo.setCreatedBy(requisitionEvent.getRequisition().getCreatedBy());
+//		requisitionInfo.getRequisitionItemModificationInfo().getRequisitionItemModificationInfo().setSubmit("");
 		
 		CountryPageEvent allCountryPageEvent = null;
 		StatePageEvent allStatePageEvent = null;
@@ -135,10 +139,10 @@ public class RequisitionController {
 	}
 	
 	@ModelAttribute("requisitionInfo")
-	private RequisitionInfo getRequisitionInfo(@ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, Model model, HttpServletRequest request)  throws Exception {
+	private RequisitionInfo getRequisitionInfo(String id, @ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, Model model, HttpServletRequest request)  throws Exception {
 		RequisitionInfo requisitionInfoSession = (RequisitionInfo) request.getSession().getAttribute("requisitionInfo");
 
-		if (requisitionInfoSession!=null && requisitionInfoSession.getId()!=null){
+		if (requisitionInfo.getCreated()!=null && requisitionInfo.getCreated()){
 			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);	
 			RequisitionItemInfo requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
 			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
@@ -157,7 +161,12 @@ public class RequisitionController {
 		}
 		else{
 			
-			requisitionInfo = new RequisitionInfo();
+			if (id==null)
+				requisitionInfo = new RequisitionInfo();
+			else{
+				requisitionInfo = requisitionService.requestRequisitionDetails(new RequestRequisitionEvent(id)).getRequisition();
+			}
+			requisitionInfo.setCreated(true);
 			
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
 			requisitionInfo.setPriorityList(allPriorityEvent.getPriorityList());
@@ -188,11 +197,13 @@ public class RequisitionController {
 				requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
 			}
 			
-			requisitionInfo.setId(null);
-			requisitionInfo.setDate(new Date());
-			requisitionInfo.setStock(true);
-			requisitionInfo.setRequiredOnDate(new Date());
-			requisitionInfo.setActive(true);
+			if (id==null){
+				requisitionInfo.setId(null);
+				requisitionInfo.setDate(new Date());
+				requisitionInfo.setStock(true);
+				requisitionInfo.setRequiredOnDate(new Date());
+				requisitionInfo.setActive(true);
+			}
 			
 			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);	
 			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
@@ -222,7 +233,6 @@ public class RequisitionController {
 			
 			requisitionItemInfo.setId(null);
 			requisitionItemInfo.setBodyRequiredOnDate(new Date());
-			requisitionItemInfo.setActive(true);
 
 			request.getSession().setAttribute("requisitionItemInfo", requisitionItemInfo);
 			

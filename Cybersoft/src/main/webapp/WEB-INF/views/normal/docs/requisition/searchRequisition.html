@@ -84,10 +84,10 @@
 	    function buildURL(id){
 	    	var path=window.location.pathname.split("/");
   	    	var prefix="";
-  	    	if (path[1].localeCompare("configuration")!=0){
+  	    	if (path[1].localeCompare("docs")!=0){
   	    		prefix="/"+path[1];	
   	    	}
-	    	var url=prefix+"/configuration/requisition/modifyRequisition/"+id;
+	    	var url=prefix+"/docs/requisition?id="+id;
 	    	document.location=url;
 	    }
 	    
@@ -109,15 +109,15 @@
 			<h3 th:text="#{label.requisitionInfo}"> </h3>
 			<table width="100%">
 				<tr>
-					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/requisition}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/docs/requisition}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
 					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
-					<td width="34%"><div align="right"><a th:href="@{/configuration/requisition/export}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
+					<td width="34%"></td>
 				</tr>
 			</table>
 			<table class="table table-striped" >
 				<thead>
 					<tr>
-						<th ><a th:href="@{${page.url}+'?field=numericId'}" th:text="#{label.requisitionId}"></a></th>
+						<th ><a th:href="@{${page.url}+'?field=_numericId'}" th:text="#{label.requisitionId}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a></th>
 						<th ><a th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a></th>

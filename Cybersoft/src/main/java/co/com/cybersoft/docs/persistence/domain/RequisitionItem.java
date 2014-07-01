@@ -27,9 +27,6 @@ public class RequisitionItem {
 
 	private Double foreignCurrencyUnitValue;
 
-	private Boolean active;
-
-
 	private Date dateOfModification;
 	
 	private Date dateOfCreation;
@@ -115,15 +112,6 @@ public class RequisitionItem {
 	public void setForeignCurrencyUnitValue(Double foreignCurrencyUnitValue) {
 		this.foreignCurrencyUnitValue = foreignCurrencyUnitValue;	
 	}
-	public Boolean getActive() {
-		return active;	
-	}
-		
-	public void setActive(Boolean active) {
-		this.active = active;	
-	}
-
-	
 	
 
 }
