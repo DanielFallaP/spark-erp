@@ -2,16 +2,6 @@
 	"tables":[
 		 {  
 			"labelTable":"true",		 	
-			"name":"language",		
-			"spanishName":"Lenguaje",		
-			"fields":[
-						{"name":"language", "spanishName":"Lenguaje", "type":"String", "unique":"true", "length":"20", "autocomplete":"true", "labelField":"true"},
-						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
-						
-					]
-		 },
-		 {  
-			"labelTable":"true",		 	
 			"name":"currency",		
 			"spanishName":"Moneda",		
 			"fields":[
