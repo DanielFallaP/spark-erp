@@ -113,7 +113,7 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 						Double variation=0D;
 						if (yesterdayRate!=null && yesterdayRate.getRate()!=null){
 							if (yesterdayRate.getRate()!=0D)
-								variation=(rate-yesterdayRate.getRate())/yesterdayRate.getRate();
+								variation=Math.abs((rate-yesterdayRate.getRate())/yesterdayRate.getRate());
 						}
 						
 						cal.add(Calendar.DATE, 1);

@@ -85,6 +85,8 @@ public class RequisitionController {
 		else if (modified.getRequisitionItemModificationInfo().getSubmit().equals("creation")){
 			requisitionInfo.setCurrentRequisitionItemInfo(current);
 			requisitionEvent = requisitionService.saveRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
+			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);
+			model.addAttribute("requisitionItemInfo", requisitionItemInfo);
 		}
 		else if (modified.getRequisitionItemModificationInfo().getSubmit().endsWith("deletion")){
 			List<String> toDelete = Arrays.asList(requisitionInfo.getDeletion().split(","));
@@ -95,6 +97,8 @@ public class RequisitionController {
 		}
 		
 		requisitionInfo.setCreated(true);
+		requisitionInfo.setShowBody(true);
+		requisitionInfo.set_toSave(true);
 		requisitionInfo.setId(requisitionEvent.getRequisition().getId());
 		requisitionInfo.setRequisitionItemList(requisitionEvent.getRequisition().getRequisitionItemList());
 		requisitionInfo.setNumericId(requisitionEvent.getRequisition().getNumericId());
@@ -165,6 +169,7 @@ public class RequisitionController {
 				requisitionInfo = new RequisitionInfo();
 			else{
 				requisitionInfo = requisitionService.requestRequisitionDetails(new RequestRequisitionEvent(id)).getRequisition();
+				requisitionInfo.setShowBody(true);
 			}
 			requisitionInfo.setCreated(true);
 			
@@ -185,24 +190,38 @@ public class RequisitionController {
 			PopulatedPlacePageEvent allPopulatedPlacePageEvent = null;
 			
 			
-			allCountryPageEvent = countryService.requestAllByCountry();
-			requisitionInfo.setCountryList(allCountryPageEvent.getCountryList());
-			
-			if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
-				allStatePageEvent = stateService.requestAllByCountryName(allCountryPageEvent.getCountryList().get(0).getCountry());
-				requisitionInfo.setStateList(allStatePageEvent.getStateList());
-			}
-			if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
-				allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(allStatePageEvent.getStateList().get(0).getState());
-				requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
-			}
 			
 			if (id==null){
+				allCountryPageEvent = countryService.requestAllByCountry();
+				requisitionInfo.setCountryList(allCountryPageEvent.getCountryList());
+				
+				if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
+					allStatePageEvent = stateService.requestAllByCountryName(allCountryPageEvent.getCountryList().get(0).getCountry());
+					requisitionInfo.setStateList(allStatePageEvent.getStateList());
+				}
+				if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
+					allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(allStatePageEvent.getStateList().get(0).getState());
+					requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
+				}
+
 				requisitionInfo.setId(null);
 				requisitionInfo.setDate(new Date());
 				requisitionInfo.setStock(true);
 				requisitionInfo.setRequiredOnDate(new Date());
 				requisitionInfo.setActive(true);
+			}
+			else{
+				allCountryPageEvent = countryService.requestAllByCountry();
+				requisitionInfo.setCountryList(allCountryPageEvent.getCountryList());
+
+				if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
+						allStatePageEvent = stateService.requestAllByCountryName(requisitionInfoSession.getCountry());
+						requisitionInfo.setStateList(allStatePageEvent.getStateList());
+				}
+				if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
+						allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(requisitionInfoSession.getState());
+						requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
+				}
 			}
 			
 			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);	

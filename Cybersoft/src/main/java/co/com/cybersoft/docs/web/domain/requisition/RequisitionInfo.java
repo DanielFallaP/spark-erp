@@ -39,6 +39,10 @@ public class RequisitionInfo implements Serializable{
 	
 	private Boolean created=Boolean.FALSE;
 	
+	private Boolean showBody=Boolean.FALSE;
+	
+	private Boolean _toSave=Boolean.FALSE;
+
 	private String calledFrom;
 	
 	private String id;
@@ -59,6 +63,25 @@ public class RequisitionInfo implements Serializable{
 	
 	private String deletion;
 	
+	
+	public Boolean get_toSave() {
+		return _toSave;
+	}
+
+	public void set_toSave(Boolean _toSave) {
+		this._toSave = _toSave;
+	}
+
+	public Boolean getShowBody() {
+		return showBody;
+	}
+
+	public void setShowBody(Boolean showBody) {
+		this.showBody = showBody;
+	}
+
+
+
 	@NotNull
 	@Range(max=99999999)
 	private Integer consecutive;
