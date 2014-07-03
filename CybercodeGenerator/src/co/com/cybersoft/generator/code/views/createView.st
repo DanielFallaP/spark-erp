@@ -26,6 +26,10 @@
 	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
 	    <script type="text/javascript">
 	      /* <![CDATA[ */
+	      
+	      function hideAlert(){
+	    	  document.getElementById("_savedAlert").style.display='none';
+	      }
 	     
 	      \$(document).keyup(function(e) {
 	    	  if(e.which == 27) {
@@ -63,7 +67,7 @@
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
-		        <form th:object="\${$tableName$Info}" method="post">
+		        <form th:object="\${$tableName$Info}" method="post" onchange="hideAlert();">
 		        	<div id="back"><a th:if="\${$tableName$Info.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/configuration/$tableName$/search$entityName$}"></a></div>
 		        	<h3 th:text="#{label.$tableName$CreationTitle}"></h3>
 		        	<table>		        			        			
@@ -76,7 +80,7 @@
 		        	</table>
 		        </form>
 		    </div>
-		    <div th:if='\${$tableName$Info.created}' class="alert alert-info" th:text="#{label.created}">
+		    <div id="_savedAlert" th:if='\${$tableName$Info.created}' class="alert alert-info" th:text="#{label.created}">
             </div>
             <div th:if='\${$tableName$CreateException}' class="alert alert-error" th:text="#{label.$tableName$CreationError}">
             </div>
