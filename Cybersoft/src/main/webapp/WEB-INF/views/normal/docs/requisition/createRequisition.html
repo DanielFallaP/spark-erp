@@ -29,14 +29,15 @@
 	    <script type="text/javascript">
 	      /* <![CDATA[ */
 	                   
-// 	     $('#header-form').change(function(){
-// 	    	 	alert("it changed!!!");
-// 	    		document.getElementById("_savedAlert").style.display='none';	 
-// 	     });
-	      	    			
 	      var popupVisible=false;
 	      
-	      $(document).keyup(function(e) {
+	      function newEntry(){
+			   $('.popup-with-form').click();
+			   popupVisible=true;
+		   		document.getElementById("item").focus();
+		   }
+
+		   $(document).keyup(function(e) {
 	    	  if(e.which == 27 && !popupVisible) {
 	    		var path=window.location.pathname.split("/");
   	    		var prefix="";
@@ -60,6 +61,10 @@
 
 		$( function () {
 			$( "#date" ).datepicker();
+		} );
+		
+		$( function () {
+			$( "#requiredOnDate" ).datepicker();
 		} );
 
 		$( function () {
@@ -192,11 +197,6 @@
 		   	  	 		  });
 		   			});
 		   
-		   function newEntry(){
-			   $('.popup-with-form').click();
-			   popupVisible=true;
-		   		document.getElementById("item").focus();
-		   }
 
 			function setModificationFormValues(id){
 			   var selectedRow="#"+id;
@@ -226,7 +226,7 @@
 			document.getElementById("_itemModification").focus();
 			 popupVisible=true;
 		   }
-
+			
 		   $(document).ready( function () {
 				$('#requisitionItemList').dataTable();
 
@@ -418,14 +418,15 @@
 							</tr>
 						</tbody>
 		        	</table>
-					<button type="button" th:if='${requisitionInfo.showBody}' id="newEntry" th:text="#{label.newEntryDocTable}" onclick="newEntry();"></button> 
+					<button th:if='${requisitionInfo.showBody}'  th:text="#{label.newEntryDocTable}" onclick="newEntry();return false;"></button>
+					 
        				<input th:if='${requisitionInfo.showBody}' type="button" th:value="#{label.deleteSelection}" onclick="submitDeletion();"/>
-
        				<a class="popup-with-form" href="#requisition-body-form" hidden=""></a>
        				<a class="popup-with-form2" href="#requisition-body-modification-form" hidden=""></a>
 							        				
        				<div align="right" ><input type="button" th:value="#{label.save}" onclick="submitHeader();"/></div>
 		        </form>
+					<input th:if='${requisitionInfo.showBody}' id="newEntry" hidden=""/> 
 			 <!-- Custom form for adding new records -->
 			 <form id="requisition-body-form" class="white-popup mfp-hide"  th:object="${requisitionItemInfo}" method="post">
 		        	<h3 th:text="#{label.requisitionItemCreationTitle}"></h3>

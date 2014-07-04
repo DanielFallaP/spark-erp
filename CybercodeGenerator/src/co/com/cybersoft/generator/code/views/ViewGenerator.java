@@ -61,14 +61,18 @@ public class ViewGenerator {
 		
 		List<Table> tables = cybersystems.getTables();
 		String links="";
-		
+		int i=0;
 		for (Table table : tables) {
 			if (table.getLabelTable() || table.getSingletonTable()){
 				StringTemplate linkTemplate = templateGroup.getInstanceOf("configurationLink");
+				if (i==0){
+					template.setAttribute("firstOption", table.getName());
+				}
 				linkTemplate.setAttribute("option", table.getLabelTable()?"search":"set");
 				linkTemplate.setAttribute("tableName",table.getName());
 				linkTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 				links+=linkTemplate.toString()+"\n";
+				i++;
 			}
 		}
 		
@@ -423,14 +427,18 @@ public class ViewGenerator {
 		
 		List<Table> tables = cybersoft.getTables();
 		String links="";
-		
+		int i=0;
 		for (Table table : tables) {
 			if (!table.getLabelTable() && !table.getSingletonTable()){
 				StringTemplate linkTemplate = templateGroup.getInstanceOf("configurationLink");
+				if (i==0){
+					template.setAttribute("firstOption", table.getName());
+				}
 				linkTemplate.setAttribute("option", "search");
 				linkTemplate.setAttribute("tableName",table.getName());
 				linkTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 				links+=linkTemplate.toString()+"\n";
+				i++;
 			}
 		}
 		

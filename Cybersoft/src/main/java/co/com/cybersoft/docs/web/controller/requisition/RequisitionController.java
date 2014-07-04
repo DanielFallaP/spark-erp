@@ -215,11 +215,11 @@ public class RequisitionController {
 				requisitionInfo.setCountryList(allCountryPageEvent.getCountryList());
 
 				if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
-						allStatePageEvent = stateService.requestAllByCountryName(requisitionInfoSession.getCountry());
+						allStatePageEvent = stateService.requestAllByCountryName(requisitionInfo.getCountry());
 						requisitionInfo.setStateList(allStatePageEvent.getStateList());
 				}
 				if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
-						allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(requisitionInfoSession.getState());
+						allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(requisitionInfo.getState());
 						requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
 				}
 			}

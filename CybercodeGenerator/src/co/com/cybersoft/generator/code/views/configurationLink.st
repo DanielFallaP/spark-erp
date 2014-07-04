@@ -1,1 +1,1 @@
-<div><a th:href="@{/configuration/$tableName$/$option$$entityName$}" th:text="#{label.$tableName$Configuration}"></a> </div>
+<div><a id="$tableName$" th:href="@{/configuration/$tableName$/$option$$entityName$}" th:text="#{label.$tableName$Configuration}"></a> </div>

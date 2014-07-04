@@ -17,13 +17,18 @@
 	        }
 	    </style>
 	 <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	 <script type="text/javascript">
+		function setFocus(){
+	   		document.getElementById("english").focus();
+	   }
+	 </script>
 </head>
-<body>
+<body onload="setFocus()">
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 			<div class="hero-unit span9">
 				<h3 th:text="#{label.selectLanguage}"></h3>
-				<div><a href="?language=en" th:text="#{label.english}"></a> </div>
+				<div><a id="english" href="?language=en" th:text="#{label.english}"></a> </div>
 				<div><a href="?language=es" th:text="#{label.spanish}"></a> </div>
 			</div>
 	</div>

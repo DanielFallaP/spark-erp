@@ -42,6 +42,13 @@
 		    	  event.preventDefault();
 		       }
 	    	});
+	    	
+	    \$(document).keyup(function(e) {
+	    	  if(e.which == 27 ) {
+	  			\$('#back a').trigger('click');
+	    	  }
+	    	});	
+	    	
 	     
 	     \$(document).keyup(function(e) {
 	    	  if(e.which == 13 || e.which == 107) {
@@ -106,6 +113,7 @@
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 		<div class="row-fluid">
+			<div id="back"><a th:text="#{label.back}" th:href="@{/configuration}"></a></div>
 			<h3 th:text="#{label.$tableName$Info}"> </h3>
 			<table width="100%">
 				<tr>

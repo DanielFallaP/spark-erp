@@ -28,15 +28,19 @@
 				\$('.about-ajax-popup').magnificPopup({
 					type: 'ajax'
 				});
-			} );  
+			} );
+			
+			function setFocus(){
+		   		document.getElementById("language").focus();
+		   }  
 	  	/* ]]> */
 	  </script>
 </head>
-<body>
+<body onload="setFocus()">
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 			<div class="hero-unit span9">
-				<div><a th:href="@{/configuration/language}" th:text="#{label.languageConfiguration}"></a> </div>
+				<div><a id="language" th:href="@{/configuration/language}" th:text="#{label.languageConfiguration}"></a> </div>
 				$links$
 			</div>
 	</div>

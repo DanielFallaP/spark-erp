@@ -28,11 +28,16 @@
 				\$('.about-ajax-popup').magnificPopup({
 					type: 'ajax'
 				});
-			} );   
+			} );  
+			
+				function setFocus(){
+		   		document.getElementById("$firstOption$").focus();
+		   }
+			 
 	      /* ]]> */
 	 </script>
 </head>
-<body>
+<body onload="setFocus()">
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 			<div class="hero-unit span9">
