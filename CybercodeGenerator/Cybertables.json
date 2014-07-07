@@ -18,7 +18,7 @@
 						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "keyCompound":"true", "displayField":"code", "embeddedFields":["currency"]},
 						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "keyCompound":"true", "displayField":"code", "embeddedFields":["currency"]},
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "keyCompound":"true", "defaultValue":"today"},
-						{"name":"rate", "spanishName":"Tasa", "type":"Double"},
+						{"name":"exchangeRate", "spanishName":"Tasa", "type":"Double"},
 						{"name":"variation", "spanishName":"Variación", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -650,10 +650,10 @@
 		 },
 		 {	
 			"labelTable":"true",
-			"name":"modules",
-			"spanishName":"Módulos",
+			"name":"module",
+			"spanishName":"Módulo",
 			"fields":[
-						{"name":"modules", "spanishName":"Descripción", "type":"String", "unique":"true", "autocomplete":"true", "labelField":"true"},
+						{"name":"module", "spanishName":"Módulo", "type":"String", "unique":"true", "autocomplete":"true", "labelField":"true"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -685,7 +685,7 @@
 			"name":"quality",
 			"spanishName":"Calidad",
 			"fields":[
-						{"name":"quality", "spanishName":"Descripción", "type":"String", "unique":"true"},
+						{"name":"quality", "spanishName":"Calidad", "type":"String", "unique":"true"},
 						{"name":"costPercentage", "spanishName":"Porcentaje del costo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -713,7 +713,7 @@
 			"name":"methodOfPayment",
 			"spanishName":"Método de pago",
 			"fields":[
-						{"name":"methodOfPayment", "spanishName":"Descripción", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"methodOfPayment", "spanishName":"Método de pago", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"days", "spanishName":"Días", "type":"Integer"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -723,7 +723,7 @@
 			"spanishName":"Razón de selección de proveedor",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
-						{"name":"supplierSelectionReason", "spanishName":"Descripción", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"supplierSelectionReason", "spanishName":"Razón de selección de proveedor", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
