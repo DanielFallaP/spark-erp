@@ -13,11 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import co.com.cybersoft.util.PageWrapper;
 import co.com.cybersoft.docs.events.requisition.RequestRequisitionPageEvent;
 import co.com.cybersoft.docs.events.requisition.RequisitionPageEvent;
 import co.com.cybersoft.docs.persistence.domain.Requisition;
 import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersistenceService;
+import co.com.cybersoft.util.PageWrapper;
 
 /**
  * Search controller class for requisition
@@ -32,6 +32,8 @@ public class RequisitionSearchController {
 
 	@Autowired
 	private RequisitionPersistenceService requisitionService;
+	
+	
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String search(Model model, Pageable pageable, String field, HttpServletRequest request) throws Exception{

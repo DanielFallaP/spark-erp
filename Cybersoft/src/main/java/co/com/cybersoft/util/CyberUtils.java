@@ -25,7 +25,7 @@ public class CyberUtils {
 	
 	public final static String rangeValidation="Range";
 	
-	public final static String lenghtValidation="Length";
+	public final static String lengthValidation="Length";
 	
 	public final static String configTableName="tenancy";
 	

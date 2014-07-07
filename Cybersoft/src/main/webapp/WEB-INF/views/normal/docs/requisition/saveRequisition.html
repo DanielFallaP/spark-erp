@@ -350,13 +350,19 @@
 		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
 		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{requisitionItemModificationInfo.submit}"></input>
 		        	
-		        	<table>		        			        			
+		        	<table>
+		        		<tr th:if="${requiredOnDateExcep8} or ${requiredOnDateException}">
+		        			<td></td>
+		        			<td></td>
+		        			<td th:if="${requiredOnDateException}" colspan="2"><div class="alert alert-error" th:text="#{${requiredOnDateValidationErrorMessage}}"></div></td>
+		        			<td></td>
+		        			<td></td>
+		        		</tr>		        			        			
 		        		<tr>
         		 			<td style="padding:0 15px;"><b th:text="#{label.requisitionStock}+': '"></b></td>
         		   			<td ><input type="checkbox" th:field="*{stock}" /></td>
 		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionRequiredOnDate}+': '"></b></td>
-		        			<td ><input id="requiredOnDate" type="text" th:field="*{requiredOnDate}" /></td>
-		        			<td th:if="${requiredOnDateException}"><div class="alert alert-error" th:text="#{${requiredOnDateValidationErrorMessage}}"></div></td>
+		        			<td ><input id="requiredOnDate" name="requiredOnDate" type="text" th:value="*{{requiredOnDate}}" /></td>
 		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionPriority}+': '"></b></td>
 		        			<td ><select th:field="*{priority}"><option th:each="reference : ${requisitionInfo.priorityList}" th:value="${reference.priority}" th:text="#{${reference.priority}}"></option></select></td>
 		        			<td th:if="${priorityException}"><div class="alert alert-error" th:text="#{${priorityValidationErrorMessage}}"></div></td>
@@ -371,10 +377,16 @@
 		        			<td><select id="populatedPlace" onChange="populatedPlaceSelectedRefresh()" th:field="*{populatedPlace}"><option th:each="reference : ${requisitionInfo.populatedPlaceList}" th:value="${reference.populatedPlace}" th:text="${reference.populatedPlace}"></option></select></td>
 		        			<td th:if="${populatedPlaceException}"><div class="alert alert-error" th:text="#{${populatedPlaceValidationErrorMessage}}"></div></td>
 		        		</tr>
+		        		<tr th:if="${dateException}">
+		        			<td th:if="${dateException}" colspan="2"><div class="alert alert-error" th:text="#{${dateValidationErrorMessage}}"></div></td>
+		        			<td></td>
+		        			<td></td>
+		        			<td></td>
+		        			<td></td>
+		        		</tr>	
 		        		<tr>
 		        			<td style="padding:0 15px;"><b th:text="#{label.date}+': '"></b></td>
-		        			<td><input id="date" type="text" th:field="*{date}" /></td>
-		        			<td th:if="${dateException}"><div class="alert alert-error" th:text="#{${dateValidationErrorMessage}}"></div></td>
+		        			<td><input id="date" name="date" type="text" th:value="*{{date}}" /></td>
 		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionRequestingDepartment}+': '"></b></td>
 		        			<td><select id="requestingDepartment" onChange="requestingDepartmentSelectedRefresh()" th:field="*{requestingDepartment}"><option th:each="reference : ${requisitionInfo.requestingDepartmentList}" th:value="${reference.department}" th:text="${reference.department}"></option></select></td>
 		        			<td th:if="${requestingDepartmentException}"><div class="alert alert-error" th:text="#{${requestingDepartmentValidationErrorMessage}}"></div></td>
@@ -393,6 +405,8 @@
 		        			<td th:text="#{label.requisitionStateIncomplete}"></td>
 		        		</tr>
 		        	</table>
+		        	<br/>
+		        	<br/>
 		        	<table th:if='${requisitionInfo.showBody}' id="requisitionItemList" class="table table-striped">
 		        		<thead>
 							<tr>

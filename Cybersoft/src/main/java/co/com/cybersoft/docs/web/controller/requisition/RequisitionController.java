@@ -11,12 +11,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import co.com.cybersoft.docs.events.requisition.RequestRequisitionEvent;
+import co.com.cybersoft.docs.events.requisition.RequisitionEvent;
+import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
+import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersistenceService;
+import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
+import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemInfo;
 import co.com.cybersoft.tables.core.services.country.CountryService;
 import co.com.cybersoft.tables.core.services.department.DepartmentService;
 import co.com.cybersoft.tables.core.services.expenseType.ExpenseTypeService;
@@ -25,12 +34,6 @@ import co.com.cybersoft.tables.core.services.priority.PriorityService;
 import co.com.cybersoft.tables.core.services.state.StateService;
 import co.com.cybersoft.tables.core.services.transportationType.TransportationTypeService;
 import co.com.cybersoft.tables.core.services.warehouse.WarehouseService;
-import co.com.cybersoft.docs.events.requisition.RequestRequisitionEvent;
-import co.com.cybersoft.docs.events.requisition.RequisitionEvent;
-import co.com.cybersoft.docs.events.requisition.SaveRequisitionEvent;
-import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersistenceService;
-import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
-import co.com.cybersoft.docs.web.domain.requisition.RequisitionItemInfo;
 import co.com.cybersoft.tables.events.country.CountryPageEvent;
 import co.com.cybersoft.tables.events.department.DepartmentPageEvent;
 import co.com.cybersoft.tables.events.expenseType.ExpenseTypePageEvent;
@@ -39,6 +42,7 @@ import co.com.cybersoft.tables.events.priority.PriorityPageEvent;
 import co.com.cybersoft.tables.events.state.StatePageEvent;
 import co.com.cybersoft.tables.events.transportationType.TransportationTypePageEvent;
 import co.com.cybersoft.tables.events.warehouse.WarehousePageEvent;
+import co.com.cybersoft.util.CyberUtils;
 
 
 @Controller
@@ -75,6 +79,8 @@ public class RequisitionController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(RequisitionController.class);
 	
+	
+		
 	@RequestMapping(method=RequestMethod.POST)
 	public String saveRequisition(@ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionItemInfo") RequisitionItemInfo current, @ModelAttribute("requisitionItemModificationInfo") RequisitionItemInfo modified,Model model, HttpServletRequest request) throws Exception{
 		RequisitionEvent requisitionEvent=null;
@@ -126,20 +132,83 @@ public class RequisitionController {
 		
 		model.addAttribute("requisitionInfo",requisitionInfo);
 		model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
-		return "/docs/requisition/createRequisition";
+		return "/docs/requisition/saveRequisition";
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String search(){
-		return "/docs/requisition/createRequisition";
+		return "/docs/requisition/saveRequisition";
 	}
 	
 	@ExceptionHandler(Exception.class)
 	public ModelAndView constraintError(HttpServletRequest req, Exception exception){
-		//TODO
-		exception.printStackTrace();
-		LOG.debug(exception.getMessage());
-		return null;
+		ModelAndView modelAndView = new ModelAndView();
+		RequisitionInfo requisitionInfo=(RequisitionInfo) req.getSession().getAttribute("requisitionInfo");
+		if (exception instanceof BindException){
+			modelAndView.addObject("requisitionInfo", requisitionInfo);
+			modelAndView.addObject("requisitionValidationException",true);
+			modelAndView = setErrors(modelAndView, (BindException) exception, requisitionInfo);
+			modelAndView.setViewName("/docs/requisition/saveRequisition");
+		}
+		else{
+			modelAndView.addObject("requisitionInfo", requisitionInfo);
+			modelAndView.addObject("requisitionCreateException",true);
+			modelAndView.setViewName("/docs/requisition/saveRequisition");
+		}
+		
+		try {
+			requisitionInfo.set_toSave(false);
+			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(req);	
+			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
+			RequisitionItemInfo requisitionItemModificationInfo = getRequisitionItemModificationInfo(req);
+			requisitionInfo.setRequisitionItemModificationInfo(requisitionItemModificationInfo);
+			requisitionItemInfo.setSubmit("");
+			requisitionItemInfo.setRequisitionItemModificationInfo(new RequisitionItemInfo());
+			RequisitionItemInfo submitModification = new RequisitionItemInfo();
+			submitModification.setSubmit("");
+			requisitionItemModificationInfo.setRequisitionItemModificationInfo(submitModification);
+		
+			modelAndView.addObject("requisitionInfo",requisitionInfo);
+			modelAndView.addObject("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
+			modelAndView.addObject("requisitionItemInfo",requisitionItemInfo);
+			modelAndView.addObject("requisitionItemModificationInfo",requisitionItemModificationInfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return modelAndView;
+	}
+	
+	private ModelAndView setErrors(ModelAndView model, BindException exception, RequisitionInfo requisitionInfo){
+		List<ObjectError> errors = exception.getAllErrors();
+		for (ObjectError error : errors) {
+			if (error instanceof FieldError){
+				FieldError fieldError=(FieldError) error;
+				if (fieldError.getCode()!=null){
+					if (fieldError.getCodes()[0].startsWith(CyberUtils.lengthValidation)
+							||fieldError.getCodes()[0].startsWith(CyberUtils.rangeValidation)){
+						
+						model.addObject(fieldError.getField()+"Exception", true);
+						model.addObject(fieldError.getField()+"ValidationErrorMessage","label."+"outOfRangeErrorValidationMessage");
+					}
+					else if (fieldError.getCodes()[0].startsWith(CyberUtils.notEmptyValidation)  
+							|| fieldError.getCodes()[0].startsWith(CyberUtils.notNullValidation)){
+						model.addObject(fieldError.getField()+"Exception", true);
+						model.addObject(fieldError.getField()+"ValidationErrorMessage","label."+"requiredFieldErrorValidationMessage");
+					}
+					else if (fieldError.getCodes()[0].startsWith(CyberUtils.typeValidation)){
+						model.addObject(fieldError.getField()+"Exception", true);
+						model.addObject(fieldError.getField()+"ValidationErrorMessage","label."+"fieldTypeErrorValidationMessage");
+						
+					}
+					else{
+						model.addObject(fieldError.getField()+"Exception", true);
+						model.addObject(fieldError.getField()+"ValidationErrorMessage","label."+"genericErrorValidationMessage");
+						
+					}
+				}
+			}
+		}
+		return model;
 	}
 	
 	@ModelAttribute("requisitionInfo")

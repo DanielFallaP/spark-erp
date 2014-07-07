@@ -142,7 +142,7 @@ public class $entityName$CreationController {
 			if (error instanceof FieldError){
 				FieldError fieldError=(FieldError) error;
 				if (fieldError.getCode()!=null){
-					if (fieldError.getCodes()[0].startsWith(CyberUtils.lenghtValidation)
+					if (fieldError.getCodes()[0].startsWith(CyberUtils.lengthValidation)
 							||fieldError.getCodes()[0].startsWith(CyberUtils.rangeValidation)){
 						
 						model.addObject(fieldError.getField()+"Exception", true);
