@@ -111,9 +111,9 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 						
 						Double rate=Double.parseDouble(r.trim());
 						Double variation=0D;
-						if (yesterdayRate!=null && yesterdayRate.getRate()!=null){
-							if (yesterdayRate.getRate()!=0D)
-								variation=Math.abs((rate-yesterdayRate.getRate())/yesterdayRate.getRate());
+						if (yesterdayRate!=null && yesterdayRate.getExchangeRate()!=null){
+							if (yesterdayRate.getExchangeRate()!=0D)
+								variation=Math.abs((rate-yesterdayRate.getExchangeRate())/yesterdayRate.getExchangeRate());
 						}
 						
 						cal.add(Calendar.DATE, 1);
@@ -123,7 +123,7 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 						exchangeRate.setDate(cal.getTime());
 						exchangeRate.setVariation(variation);
 						exchangeRate.setUserName("admin");
-						exchangeRate.setRate(rate);
+						exchangeRate.setExchangeRate(rate);
 						exchangeRate.setLocalCurrency(localCurrency);
 						exchangeRate.setForeignCurrency(baseCurrency);
 						exchangeRate.setDateOfModification(cal.getTime());

@@ -3,8 +3,11 @@ package co.com.cybersoft.docs.web.controller.requisition;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -77,6 +81,8 @@ public class RequisitionController {
 	@Autowired
 		private PopulatedPlaceService populatedPlaceService;
 	
+	private List<String> additionFormNames=Arrays.asList("item");
+	
 	private static final Logger LOG = LoggerFactory.getLogger(RequisitionController.class);
 	
 	
@@ -85,10 +91,12 @@ public class RequisitionController {
 	public String saveRequisition(@ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionItemInfo") RequisitionItemInfo current, @ModelAttribute("requisitionItemModificationInfo") RequisitionItemInfo modified,Model model, HttpServletRequest request) throws Exception{
 		RequisitionEvent requisitionEvent=null;
 		if (modified.getRequisitionItemModificationInfo().getSubmit().equals("modification")){
+			
 			requisitionInfo.setRequisitionItemModificationInfo(modified.getRequisitionItemModificationInfo());
 			requisitionEvent = requisitionService.updateRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
 		}
 		else if (modified.getRequisitionItemModificationInfo().getSubmit().equals("creation")){
+			Set<ConstraintViolation<RequisitionItemInfo>> validate = javax.validation.Validation.buildDefaultValidatorFactory().getValidator().validate(current);
 			requisitionInfo.setCurrentRequisitionItemInfo(current);
 			requisitionEvent = requisitionService.saveRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
 			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);
@@ -180,10 +188,14 @@ public class RequisitionController {
 	
 	private ModelAndView setErrors(ModelAndView model, BindException exception, RequisitionInfo requisitionInfo){
 		List<ObjectError> errors = exception.getAllErrors();
+		additionFormNames=Arrays.asList("item");
 		for (ObjectError error : errors) {
 			if (error instanceof FieldError){
 				FieldError fieldError=(FieldError) error;
 				if (fieldError.getCode()!=null){
+					if (isAdditionForm(fieldError.getField())){
+						model.addObject("_AdditionFormException", true);
+					}
 					if (fieldError.getCodes()[0].startsWith(CyberUtils.lengthValidation)
 							||fieldError.getCodes()[0].startsWith(CyberUtils.rangeValidation)){
 						
@@ -209,6 +221,10 @@ public class RequisitionController {
 			}
 		}
 		return model;
+	}
+	
+	private boolean isAdditionForm(String fieldName){
+		return additionFormNames.contains(fieldName);
 	}
 	
 	@ModelAttribute("requisitionInfo")

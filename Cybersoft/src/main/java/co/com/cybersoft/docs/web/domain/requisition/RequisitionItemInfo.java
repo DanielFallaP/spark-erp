@@ -52,12 +52,8 @@ public class RequisitionItemInfo implements Serializable{
 	@NotNull
 	private Double quantity;
 
-
-	@NotNull
 	private Double localCurrencyUnitValue;
 
-
-	@NotNull
 	private Double foreignCurrencyUnitValue;
 
 	private RequisitionItemInfo requisitionItemModificationInfo;

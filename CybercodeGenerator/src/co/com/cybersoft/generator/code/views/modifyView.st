@@ -92,7 +92,7 @@
 		    </div>
 		    <div th:if='\${$tableName$ModificationException}' class="alert alert-error" th:text="#{label.$tableName$ModificationError}">
             </div>
-            <div th:if='\${$tableName$ValidationException}' class="alert alert-error" th:text="#{label.$tableName$ValidationError}">
+            <div th:if='\${$tableName$ValidationException}' class="alert alert-error" th:text="#{label.validationError}">
             </div>
 	    </div>
 		<div th:include="normal/layout :: footer"></div>    

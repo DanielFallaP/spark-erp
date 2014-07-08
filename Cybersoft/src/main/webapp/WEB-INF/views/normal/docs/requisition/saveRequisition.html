@@ -329,14 +329,18 @@
 	   		    	 
 	   		     });
 		   
-		   
+		   function checkExceptions(){
+			   if (document.getElementById("_AdditionFormException")!=null){
+				   newEntry();
+			   }
+		   }
 
 		   
 	       /* ]]> */
 	     </script>
 
     </head>
-    <body >
+    <body onload="checkExceptions();">
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
@@ -446,7 +450,7 @@
 		        	<h3 th:text="#{label.requisitionItemCreationTitle}"></h3>
 		        	<input id="_submit" hidden="" th:field="*{requisitionItemModificationInfo.submit}"></input>
 		        	<input th:if='${requisitionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
-		        	
+		        	<input th:if="${_AdditionFormException}" id="_AdditionFormException" hidden=""></input> 
 		        	<table>		        			        			
 		        		<tr>
 		        			<td ><b th:text="#{label.requisitionItemItem}+': '"></b></td>
@@ -487,22 +491,22 @@
 		        		<tr>
 		        			<td ><b th:text="#{label.requisitionItemItem}+': '"></b></td>
 		        			<td><input id="_itemModification" type="text" th:field="*{requisitionItemModificationInfo.item}" /></td>
-		        			<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
+		        			<td th:if="${_itemModification}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        				<td ><b th:text="#{label.requisitionItemRequiredOnDate}+': '"></b></td>
 		        				<td><input id="_requiredOnDateItemModification" type="text" th:field="*{requisitionItemModificationInfo.bodyRequiredOnDate}" /></td>
-		        				<td th:if="${requiredOnDateException}"><div class="alert alert-error" th:text="#{${requiredOnDateValidationErrorMessage}}"></div></td>
+		        				<td th:if="${_requiredOnDateItemException}"><div class="alert alert-error" th:text="#{${requiredOnDateValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        			<td ><b th:text="#{label.requisitionItemPriority}+': '"></b></td>
 		        			<td><select id="_priorityItemModification" th:field="*{requisitionItemModificationInfo.priority}"><option th:each="reference : ${requisitionItemInfo.priorityList}" th:value="${reference.priority}" th:text="#{${reference.priority}}"></option></select></td>
-		        			<td th:if="${priorityException}"><div class="alert alert-error" th:text="#{${priorityValidationErrorMessage}}"></div></td>
+		        			<td th:if="${_priorityItemModificationException}"><div class="alert alert-error" th:text="#{${priorityValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        				<td ><b th:text="#{label.requisitionItemQuantity}+': '"></b></td>
 		        				<td><input id="_quantityModification" type="text" th:field="*{requisitionItemModificationInfo.quantity}" /></td>
-		        				<td th:if="${quantityException}"><div class="alert alert-error" th:text="#{${quantityValidationErrorMessage}}"></div></td>
+		        				<td th:if="${_quantityModificationException}"><div class="alert alert-error" th:text="#{${quantityValidationErrorMessage}}"></div></td>
 		        		</tr>
 
 		        		<tr>
