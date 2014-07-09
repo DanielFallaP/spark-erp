@@ -22,6 +22,7 @@ public class Spark {
 	
 	public final static String stringType="String";
 	
+	
 	public final static String integerType="Integer";
 
 	public final static String longType="Long";
