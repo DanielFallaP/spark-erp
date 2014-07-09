@@ -13,6 +13,7 @@ import org.springframework.data.web.PageableArgumentResolver;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.mobile.device.view.LiteDeviceDelegatingViewResolver;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -56,6 +57,11 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		CookieLocaleResolver localeResolver = new CookieLocaleResolver();
 		localeResolver.setDefaultLocale(Locale.ENGLISH);
 		return localeResolver;
+	}
+	
+	@Bean
+	public LocalValidatorFactoryBean jsr303Validator(){
+		return new LocalValidatorFactoryBean();
 	}
 	
 

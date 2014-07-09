@@ -34,6 +34,10 @@ public class Spark {
 	
 	public final static String todayValue="today";
 
+	public static final String configurationURL = "configuration";
+
+	public static final String settingsURL = "settings";
+
 	public List<Table> getTables() {
 		return tables;
 	}

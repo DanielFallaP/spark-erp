@@ -93,7 +93,6 @@
 		   		document.getElementById("consecutive").focus();
 		   }
 		  
-		  
 		function submitCreation(){
 			var form=document.forms['requisition-body-form'];
 			form.elements["_submit"].value="creation";
@@ -280,6 +279,12 @@
 				});
 			});
 		   
+		   $(document).ready(function() {
+				$("#header-form :input").change(function() {
+					document.getElementById("_savedAlert").style.display='none';
+				});
+			});
+		   
 		   
 		   $(function(){
 	   		     $("#item").autocomplete({
@@ -333,8 +338,13 @@
 			   if (document.getElementById("_AdditionFormException")!=null){
 				   newEntry();
 			   }
+			   
+			   if (document.getElementById("_ModificationFormException")!=null){
+				   $('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+			   }
 		   }
-
 		   
 	       /* ]]> */
 	     </script>
@@ -344,7 +354,7 @@
     	<div th:include="normal/layout :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
-		        <form id="header-form" th:object="${requisitionInfo}" method="post" onchange="hideAlert();">
+		        <form id="header-form" th:object="${requisitionInfo}" method="post" >
 		        	<input id="_submit" hidden="" th:field="*{requisitionItemModificationInfo.submit}"></input>
 		        	<input th:if='${requisitionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
 		        	<div ><a id="back" th:text="#{label.back}" th:href="@{/docs/searchRequisition}"></a></div>
@@ -460,7 +470,7 @@
 		        		<tr>
 		        				<td ><b th:text="#{label.requisitionItemRequiredOnDate}+': '"></b></td>
 		        				<td><input id="requiredOnDateItem" type="text" th:field="*{bodyRequiredOnDate}" /></td>
-		        				<td th:if="${requiredOnDateException}"><div class="alert alert-error" th:text="#{${requiredOnDateValidationErrorMessage}}"></div></td>
+		        				<td th:if="${bodyRequiredOnDateException}"><div class="alert alert-error" th:text="#{${bodyRequiredOnDateValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        			<td ><b th:text="#{label.requisitionItemPriority}+': '"></b></td>
@@ -486,7 +496,7 @@
 		        	<input id="_id" hidden="" th:field="*{requisitionItemModificationInfo.id}"></input>
 		        	<input id="_modificationSubmit" hidden="hidden" th:field="*{requisitionItemModificationInfo.submit}"></input>
 		        	<input th:if='${requisitionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
-		        	
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormException" hidden=""></input>
 		        	<table >		        			        			
 		        		<tr>
 		        			<td ><b th:text="#{label.requisitionItemItem}+': '"></b></td>

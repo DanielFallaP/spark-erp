@@ -2,22 +2,24 @@ package co.com.cybersoft.docs.web.controller.requisition;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
-import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +49,7 @@ import co.com.cybersoft.tables.events.state.StatePageEvent;
 import co.com.cybersoft.tables.events.transportationType.TransportationTypePageEvent;
 import co.com.cybersoft.tables.events.warehouse.WarehousePageEvent;
 import co.com.cybersoft.util.CyberUtils;
+import co.com.cybersoft.util.SparkBindingException;
 
 
 @Controller
@@ -81,7 +84,9 @@ public class RequisitionController {
 	@Autowired
 		private PopulatedPlaceService populatedPlaceService;
 	
-	private List<String> additionFormNames=Arrays.asList("item");
+	
+	@Autowired
+	@Qualifier("jsr303Validator") Validator validator;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(RequisitionController.class);
 	
@@ -91,12 +96,15 @@ public class RequisitionController {
 	public String saveRequisition(@ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionItemInfo") RequisitionItemInfo current, @ModelAttribute("requisitionItemModificationInfo") RequisitionItemInfo modified,Model model, HttpServletRequest request) throws Exception{
 		RequisitionEvent requisitionEvent=null;
 		if (modified.getRequisitionItemModificationInfo().getSubmit().equals("modification")){
+			manualValidation(modified, "requisitionItemModificationInfo", CyberUtils.modificationForm);
 			
 			requisitionInfo.setRequisitionItemModificationInfo(modified.getRequisitionItemModificationInfo());
 			requisitionEvent = requisitionService.updateRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
 		}
 		else if (modified.getRequisitionItemModificationInfo().getSubmit().equals("creation")){
-			Set<ConstraintViolation<RequisitionItemInfo>> validate = javax.validation.Validation.buildDefaultValidatorFactory().getValidator().validate(current);
+			
+			manualValidation(current, "requisitionItemInfo", CyberUtils.additionForm);
+			
 			requisitionInfo.setCurrentRequisitionItemInfo(current);
 			requisitionEvent = requisitionService.saveRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
 			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);
@@ -148,6 +156,16 @@ public class RequisitionController {
 		return "/docs/requisition/saveRequisition";
 	}
 	
+	private void manualValidation(Object object, String objectName, String origin) throws Exception{
+		HashMap<Object, Object> errorMap = new HashMap<>();
+		MapBindingResult mapBindingResult = new MapBindingResult(errorMap, objectName);
+		validator.validate(object, mapBindingResult);
+					
+		if (!mapBindingResult.getAllErrors().isEmpty()){
+			throw new SparkBindingException(mapBindingResult.getAllErrors(), origin);
+		}
+	}
+	
 	@ExceptionHandler(Exception.class)
 	public ModelAndView constraintError(HttpServletRequest req, Exception exception){
 		ModelAndView modelAndView = new ModelAndView();
@@ -155,10 +173,16 @@ public class RequisitionController {
 		if (exception instanceof BindException){
 			modelAndView.addObject("requisitionInfo", requisitionInfo);
 			modelAndView.addObject("requisitionValidationException",true);
-			modelAndView = setErrors(modelAndView, (BindException) exception, requisitionInfo);
+			modelAndView = setErrors(modelAndView, ((BindException) exception).getAllErrors(), requisitionInfo, "");
 			modelAndView.setViewName("/docs/requisition/saveRequisition");
 		}
-		else{
+		else if (exception instanceof SparkBindingException){
+			modelAndView.addObject("requisitionInfo", requisitionInfo);
+			modelAndView.addObject("requisitionValidationException",true);
+			modelAndView = setErrors(modelAndView, ((SparkBindingException) exception).getErrors(), requisitionInfo, CyberUtils.additionForm);
+			modelAndView.setViewName("/docs/requisition/saveRequisition");
+		}
+		else {
 			modelAndView.addObject("requisitionInfo", requisitionInfo);
 			modelAndView.addObject("requisitionCreateException",true);
 			modelAndView.setViewName("/docs/requisition/saveRequisition");
@@ -186,16 +210,19 @@ public class RequisitionController {
 		return modelAndView;
 	}
 	
-	private ModelAndView setErrors(ModelAndView model, BindException exception, RequisitionInfo requisitionInfo){
-		List<ObjectError> errors = exception.getAllErrors();
-		additionFormNames=Arrays.asList("item");
+	private ModelAndView setErrors(ModelAndView model, List<ObjectError> errors, RequisitionInfo requisitionInfo, String origin){
 		for (ObjectError error : errors) {
 			if (error instanceof FieldError){
 				FieldError fieldError=(FieldError) error;
 				if (fieldError.getCode()!=null){
-					if (isAdditionForm(fieldError.getField())){
+					if (origin.equals(CyberUtils.additionForm)){
 						model.addObject("_AdditionFormException", true);
 					}
+					
+					if (origin.equals(CyberUtils.modificationForm)){
+						model.addObject("_ModificationFormException", true);
+					}
+					
 					if (fieldError.getCodes()[0].startsWith(CyberUtils.lengthValidation)
 							||fieldError.getCodes()[0].startsWith(CyberUtils.rangeValidation)){
 						
@@ -221,10 +248,6 @@ public class RequisitionController {
 			}
 		}
 		return model;
-	}
-	
-	private boolean isAdditionForm(String fieldName){
-		return additionFormNames.contains(fieldName);
 	}
 	
 	@ModelAttribute("requisitionInfo")

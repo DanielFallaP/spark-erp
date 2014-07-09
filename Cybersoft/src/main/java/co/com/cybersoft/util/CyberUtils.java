@@ -43,6 +43,10 @@ public class CyberUtils {
 	
 	public final static String setMethodPrefix="set";
 	
+	public final static String additionForm="additionForm";
+	
+	public final static String modificationForm="modificationForm";
+	
 	private final static List<Character> PCREEscapeCharacters=Arrays.asList('.','^','$','*','+','?','(',')','[','{','|','^','-',']');
 	
 	public final static String stringLiteralEscape="\\\\";

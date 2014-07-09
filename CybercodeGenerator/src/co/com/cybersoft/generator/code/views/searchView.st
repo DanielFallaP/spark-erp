@@ -113,7 +113,7 @@
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 		<div class="row-fluid">
-			<div id="back"><a th:text="#{label.back}" th:href="@{/configuration}"></a></div>
+			<div id="back"><a th:text="#{label.back}" th:href="@{/$backURL$}"></a></div>
 			<h3 th:text="#{label.$tableName$Info}"> </h3>
 			<table width="100%">
 				<tr>

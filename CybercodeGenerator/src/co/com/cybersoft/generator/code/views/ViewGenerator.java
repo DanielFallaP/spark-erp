@@ -216,6 +216,7 @@ public class ViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("searchView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("backURL", table.getLabelTable()?Spark.settingsURL:Spark.configurationURL);
 		template.setAttribute("columns", getOtherColumns(table));
 		template.setAttribute("columnHeaders", getHeaderColumns(table));
 		template.setAttribute("excel", table.getLabelTable()?"<div></div>":generateExcelLink(table));
