@@ -17,7 +17,7 @@ public class ConfigGenerator {
 	}
 	
 	private void generateCoreConfig(Spark cybersoft){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("config", Spark.codePath+"config");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("config", Spark.configCodePath);
 		StringTemplate template = templateGroup.getInstanceOf("coreConfig");
 		
 		List<Table> tables = cybersoft.getTables();
@@ -50,7 +50,7 @@ public class ConfigGenerator {
 	}
 	
 	private void generatePersistenceConfig(Spark cybersoft){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("config", Spark.codePath+"config");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("config", Spark.configCodePath);
 		StringTemplate template = templateGroup.getInstanceOf("persistenceConfig");
 		
 		List<Table> tables = cybersoft.getTables();

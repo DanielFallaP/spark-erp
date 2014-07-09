@@ -1,4 +1,4 @@
-package co.com.cybersoft.generator.code.core;
+package co.com.cybersoft.generator.code.tables.core;
 
 import java.util.HashSet;
 import java.util.List;

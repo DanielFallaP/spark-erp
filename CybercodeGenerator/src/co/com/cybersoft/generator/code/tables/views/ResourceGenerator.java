@@ -1,4 +1,4 @@
-package co.com.cybersoft.generator.code.views;
+package co.com.cybersoft.generator.code.tables.views;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

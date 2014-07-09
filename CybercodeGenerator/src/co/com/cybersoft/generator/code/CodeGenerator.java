@@ -10,14 +10,14 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import co.com.cybersoft.generator.code.config.ConfigGenerator;
-import co.com.cybersoft.generator.code.core.CoreGenerator;
-import co.com.cybersoft.generator.code.events.EventGenerator;
 import co.com.cybersoft.generator.code.model.Spark;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
-import co.com.cybersoft.generator.code.persistence.PersistenceGenerator;
-import co.com.cybersoft.generator.code.views.ViewGenerator;
-import co.com.cybersoft.generator.code.web.WebGenerator;
+import co.com.cybersoft.generator.code.tables.core.CoreGenerator;
+import co.com.cybersoft.generator.code.tables.events.EventGenerator;
+import co.com.cybersoft.generator.code.tables.persistence.PersistenceGenerator;
+import co.com.cybersoft.generator.code.tables.views.ViewGenerator;
+import co.com.cybersoft.generator.code.tables.web.WebGenerator;
 
 
 public class CodeGenerator {

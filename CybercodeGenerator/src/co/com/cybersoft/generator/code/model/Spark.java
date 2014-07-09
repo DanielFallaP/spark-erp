@@ -6,7 +6,11 @@ public class Spark {
 	
 	private List<Table> tables;
 	
-	public final static String codePath="src/co/com/cybersoft/generator/code/";
+	public final static String codePath="src/co/com/cybersoft/generator/code/tables/";
+	
+	public final static String configCodePath="src/co/com/cybersoft/generator/code/config/";
+	
+	public final static String utilCodePath="src/co/com/cybersoft/generator/code/util/";
 	
 	public final static String targetTableClassPath="build/java/co/com/cybersoft/tables";
 	

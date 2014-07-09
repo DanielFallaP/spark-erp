@@ -1,4 +1,4 @@
-package co.com.cybersoft.generator.code.events;
+package co.com.cybersoft.generator.code.tables.events;
 
 import java.util.List;
 

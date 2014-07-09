@@ -1,4 +1,4 @@
-package co.com.cybersoft.generator.code.persistence;
+package co.com.cybersoft.generator.code.tables.persistence;
 
 import java.util.HashSet;
 import java.util.List;
@@ -136,7 +136,7 @@ public class PersistenceGenerator {
 	}
 	
 	private String generateGettersSetters(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"util");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.utilCodePath);
 		List<Field> fields = table.getFields();
 		
 		String text="";

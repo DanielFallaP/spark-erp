@@ -1,4 +1,4 @@
-package co.com.cybersoft.generator.code.web;
+package co.com.cybersoft.generator.code.tables.web;
 
 import java.util.HashSet;
 import java.util.List;
@@ -723,7 +723,7 @@ public class WebGenerator {
 			if (!field.getCompoundReference()){
 				
 				if (!field.isReference()){
-					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Spark.codePath+"util");
+					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Spark.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
 					gettersSettersTemplate.setAttribute("type", field.getType());
 					gettersSettersTemplate.setAttribute("name", field.getName());
@@ -731,7 +731,7 @@ public class WebGenerator {
 					body+=gettersSettersTemplate.toString()+"\n\n";
 				}
 				else{
-						StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Spark.codePath+"util");
+						StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Spark.utilCodePath);
 						StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("listGetters");
 						gettersSettersTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
 						gettersSettersTemplate.setAttribute("tableName", field.getName());
@@ -770,7 +770,7 @@ public class WebGenerator {
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					
-					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Spark.codePath+"util");
+					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Spark.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("listGetters");
 					gettersSettersTemplate.setAttribute("entityName", CodeUtil.toCamelCase(compoundField.getTableName()));
 					gettersSettersTemplate.setAttribute("tableName", compoundField.getTableName());

@@ -29,6 +29,7 @@
     	<script type="text/javascript">
     	 /* <![CDATA[ */
 	     \$(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
 	    	  var link = \$(this);
 	    	  var target = link.attr("target");
 	    	  if(\$.trim(target).length > 0)
@@ -41,6 +42,7 @@
 	    	  }
 
 	    	  event.preventDefault();
+	    	  }
 	    	});
 	     
 	     \$(document).keyup(function(e) {

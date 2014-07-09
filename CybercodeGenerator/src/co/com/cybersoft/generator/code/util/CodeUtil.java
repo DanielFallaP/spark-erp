@@ -61,7 +61,7 @@ public class CodeUtil {
 	}
 	
 	public static String getGettersAndSetters(Spark spark,Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("util",Spark.codePath+"util");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("util",Spark.utilCodePath);
 		List<Field> fields = table.getFields();
 		
 		String text="";
