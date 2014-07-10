@@ -11,11 +11,11 @@ import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
-public class PersistenceGenerator {
+public class TablePersistenceGenerator {
 	
 	private final Cybertables cybersoft;
 	
-	public PersistenceGenerator(Cybertables cybersoft){
+	public TablePersistenceGenerator(Cybertables cybersoft){
 		this.cybersoft=cybersoft;
 	}
 	
@@ -31,7 +31,7 @@ public class PersistenceGenerator {
 	}
 	
 	private void generatePersistenceFactory(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceFactory");
 		List<Field> fields = table.getFields();
 		String byFields="";
@@ -52,7 +52,7 @@ public class PersistenceGenerator {
 	}
 
 	public void generateDomainClass(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceDomain");
 		template.setAttribute("fieldDeclaration", generateDomainClassFieldDeclaration(table));
 		template.setAttribute("gettersAndSetters", generateGettersSetters(table));
@@ -173,7 +173,7 @@ public class PersistenceGenerator {
 	}
 	
 	private void generatePersistenceInterface(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceInterface");
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
@@ -241,7 +241,7 @@ public class PersistenceGenerator {
 	}
 	
 	private void generatePersistenceImpl(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceImplementation");
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
@@ -250,7 +250,7 @@ public class PersistenceGenerator {
 		template.setAttribute("checkReferences", generateReferenceCheck(table));
 		template.setAttribute("imports", generateImports(table));
 		
-		StringTemplateGroup subTemplateGroup=new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
+		StringTemplateGroup subTemplateGroup=new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		if(CodeUtil.generateDescriptionAutocomplete(table)){
 			StringTemplate subTemplate = subTemplateGroup.getInstanceOf("fieldPersistenceServiceImpl");
 			subTemplate.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
@@ -323,7 +323,7 @@ public class PersistenceGenerator {
 	}
 	
 	private String generateReferenceCheck(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		
 		String checks="";
 		List<Field> fields = table.getFields();
@@ -345,7 +345,7 @@ public class PersistenceGenerator {
 	}
 
 	private String generateImports(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		
 		String imports="";
 		List<Field> fields = table.getFields();
@@ -362,7 +362,7 @@ public class PersistenceGenerator {
 	}
 
 	private String generateAutoCompleteRepos(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		
 		String declarations="";
 		List<Field> fields = table.getFields();
@@ -381,7 +381,7 @@ public class PersistenceGenerator {
 	private void generateRepositories(Table table){
 		
 		//Repository interface generation
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("repository");
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());

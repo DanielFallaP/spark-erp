@@ -9,7 +9,7 @@ import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
-public class EventGenerator {
+public class TableEventGenerator {
 	
 	public void generate(Cybertables cybersoft){
 		List<Table> tables = cybersoft.getTables();
@@ -34,7 +34,7 @@ public class EventGenerator {
 	}
 
 	private void generateRequestCreateEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.tableCodePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("requestCreateEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
@@ -43,7 +43,7 @@ public class EventGenerator {
 	}
 	
 	private void generateDetailsEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.tableCodePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("requestDetailsEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
@@ -51,7 +51,7 @@ public class EventGenerator {
 	}
 	
 	private void generateResponseDetailsEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.tableCodePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("responseDetailsEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
@@ -60,7 +60,7 @@ public class EventGenerator {
 	}
 	
 	private void generatePageEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.tableCodePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("requestPageEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
@@ -69,7 +69,7 @@ public class EventGenerator {
 	}
 	
 	private void generateResponsePageEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.tableCodePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("responsePageEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
@@ -121,7 +121,7 @@ public class EventGenerator {
 	}
 		
 	private void generateRequestModificationEvent(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.codePath+"events");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.tableCodePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("requestModificationEvent");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());

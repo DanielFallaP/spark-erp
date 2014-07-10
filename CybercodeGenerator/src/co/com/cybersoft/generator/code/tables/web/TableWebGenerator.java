@@ -16,11 +16,11 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
  * @author daniel, Cybersoft
  *
  */
-public class WebGenerator {
+public class TableWebGenerator {
 	
 	private final Cybertables cybersystems;
 	
-	public WebGenerator(Cybertables cybersoft){
+	public TableWebGenerator(Cybertables cybersoft){
 		this.cybersystems=cybersoft;
 	}
 	
@@ -53,7 +53,7 @@ public class WebGenerator {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 			if (field.getCompoundReference()){
-					StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.codePath+"web");
+					StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.tableCodePath+"web");
 					StringTemplate template = templateGroup.getInstanceOf("compoundFieldController");
 					template.setAttribute("tableName", table.getName());
 					template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
@@ -70,7 +70,7 @@ public class WebGenerator {
 
 
 	private void generateSingletonController(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.tableCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("setController");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
 		template.setAttribute("tableName", table.getName());
@@ -88,7 +88,7 @@ public class WebGenerator {
 	}
 
 	private void generateExcelController(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("excelController");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
@@ -97,7 +97,7 @@ public class WebGenerator {
 	}
 
 	private void generateSearchByFieldController(Table table, Field field){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchByFieldController");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
@@ -108,7 +108,7 @@ public class WebGenerator {
 	}
 	
 	private void generateSearchController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.tableCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchController");
 		template.setAttribute("entityName", table.getName());
 		template.setAttribute("coreService", CodeUtil.toCamelCase(table.getName())+"Service");
@@ -125,7 +125,7 @@ public class WebGenerator {
 	}
 	
 	private void generateCreateController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.tableCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("creationController");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
 		template.setAttribute("tableName", table.getName());
@@ -211,7 +211,7 @@ public class WebGenerator {
 	}
 	
 	private void generateModifyController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.tableCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("modificationController");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
 		template.setAttribute("tableName", table.getName());
@@ -237,7 +237,7 @@ public class WebGenerator {
 			if (field.getCompoundReference()){
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
 					if (compoundKey.size()>1){
-						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
+						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
 						StringTemplate stringTemplate = templateGroup.getInstanceOf("compoundControllerLists");
 						String compoundOps="";
 						String fieldStateEvents="";
@@ -284,7 +284,7 @@ public class WebGenerator {
 			if (field.getCompoundReference()){
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
 				if (compoundKey.size()>1){
-					StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
+					StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("compoundReferenceList");
 					String compoundOps="";
 					String fieldStateEvents="";
@@ -340,7 +340,7 @@ public class WebGenerator {
 			if (field.getCompoundReference()){
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
 				if (compoundKey.size()>1){
-					StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
+					StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("compoundReferenceList");
 					String compoundOps="";
 					String fieldStateEvents="";
@@ -387,7 +387,7 @@ public class WebGenerator {
 	}
 
 	private void generateDomain(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.tableCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("domainClasses");
 		String className = CodeUtil.toCamelCase(table.getName()+"Info");
 		template.setAttribute("domainClassName", className);
@@ -596,7 +596,7 @@ public class WebGenerator {
 				}
 				else{
 					if (field.isEmbeddedReference() && !CodeUtil.generateAutoCompleteReference(field)){
-						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
+						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
 						StringTemplate template = templateGroup.getInstanceOf("setEmbeddedReferences");
 						List<String> embeddedFields=field.getEmbeddedFields();
 						String decl="";

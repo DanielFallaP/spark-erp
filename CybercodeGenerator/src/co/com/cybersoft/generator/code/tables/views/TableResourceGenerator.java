@@ -18,7 +18,7 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
  * @author Daniel Falla
  *
  */
-public class ResourceGenerator {
+public class TableResourceGenerator {
 	
 	private Connection con;
 	
@@ -26,7 +26,7 @@ public class ResourceGenerator {
 	
 	private final Cybertables cybersoft;
 	
-	public ResourceGenerator(Cybertables cybersoft){
+	public TableResourceGenerator(Cybertables cybersoft){
 		this.cybersoft=cybersoft;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");

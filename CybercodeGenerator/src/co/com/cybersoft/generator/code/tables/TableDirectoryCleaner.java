@@ -1,4 +1,4 @@
-package co.com.cybersoft.generator.code;
+package co.com.cybersoft.generator.code.tables;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import org.apache.commons.io.FileUtils;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
-public class DirectoryCleaner {
+public class TableDirectoryCleaner {
 
 	private final Cybertables cybersoft;
 	
@@ -26,7 +26,7 @@ public class DirectoryCleaner {
 	private final List<String> fileDirectories=new ArrayList<String>(Arrays.asList("src/main/java/co/com/cybersoft/tables/core/domain",
 																			       "src/main/java/co/com/cybersoft/tables/persistence/domain"));
 			
-	public DirectoryCleaner(Cybertables cybersoft){
+	public TableDirectoryCleaner(Cybertables cybersoft){
 		this.cybersoft=cybersoft;
 	}
 	

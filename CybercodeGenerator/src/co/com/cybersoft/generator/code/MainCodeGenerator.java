@@ -1,5 +1,7 @@
 package co.com.cybersoft.generator.code;
 
+import java.util.Date;
+
 /**
  * This class is the main class for generating all
  * CRUD operations conforming to the reference architecture
@@ -18,7 +20,9 @@ public class MainCodeGenerator {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("=====Finished generating app");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("APPLICATION BUILT SUCCESSFULLY: "+new Date());
 	}
 
 }

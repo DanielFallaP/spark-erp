@@ -9,7 +9,7 @@ import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
-public class ConfigGenerator {
+public class TableConfigGenerator {
 
 	public void generate(Cybertables cybersoft){
 		generateCoreConfig(cybersoft);

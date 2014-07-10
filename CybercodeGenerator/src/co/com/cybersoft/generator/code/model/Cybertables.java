@@ -6,7 +6,9 @@ public class Cybertables {
 	
 	private List<Table> tables;
 	
-	public final static String codePath="src/co/com/cybersoft/generator/code/tables/";
+	public final static String tableCodePath="src/co/com/cybersoft/generator/code/tables/";
+	
+	public final static String documentCodePath="src/co/com/cybersoft/generator/code/docs/";
 	
 	public final static String configCodePath="src/co/com/cybersoft/generator/code/config/";
 	

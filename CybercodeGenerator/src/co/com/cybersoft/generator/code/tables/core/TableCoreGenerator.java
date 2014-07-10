@@ -11,11 +11,11 @@ import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
-public class CoreGenerator {
+public class TableCoreGenerator {
 	
 	private final Cybertables spark;
 	
-	public CoreGenerator(Cybertables cybersoft){
+	public TableCoreGenerator(Cybertables cybersoft){
 		this.spark=cybersoft;
 	}
 
@@ -29,7 +29,7 @@ public class CoreGenerator {
 	}
 	
 	private void generateCoreServiceInterface(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.codePath+"core");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreServiceInterface");
 		String className=CodeUtil.toCamelCase(table.getName())+"Service";
 		template.setAttribute("entityName", table.getName());
@@ -104,7 +104,7 @@ public class CoreGenerator {
 	}
 	
 	private void generateCoreServiceImplementation(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.codePath+"core");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreServiceImpl");
 		String className=CodeUtil.toCamelCase(table.getName())+"Service";
 		template.setAttribute("entityName", table.getName());
@@ -184,7 +184,7 @@ public class CoreGenerator {
 	}
 	
 	private void generateCoreDomainClass(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.codePath+"core");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreDomain");
 		template.setAttribute("fieldDeclaration", CodeUtil.getFieldDeclarations(spark,table));
 		template.setAttribute("gettersAndSetters", CodeUtil.getGettersAndSetters(spark,table));
