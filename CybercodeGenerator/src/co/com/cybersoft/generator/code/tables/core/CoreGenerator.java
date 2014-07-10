@@ -6,16 +6,16 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
-import co.com.cybersoft.generator.code.model.Spark;
+import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class CoreGenerator {
 	
-	private final Spark spark;
+	private final Cybertables spark;
 	
-	public CoreGenerator(Spark cybersoft){
+	public CoreGenerator(Cybertables cybersoft){
 		this.spark=cybersoft;
 	}
 
@@ -29,7 +29,7 @@ public class CoreGenerator {
 	}
 	
 	private void generateCoreServiceInterface(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Spark.codePath+"core");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.codePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreServiceInterface");
 		String className=CodeUtil.toCamelCase(table.getName())+"Service";
 		template.setAttribute("entityName", table.getName());
@@ -100,11 +100,11 @@ public class CoreGenerator {
 		template.setAttribute("requestAll", requestDeclarations);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/core/services/"+table.getName(), className+".java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/services/"+table.getName(), className+".java");
 	}
 	
 	private void generateCoreServiceImplementation(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Spark.codePath+"core");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.codePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreServiceImpl");
 		String className=CodeUtil.toCamelCase(table.getName())+"Service";
 		template.setAttribute("entityName", table.getName());
@@ -180,11 +180,11 @@ public class CoreGenerator {
 		template.setAttribute("requestAll", requestImpl);
 		template.setAttribute("autocompleteRequest", autocompleteRequest);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/core/services/"+table.getName(), className+"Impl.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/services/"+table.getName(), className+"Impl.java");
 	}
 	
 	private void generateCoreDomainClass(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Spark.codePath+"core");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.codePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreDomain");
 		template.setAttribute("fieldDeclaration", CodeUtil.getFieldDeclarations(spark,table));
 		template.setAttribute("gettersAndSetters", CodeUtil.getGettersAndSetters(spark,table));
@@ -205,6 +205,6 @@ public class CoreGenerator {
 			}
 		}
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/core/domain", CodeUtil.toCamelCase(table.getName())+"Details.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/domain", CodeUtil.toCamelCase(table.getName())+"Details.java");
 	}
 }

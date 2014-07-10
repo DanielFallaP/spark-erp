@@ -5,7 +5,7 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
-import co.com.cybersoft.generator.code.model.Spark;
+import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
@@ -17,9 +17,9 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
  */
 public class ViewGenerator {
 	
-	private final Spark cybersystems;
+	private final Cybertables cybersystems;
 	
-	public ViewGenerator(Spark cybersoft){
+	public ViewGenerator(Cybertables cybersoft){
 		this.cybersystems=cybersoft;
 	}
 
@@ -41,7 +41,7 @@ public class ViewGenerator {
 	}
 	
 	private void generateSetView(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.codePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("singletonView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
@@ -52,11 +52,11 @@ public class ViewGenerator {
 			template.setAttribute("firstField", fields.get(0).getName());
 		}
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetViewPath+"/normal/configuration/"+table.getName(), "set"+CodeUtil.toCamelCase(table.getName())+".html");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/configuration/"+table.getName(), "set"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
 
-	private void generateSettingsView(Spark cybersoft2) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Spark.codePath+"views");
+	private void generateSettingsView(Cybertables cybersoft2) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.codePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("settings");
 		
 		List<Table> tables = cybersystems.getTables();
@@ -78,12 +78,12 @@ public class ViewGenerator {
 		
 		template.setAttribute("links", links);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetViewPath+"normal", "settings.html");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetViewPath+"normal", "settings.html");
 	}
 
 	private void generateCreateView(Table table){
 		
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.codePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("createView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
@@ -98,7 +98,7 @@ public class ViewGenerator {
 			template.setAttribute("firstField", fields.get(0).getName());
 		}
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetViewPath+"/normal/configuration/"+table.getName(), "create"+CodeUtil.toCamelCase(table.getName())+".html");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/configuration/"+table.getName(), "create"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
 	
 
@@ -110,7 +110,7 @@ public class ViewGenerator {
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
 				for (int i=0; i< compoundKey.size()-1; i++) {
 					Field compoundField = compoundKey.get(i);
-					StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+					StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.codePath+"views");
 					StringTemplate template = templateGroup.getInstanceOf("compoundSelection");
 					template.setAttribute("field", compoundField.getName());
 					template.setAttribute("tableName", table.getName());
@@ -127,7 +127,7 @@ public class ViewGenerator {
 	private Object generateAutocompleteReferenceFunctions(Table table) {
 		List<Field> fields = table.getFields();
 		String functions="";
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.codePath+"views");
 		for (Field field : fields) {
 			if (CodeUtil.generateAutoCompleteReference(field)){
 				StringTemplate template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
@@ -136,7 +136,7 @@ public class ViewGenerator {
 				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
 				template.setAttribute("referenceType", field.getRefType());
 				template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-				template.setAttribute("arraySeparator", Spark.arraySeparator);
+				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
 
 				functions+="\n"+template.toString();
 			}
@@ -147,7 +147,7 @@ public class ViewGenerator {
 
 	private String generateSelectFunctions(Field compoundField, int i) {
 		List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, compoundField.getRefType());
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.codePath+"views");
 		String functions="";
 		for (;i<compoundKey.size();i++) {
 			StringTemplate template = templateGroup.getInstanceOf("selectOptions");
@@ -161,7 +161,7 @@ public class ViewGenerator {
 	private String generateAutocompleteFunctions(Table table){
 		List<Field> fields = table.getFields();
 		String functions="";
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.codePath+"views");
 		for (Field field : fields) {
 			if (CodeUtil.generateAutoComplete(field)){
 				StringTemplate template = templateGroup.getInstanceOf("autocompleteFunction");
@@ -169,7 +169,7 @@ public class ViewGenerator {
 				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 				template.setAttribute("tableName", table.getName());
 				template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-				template.setAttribute("arraySeparator", Spark.arraySeparator);
+				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
 
 				functions+="\n"+template.toString();
 			}
@@ -181,9 +181,9 @@ public class ViewGenerator {
 	private String generateDateFieldPickers(Table table){
 		String pickers="";
 		List<Field> fields = table.getFields();
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Spark.codePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.codePath+"views");
 		for (Field field : fields) {
-			if (!field.isReference() && field.getType().equals(Spark.dateType)){
+			if (!field.isReference() && field.getType().equals(Cybertables.dateType)){
 				StringTemplate template = templateGroup.getInstanceOf("datePicker");
 				template.setAttribute("dateField", field.getName());
 				pickers+=template.toString()+"\n";
@@ -194,7 +194,7 @@ public class ViewGenerator {
 	}
 	
 	private void generateModifyView(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.codePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("modifyView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
@@ -208,46 +208,46 @@ public class ViewGenerator {
 			template.setAttribute("firstField", fields.get(0).getName());
 		}
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetViewPath+"/normal/configuration/"+table.getName(), "modify"+CodeUtil.toCamelCase(table.getName())+".html");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/configuration/"+table.getName(), "modify"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
 
 	private void generateSearchView(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.codePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("searchView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-		template.setAttribute("backURL", table.getLabelTable()?Spark.settingsURL:Spark.configurationURL);
+		template.setAttribute("backURL", table.getLabelTable()?Cybertables.settingsURL:Cybertables.configurationURL);
 		template.setAttribute("columns", getOtherColumns(table));
 		template.setAttribute("columnHeaders", getHeaderColumns(table));
 		template.setAttribute("excel", table.getLabelTable()?"<div></div>":generateExcelLink(table));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetViewPath+"/normal/configuration/"+table.getName(), "search"+CodeUtil.toCamelCase(table.getName())+".html");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/configuration/"+table.getName(), "search"+CodeUtil.toCamelCase(table.getName())+".html");
 	}
 	
 	private String generateExcelLink(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.codePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("excel");
 		template.setAttribute("tableName", table.getName());
 		return template.toString();
 	}
 	
 	private String generateFieldRows(Table table) {
-		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views", Spark.codePath+"views");
+		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views", Cybertables.codePath+"views");
 		List<Field> fields = table.getFields();
 		String text="";
 		for (Field field : fields) {
 			if (!field.isReference() && field.getVisible() && !field.getReadOnly()){
 				StringTemplate template;
-				if (!field.getLargeText() && !field.getType().equals(Spark.booleanType))
+				if (!field.getLargeText() && !field.getType().equals(Cybertables.booleanType))
 					template = stringTemplateGroup.getInstanceOf("editableTableRow");
-				else if (field.getType().equals(Spark.booleanType))
+				else if (field.getType().equals(Cybertables.booleanType))
 					template = stringTemplateGroup.getInstanceOf("editableCheck");
 				else
 					template = stringTemplateGroup.getInstanceOf("editableTextAreaRow");
 				template.setAttribute("tableName", table.getName());
 				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
-				if (field.getType().equals(Spark.dateType))
+				if (field.getType().equals(Cybertables.dateType))
 					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
 				text+=template.toString()+"\n";
 			}
@@ -291,14 +291,14 @@ public class ViewGenerator {
 	}
 	
 	private String getOtherColumns(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.codePath+"views");
 		List<Field> fields = table.getFields();
 		String text="";
 		for (Field field : fields) {
 			if (!field.getCompoundReference() && field.getDisplayable()){
-				if (!field.isReference() && field.getVisible() && !field.getLargeText() && !field.getType().equals(Spark.booleanType)){
+				if (!field.isReference() && field.getVisible() && !field.getLargeText() && !field.getType().equals(Cybertables.booleanType)){
 					StringTemplate template;
-					if (field.getType().equals(Spark.dateType)){
+					if (field.getType().equals(Cybertables.dateType)){
 						template = templateGroup.getInstanceOf("otherDateColumn");
 					}
 					else{
@@ -308,7 +308,7 @@ public class ViewGenerator {
 					text+=template.toString()+"\n";
 				}
 				
-				if (!field.isReference() && field.getVisible() && !field.getLargeText() && field.getType().equals(Spark.booleanType)){
+				if (!field.isReference() && field.getVisible() && !field.getLargeText() && field.getType().equals(Cybertables.booleanType)){
 					StringTemplate template = templateGroup.getInstanceOf("booleanColumn");
 					template.setAttribute("fieldName", field.getName());
 					text+=template.toString()+"\n";
@@ -359,7 +359,7 @@ public class ViewGenerator {
 	}
 	
 	private String getHeaderColumns(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Spark.codePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.codePath+"views");
 		List<Field> fields = table.getFields();
 		
 		String text="";
@@ -422,8 +422,8 @@ public class ViewGenerator {
 		return text;
 	}
 	
-	private void generateLinksView(Spark cybersoft){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Spark.codePath+"views");
+	private void generateLinksView(Cybertables cybersoft){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.codePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("viewConfiguration");
 		
 		List<Table> tables = cybersoft.getTables();
@@ -445,6 +445,6 @@ public class ViewGenerator {
 		
 		template.setAttribute("links", links);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetViewPath+"normal", "configuration.html");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetViewPath+"normal", "configuration.html");
 	}
 }

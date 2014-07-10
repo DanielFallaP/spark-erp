@@ -7,4 +7,9 @@ public class DocCodeGenerator {
 		
 	
 	}
+
+	public void generate() {
+		// TODO Auto-generated method stub
+		
+	}
 }

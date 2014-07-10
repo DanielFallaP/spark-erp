@@ -10,7 +10,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import co.com.cybersoft.generator.code.config.ConfigGenerator;
-import co.com.cybersoft.generator.code.model.Spark;
+import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.tables.core.CoreGenerator;
@@ -20,12 +20,12 @@ import co.com.cybersoft.generator.code.tables.views.ViewGenerator;
 import co.com.cybersoft.generator.code.tables.web.WebGenerator;
 
 
-public class CodeGenerator {
+public class TableCodeGenerator {
 	
 	private ObjectMapper mapper=new ObjectMapper();
 	
 	public void generate() throws JsonParseException, JsonMappingException, IOException{
-		Spark cybersystems=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Spark.class);
+		Cybertables cybersystems=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybertables.class);
 		System.out.println("Finished reading file");
 		
 		//Set singleton tables fields as not required

@@ -7,7 +7,7 @@ import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
 import co.com.cybersoft.generator.code.model.Field;
-import co.com.cybersoft.generator.code.model.Spark;
+import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
@@ -18,9 +18,9 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
  */
 public class WebGenerator {
 	
-	private final Spark cybersystems;
+	private final Cybertables cybersystems;
 	
-	public WebGenerator(Spark cybersoft){
+	public WebGenerator(Cybertables cybersoft){
 		this.cybersystems=cybersoft;
 	}
 	
@@ -53,7 +53,7 @@ public class WebGenerator {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 			if (field.getCompoundReference()){
-					StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Spark.codePath+"web");
+					StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.codePath+"web");
 					StringTemplate template = templateGroup.getInstanceOf("compoundFieldController");
 					template.setAttribute("tableName", table.getName());
 					template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
@@ -63,14 +63,14 @@ public class WebGenerator {
 					template.setAttribute("compoundReferences", generateCompoundReferenceVariables(table));
 					template.setAttribute("setCompoundLists", generateCompoundControllerLists(field,table));
 
-					CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+CodeUtil.toCamelCase(field.getName())+"Controller.java");
+					CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+CodeUtil.toCamelCase(field.getName())+"Controller.java");
 			}
 		}
 	}
 
 
 	private void generateSingletonController(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Spark.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("setController");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
 		template.setAttribute("tableName", table.getName());
@@ -84,31 +84,31 @@ public class WebGenerator {
 		//reference lists
 		template.setAttribute("setReferencesLists", generateControllerReferencesLists(table));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), "Set"+CodeUtil.toCamelCase(table.getName())+"Controller.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/web/controller/"+table.getName(), "Set"+CodeUtil.toCamelCase(table.getName())+"Controller.java");
 	}
 
 	private void generateExcelController(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Spark.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("excelController");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ExcelController.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ExcelController.java");
 	}
 
 	private void generateSearchByFieldController(Table table, Field field){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Spark.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchByFieldController");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("fieldName", field.getName());
 		template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchBy"+CodeUtil.toCamelCase(field.getName())+"Controller.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchBy"+CodeUtil.toCamelCase(field.getName())+"Controller.java");
 	}
 	
 	private void generateSearchController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Spark.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchController");
 		template.setAttribute("entityName", table.getName());
 		template.setAttribute("coreService", CodeUtil.toCamelCase(table.getName())+"Service");
@@ -121,11 +121,11 @@ public class WebGenerator {
 		template.setAttribute("requestMethodName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("viewURL", "/configuration/"+table.getName()+"/search"+CodeUtil.toCamelCase(table.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchController.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchController.java");
 	}
 	
 	private void generateCreateController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Spark.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("creationController");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
 		template.setAttribute("tableName", table.getName());
@@ -150,7 +150,7 @@ public class WebGenerator {
 		//compound reference lists
 		template.setAttribute("setCompoundLists", generateControllerCompoundLists(table));
 
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CreationController.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CreationController.java");
 	}
 
 	
@@ -211,7 +211,7 @@ public class WebGenerator {
 	}
 	
 	private void generateModifyController(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Spark.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("modificationController");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));		
 		template.setAttribute("tableName", table.getName());
@@ -229,7 +229,7 @@ public class WebGenerator {
 		//compound reference lists
 		template.setAttribute("setCompoundLists", generateModificationControllerCompoundLists(table));
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationController.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"ModificationController.java");
 	}
 	
 	private String generateCompoundControllerLists(Field field, Table table) {
@@ -237,7 +237,7 @@ public class WebGenerator {
 			if (field.getCompoundReference()){
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
 					if (compoundKey.size()>1){
-						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Spark.codePath+"web");
+						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
 						StringTemplate stringTemplate = templateGroup.getInstanceOf("compoundControllerLists");
 						String compoundOps="";
 						String fieldStateEvents="";
@@ -284,7 +284,7 @@ public class WebGenerator {
 			if (field.getCompoundReference()){
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
 				if (compoundKey.size()>1){
-					StringTemplateGroup templateGroup = new StringTemplateGroup("web",Spark.codePath+"web");
+					StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("compoundReferenceList");
 					String compoundOps="";
 					String fieldStateEvents="";
@@ -340,7 +340,7 @@ public class WebGenerator {
 			if (field.getCompoundReference()){
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
 				if (compoundKey.size()>1){
-					StringTemplateGroup templateGroup = new StringTemplateGroup("web",Spark.codePath+"web");
+					StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("compoundReferenceList");
 					String compoundOps="";
 					String fieldStateEvents="";
@@ -387,14 +387,14 @@ public class WebGenerator {
 	}
 
 	private void generateDomain(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Spark.codePath+"web");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.codePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("domainClasses");
 		String className = CodeUtil.toCamelCase(table.getName()+"Info");
 		template.setAttribute("domainClassName", className);
 		template.setAttribute("bodyDomainClass", generateDomainBody(table));
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("referencesImports", generateDomainClassImports(table));
-		CodeUtil.writeClass(template.toString(),Spark.targetTableClassPath+"/web/domain/"+table.getName(), className+".java");
+		CodeUtil.writeClass(template.toString(),Cybertables.targetTableClassPath+"/web/domain/"+table.getName(), className+".java");
 	}
 	
 	
@@ -404,7 +404,7 @@ public class WebGenerator {
 		
 		//Check for validation constraints
 		for (Field field : fields) {
-			if (field.getLength()!=null && field.getType().equals(Spark.stringType)){
+			if (field.getLength()!=null && field.getType().equals(Cybertables.stringType)){
 				imports+="import org.hibernate.validator.constraints.Length;\n";
 				break;
 			}
@@ -412,7 +412,7 @@ public class WebGenerator {
 		}
 		
 		for (Field field : fields) {
-			if (!field.isReference() && field.getRequired() && field.getVisible() && field.getType().equals(Spark.stringType)){
+			if (!field.isReference() && field.getRequired() && field.getVisible() && field.getType().equals(Cybertables.stringType)){
 				imports+="import org.hibernate.validator.constraints.NotEmpty;\n";
 				break;
 			}
@@ -424,8 +424,8 @@ public class WebGenerator {
 		
 			for (Field field : fields) {
 				if (!field.isReference()){
-					if(field.getRequired() && field.getVisible() && (field.getType().equals(Spark.integerType) || 
-							field.getType().equals(Spark.longType) || field.getType().equals(Spark.doubleType))){
+					if(field.getRequired() && field.getVisible() && (field.getType().equals(Cybertables.integerType) || 
+							field.getType().equals(Cybertables.longType) || field.getType().equals(Cybertables.doubleType))){
 						imports+="import javax.validation.constraints.NotNull;\n";
 						break;
 					}
@@ -433,8 +433,8 @@ public class WebGenerator {
 			}
 		
 		for (Field field : fields) {
-			if (field.getLength()!=null && (field.getType().equals(Spark.integerType)
-					||field.getType().equals(Spark.longType) || field.getType().equals(Spark.doubleType))){
+			if (field.getLength()!=null && (field.getType().equals(Cybertables.integerType)
+					||field.getType().equals(Cybertables.longType) || field.getType().equals(Cybertables.doubleType))){
 				imports+="import org.hibernate.validator.constraints.Range;\n";
 			}
 		}
@@ -596,7 +596,7 @@ public class WebGenerator {
 				}
 				else{
 					if (field.isEmbeddedReference() && !CodeUtil.generateAutoCompleteReference(field)){
-						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Spark.codePath+"web");
+						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.codePath+"web");
 						StringTemplate template = templateGroup.getInstanceOf("setEmbeddedReferences");
 						List<String> embeddedFields=field.getEmbeddedFields();
 						String decl="";
@@ -642,21 +642,21 @@ public class WebGenerator {
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				
-				if (!field.isReference() && !field.getType().equals(Spark.booleanType)){
-					if (field.getLength()!=null && field.getType().equals(Spark.stringType)){
+				if (!field.isReference() && !field.getType().equals(Cybertables.booleanType)){
+					if (field.getLength()!=null && field.getType().equals(Cybertables.stringType)){
 						body+="@Length(max="+field.getLength()+")\n";
 					}
-					if (field.getRequired()&&field.getVisible()&&(field.isReference()|| field.getType().equals(Spark.stringType))){
+					if (field.getRequired()&&field.getVisible()&&(field.isReference()|| field.getType().equals(Cybertables.stringType))){
 						body+="@NotEmpty\n";
 					}
 					
-					if (field.getRequired()&&field.getVisible()&&!field.isReference()&&(field.getType().equals(Spark.integerType)
-							||field.getType().equals(Spark.longType) || field.getType().equals(Spark.doubleType))){
+					if (field.getRequired()&&field.getVisible()&&!field.isReference()&&(field.getType().equals(Cybertables.integerType)
+							||field.getType().equals(Cybertables.longType) || field.getType().equals(Cybertables.doubleType))){
 						body+="@NotNull\n";
 					}
 					
-					if (field.getLength()!=null && !field.isReference() && (field.getType().equals(Spark.integerType)
-							||field.getType().equals(Spark.longType) || field.getType().equals(Spark.doubleType))){
+					if (field.getLength()!=null && !field.isReference() && (field.getType().equals(Cybertables.integerType)
+							||field.getType().equals(Cybertables.longType) || field.getType().equals(Cybertables.doubleType))){
 						body+="@Range(max="+CodeUtil.getMaxNumber(field.getLength())+")\n";
 					}
 				}
@@ -676,7 +676,7 @@ public class WebGenerator {
 				}
 				else{
 					fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-					fieldTemplate.setAttribute("type", Spark.stringType);
+					fieldTemplate.setAttribute("type", Cybertables.stringType);
 					fieldTemplate.setAttribute("name", field.getName());
 					body+=fieldTemplate.toString();
 					body+="\n";
@@ -703,7 +703,7 @@ public class WebGenerator {
 					if (field.getRequired())
 						body+="@NotEmpty\n";
 					StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-					fieldTemplate.setAttribute("type", Spark.stringType);
+					fieldTemplate.setAttribute("type", Cybertables.stringType);
 					fieldTemplate.setAttribute("name", compoundField.getName());
 					body+=fieldTemplate.toString();
 					body+="\n";
@@ -723,7 +723,7 @@ public class WebGenerator {
 			if (!field.getCompoundReference()){
 				
 				if (!field.isReference()){
-					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Spark.utilCodePath);
+					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
 					gettersSettersTemplate.setAttribute("type", field.getType());
 					gettersSettersTemplate.setAttribute("name", field.getName());
@@ -731,7 +731,7 @@ public class WebGenerator {
 					body+=gettersSettersTemplate.toString()+"\n\n";
 				}
 				else{
-						StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Spark.utilCodePath);
+						StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 						StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("listGetters");
 						gettersSettersTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
 						gettersSettersTemplate.setAttribute("tableName", field.getName());
@@ -739,7 +739,7 @@ public class WebGenerator {
 						body+=gettersSettersTemplate.toString()+"\n\n";			
 						
 						StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-						template.setAttribute("type", Spark.stringType);
+						template.setAttribute("type", Cybertables.stringType);
 						template.setAttribute("name", field.getName());
 						template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 						
@@ -770,7 +770,7 @@ public class WebGenerator {
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					
-					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Spark.utilCodePath);
+					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("listGetters");
 					gettersSettersTemplate.setAttribute("entityName", CodeUtil.toCamelCase(compoundField.getTableName()));
 					gettersSettersTemplate.setAttribute("tableName", compoundField.getTableName());
@@ -778,7 +778,7 @@ public class WebGenerator {
 					body+=gettersSettersTemplate.toString()+"\n\n";			
 					
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-					template.setAttribute("type", Spark.stringType);
+					template.setAttribute("type", Cybertables.stringType);
 					template.setAttribute("name", compoundField.getName());
 					template.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
 					

@@ -73,7 +73,7 @@
 		
 		
 		$( function () {
-			$( "#requiredOnDateItem" ).datepicker();
+			$( "#bodyRequiredOnDate" ).datepicker();
 		} );
 		     
 			function submitDeletion(){
@@ -469,7 +469,7 @@
 		        		</tr>
 		        		<tr>
 		        				<td ><b th:text="#{label.requisitionItemRequiredOnDate}+': '"></b></td>
-		        				<td><input id="requiredOnDateItem" type="text" th:field="*{bodyRequiredOnDate}" /></td>
+		        				<td><input id="bodyRequiredOnDate" name="bodyRequiredOnDate" type="text" th:value="*{{bodyRequiredOnDate}}" /></td>
 		        				<td th:if="${bodyRequiredOnDateException}"><div class="alert alert-error" th:text="#{${bodyRequiredOnDateValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>

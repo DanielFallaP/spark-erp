@@ -7,15 +7,15 @@ import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
 import co.com.cybersoft.generator.code.model.Field;
-import co.com.cybersoft.generator.code.model.Spark;
+import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class PersistenceGenerator {
 	
-	private final Spark cybersoft;
+	private final Cybertables cybersoft;
 	
-	public PersistenceGenerator(Spark cybersoft){
+	public PersistenceGenerator(Cybertables cybersoft){
 		this.cybersoft=cybersoft;
 	}
 	
@@ -31,12 +31,12 @@ public class PersistenceGenerator {
 	}
 	
 	private void generatePersistenceFactory(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceFactory");
 		List<Field> fields = table.getFields();
 		String byFields="";
 		for (Field field : fields) {
-			if (!field.getCompoundReference() && !field.isReference() && field.getType().equals(Spark.stringType)){
+			if (!field.getCompoundReference() && !field.isReference() && field.getType().equals(Cybertables.stringType)){
 				StringTemplate stringTemplate = templateGroup.getInstanceOf("queryByField");
 				stringTemplate.setAttribute("fieldName", field.getName());
 				stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
@@ -48,11 +48,11 @@ public class PersistenceGenerator {
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("queriesByFields", byFields);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceFactory.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceFactory.java");
 	}
 
 	public void generateDomainClass(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceDomain");
 		template.setAttribute("fieldDeclaration", generateDomainClassFieldDeclaration(table));
 		template.setAttribute("gettersAndSetters", generateGettersSetters(table));
@@ -92,7 +92,7 @@ public class PersistenceGenerator {
 		}
 		
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/domain", CodeUtil.toCamelCase(table.getName())+".java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/domain", CodeUtil.toCamelCase(table.getName())+".java");
 	}
 	
 	private String generateDomainClassFieldDeclaration(Table table){
@@ -106,7 +106,7 @@ public class PersistenceGenerator {
 					body+="@Indexed(unique=true)\n";
 				}
 				StringTemplate template = new StringTemplate("private $type$ $name$;\n");
-				template.setAttribute("type", field.isReference()?Spark.stringType:field.getType());
+				template.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
 				template.setAttribute("name", field.getName());
 				body+=template.toString();
 				body+="\n";
@@ -123,7 +123,7 @@ public class PersistenceGenerator {
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersoft, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = new StringTemplate("private $type$ $name$;\n");
-					template.setAttribute("type", Spark.stringType);
+					template.setAttribute("type", Cybertables.stringType);
 					template.setAttribute("name", compoundField.getName());
 					body+=template.toString();
 					body+="\n";
@@ -136,7 +136,7 @@ public class PersistenceGenerator {
 	}
 	
 	private String generateGettersSetters(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.utilCodePath);
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.utilCodePath);
 		List<Field> fields = table.getFields();
 		
 		String text="";
@@ -144,7 +144,7 @@ public class PersistenceGenerator {
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-				template.setAttribute("type", field.isReference()?Spark.stringType:field.getType());
+				template.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
 				template.setAttribute("name", field.getName());
 				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 				text+=template.toString()+"\n";
@@ -161,7 +161,7 @@ public class PersistenceGenerator {
 				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersoft, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-					template.setAttribute("type", Spark.stringType);
+					template.setAttribute("type", Cybertables.stringType);
 					template.setAttribute("name", compoundField.getName());
 					template.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
 					text+=template.toString()+"\n";
@@ -173,7 +173,7 @@ public class PersistenceGenerator {
 	}
 	
 	private void generatePersistenceInterface(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceInterface");
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
@@ -236,12 +236,12 @@ public class PersistenceGenerator {
 		template.setAttribute("requestAll", requestAll);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceService.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceService.java");
 	
 	}
 	
 	private void generatePersistenceImpl(Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceImplementation");
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
@@ -250,7 +250,7 @@ public class PersistenceGenerator {
 		template.setAttribute("checkReferences", generateReferenceCheck(table));
 		template.setAttribute("imports", generateImports(table));
 		
-		StringTemplateGroup subTemplateGroup=new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		StringTemplateGroup subTemplateGroup=new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
 		if(CodeUtil.generateDescriptionAutocomplete(table)){
 			StringTemplate subTemplate = subTemplateGroup.getInstanceOf("fieldPersistenceServiceImpl");
 			subTemplate.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
@@ -318,12 +318,12 @@ public class PersistenceGenerator {
 		template.setAttribute("requestAll", requestImpl);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceServiceImpl.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceServiceImpl.java");
 		
 	}
 	
 	private String generateReferenceCheck(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
 		
 		String checks="";
 		List<Field> fields = table.getFields();
@@ -345,7 +345,7 @@ public class PersistenceGenerator {
 	}
 
 	private String generateImports(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
 		
 		String imports="";
 		List<Field> fields = table.getFields();
@@ -362,7 +362,7 @@ public class PersistenceGenerator {
 	}
 
 	private String generateAutoCompleteRepos(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
 		
 		String declarations="";
 		List<Field> fields = table.getFields();
@@ -381,7 +381,7 @@ public class PersistenceGenerator {
 	private void generateRepositories(Table table){
 		
 		//Repository interface generation
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Spark.codePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.codePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("repository");
 		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
@@ -394,14 +394,14 @@ public class PersistenceGenerator {
 				StringTemplate subTemplate=new StringTemplate("$entityName$ findBy$fieldName$($fieldType$ value);\n");
 				subTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 				subTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
-				subTemplate.setAttribute("fieldType", field.getType()!=null?CodeUtil.toCamelCase(field.getType()):Spark.stringType);
+				subTemplate.setAttribute("fieldType", field.getType()!=null?CodeUtil.toCamelCase(field.getType()):Cybertables.stringType);
 				methods+=subTemplate.toString()+"\n";
 			}
 		}
 		
 		template.setAttribute("findByFields", methods);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"Repository.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"Repository.java");
 		
 		//Custom repository interface generation
 		template = templateGroup.getInstanceOf("customRepositoryInterface");
@@ -464,7 +464,7 @@ public class PersistenceGenerator {
 		template.setAttribute("findAllActive", findAllActive);
 		template.setAttribute("autocompleteQuery", autocompleteQueries);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepo.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepo.java");
 		
 		//Custom repository implementation generation
 		template = templateGroup.getInstanceOf("customRepositoryImplementation");
@@ -533,7 +533,7 @@ public class PersistenceGenerator {
 		template.setAttribute("findAllActive", findAllActive);
 		template.setAttribute("byContainingFields", autocompleteQueries);
 		
-		CodeUtil.writeClass(template.toString(), Spark.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepoImpl.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepoImpl.java");
 		
 	}
 
