@@ -104,7 +104,7 @@
 			"spanishName":"Naturaleza contable",
 			"fields":[
 						{"name":"nature", "spanishName":"Naturaleza contable", "type":"String", "unique":"true", "autocomplete":"true", "labelField":"true"},
-						{"name":"sign", "spanishName":"Signo (+ -)", "type":"String", "unique":"true", "length":"1"},
+						{"name":"sign", "spanishName":"Signo +-", "type":"String", "unique":"true", "length":"1"},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -134,7 +134,7 @@
 						{"name":"localAccountLevel1", "spanishName":"Cuenta local nivel 1", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"englishName", "spanishName":"Nombre en inglés", "type":"String", "length":"1"},
 						{"name":"balanceGroup", "spanishName":"Grupo de Balance", "refType":"balanceGroup", "displayField":"balanceGroup"},
-						{"name":"accountSign", "spanishName":"Signo (+ -)", "refType":"accountNature", "displayField":"sign"},
+						{"name":"accountSign", "spanishName":"Signo +-", "refType":"accountNature", "displayField":"sign"},
 						{"name":"accountNature", "spanishName":"Naturaleza contable", "refType":"accountNature", "displayField":"nature", "embeddedFields":["code"]},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -828,6 +828,15 @@
 						{"name":"localCurrencyValue", "spanishName":"Valor en moneda local", "type":"Double"},
 						{"name":"foreignCurrencyValue", "spanishName":"Valor en moneda extranjera", "type":"Double"},
 						{"name":"exchangeRate", "spanishName":"Tasa de cambio", "type":"Double", "displayable":"false"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {
+			"name":"otherPurchaseValue",	
+			"spanishName":"Otro valor de compra",
+			"fields":[
+						{"name":"value", "spanishName":"Valor", "type":"String", "unique":"true", "autocomplete":"true"},
+						{"name":"sign", "spanishName":"Signo +-", "type":"String", "length":"1"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 }
