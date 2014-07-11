@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import co.com.cybersoft.docsTest.events.requisition.RequestRequisitionEvent;
 import co.com.cybersoft.docsTest.events.requisition.RequisitionEvent;
+import co.com.cybersoft.docsTest.events.requisition.RequisitionModificationEvent;
 import co.com.cybersoft.docsTest.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docsTest.persistence.services.requisition.RequisitionPersistenceService;
 import co.com.cybersoft.docsTest.web.domain.requisition.RequisitionInfo;
@@ -94,7 +95,7 @@ public class RequisitionController {
 	public String saveRequisition(@ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionItemInfo") RequisitionItemInfo current, @ModelAttribute("requisitionItemModificationInfo") RequisitionItemInfo modified,Model model, HttpServletRequest request) throws Exception{
 		RequisitionEvent requisitionEvent=null;
 		if (modified.getRequisitionItemModificationInfo().getSubmit().equals("modification")){
-			manualValidation(modified, "requisitionItemModificationInfo", CyberUtils.modificationForm);
+			manualValidation(modified.getRequisitionItemModificationInfo(), "requisitionItemModificationInfo", CyberUtils.modificationForm);
 			
 			requisitionInfo.setRequisitionItemModificationInfo(modified.getRequisitionItemModificationInfo());
 			requisitionEvent = requisitionService.updateRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
@@ -144,7 +145,11 @@ public class RequisitionController {
 			}
 
 		
+		current.setNumericId(requisitionEvent.getRequisition().getNumericId());
+		modified.setNumericId(requisitionEvent.getRequisition().getNumericId());
 		model.addAttribute("requisitionInfo",requisitionInfo);
+		model.addAttribute("requisitionItemInfo",current);
+		model.addAttribute("requisitionItemModificationInfo",modified);
 		model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
 		return "/docsTest/requisition/saveRequisition";
 	}
@@ -249,12 +254,12 @@ public class RequisitionController {
 	}
 	
 	@ModelAttribute("requisitionInfo")
-	private RequisitionInfo getRequisitionInfo(String id, @ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, Model model, HttpServletRequest request)  throws Exception {
+	private RequisitionInfo getRequisitionInfo(String id, @ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionItemInfo") RequisitionItemInfo requisitionItemInfo, @ModelAttribute("requisitionItemModificationInfo") RequisitionItemInfo requisitionItemModificationInfo,Model model, HttpServletRequest request)  throws Exception {
 		RequisitionInfo requisitionInfoSession = (RequisitionInfo) request.getSession().getAttribute("requisitionInfo");
 
-		if (requisitionInfo.getCreated()!=null && requisitionInfo.getCreated()){
-			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);	
-			RequisitionItemInfo requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
+		if (requisitionInfo.getCreated()!=null && requisitionInfo.getCreated() && requisitionItemInfo.getNumericId()==null && requisitionItemModificationInfo.getNumericId()!=null){
+			requisitionItemInfo = getRequisitionItemInfo(request);	
+			requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
 			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
 			requisitionInfo.setRequisitionItemModificationInfo(requisitionItemModificationInfo);
 			requisitionItemInfo.setSubmit("");
@@ -262,6 +267,8 @@ public class RequisitionController {
 			submitModification.setSubmit("");
 			requisitionItemModificationInfo.setRequisitionItemModificationInfo(submitModification);
 			
+			request.getSession().setAttribute("requisitionInfo", requisitionInfo);
+
 			model.addAttribute("requisitionInfo",requisitionInfoSession);
 			model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
 			model.addAttribute("requisitionItemInfo", requisitionItemInfo);
@@ -270,13 +277,14 @@ public class RequisitionController {
 			return requisitionInfo;
 		}
 		else{
-			
-			if (id==null)
-				requisitionInfo = new RequisitionInfo();
-			else{
+			if (id!=null){
 				requisitionInfo = requisitionService.requestRequisitionDetails(new RequestRequisitionEvent(id)).getRequisition();
 				requisitionInfo.setShowBody(true);
 			}
+			else{
+				requisitionInfo = new RequisitionInfo();
+			}
+			
 			requisitionInfo.setCreated(true);
 			
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
@@ -330,9 +338,9 @@ public class RequisitionController {
 				}
 			}
 			
-			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);	
+			requisitionItemInfo = getRequisitionItemInfo(request);	
 			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
-			RequisitionItemInfo requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
+			requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
 			requisitionInfo.setRequisitionItemModificationInfo(requisitionItemModificationInfo);
 			requisitionItemInfo.setSubmit("");
 			RequisitionItemInfo submitModification = new RequisitionItemInfo();
@@ -340,6 +348,10 @@ public class RequisitionController {
 			requisitionItemModificationInfo.setRequisitionItemModificationInfo(submitModification);
 		
 			request.getSession().setAttribute("requisitionInfo", requisitionInfo);
+			
+			requisitionItemInfo.setNumericId(requisitionInfo.getNumericId());
+			requisitionItemModificationInfo.setNumericId(requisitionInfo.getNumericId());
+			
 			model.addAttribute("requisitionInfo",requisitionInfo);
 			model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
 			model.addAttribute("requisitionItemInfo", requisitionItemInfo);

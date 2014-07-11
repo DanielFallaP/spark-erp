@@ -137,6 +137,12 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 			if (requisition!=null)
 				requisitionInfo = new RequisitionInfo().toRequisitionInfo(requisition);
 		}
+		
+		if (event.getNumericId()!=null){
+			Requisition requisition = requisitionRepository.findByNumericId(event.getNumericId());if (requisition!=null)
+				requisitionInfo = new RequisitionInfo().toRequisitionInfo(requisition);
+		}
+		
 		return new RequisitionEvent(requisitionInfo);
 		
 	}

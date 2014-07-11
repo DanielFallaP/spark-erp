@@ -9,12 +9,18 @@ public class RequestRequisitionEvent {
 
 	private String id;
 	
+	private Long numericId;
+	
 	private String field;
 	
 	private String value;
 	
 	public RequestRequisitionEvent(String id){
 		this.id=id;
+	}
+	
+	public RequestRequisitionEvent(Long numericId){
+		this.numericId=numericId;
 	}
 
 	public String getId() {
@@ -35,5 +41,12 @@ public class RequestRequisitionEvent {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public Long getNumericId() {
+		return numericId;
 	}	
+	
+	
+	
 }
