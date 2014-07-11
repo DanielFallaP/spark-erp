@@ -29,7 +29,10 @@ import co.com.cybersoft.docs.events.$docName$.$upperDocName$Event;
 import co.com.cybersoft.docs.events.$docName$.Save$upperDocName$Event;
 import co.com.cybersoft.docs.persistence.services.$docName$.$upperDocName$PersistenceService;
 import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$Info;
-import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$ItemInfo;
+import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$BodyInfo;
+import co.com.cybersoft.util.CyberUtils;
+import co.com.cybersoft.util.SparkBindingException;
+$imports$
 import co.com.cybersoft.tables.core.services.country.CountryService;
 import co.com.cybersoft.tables.core.services.department.DepartmentService;
 import co.com.cybersoft.tables.core.services.expenseType.ExpenseTypeService;
@@ -38,9 +41,6 @@ import co.com.cybersoft.tables.core.services.priority.PriorityService;
 import co.com.cybersoft.tables.core.services.state.StateService;
 import co.com.cybersoft.tables.core.services.transportationType.TransportationTypeService;
 import co.com.cybersoft.tables.core.services.warehouse.WarehouseService;
-import co.com.cybersoft.util.CyberUtils;
-import co.com.cybersoft.util.SparkBindingException;
-$imports$
 import co.com.cybersoft.tables.events.country.CountryPageEvent;
 import co.com.cybersoft.tables.events.department.DepartmentPageEvent;
 import co.com.cybersoft.tables.events.expenseType.ExpenseTypePageEvent;
@@ -95,7 +95,7 @@ public class $upperDocName$Controller {
 	
 		
 	@RequestMapping(method=RequestMethod.POST)
-	public String save$upperDocName$(@ModelAttribute("$docName$Info") $upperDocName$Info $docName$Info, @ModelAttribute("$docName$ItemInfo") $upperDocName$ItemInfo current, @ModelAttribute("$docName$ItemModificationInfo") $upperDocName$ItemInfo modified,Model model, HttpServletRequest request) throws Exception{
+	public String save$upperDocName$(@ModelAttribute("$docName$Info") $upperDocName$Info $docName$Info, @ModelAttribute("$docName$BodyInfo") $upperDocName$BodyInfo current, @ModelAttribute("$docName$ItemModificationInfo") $upperDocName$BodyInfo modified,Model model, HttpServletRequest request) throws Exception{
 		$upperDocName$Event $docName$Event=null;
 		if (modified.get$upperDocName$ItemModificationInfo().getSubmit().equals("modification")){
 			manualValidation(modified, "$docName$ItemModificationInfo", CyberUtils.modificationForm);
@@ -105,12 +105,12 @@ public class $upperDocName$Controller {
 		}
 		else if (modified.get$upperDocName$ItemModificationInfo().getSubmit().equals("creation")){
 			
-			manualValidation(current, "$docName$ItemInfo", CyberUtils.additionForm);
+			manualValidation(current, "$docName$BodyInfo", CyberUtils.additionForm);
 			
-			$docName$Info.setCurrent$upperDocName$ItemInfo(current);
+			$docName$Info.setCurrent$upperDocName$BodyInfo(current);
 			$docName$Event = $docName$Service.save$upperDocName$Body(new Save$upperDocName$Event($docName$Info));
-			$upperDocName$ItemInfo $docName$ItemInfo = get$upperDocName$ItemInfo(request);
-			model.addAttribute("$docName$ItemInfo", $docName$ItemInfo);
+			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(request);
+			model.addAttribute("$docName$BodyInfo", $docName$BodyInfo);
 		}
 		else if (modified.get$upperDocName$ItemModificationInfo().getSubmit().endsWith("deletion")){
 			List<String> toDelete = Arrays.asList($docName$Info.getDeletion().split(","));
@@ -149,7 +149,7 @@ public class $upperDocName$Controller {
 
 		
 		model.addAttribute("$docName$Info",$docName$Info);
-		model.addAttribute("$docName$ItemInfoList", $docName$Info.get$upperDocName$ItemList());
+		model.addAttribute("$docName$BodyInfoList", $docName$Info.get$upperDocName$ItemList());
 		return "/docs/$docName$/save$upperDocName$";
 	}
 	
@@ -192,19 +192,19 @@ public class $upperDocName$Controller {
 		
 		try {
 			$docName$Info.set_toSave(false);
-			$upperDocName$ItemInfo $docName$ItemInfo = get$upperDocName$ItemInfo(req);	
-			$docName$Info.setCurrent$upperDocName$ItemInfo($docName$ItemInfo);
-			$upperDocName$ItemInfo $docName$ItemModificationInfo = get$upperDocName$ItemModificationInfo(req);
+			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(req);	
+			$docName$Info.setCurrent$upperDocName$BodyInfo($docName$BodyInfo);
+			$upperDocName$BodyInfo $docName$ItemModificationInfo = get$upperDocName$ItemModificationInfo(req);
 			$docName$Info.set$upperDocName$ItemModificationInfo($docName$ItemModificationInfo);
-			$docName$ItemInfo.setSubmit("");
-			$docName$ItemInfo.set$upperDocName$ItemModificationInfo(new $upperDocName$ItemInfo());
-			$upperDocName$ItemInfo submitModification = new $upperDocName$ItemInfo();
+			$docName$BodyInfo.setSubmit("");
+			$docName$BodyInfo.set$upperDocName$ItemModificationInfo(new $upperDocName$BodyInfo());
+			$upperDocName$BodyInfo submitModification = new $upperDocName$BodyInfo();
 			submitModification.setSubmit("");
 			$docName$ItemModificationInfo.set$upperDocName$ItemModificationInfo(submitModification);
 		
 			modelAndView.addObject("$docName$Info",$docName$Info);
-			modelAndView.addObject("$docName$ItemInfoList", $docName$Info.get$upperDocName$ItemList());
-			modelAndView.addObject("$docName$ItemInfo",$docName$ItemInfo);
+			modelAndView.addObject("$docName$BodyInfoList", $docName$Info.get$upperDocName$ItemList());
+			modelAndView.addObject("$docName$BodyInfo",$docName$BodyInfo);
 			modelAndView.addObject("$docName$ItemModificationInfo",$docName$ItemModificationInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -257,18 +257,18 @@ public class $upperDocName$Controller {
 		$upperDocName$Info $docName$InfoSession = ($upperDocName$Info) request.getSession().getAttribute("$docName$Info");
 
 		if ($docName$Info.getCreated()!=null && $docName$Info.getCreated()){
-			$upperDocName$ItemInfo $docName$ItemInfo = get$upperDocName$ItemInfo(request);	
-			$upperDocName$ItemInfo $docName$ItemModificationInfo = get$upperDocName$ItemModificationInfo(request);
-			$docName$Info.setCurrent$upperDocName$ItemInfo($docName$ItemInfo);
+			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(request);	
+			$upperDocName$BodyInfo $docName$ItemModificationInfo = get$upperDocName$ItemModificationInfo(request);
+			$docName$Info.setCurrent$upperDocName$BodyInfo($docName$BodyInfo);
 			$docName$Info.set$upperDocName$ItemModificationInfo($docName$ItemModificationInfo);
-			$docName$ItemInfo.setSubmit("");
-			$upperDocName$ItemInfo submitModification = new $upperDocName$ItemInfo();
+			$docName$BodyInfo.setSubmit("");
+			$upperDocName$BodyInfo submitModification = new $upperDocName$BodyInfo();
 			submitModification.setSubmit("");
 			$docName$ItemModificationInfo.set$upperDocName$ItemModificationInfo(submitModification);
 			
 			model.addAttribute("$docName$Info",$docName$InfoSession);
-			model.addAttribute("$docName$ItemInfoList", $docName$Info.get$upperDocName$ItemList());
-			model.addAttribute("$docName$ItemInfo", $docName$ItemInfo);
+			model.addAttribute("$docName$BodyInfoList", $docName$Info.get$upperDocName$ItemList());
+			model.addAttribute("$docName$BodyInfo", $docName$BodyInfo);
 			model.addAttribute("$docName$ItemModificationInfo",requisitionItemModificationInfo);
 			
 			return requisitionInfo;
@@ -334,19 +334,19 @@ public class $upperDocName$Controller {
 				}
 			}
 			
-			$upperDocName$ItemInfo requisitionItemInfo = get$upperDocName$ItemInfo(request);	
-			requisitionInfo.setCurrent$upperDocName$ItemInfo(requisitionItemInfo);
-			$upperDocName$ItemInfo requisitionItemModificationInfo = get$upperDocName$ItemModificationInfo(request);
+			$upperDocName$BodyInfo requisitionBodyInfo = get$upperDocName$BodyInfo(request);	
+			requisitionInfo.setCurrent$upperDocName$BodyInfo(requisitionBodyInfo);
+			$upperDocName$BodyInfo requisitionItemModificationInfo = get$upperDocName$ItemModificationInfo(request);
 			requisitionInfo.set$upperDocName$ItemModificationInfo(requisitionItemModificationInfo);
-			requisitionItemInfo.setSubmit("");
-			$upperDocName$ItemInfo submitModification = new $upperDocName$ItemInfo();
+			requisitionBodyInfo.setSubmit("");
+			$upperDocName$BodyInfo submitModification = new $upperDocName$BodyInfo();
 			submitModification.setSubmit("");
 			requisitionItemModificationInfo.set$upperDocName$ItemModificationInfo(submitModification);
 		
 			request.getSession().setAttribute("requisitionInfo", requisitionInfo);
 			model.addAttribute("requisitionInfo",requisitionInfo);
-			model.addAttribute("requisitionItemInfoList", requisitionInfo.get$upperDocName$ItemList());
-			model.addAttribute("requisitionItemInfo", requisitionItemInfo);
+			model.addAttribute("requisitionBodyInfoList", requisitionInfo.get$upperDocName$ItemList());
+			model.addAttribute("requisitionBodyInfo", requisitionBodyInfo);
 			model.addAttribute("requisitionItemModificationInfo",requisitionItemModificationInfo);
 			
 			return requisitionInfo;
@@ -354,23 +354,23 @@ public class $upperDocName$Controller {
 		
 	}
 		
-		private $upperDocName$ItemInfo get$upperDocName$ItemInfo(HttpServletRequest request) throws Exception {
-			$upperDocName$ItemInfo requisitionItemInfo = new $upperDocName$ItemInfo();
+		private $upperDocName$BodyInfo get$upperDocName$BodyInfo(HttpServletRequest request) throws Exception {
+			$upperDocName$BodyInfo requisitionBodyInfo = new $upperDocName$BodyInfo();
 			
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
-			requisitionItemInfo.setPriorityList(allPriorityEvent.getPriorityList());
+			requisitionBodyInfo.setPriorityList(allPriorityEvent.getPriorityList());
 			
-			requisitionItemInfo.setId(null);
-			requisitionItemInfo.setBodyRequiredOnDate(new Date());
+			requisitionBodyInfo.setId(null);
+			requisitionBodyInfo.setBodyRequiredOnDate(new Date());
 
-			request.getSession().setAttribute("requisitionItemInfo", requisitionItemInfo);
+			request.getSession().setAttribute("requisitionBodyInfo", requisitionBodyInfo);
 			
-			return requisitionItemInfo;
+			return requisitionBodyInfo;
 		}
 		
 
-		private $upperDocName$ItemInfo get$upperDocName$ItemModificationInfo(HttpServletRequest request) throws Exception{
-			$upperDocName$ItemInfo requisitionItemModificationInfo = new $upperDocName$ItemInfo();
+		private $upperDocName$BodyInfo get$upperDocName$ItemModificationInfo(HttpServletRequest request) throws Exception{
+			$upperDocName$BodyInfo requisitionItemModificationInfo = new $upperDocName$BodyInfo();
 			
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
 			requisitionItemModificationInfo.setPriorityList(allPriorityEvent.getPriorityList());

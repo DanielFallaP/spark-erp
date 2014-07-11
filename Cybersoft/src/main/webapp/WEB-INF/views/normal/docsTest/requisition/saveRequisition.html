@@ -4,8 +4,7 @@
       xmlns:spring="http://www.springframework.org/tags" >
     <head>
     	<meta charset="UTF-8" />
-        <title th:text="#{label.requisitionadCreationTitle}"></title>
-   
+        <title th:text="#{label.requisitionCreationTitle}"></title>
         
         <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
 		<style type="text/css">
@@ -455,11 +454,12 @@
 							        				
        				<div align="right" ><input type="button" th:value="#{label.save}" onclick="submitHeader();"/></div>
 		        </form>
-					<input th:if='${requisitionInfo.showBody}' id="newEntry" hidden=""/> 
+					<input th:if='${requisitionInfo.showBody}' id="newEntry" hidden=""/>
 			 <!-- Custom form for adding new records -->
 			 <form id="requisition-body-form" class="white-popup mfp-hide"  th:object="${requisitionItemInfo}" method="post">
 		        	<h3 th:text="#{label.requisitionItemCreationTitle}"></h3>
 		        	<input id="_submit" hidden="" th:field="*{requisitionItemModificationInfo.submit}"></input>
+					<input th:if='${requisitionInfo.showBody}' th:field="*{numericId}"  hidden=""/>
 		        	<input th:if='${requisitionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
 		        	<input th:if="${_AdditionFormException}" id="_AdditionFormException" hidden=""></input> 
 		        	<table>		        			        			
@@ -497,6 +497,7 @@
 		        	<input id="_id" hidden="" th:field="*{requisitionItemModificationInfo.id}"></input>
 		        	<input id="_modificationSubmit" hidden="hidden" th:field="*{requisitionItemModificationInfo.submit}"></input>
 		        	<input th:if='${requisitionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if='${requisitionInfo.showBody}' th:field="*{numericId}"  hidden=""/>
 		        	<input th:if="${_ModificationFormException}" id="_ModificationFormException" hidden=""></input>
 		        	<table >		        			        			
 		        		<tr>

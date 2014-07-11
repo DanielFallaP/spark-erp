@@ -2,11 +2,13 @@ package co.com.cybersoft.generator.code.docs.web;
 
 import java.util.List;
 
+import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
 import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
+import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class DocWebGenerator {
 	
@@ -25,14 +27,24 @@ public class DocWebGenerator {
 	}
 
 	private void generateSearchController(Document document) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.documentCodePath+"web");
-		
-		
 	}
 
 	private void generateSaveController(Document document) {
-		// TODO Auto-generated method stub
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.documentCodePath+"web");
+		StringTemplate template = templateGroup.getInstanceOf("saveController");
+		template.setAttribute("docName", document.getName());
+		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
 		
+		template.setAttribute("imports", generateSaveControllerImports(document));
+		
+		CodeUtil.writeClass(template.toString(), Cybertables.documentCodePath+"/web/controller/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"Controller.java");
+	}
+
+	private String generateSaveControllerImports(Document document) {
+		// TODO Auto-generated method stub
+		String imports="";
+		
+		return imports;
 	}
 
 }
