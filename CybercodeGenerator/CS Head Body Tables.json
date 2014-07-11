@@ -78,6 +78,8 @@
 						{"name":"accepted", "spanishName":"Acceptado", "type":"Boolean", "defaultValue":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
+					
+					
 		},
 		{  
 			"name":"supplierAssignment",		
