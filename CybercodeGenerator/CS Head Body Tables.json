@@ -78,6 +78,8 @@
 						{"name":"accepted", "spanishName":"Acceptado", "type":"Boolean", "defaultValue":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
+					
+					
 		},
 		{  
 			"name":"supplierAssignment",		
@@ -87,6 +89,13 @@
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "defaultValue":"today","readOnly":"true"},
 						{"name":"exchangeRate", "spanishName":"Tasa de cambio", "type":"Double", "readOnly":"true"},
 						{"name":"thirdParty", "spanishName":"Tercero", "refType":"thirdParty", "displayField":"thirdParty", "embeddedFields":["identification"]},
+						{"name":"methodOfPayment", "spanishName":"Método de pago", "refType":"methodOfPayment", "displayField":"methodOfPayment", "embeddedFields":["days"]},
+						{"name":"paymentCurrency", "spanishName":"Moneda de pago", "refType":"currency", "keyCompound":"true", "displayField":"code", "embeddedFields":["currency"]},
+		 				{"name":"deliveryLocation", "spanishName":"Lugar de destino", "refType":"deliveryLocation", "displayField":"deliveryLocation", "embeddedFields":["address", "phoneNumber"]},
+						{"name":"deliveryType", "spanishName":"Tipo de entrega", "type":"String", "defaultValue":"Inmediatly"},
+						{"name":"internalControlNumber", "spanishName":"Numero de control interno", "type":"String"},
+						{"name":"priority", "spanishName":"prioridad", "refType":"priority", "displayField":"priority"},
+						{"name":"imported", "spanishName":"Importado", "type":"Boolean", "defaultValue":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -97,6 +106,8 @@
 						{"name":"consecutive", "spanishName":"Consecutivo","refType":"requisition", "displayField":"consecutive","keyCompound":"true"},
 						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code", "keyCompound":"true"},
 						{"name":"requisitionConsecutive", "spanishName":"Requisición", "refType":"Requisición", "displayField":"consecutive", "keyCompound":"true"},
+						{"name":"supplierAssignmentConsecutive", "spanishName":"Consecutivo de asignar proveedor", "refType":"supplierAssignment", "displayField":"consecutive"},
+						{"name":"quotationConsecutive", "spanishName":"Consecutivo de cotización", "refType":"quotation", "displayField":"consecutive"},
 						{"name":"acceptedQuantity", "spanishName":"Cantidad aceptada", "type":"Double"},
 						{"name":"acceptDate", "spanishName":"Fecha de aceptación", "type":"Date", "defaultValue":"today","readOnly":"true"},
 						{"name":"supplierSelectionReason", "spanishName":"Razón de selección de proveedor", "refType":"supplierSelectionReason", "displayField":"supplierSelectionReason", "embeddedFields":["code"]},
@@ -112,18 +123,10 @@
 						{"name":"exchangeRate", "spanishName":"Tasa de cambio", "type":"Double", "readOnly":"true"},
 						{"name":"thirdParty", "spanishName":"Tercero", "refType":"thirdParty", "displayField":"thirdParty", "embeddedFields":["identification"]},
 						{"name":"thirdPartyPerson", "spanishName":"Persona de contacto", "type":"String"},
-						{"name":"stock", "spanishName":"Inventario", "type":"Boolean", "defaultValue":"true"},
 						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"docSite"},
-						{"name":"PurchasingDepartment", "spanishName":"Departamento que compra", "refType":"department", "displayField":"department"},
-						{"name":"methodOfPayment", "spanishName":"Método de pago", "refType":"methodOfPayment", "displayField":"methodOfPayment", "embeddedFields":["days"]},
-						{"name":"paymentCurrency", "spanishName":"Moneda de pago", "refType":"currency", "keyCompound":"true", "displayField":"code", "embeddedFields":["currency"]},
-						{"name":"deliveryLocation", "spanishName":"Lugar de destino", "refType":"deliveryLocation", "displayField":"deliveryLocation", "embeddedFields":["address", "phoneNumber"]},
-						{"name":"deliveryType", "spanishName":"Tipo de entrega", "type":"String", "defaultValue":"Inmediatly"},
-						{"name":"priority", "spanishName":"prioridad", "refType":"priority", "displayField":"priority"},
-						{"name":"imported", "spanishName":"Importado", "type":"Boolean", "defaultValue":"false"},
-						{"name":"remarck", "spanishName":"Observacines",  "type":"String", "largeText":"true", "displayable":"false"},
+						{"name":"remarck", "spanishName":"Observaciones",  "type":"String", "largeText":"true", "displayable":"false"},
+						{"name":"printCounter", "spanishName":"Número de impresiones", "type":"Integer", "readonly":"true", "length":"3"},
 						{"name":"status", "spanishName":"Estado", "type":"String", "defaultValue":"Not received"},
-						{"name":"PrintCounter", "spanishName":"Número de impresiones", "type":"Integer", "readonly":"true", "length":"3"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -131,7 +134,7 @@
 			"name":"purchaseOrderItem",		
 			"spanishName":"Item de orden de compra",		
 			"fields":[
-						{"name":"consecutive", "spanishName":"Consecutivo","refType":"requisition", "displayField":"consecutive","keyCompound":"true"},
+						{"name":"consecutive", "spanishName":"Consecutivo","refType":"purchaseOrder", "displayField":"consecutive","keyCompound":"true"},
 						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code", "keyCompound":"true"},
 						{"name":"requisitionConsecutive", "spanishName":"Requisición", "refType":"Requisición", "displayField":"consecutive", "keyCompound":"true"},
 						{"name":"orderedQuantity", "spanishName":"Cantidad ordenada", "type":"Double"},
@@ -141,6 +144,17 @@
 						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
+		 },
+		{ 
+			"name":"purchaseOrderOtherValue",		
+			"spanishName":"Otros valores en orden de compra",		
+			"fields":[
+						{"name":"consecutive", "spanishName":"Consecutivo","refType":"requisition", "displayField":"consecutive","keyCompound":"true"},
+						{"name":"otherPurchaseValue", "spanishName":"Otro valor de compra", "refType":"otherPurchaseValue", "displayField":"Value", "keyCompound":"true"},
+						{"name":"localCurrencyValue", "spanishName":"Valor en moneda local", "type":"Double"},
+						{"name":"foreignCurrencyValue", "spanishName":"Valor en moneda extranjera", "type":"Double"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					] 
 		}
 	]
 }
