@@ -44,7 +44,7 @@ public class Table {
 	}
 	
 	public boolean isActiveReference(){
-		if (CodeUtil.containsField(this, Spark.activeFieldName))
+		if (CodeUtil.containsField(this, Cybertables.activeFieldName))
 			return true;
 		else
 			return false;
@@ -58,7 +58,7 @@ public class Table {
 		return false;
 	}
 	
-	public List<Field> getCompoundIndex(Spark spark){
+	public List<Field> getCompoundIndex(Cybertables spark){
 		ArrayList<Field> compoundIndex = new ArrayList<Field>();
 		for (Field field:fields) {
 			if (field.getKeyCompound()&&!field.getCompoundReference())

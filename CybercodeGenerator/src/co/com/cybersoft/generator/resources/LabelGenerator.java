@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import co.com.cybersoft.generator.code.model.Spark;
+import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
@@ -39,7 +39,7 @@ public class LabelGenerator implements DBConstants{
 	
 	public final PreparedStatement spanishUpdatePst;
 	
-	private final Spark cybersoft;
+	private final Cybertables cybersoft;
 	
 	private final DB mongoDB;
 	
@@ -61,7 +61,7 @@ public class LabelGenerator implements DBConstants{
 			DB db = mongoClient.getDB(mongoDBName);
 			
 			ObjectMapper mapper = new ObjectMapper();
-			Spark cybersoft=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Spark.class);
+			Cybertables cybersoft=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybertables.class);
 			
 			File rootDirectory = new File(viewsAbsolutePath);
 			
@@ -149,7 +149,7 @@ public class LabelGenerator implements DBConstants{
 		}
 	}
 
-	public LabelGenerator(Spark cybersoft, PreparedStatement insertionPst, PreparedStatement updatePst, PreparedStatement spanishUpdatePst, DB mongoDB){
+	public LabelGenerator(Cybertables cybersoft, PreparedStatement insertionPst, PreparedStatement updatePst, PreparedStatement spanishUpdatePst, DB mongoDB){
 		this.cybersoft=cybersoft;
 		this.insertionPst=insertionPst;
 		this.englishUpdatePst=updatePst;

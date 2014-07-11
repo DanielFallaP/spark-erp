@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import co.com.cybersoft.generator.code.model.Spark;
+import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
@@ -29,13 +29,13 @@ public class DataPopulation implements DBConstants{
 	
 	private final DB mongoDB;
 	
-	private final Spark cybersystems;
+	private final Cybertables cybersystems;
 	
 	public static void main(String[] args) {
 		
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			Spark cybersystems=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Spark.class);
+			Cybertables cybersystems=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybertables.class);
 
 			MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("localhost",27017)));
 			DB db = mongoClient.getDB(mongoDBName);
@@ -46,7 +46,7 @@ public class DataPopulation implements DBConstants{
 		} 
 	}
 	
-	public DataPopulation(DB mongoDB, Spark cybersystems){
+	public DataPopulation(DB mongoDB, Cybertables cybersystems){
 		this.mongoDB=mongoDB;
 		this.cybersystems=cybersystems;
 	}
@@ -122,21 +122,21 @@ public class DataPopulation implements DBConstants{
 	
 	private void appendValue(BasicDBObject doc, Field field, String stringValue, DB mongo){
 			if (field.getType()!=null && !stringValue.equals("")){
-				if (field.getType().equals(Spark.doubleType))
+				if (field.getType().equals(Cybertables.doubleType))
 					doc.append(field.getName(), Double.parseDouble(stringValue));
-				else if (field.getType().equals(Spark.booleanType))
+				else if (field.getType().equals(Cybertables.booleanType))
 					doc.append(field.getName(), Boolean.parseBoolean(stringValue));
-				else if (field.getType().equals(Spark.dateType))
+				else if (field.getType().equals(Cybertables.dateType))
 					doc.append(field.getName(), stringValue);
-				else if (field.getType().equals(Spark.integerType))
+				else if (field.getType().equals(Cybertables.integerType))
 					doc.append(field.getName(), Integer.parseInt(stringValue));
-				else if (field.getType().equals(Spark.longType))
+				else if (field.getType().equals(Cybertables.longType))
 					doc.append(field.getName(), Long.parseLong(stringValue));
 				else
 					doc.append(field.getName(), stringValue);
 			}
 			else{
-				if (field.getType()!=null && field.getType().equals(Spark.stringType))
+				if (field.getType()!=null && field.getType().equals(Cybertables.stringType))
 					doc.append(field.getName(), stringValue);
 				if (field.getRefType()!=null)
 					doc.append(field.getName(), stringValue);

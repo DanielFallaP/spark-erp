@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import co.com.cybersoft.generator.code.model.Spark;
+import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Table;
 
 public class DeletionScript implements DBConstants{
@@ -18,7 +18,7 @@ public class DeletionScript implements DBConstants{
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			
-			Spark cybersystems=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Spark.class);
+			Cybertables cybersystems=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybertables.class);
 			String script="mongo "+mongoDBName+" --eval \"";
 
 			List<Table> tables = cybersystems.getTables();

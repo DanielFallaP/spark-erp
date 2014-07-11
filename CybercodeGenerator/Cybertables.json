@@ -303,13 +303,14 @@
 			"name":"thirdPartyClass",		
 			"spanishName":"Clase de tercero",
 			"fields":[
-						{"name":"identification", "spanishName":"Tercero", "keyCompound":"true", "refType":"thirdParty", "displayField":"identification", "embeddedFields":["thirdParty"]},
+						{"name":"identification", "spanishName":"Tercero", "keyCompound":"true", "refType":"thirdParty", "displayField":"identification", "autocomplete":"true"},
 						{"name":"thirdPartyType", "spanishName":"Tipo de tercero", "keyCompound":"true", "refType":"thirdPartyType", "displayField":"thirdPartyType", "embeddedFields":["code"]},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 						
 					]
 		 },
 		 {	
+		 
 			"name":"partner",
 			"spanishName":"Socio",
 			"fields":[

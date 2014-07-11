@@ -5,19 +5,19 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
-import co.com.cybersoft.generator.code.model.Spark;
+import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class ConfigGenerator {
 
-	public void generate(Spark cybersoft){
+	public void generate(Cybertables cybersoft){
 		generateCoreConfig(cybersoft);
 		generatePersistenceConfig(cybersoft);
 	}
 	
-	private void generateCoreConfig(Spark cybersoft){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("config", Spark.codePath+"config");
+	private void generateCoreConfig(Cybertables cybersoft){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("config", Cybertables.configCodePath);
 		StringTemplate template = templateGroup.getInstanceOf("coreConfig");
 		
 		List<Table> tables = cybersoft.getTables();
@@ -46,11 +46,11 @@ public class ConfigGenerator {
 		template.setAttribute("beanDeclarations", beans);
 
 		
-		CodeUtil.writeClass(template.toString(), Spark.rootClassPath+"/config", "CoreConfig.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.rootClassPath+"/config", "CoreConfig.java");
 	}
 	
-	private void generatePersistenceConfig(Spark cybersoft){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("config", Spark.codePath+"config");
+	private void generatePersistenceConfig(Cybertables cybersoft){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("config", Cybertables.configCodePath);
 		StringTemplate template = templateGroup.getInstanceOf("persistenceConfig");
 		
 		List<Table> tables = cybersoft.getTables();
@@ -102,6 +102,6 @@ public class ConfigGenerator {
 		template.setAttribute("repoFields", repoFields);
 		template.setAttribute("repos", repos);
 		
-		CodeUtil.writeClass(template.toString(), Spark.rootClassPath+"/config", "PersistenceConfig.java");
+		CodeUtil.writeClass(template.toString(), Cybertables.rootClassPath+"/config", "PersistenceConfig.java");
 	}
 }

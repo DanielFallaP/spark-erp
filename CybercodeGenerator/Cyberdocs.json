@@ -1,0 +1,32 @@
+{ 
+	"documents":[
+		 {  
+			"name":"requisition",		
+			"spanishName":"Requisición",		
+			"header":[
+						{"name":"date", "spanishName":"Fecha", "type":"Date", "defaultValue":"today","readOnly":"true"},
+						{"name":"stock", "spanishName":"Inventario", "type":"Boolean", "defaultValue":"true"},
+						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"docSite"},
+						{"name":"requiredOnDate", "spanishName":"Requerido en Fecha", "type":"Date", "defaultValue":"today"},
+						{"name":"priority", "spanishName":"Prioridad", "refType":"priority", "displayField":"priority"},
+						{"name":"requestingDepartment", "spanishName":"Departamento que solicita", "refType":"department", "displayField":"department"},
+						{"name":"expenseType", "spanishName":"Tipo de gasto", "refType":"expenseType", "displayField":"expenseType"},
+						{"name":"transportationType", "spanishName":"Transporte", "refType":"transportationType", "displayField":"transportationType"},
+						{"name":"receivingWarehouse", "spanishName":"Bodega que recibe", "refType":"warehouse", "displayField":"warehouse"},
+						{"name":"deliveryLocation", "spanishName":"Lugar de destino", "refType":"deliveryLocation", "displayField":"address", "embeddedFields":["code"]},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					],
+			"body":	[
+						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"description", "unique":"true", "required":"false", "autocomplete":"true"},
+						{"name":"inputMeasurementUnit", "spanishName":"Unidad de medida entrada", "refType":"measurementUnit", "displayField":"code", "embeddedFields":["measurementUnit"]},
+						{"name":"requiredOnDate", "spanishName":"Requerido en Fecha", "type":"Date", "defaultValue":"today"},
+						{"name":"priority", "spanishName":"Prioridad", "refType":"priority", "displayField":"priority"},
+						{"name":"quantity", "spanishName":"Cantidad", "type":"Double"},
+						{"name":"localCurrencyUnitValue", "spanishName":"Valor unitario en moneda local", "type":"Double"},
+						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double"},
+						{"name":"foreignCurrencyUnitValue", "spanishName":"Valor unitario en moneda extranjera", "type":"Double"},
+						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double"}
+					]			
+		 }
+	]
+}

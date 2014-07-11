@@ -4,8 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
-import co.com.cybersoft.docs.persistence.services.startup.SequenceStartupService;
-import co.com.cybersoft.docs.persistence.services.startup.SequenceStartupServiceImpl;
+import co.com.cybersoft.docsTest.persistence.services.startup.SequenceStartupService;
+import co.com.cybersoft.docsTest.persistence.services.startup.SequenceStartupServiceImpl;
 import co.com.cybersoft.man.services.currency.CurrencyUpdateService;
 import co.com.cybersoft.man.services.currency.OpenExchangeUpdateService;
 import co.com.cybersoft.man.services.excel.ReportingService;

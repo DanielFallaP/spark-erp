@@ -13,7 +13,7 @@ public class CyberUtils {
 	
 	public final static String idField ="id";
 	
-	public final static String excelFilePath="../webapps/Cybersystems/resources/excel";
+	public final static String excelFilePath="../webapps/Spark/resources/excel";
 	
 	public final static String excelURLPath="/resources/excel";
 	

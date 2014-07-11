@@ -10,9 +10,11 @@ package co.com.cybersoft.generator.code;
 public class MainCodeGenerator {
 
 	public static void main(String[] args) {
-		CodeGenerator codeGenerator = new CodeGenerator();
+		TableCodeGenerator codeGenerator = new TableCodeGenerator();
+		DocCodeGenerator docCodeGenerator = new DocCodeGenerator();
 		try {
 			codeGenerator.generate();
+			docCodeGenerator.generate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

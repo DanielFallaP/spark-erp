@@ -12,7 +12,7 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
-import co.com.cybersoft.generator.code.model.Spark;
+import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 
@@ -60,15 +60,15 @@ public class CodeUtil {
 		}
 	}
 	
-	public static String getGettersAndSetters(Spark spark,Table table){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("util",Spark.codePath+"util");
+	public static String getGettersAndSetters(Cybertables spark,Table table){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("util",Cybertables.utilCodePath);
 		List<Field> fields = table.getFields();
 		
 		String text="";
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-				template.setAttribute("type", field.isReference()?Spark.stringType:field.getType());
+				template.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
 				template.setAttribute("name", field.getName());
 				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 				text+=template.toString()+"\n";
@@ -85,7 +85,7 @@ public class CodeUtil {
 				List<Field> compoundKey = CodeUtil.getCompoundKey(spark, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-					template.setAttribute("type", Spark.stringType);
+					template.setAttribute("type", Cybertables.stringType);
 					template.setAttribute("name", compoundField.getName());
 					template.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
 					text+=template.toString()+"\n";
@@ -100,14 +100,14 @@ public class CodeUtil {
 		return (long) Math.pow(10, digitNumber)-1;
 	}
 	
-	public static String getFieldDeclarations(Spark spark, Table table){
+	public static String getFieldDeclarations(Cybertables spark, Table table){
 		String text="";
 		List<Field> fields = table.getFields();
 		
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-				fieldTemplate.setAttribute("type", field.isReference()?Spark.stringType:field.getType());
+				fieldTemplate.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
 				fieldTemplate.setAttribute("name", field.getName());
 				text+=fieldTemplate.toString();
 				text+="\n";
@@ -124,7 +124,7 @@ public class CodeUtil {
 				List<Field> compoundKey = CodeUtil.getCompoundKey(spark, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-					fieldTemplate.setAttribute("type", Spark.stringType);
+					fieldTemplate.setAttribute("type", Cybertables.stringType);
 					fieldTemplate.setAttribute("name", compoundField.getName());
 					text+=fieldTemplate.toString();
 					text+="\n";
@@ -135,7 +135,7 @@ public class CodeUtil {
 		return text;
 	}
 	
-	public static boolean referencesLabelTable(Field referenceField, Spark cybersoft){
+	public static boolean referencesLabelTable(Field referenceField, Cybertables cybersoft){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			if (table.getLabelTable() &&table.getName().equals(referenceField.getRefType())){
@@ -158,7 +158,7 @@ public class CodeUtil {
 		List<Field> fields = table.getFields();
 		String labelField="";
 		for (Field field : fields) {
-				if (!field.isReference() && field.getLabelField() && field.getType().equals(Spark.stringType)){
+				if (!field.isReference() && field.getLabelField() && field.getType().equals(Cybertables.stringType)){
 					labelField=field.getName();
 					break;
 				}
@@ -168,7 +168,7 @@ public class CodeUtil {
 	
 	public static boolean generateQueryForReferences(Field field){
 		if (!field.isReference()&&!field.getCompoundReference()){
-			return field.getUnique()&field.getType().equals(Spark.stringType);
+			return field.getUnique()&field.getType().equals(Cybertables.stringType);
 		}
 		else if (field.isReference()&&!field.getCompoundReference())
 			return true;
@@ -181,7 +181,7 @@ public class CodeUtil {
 		for (Field field : fields) {
 			if (!field.isReference() && field.getName().equals("description") && field.getUnique())
 				return true;
-			if (!field.isReference() && field.getType().equals(Spark.stringType) && field.getUnique() && field.getAutocomplete())
+			if (!field.isReference() && field.getType().equals(Cybertables.stringType) && field.getUnique() && field.getAutocomplete())
 				return true;
 		}
 		return false;
@@ -215,7 +215,7 @@ public class CodeUtil {
 		return false;
 	}
 	
-	public static boolean containsTable(Spark cybersoft, String tableName){
+	public static boolean containsTable(Cybertables cybersoft, String tableName){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			if (table.getName().equals(tableName))
@@ -224,7 +224,7 @@ public class CodeUtil {
 		return false;
 	}
 	
-	public static boolean isGeneratedFile(Spark cybersoft, String fileName){
+	public static boolean isGeneratedFile(Cybertables cybersoft, String fileName){
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			if (fileName.toLowerCase().startsWith(table.getName().toLowerCase()))
@@ -249,7 +249,7 @@ public class CodeUtil {
 		}
 	}
 	
-	public static List<String> getTableNames(Spark cybersoft){
+	public static List<String> getTableNames(Cybertables cybersoft){
 		List<String> tableNames = new ArrayList<String>();
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
@@ -260,26 +260,26 @@ public class CodeUtil {
 	
 	public static String getDefaultValue(Field field){
 		try {
-			if (field.getType().equals(Spark.booleanType)){
+			if (field.getType().equals(Cybertables.booleanType)){
 				Boolean.parseBoolean(field.getDefaultValue());
 				return field.getDefaultValue();
 			}
-			else if (field.getType().equals(Spark.stringType))
+			else if (field.getType().equals(Cybertables.stringType))
 				return "\""+field.getDefaultValue()+"\"";
-			else if (field.getType().equals(Spark.longType)){
+			else if (field.getType().equals(Cybertables.longType)){
 				Long.parseLong(field.getDefaultValue());
 				return field.getDefaultValue()+"L";
 			}
-			else if (field.getType().equals(Spark.doubleType)){
+			else if (field.getType().equals(Cybertables.doubleType)){
 				Double.parseDouble(field.getDefaultValue());
 				return field.getDefaultValue()+"D";
 			}
-			else if (field.getType().equals(Spark.integerType)){
+			else if (field.getType().equals(Cybertables.integerType)){
 				Integer.parseInt(field.getDefaultValue());
 				return field.getDefaultValue();
 			}
-			else if (field.getType().equals(Spark.dateType)){
-				if (field.getDefaultValue().toLowerCase().equals(Spark.todayValue)){
+			else if (field.getType().equals(Cybertables.dateType)){
+				if (field.getDefaultValue().toLowerCase().equals(Cybertables.todayValue)){
 					return "new Date()";
 				}
 				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/mm/yyyy");
@@ -296,14 +296,14 @@ public class CodeUtil {
 	}
 	
 	public static boolean generateAutoComplete(Field field){
-		return !field.isReference()&&field.getUnique()&&field.getAutocomplete()&&field.getType().equals(Spark.stringType);
+		return !field.isReference()&&field.getUnique()&&field.getAutocomplete()&&field.getType().equals(Cybertables.stringType);
 	}
 	
 	public static boolean generateAutoCompleteReference(Field field){
 		return field.isReference()&&field.getAutocomplete();
 	}
 	
-	public static String getFieldType(Spark cybersystems, String tableName, String fieldName){
+	public static String getFieldType(Cybertables cybersystems, String tableName, String fieldName){
 		List<Table> tables = cybersystems.getTables();
 		for (Table table : tables) {
 			if (table.getName().equals(tableName)){
@@ -317,7 +317,7 @@ public class CodeUtil {
 		return "";
 	}
 	
-	public static List<Field> getCompoundKey(Spark spark, String tableName){
+	public static List<Field> getCompoundKey(Cybertables spark, String tableName){
 		List<Table> tables = spark.getTables();
 		for (Table table : tables) {
 			if (table.getName().equals(tableName))
@@ -326,7 +326,7 @@ public class CodeUtil {
 		return new ArrayList<Field>();
 	}
 
-	public static List<Field> getCompoundReference(Spark spark, String tableName){
+	public static List<Field> getCompoundReference(Cybertables spark, String tableName){
 		List<Table> tables = spark.getTables();
 		for (Table table : tables) {
 			if (table.getName().equals(tableName)){

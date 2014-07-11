@@ -7,11 +7,11 @@ import java.util.Arrays;
 
 import javax.sql.DataSource;
 
-import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionCustomRepo;
-import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionCustomRepoImpl;
-import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionRepository;
-import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersistenceService;
-import co.com.cybersoft.docs.persistence.services.requisition.RequisitionPersistenceServiceImpl;
+import co.com.cybersoft.docsTest.persistence.repository.requisition.RequisitionCustomRepo;
+import co.com.cybersoft.docsTest.persistence.repository.requisition.RequisitionCustomRepoImpl;
+import co.com.cybersoft.docsTest.persistence.repository.requisition.RequisitionRepository;
+import co.com.cybersoft.docsTest.persistence.services.requisition.RequisitionPersistenceService;
+import co.com.cybersoft.docsTest.persistence.services.requisition.RequisitionPersistenceServiceImpl;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ import com.mongodb.ServerAddress;
 
 
 @Configuration
-@EnableMongoRepositories(basePackages={"co.com.cybersoft.tables.persistence.repository","co.com.cybersoft.docs.persistence.repository"},
+@EnableMongoRepositories(basePackages={"co.com.cybersoft.tables.persistence.repository","co.com.cybersoft.docs.persistence.repository","co.com.cybersoft.docsTest.persistence.repository"},
 includeFilters=@ComponentScan.Filter(value={RequisitionRepository.class,$repos$},type=FilterType.ASSIGNABLE_TYPE))
 public class PersistenceConfig {
 	
