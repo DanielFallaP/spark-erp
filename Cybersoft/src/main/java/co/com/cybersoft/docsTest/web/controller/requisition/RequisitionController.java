@@ -206,8 +206,8 @@ public class RequisitionController {
 		
 			modelAndView.addObject("requisitionInfo",requisitionInfo);
 			modelAndView.addObject("requisitionBodyList", requisitionInfo.getRequisitionBodyList());
-//			modelAndView.addObject("requisitionBodyInfo",requisitionItemInfo);
-//			modelAndView.addObject("requisitionItemModificationInfo",requisitionItemModificationInfo);
+			modelAndView.addObject("requisitionBodyInfo",requisitionBodyInfo);
+			modelAndView.addObject("requisitionBodyModificationInfo",requisitionBodyModificationInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
