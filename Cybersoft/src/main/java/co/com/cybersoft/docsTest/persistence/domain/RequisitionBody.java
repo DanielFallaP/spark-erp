@@ -2,8 +2,6 @@ package co.com.cybersoft.docsTest.persistence.domain;
 
 import java.util.Date;
 
-import org.springframework.beans.BeanUtils;
-
 
 /**
  * 
@@ -11,7 +9,7 @@ import org.springframework.beans.BeanUtils;
  *
  */
 
-public class RequisitionItem {
+public class RequisitionBody {
 
 	private String id;
 	

@@ -21,9 +21,7 @@ import co.com.cybersoft.tables.core.domain.PriorityDetails;
  */
 @Component
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
-public class RequisitionItemInfo implements Serializable{
-	
-	private Long numericId;
+public class RequisitionBodyInfo implements Serializable{
 	
 	private Boolean created;
 	
@@ -31,7 +29,7 @@ public class RequisitionItemInfo implements Serializable{
 	
 	private String id;
 	
-	private RequisitionItemInfo requisitionItemModificationInfo;
+	private RequisitionBodyInfo requisitionBodyModificationInfo;
 
 	@NotEmpty
 	private String item;
@@ -76,21 +74,13 @@ public class RequisitionItemInfo implements Serializable{
 		this.id = id;
 	}
 	
-	public Long getNumericId() {
-		return numericId;
+	public RequisitionBodyInfo getRequisitionBodyModificationInfo() {
+		return requisitionBodyModificationInfo;
 	}
 
-	public void setNumericId(Long numericId) {
-		this.numericId = numericId;
-	}
-
-	public RequisitionItemInfo getRequisitionItemModificationInfo() {
-		return requisitionItemModificationInfo;
-	}
-
-	public void setRequisitionItemModificationInfo(
-			RequisitionItemInfo requisitionItemModificationInfo) {
-		this.requisitionItemModificationInfo = requisitionItemModificationInfo;
+	public void setRequisitionBodyModificationInfo(
+			RequisitionBodyInfo requisitionBodyModificationInfo) {
+		this.requisitionBodyModificationInfo = requisitionBodyModificationInfo;
 	}
 
 	public Boolean getSelected() {

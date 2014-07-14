@@ -26,11 +26,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import co.com.cybersoft.docsTest.events.requisition.RequestRequisitionEvent;
 import co.com.cybersoft.docsTest.events.requisition.RequisitionEvent;
-import co.com.cybersoft.docsTest.events.requisition.RequisitionModificationEvent;
 import co.com.cybersoft.docsTest.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docsTest.persistence.services.requisition.RequisitionPersistenceService;
 import co.com.cybersoft.docsTest.web.domain.requisition.RequisitionInfo;
-import co.com.cybersoft.docsTest.web.domain.requisition.RequisitionItemInfo;
+import co.com.cybersoft.docsTest.web.domain.requisition.RequisitionBodyInfo;
 import co.com.cybersoft.tables.core.services.country.CountryService;
 import co.com.cybersoft.tables.core.services.department.DepartmentService;
 import co.com.cybersoft.tables.core.services.expenseType.ExpenseTypeService;
@@ -92,24 +91,24 @@ public class RequisitionController {
 	
 		
 	@RequestMapping(method=RequestMethod.POST)
-	public String saveRequisition(@ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionItemInfo") RequisitionItemInfo current, @ModelAttribute("requisitionItemModificationInfo") RequisitionItemInfo modified,Model model, HttpServletRequest request) throws Exception{
+	public String saveRequisition(@ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionBodyInfo") RequisitionBodyInfo current, @ModelAttribute("requisitionBodyModificationInfo") RequisitionBodyInfo modified,Model model, HttpServletRequest request) throws Exception{
 		RequisitionEvent requisitionEvent=null;
-		if (modified.getRequisitionItemModificationInfo().getSubmit().equals("modification")){
-			manualValidation(modified.getRequisitionItemModificationInfo(), "requisitionItemModificationInfo", CyberUtils.modificationForm);
+		if (modified.getRequisitionBodyModificationInfo().getSubmit().equals("modification")){
+			manualValidation(modified.getRequisitionBodyModificationInfo(), "requisitionBodyModificationInfo", CyberUtils.modificationForm);
 			
-			requisitionInfo.setRequisitionItemModificationInfo(modified.getRequisitionItemModificationInfo());
+			requisitionInfo.setRequisitionBodyModificationInfo(modified.getRequisitionBodyModificationInfo());
 			requisitionEvent = requisitionService.updateRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
 		}
-		else if (modified.getRequisitionItemModificationInfo().getSubmit().equals("creation")){
+		else if (modified.getRequisitionBodyModificationInfo().getSubmit().equals("creation")){
 			
-			manualValidation(current, "requisitionItemInfo", CyberUtils.additionForm);
+			manualValidation(current, "requisitionBodyInfo", CyberUtils.additionForm);
 			
 			requisitionInfo.setCurrentRequisitionItemInfo(current);
 			requisitionEvent = requisitionService.saveRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
-			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(request);
-			model.addAttribute("requisitionItemInfo", requisitionItemInfo);
+			RequisitionBodyInfo requisitionBodyInfo = getRequisitionBodyInfo(request);
+			model.addAttribute("requisitionBodyInfo", requisitionBodyInfo);
 		}
-		else if (modified.getRequisitionItemModificationInfo().getSubmit().endsWith("deletion")){
+		else if (modified.getRequisitionBodyModificationInfo().getSubmit().endsWith("deletion")){
 			List<String> toDelete = Arrays.asList(requisitionInfo.getDeletion().split(","));
 			requisitionEvent=requisitionService.deleteRequisition(new SaveRequisitionEvent(requisitionInfo), toDelete);			
 		}
@@ -117,41 +116,43 @@ public class RequisitionController {
 			requisitionEvent = requisitionService.saveRequisition(new SaveRequisitionEvent(requisitionInfo));
 		}
 		
-		requisitionInfo.setCreated(true);
-		requisitionInfo.setShowBody(true);
-		requisitionInfo.set_toSave(true);
-		requisitionInfo.setId(requisitionEvent.getRequisition().getId());
-		requisitionInfo.setRequisitionItemList(requisitionEvent.getRequisition().getRequisitionItemList());
-		requisitionInfo.setNumericId(requisitionEvent.getRequisition().getNumericId());
-		requisitionInfo.setDateOfCreation(requisitionEvent.getRequisition().getDateOfCreation());
-		requisitionInfo.setCreatedBy(requisitionEvent.getRequisition().getCreatedBy());
+		if (requisitionInfo.getCreated()!=null && !requisitionInfo.getCreated()){
+			return "redirect:/docs/requisition?id="+requisitionEvent.getRequisition().getId();
+		}
+		else{
+			
+//		requisitionInfo.setCreated(true);
+			requisitionInfo.setShowBody(true);
+			requisitionInfo.set_toSave(true);
+			requisitionInfo.setId(requisitionEvent.getRequisition().getId());
+			requisitionInfo.setRequisitionBodyList(requisitionEvent.getRequisition().getRequisitionBodyList());
+			requisitionInfo.setNumericId(requisitionEvent.getRequisition().getNumericId());
+			requisitionInfo.setDateOfCreation(requisitionEvent.getRequisition().getDateOfCreation());
+			requisitionInfo.setCreatedBy(requisitionEvent.getRequisition().getCreatedBy());
 //		requisitionInfo.getRequisitionItemModificationInfo().getRequisitionItemModificationInfo().setSubmit("");
-		
-		CountryPageEvent allCountryPageEvent = null;
-		StatePageEvent allStatePageEvent = null;
-		PopulatedPlacePageEvent allPopulatedPlacePageEvent = null;
-
+			
+			CountryPageEvent allCountryPageEvent = null;
+			StatePageEvent allStatePageEvent = null;
+			PopulatedPlacePageEvent allPopulatedPlacePageEvent = null;
+			
 			
 			allCountryPageEvent = countryService.requestAllByCountry();
 			requisitionInfo.setCountryList(allCountryPageEvent.getCountryList());
-
+			
 			if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
-					allStatePageEvent = stateService.requestAllByCountryName(requisitionEvent.getRequisition().getCountry());
-					requisitionInfo.setStateList(allStatePageEvent.getStateList());
+				allStatePageEvent = stateService.requestAllByCountryName(requisitionEvent.getRequisition().getCountry());
+				requisitionInfo.setStateList(allStatePageEvent.getStateList());
 			}
 			if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
-					allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(requisitionEvent.getRequisition().getState());
-					requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
+				allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(requisitionEvent.getRequisition().getState());
+				requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
 			}
-
-		
-		current.setNumericId(requisitionEvent.getRequisition().getNumericId());
-		modified.setNumericId(requisitionEvent.getRequisition().getNumericId());
-		model.addAttribute("requisitionInfo",requisitionInfo);
-		model.addAttribute("requisitionItemInfo",current);
-		model.addAttribute("requisitionItemModificationInfo",modified);
-		model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
-		return "/docsTest/requisition/saveRequisition";
+			
+			
+			model.addAttribute("requisitionInfo",requisitionInfo);
+			model.addAttribute("requisitionBodyList", requisitionInfo.getRequisitionBodyList());
+			return "/docsTest/requisition/saveRequisition";
+		}
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
@@ -193,20 +194,20 @@ public class RequisitionController {
 		
 		try {
 			requisitionInfo.set_toSave(false);
-			RequisitionItemInfo requisitionItemInfo = getRequisitionItemInfo(req);	
-			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
-			RequisitionItemInfo requisitionItemModificationInfo = getRequisitionItemModificationInfo(req);
-			requisitionInfo.setRequisitionItemModificationInfo(requisitionItemModificationInfo);
-			requisitionItemInfo.setSubmit("");
-			requisitionItemInfo.setRequisitionItemModificationInfo(new RequisitionItemInfo());
-			RequisitionItemInfo submitModification = new RequisitionItemInfo();
+			RequisitionBodyInfo requisitionBodyInfo = getRequisitionBodyInfo(req);	
+			requisitionInfo.setCurrentRequisitionItemInfo(requisitionBodyInfo);
+			RequisitionBodyInfo requisitionBodyModificationInfo = getRequisitionBodyModificationInfo(req);
+			requisitionInfo.setRequisitionBodyModificationInfo(requisitionBodyModificationInfo);
+			requisitionBodyInfo.setSubmit("");
+			requisitionBodyInfo.setRequisitionBodyModificationInfo(new RequisitionBodyInfo());
+			RequisitionBodyInfo submitModification = new RequisitionBodyInfo();
 			submitModification.setSubmit("");
-			requisitionItemModificationInfo.setRequisitionItemModificationInfo(submitModification);
+			requisitionBodyModificationInfo.setRequisitionBodyModificationInfo(submitModification);
 		
 			modelAndView.addObject("requisitionInfo",requisitionInfo);
-			modelAndView.addObject("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
-			modelAndView.addObject("requisitionItemInfo",requisitionItemInfo);
-			modelAndView.addObject("requisitionItemModificationInfo",requisitionItemModificationInfo);
+			modelAndView.addObject("requisitionBodyList", requisitionInfo.getRequisitionBodyList());
+//			modelAndView.addObject("requisitionBodyInfo",requisitionItemInfo);
+//			modelAndView.addObject("requisitionItemModificationInfo",requisitionItemModificationInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -254,38 +255,18 @@ public class RequisitionController {
 	}
 	
 	@ModelAttribute("requisitionInfo")
-	private RequisitionInfo getRequisitionInfo(String id, @ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, @ModelAttribute("requisitionItemInfo") RequisitionItemInfo requisitionItemInfo, @ModelAttribute("requisitionItemModificationInfo") RequisitionItemInfo requisitionItemModificationInfo,Model model, HttpServletRequest request)  throws Exception {
+	private RequisitionInfo getRequisitionInfo(String id, @ModelAttribute("requisitionInfo") RequisitionInfo requisitionInfo, Model model, HttpServletRequest request)  throws Exception {
 		RequisitionInfo requisitionInfoSession = (RequisitionInfo) request.getSession().getAttribute("requisitionInfo");
 
-		if (requisitionInfo.getCreated()!=null && requisitionInfo.getCreated() && requisitionItemInfo.getNumericId()==null && requisitionItemModificationInfo.getNumericId()!=null){
-			requisitionItemInfo = getRequisitionItemInfo(request);	
-			requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
-			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
-			requisitionInfo.setRequisitionItemModificationInfo(requisitionItemModificationInfo);
-			requisitionItemInfo.setSubmit("");
-			RequisitionItemInfo submitModification = new RequisitionItemInfo();
-			submitModification.setSubmit("");
-			requisitionItemModificationInfo.setRequisitionItemModificationInfo(submitModification);
-			
-			request.getSession().setAttribute("requisitionInfo", requisitionInfo);
-
-			model.addAttribute("requisitionInfo",requisitionInfoSession);
-			model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
-			model.addAttribute("requisitionItemInfo", requisitionItemInfo);
-			model.addAttribute("requisitionItemModificationInfo",requisitionItemModificationInfo);
-			
-			return requisitionInfo;
-		}
-		else{
-			if (id!=null){
-				requisitionInfo = requisitionService.requestRequisitionDetails(new RequestRequisitionEvent(id)).getRequisition();
+			if (id!=null || (requisitionInfo.getCreated()!=null && requisitionInfo.getCreated() && requisitionInfoSession!=null && requisitionInfoSession.getId()!=null)){
+				requisitionInfo = requisitionService.requestRequisitionDetails(id==null?new RequestRequisitionEvent(requisitionInfoSession.getId()):new RequestRequisitionEvent(id)).getRequisition();
 				requisitionInfo.setShowBody(true);
+				requisitionInfo.setCreated(true);
 			}
 			else{
 				requisitionInfo = new RequisitionInfo();
 			}
 			
-			requisitionInfo.setCreated(true);
 			
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
 			requisitionInfo.setPriorityList(allPriorityEvent.getPriorityList());
@@ -305,26 +286,7 @@ public class RequisitionController {
 			
 			
 			
-			if (id==null){
-				allCountryPageEvent = countryService.requestAllByCountry();
-				requisitionInfo.setCountryList(allCountryPageEvent.getCountryList());
-				
-				if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
-					allStatePageEvent = stateService.requestAllByCountryName(allCountryPageEvent.getCountryList().get(0).getCountry());
-					requisitionInfo.setStateList(allStatePageEvent.getStateList());
-				}
-				if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
-					allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(allStatePageEvent.getStateList().get(0).getState());
-					requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
-				}
-
-				requisitionInfo.setId(null);
-				requisitionInfo.setDate(new Date());
-				requisitionInfo.setStock(true);
-				requisitionInfo.setRequiredOnDate(new Date());
-				requisitionInfo.setActive(true);
-			}
-			else{
+			if (id!=null || (requisitionInfo.getCreated()!=null && requisitionInfo.getCreated() && requisitionInfoSession!=null && requisitionInfoSession.getId()!=null)){
 				allCountryPageEvent = countryService.requestAllByCountry();
 				requisitionInfo.setCountryList(allCountryPageEvent.getCountryList());
 
@@ -337,54 +299,67 @@ public class RequisitionController {
 						requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
 				}
 			}
+			else {
+				allCountryPageEvent = countryService.requestAllByCountry();
+				requisitionInfo.setCountryList(allCountryPageEvent.getCountryList());
+				
+				if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
+					allStatePageEvent = stateService.requestAllByCountryName(allCountryPageEvent.getCountryList().get(0).getCountry());
+					requisitionInfo.setStateList(allStatePageEvent.getStateList());
+				}
+				if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
+					allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(allStatePageEvent.getStateList().get(0).getState());
+					requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
+				}
+				
+				requisitionInfo.setId(null);
+				requisitionInfo.setDate(new Date());
+				requisitionInfo.setStock(true);
+				requisitionInfo.setRequiredOnDate(new Date());
+				requisitionInfo.setActive(true);
+			}
 			
-			requisitionItemInfo = getRequisitionItemInfo(request);	
-			requisitionInfo.setCurrentRequisitionItemInfo(requisitionItemInfo);
-			requisitionItemModificationInfo = getRequisitionItemModificationInfo(request);
-			requisitionInfo.setRequisitionItemModificationInfo(requisitionItemModificationInfo);
-			requisitionItemInfo.setSubmit("");
-			RequisitionItemInfo submitModification = new RequisitionItemInfo();
+			RequisitionBodyInfo requisitionBodyInfo = getRequisitionBodyInfo(request);	
+			requisitionInfo.setCurrentRequisitionItemInfo(requisitionBodyInfo);
+			RequisitionBodyInfo requisitionBodyModificationInfo = getRequisitionBodyModificationInfo(request);
+			requisitionInfo.setRequisitionBodyModificationInfo(requisitionBodyModificationInfo);
+			requisitionBodyInfo.setSubmit("");
+			RequisitionBodyInfo submitModification = new RequisitionBodyInfo();
 			submitModification.setSubmit("");
-			requisitionItemModificationInfo.setRequisitionItemModificationInfo(submitModification);
+			requisitionBodyModificationInfo.setRequisitionBodyModificationInfo(submitModification);
 		
 			request.getSession().setAttribute("requisitionInfo", requisitionInfo);
-			
-			requisitionItemInfo.setNumericId(requisitionInfo.getNumericId());
-			requisitionItemModificationInfo.setNumericId(requisitionInfo.getNumericId());
-			
 			model.addAttribute("requisitionInfo",requisitionInfo);
-			model.addAttribute("requisitionItemInfoList", requisitionInfo.getRequisitionItemList());
-			model.addAttribute("requisitionItemInfo", requisitionItemInfo);
-			model.addAttribute("requisitionItemModificationInfo",requisitionItemModificationInfo);
+			model.addAttribute("requisitionBodyList", requisitionInfo.getRequisitionBodyList());
+			model.addAttribute("requisitionBodyInfo", requisitionBodyInfo);
+			model.addAttribute("requisitionBodyModificationInfo",requisitionBodyModificationInfo);
 			
 			return requisitionInfo;
-		}
-		
 	}
 		
-		private RequisitionItemInfo getRequisitionItemInfo(HttpServletRequest request) throws Exception {
-			RequisitionItemInfo requisitionItemInfo = new RequisitionItemInfo();
+		private RequisitionBodyInfo getRequisitionBodyInfo(HttpServletRequest request) throws Exception {
+			RequisitionBodyInfo requisitionBodyInfo = new RequisitionBodyInfo();
 			
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
-			requisitionItemInfo.setPriorityList(allPriorityEvent.getPriorityList());
+			requisitionBodyInfo.setPriorityList(allPriorityEvent.getPriorityList());
 			
-			requisitionItemInfo.setId(null);
-			requisitionItemInfo.setBodyRequiredOnDate(new Date());
+			requisitionBodyInfo.setId(null);
+			requisitionBodyInfo.setBodyRequiredOnDate(new Date());
 
-			request.getSession().setAttribute("requisitionItemInfo", requisitionItemInfo);
+			request.getSession().setAttribute("requisitionBodyInfo", requisitionBodyInfo);
 			
-			return requisitionItemInfo;
+			return requisitionBodyInfo;
 		}
 		
 
-		private RequisitionItemInfo getRequisitionItemModificationInfo(HttpServletRequest request) throws Exception{
-			RequisitionItemInfo requisitionItemModificationInfo = new RequisitionItemInfo();
+		private RequisitionBodyInfo getRequisitionBodyModificationInfo(HttpServletRequest request) throws Exception{
+			RequisitionBodyInfo requisitionBodyModificationInfo = new RequisitionBodyInfo();
 			
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
-			requisitionItemModificationInfo.setPriorityList(allPriorityEvent.getPriorityList());
+			requisitionBodyModificationInfo.setPriorityList(allPriorityEvent.getPriorityList());
 
-			request.getSession().setAttribute("requisitionItemModificationInfo", requisitionItemModificationInfo);
+			request.getSession().setAttribute("requisitionBodyModificationInfo", requisitionBodyModificationInfo);
 			
-			return requisitionItemModificationInfo;
+			return requisitionBodyModificationInfo;
 		}
 }

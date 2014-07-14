@@ -16,7 +16,7 @@ import co.com.cybersoft.docsTest.events.requisition.RequisitionModificationEvent
 import co.com.cybersoft.docsTest.events.requisition.RequisitionPageEvent;
 import co.com.cybersoft.docsTest.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docsTest.persistence.domain.Requisition;
-import co.com.cybersoft.docsTest.persistence.domain.RequisitionItem;
+import co.com.cybersoft.docsTest.persistence.domain.RequisitionBody;
 import co.com.cybersoft.docsTest.persistence.repository.requisition.RequisitionCustomRepo;
 import co.com.cybersoft.docsTest.persistence.repository.requisition.RequisitionRepository;
 import co.com.cybersoft.docsTest.web.domain.requisition.RequisitionInfo;
@@ -38,9 +38,9 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 		this.requisitionCustomRepo=requisitionCustomRepo;
 	}
 	
-	private Requisition updateBody(Requisition requisition, RequisitionItem modified){
-		List<RequisitionItem> bodyList = requisition.getRequisitionItemEntityList();
-		for (RequisitionItem requisitionItem : bodyList) {
+	private Requisition updateBody(Requisition requisition, RequisitionBody modified){
+		List<RequisitionBody> bodyList = requisition.getRequisitionBodyEntityList();
+		for (RequisitionBody requisitionItem : bodyList) {
 			if (requisitionItem.getId().equals(modified.getId())){
 				BeanUtils.copyProperties(modified, requisitionItem);
 			}
@@ -49,9 +49,9 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	}
 
 	private Requisition deleteFromBody(Requisition requisition, List<String> toDelete) {
-		List<RequisitionItem> entityList = requisition.getRequisitionItemEntityList();
-		List<RequisitionItem> copy = new ArrayList<>(entityList);
-		for (RequisitionItem requisitionItem : copy) {
+		List<RequisitionBody> entityList = requisition.getRequisitionBodyEntityList();
+		List<RequisitionBody> copy = new ArrayList<>(entityList);
+		for (RequisitionBody requisitionItem : copy) {
 			if (toDelete.contains(requisitionItem.getId())){
 				entityList.remove(requisitionItem);
 			}
@@ -76,13 +76,13 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	@Override
 	public RequisitionEvent saveRequisitionBody(SaveRequisitionEvent event)	throws Exception {
 		Requisition requisition = requisitionRepository.findByNumericId(event.getRequisitionInfo().getNumericId());
-		RequisitionItem requisitionItem = new RequisitionItem();
+		RequisitionBody requisitionItem = new RequisitionBody();
 		BeanUtils.copyProperties(event.getRequisitionInfo().getCurrentRequisitionItemInfo(), requisitionItem);
 		UUID id = UUID.randomUUID();
 		requisitionItem.setId(id.toString());
-		if (requisition.getRequisitionItemEntityList()==null)
-			requisition.setRequisitionItemEntityList(new ArrayList<RequisitionItem>());
-		requisition.getRequisitionItemEntityList().add(requisitionItem);
+		if (requisition.getRequisitionBodyEntityList()==null)
+			requisition.setRequisitionBodyEntityList(new ArrayList<RequisitionBody>());
+		requisition.getRequisitionBodyEntityList().add(requisitionItem);
 
 		requisition.setDateOfModification(new Date());
 		requisition.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -93,8 +93,8 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	@Override
 	public RequisitionEvent updateRequisitionBody(SaveRequisitionEvent event) throws Exception {
 		Requisition requisition = requisitionRepository.findByNumericId(event.getRequisitionInfo().getNumericId());
-		RequisitionItem modified=new RequisitionItem();
-		BeanUtils.copyProperties(event.getRequisitionInfo().getRequisitionItemModificationInfo(), modified);
+		RequisitionBody modified=new RequisitionBody();
+		BeanUtils.copyProperties(event.getRequisitionInfo().getRequisitionBodyModificationInfo(), modified);
 		requisition=updateBody(requisition, modified);
 	
 		requisition.setDateOfModification(new Date());

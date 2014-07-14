@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import co.com.cybersoft.docsTest.web.domain.requisition.RequisitionBodyInfo;
 import co.com.cybersoft.docsTest.web.domain.requisition.RequisitionInfo;
-import co.com.cybersoft.docsTest.web.domain.requisition.RequisitionItemInfo;
 
 /**
  * 
@@ -32,7 +29,7 @@ public class Requisition {
 //	@Indexed(unique=true)
 	private Integer consecutive;
 	
-	private List<RequisitionItem> requisitionItemEntityList=new ArrayList<RequisitionItem>();
+	private List<RequisitionBody> requisitionBodyEntityList=new ArrayList<RequisitionBody>();
 
 	private Date date;
 
@@ -73,12 +70,12 @@ public class Requisition {
 	public void setNumericId(Long numericId) {
 		this.numericId = numericId;
 	}
-	public List<RequisitionItem> getRequisitionItemEntityList() {
-		return requisitionItemEntityList;
+	public List<RequisitionBody> getRequisitionBodyEntityList() {
+		return requisitionBodyEntityList;
 	}
-	public void setRequisitionItemEntityList(
-			List<RequisitionItem> requisitionItemEntityList) {
-		this.requisitionItemEntityList = requisitionItemEntityList;
+	public void setRequisitionBodyEntityList(
+			List<RequisitionBody> requisitionBodyEntityList) {
+		this.requisitionBodyEntityList = requisitionBodyEntityList;
 	}
 	public Date getDateOfModification() {
 		return dateOfModification;
@@ -210,13 +207,13 @@ public class Requisition {
 	
 	public Requisition fromRequisitionInfo(RequisitionInfo webInfo){
 		BeanUtils.copyProperties(webInfo, this);
-		ArrayList<RequisitionItem> bodyList = new ArrayList<RequisitionItem>();
-		List<RequisitionItemInfo> requisitionItemList = webInfo.getRequisitionItemList();
-		for (RequisitionItemInfo requisitionItemInfo : requisitionItemList) {
-			RequisitionItem requisitionItem = new RequisitionItem();
-			BeanUtils.copyProperties(requisitionItemInfo, requisitionItem);
-			bodyList.add(requisitionItem);
-			this.setRequisitionItemEntityList(bodyList);
+		ArrayList<RequisitionBody> bodyList = new ArrayList<RequisitionBody>();
+		List<RequisitionBodyInfo> requisitionBodyList = webInfo.getRequisitionBodyList();
+		for (RequisitionBodyInfo requisitionBodyInfo : requisitionBodyList) {
+			RequisitionBody requisitionBody = new RequisitionBody();
+			BeanUtils.copyProperties(requisitionBodyInfo, requisitionBody);
+			bodyList.add(requisitionBody);
+			this.setRequisitionBodyEntityList(bodyList);
 		}
 		return this;
 	}
