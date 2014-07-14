@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import co.com.cybersoft.man.jobs.UpdateTodayRateJob;
 import co.com.cybersoft.man.services.currency.CurrencyUpdateService;
+import co.com.cybersoft.man.services.sequence.SequenceService;
 import co.com.cybersoft.man.services.tenancy.TenantConfigurationService;
 import co.com.cybersoft.man.services.timer.TimerService;
 
@@ -28,12 +29,20 @@ public class SparkStartupServiceImpl implements SparkStartupService{
 
 	@Autowired
 	private TenantConfigurationService tenantConfigService;
+	
+	@Autowired
+	private SequenceService sequenceStartupService; 
 
 	@PostConstruct
 	@Override
 	public void bootSPARK() throws Exception {
 		bootTenantConfig();
 		bootCurrencyConfig();
+		bootSequences();
+	}
+
+	private void bootSequences() throws Exception{
+		sequenceStartupService.startupSequences();
 	}
 
 	private void bootCurrencyConfig() throws Exception{
@@ -60,5 +69,6 @@ public class SparkStartupServiceImpl implements SparkStartupService{
 	private void bootTenantConfig() throws Exception {
 		tenantConfigService.updateTenantConfig();
 	}
+	
 
 }

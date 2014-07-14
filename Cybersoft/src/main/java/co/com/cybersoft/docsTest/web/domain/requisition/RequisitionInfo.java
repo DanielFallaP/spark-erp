@@ -55,7 +55,7 @@ public class RequisitionInfo implements Serializable{
 	
 	private List<RequisitionBodyInfo> requisitionBodyList=new ArrayList<RequisitionBodyInfo>();
 	
-	private RequisitionBodyInfo currentRequisitionItemInfo;
+	private RequisitionBodyInfo currentRequisitionBodyInfo;
 	
 	private RequisitionBodyInfo requisitionBodyModificationInfo;
 	
@@ -63,6 +63,174 @@ public class RequisitionInfo implements Serializable{
 
 	private Boolean active;
 
+	public RequisitionInfo(){
+	}
+	
+	
+	
+	public Long getNumericId() {
+		return numericId;
+	}
+	
+	
+	
+	public void setNumericId(Long numericId) {
+		this.numericId = numericId;
+	}
+	
+	
+	
+	public Boolean getCreated() {
+		return created;
+	}
+	
+	
+	
+	public void setCreated(Boolean created) {
+		this.created = created;
+	}
+	
+	
+	
+	public Boolean getShowBody() {
+		return showBody;
+	}
+	
+	
+	
+	public void setShowBody(Boolean showBody) {
+		this.showBody = showBody;
+	}
+	
+	
+	
+	public Boolean get_toSave() {
+		return _toSave;
+	}
+	
+	
+	
+	public void set_toSave(Boolean _toSave) {
+		this._toSave = _toSave;
+	}
+	
+	
+	
+	public String getId() {
+		return id;
+	}
+	
+	
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	
+	
+	public String getUserName() {
+		return userName;
+	}
+	
+	
+	
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
+	
+	
+	public Date getDateOfCreation() {
+		return dateOfCreation;
+	}
+	
+	
+	
+	public void setDateOfCreation(Date dateOfCreation) {
+		this.dateOfCreation = dateOfCreation;
+	}
+	
+	
+	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	
+	
+	
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+	
+	
+	
+	public Date getDateOfModification() {
+		return dateOfModification;
+	}
+	
+	
+	
+	public void setDateOfModification(Date dateOfModification) {
+		this.dateOfModification = dateOfModification;
+	}
+	
+	public List<RequisitionBodyInfo> getRequisitionBodyList() {
+		return requisitionBodyList;
+	}
+	
+	public void setRequisitionBodyList(List<RequisitionBodyInfo> requisitionBodyList) {
+		this.requisitionBodyList = requisitionBodyList;
+	}
+	
+	
+	
+	public RequisitionBodyInfo getCurrentRequisitionBodyInfo() {
+		return currentRequisitionBodyInfo;
+	}
+	
+	
+	
+	public void setCurrentRequisitionBodyInfo(
+			RequisitionBodyInfo currentRequisitionBodyInfo) {
+		this.currentRequisitionBodyInfo = currentRequisitionBodyInfo;
+	}
+	
+	
+	
+	public RequisitionBodyInfo getRequisitionBodyModificationInfo() {
+		return requisitionBodyModificationInfo;
+	}
+	
+	
+	
+	public void setRequisitionBodyModificationInfo(
+			RequisitionBodyInfo requisitionBodyModificationInfo) {
+		this.requisitionBodyModificationInfo = requisitionBodyModificationInfo;
+	}
+	
+	
+	
+	public String getDeletion() {
+		return deletion;
+	}
+	
+	
+	
+	public void setDeletion(String deletion) {
+		this.deletion = deletion;
+	}
+	
+	
+	public Boolean getActive() {
+		return active;
+	}
+	
+	
+	
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+	
 	private Date date;
 
 
@@ -115,173 +283,6 @@ public class RequisitionInfo implements Serializable{
 
 	private List<WarehouseDetails> receivingWarehouseList;
 	
-	public RequisitionInfo(){
-	}
-
-	
-	
-	public Long getNumericId() {
-		return numericId;
-	}
-
-
-
-	public void setNumericId(Long numericId) {
-		this.numericId = numericId;
-	}
-
-
-
-	public Boolean getCreated() {
-		return created;
-	}
-
-
-
-	public void setCreated(Boolean created) {
-		this.created = created;
-	}
-
-
-
-	public Boolean getShowBody() {
-		return showBody;
-	}
-
-
-
-	public void setShowBody(Boolean showBody) {
-		this.showBody = showBody;
-	}
-
-
-
-	public Boolean get_toSave() {
-		return _toSave;
-	}
-
-
-
-	public void set_toSave(Boolean _toSave) {
-		this._toSave = _toSave;
-	}
-
-
-
-	public String getId() {
-		return id;
-	}
-
-
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-
-
-	public String getUserName() {
-		return userName;
-	}
-
-
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-
-
-	public Date getDateOfCreation() {
-		return dateOfCreation;
-	}
-
-
-
-	public void setDateOfCreation(Date dateOfCreation) {
-		this.dateOfCreation = dateOfCreation;
-	}
-
-
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-
-
-	public Date getDateOfModification() {
-		return dateOfModification;
-	}
-
-
-
-	public void setDateOfModification(Date dateOfModification) {
-		this.dateOfModification = dateOfModification;
-	}
-
-	public List<RequisitionBodyInfo> getRequisitionBodyList() {
-		return requisitionBodyList;
-	}
-
-	public void setRequisitionBodyList(List<RequisitionBodyInfo> requisitionBodyList) {
-		this.requisitionBodyList = requisitionBodyList;
-	}
-
-
-
-	public RequisitionBodyInfo getCurrentRequisitionItemInfo() {
-		return currentRequisitionItemInfo;
-	}
-
-
-
-	public void setCurrentRequisitionItemInfo(
-			RequisitionBodyInfo currentRequisitionItemInfo) {
-		this.currentRequisitionItemInfo = currentRequisitionItemInfo;
-	}
-
-
-
-	public RequisitionBodyInfo getRequisitionBodyModificationInfo() {
-		return requisitionBodyModificationInfo;
-	}
-
-
-
-	public void setRequisitionBodyModificationInfo(
-			RequisitionBodyInfo requisitionBodyModificationInfo) {
-		this.requisitionBodyModificationInfo = requisitionBodyModificationInfo;
-	}
-
-
-
-	public String getDeletion() {
-		return deletion;
-	}
-
-
-
-	public void setDeletion(String deletion) {
-		this.deletion = deletion;
-	}
-
-
-	public Boolean getActive() {
-		return active;
-	}
-
-
-
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
 
 
 

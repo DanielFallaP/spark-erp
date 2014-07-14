@@ -4,12 +4,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
-import co.com.cybersoft.docsTest.persistence.services.startup.SequenceStartupService;
-import co.com.cybersoft.docsTest.persistence.services.startup.SequenceStartupServiceImpl;
+import co.com.cybersoft.docsTest.persistence.services.startup.SequenceServiceImpl;
 import co.com.cybersoft.man.services.currency.CurrencyUpdateService;
 import co.com.cybersoft.man.services.currency.OpenExchangeUpdateService;
 import co.com.cybersoft.man.services.excel.ReportingService;
 import co.com.cybersoft.man.services.excel.ReportingServiceImpl;
+import co.com.cybersoft.man.services.sequence.SequenceService;
 import co.com.cybersoft.man.services.startup.SparkStartupService;
 import co.com.cybersoft.man.services.startup.SparkStartupServiceImpl;
 import co.com.cybersoft.man.services.tenancy.TenantConfigurationService;
@@ -42,8 +42,8 @@ public class ManCoreConfig {
 	}
 	
 	@Bean
-	public SequenceStartupService sequenceStartupService() throws Exception{
-		return new SequenceStartupServiceImpl();
+	public SequenceService sequenceStartupService() throws Exception{
+		return new SequenceServiceImpl();
 	}
 	
 	@Bean

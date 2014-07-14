@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import co.com.cybersoft.docsTest.events.requisition.RequestRequisitionEvent;
 import co.com.cybersoft.docsTest.events.requisition.RequestRequisitionPageEvent;
 import co.com.cybersoft.docsTest.events.requisition.RequisitionEvent;
-import co.com.cybersoft.docsTest.events.requisition.RequisitionModificationEvent;
 import co.com.cybersoft.docsTest.events.requisition.RequisitionPageEvent;
 import co.com.cybersoft.docsTest.events.requisition.SaveRequisitionEvent;
 import co.com.cybersoft.docsTest.persistence.domain.Requisition;
@@ -20,7 +19,6 @@ import co.com.cybersoft.docsTest.persistence.domain.RequisitionBody;
 import co.com.cybersoft.docsTest.persistence.repository.requisition.RequisitionCustomRepo;
 import co.com.cybersoft.docsTest.persistence.repository.requisition.RequisitionRepository;
 import co.com.cybersoft.docsTest.web.domain.requisition.RequisitionInfo;
-import co.com.cybersoft.util.EmbeddedField;
 
 /**
  * 
@@ -74,10 +72,10 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	}
 
 	@Override
-	public RequisitionEvent saveRequisitionBody(SaveRequisitionEvent event)	throws Exception {
+	public RequisitionEvent createRequisitionBodyRecord(SaveRequisitionEvent event)	throws Exception {
 		Requisition requisition = requisitionRepository.findByNumericId(event.getRequisitionInfo().getNumericId());
 		RequisitionBody requisitionItem = new RequisitionBody();
-		BeanUtils.copyProperties(event.getRequisitionInfo().getCurrentRequisitionItemInfo(), requisitionItem);
+		BeanUtils.copyProperties(event.getRequisitionInfo().getCurrentRequisitionBodyInfo(), requisitionItem);
 		UUID id = UUID.randomUUID();
 		requisitionItem.setId(id.toString());
 		if (requisition.getRequisitionBodyEntityList()==null)
@@ -104,23 +102,13 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 	}
 	
 	@Override
-	public RequisitionEvent deleteRequisition(SaveRequisitionEvent event, List<String> toDelete) throws Exception {
+	public RequisitionEvent deleteRequisitionBodyRecords(SaveRequisitionEvent event, List<String> toDelete) throws Exception {
 		Requisition requisition = requisitionRepository.findByNumericId(event.getRequisitionInfo().getNumericId());
 		requisition = deleteFromBody(requisition, toDelete);
 		
 		requisition.setDateOfModification(new Date());
 		requisition.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisitionCustomRepo.save(requisition)));
-	}
-
-
-	@Override
-	public RequisitionEvent createRequisition(SaveRequisitionEvent event) throws Exception{
-		Requisition requisition = new Requisition().fromRequisitionInfo(event.getRequisitionInfo());
-		requisition.setDateOfModification(new Date());
-		requisition.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
-		requisition = requisitionRepository.save(requisition);
-		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
 	}
 
 	@Override
@@ -146,56 +134,5 @@ public class RequisitionPersistenceServiceImpl implements RequisitionPersistence
 		return new RequisitionEvent(requisitionInfo);
 		
 	}
-
-	@Override
-	public RequisitionEvent modifyRequisition(RequisitionModificationEvent event) throws Exception {
-		Requisition requisition = new Requisition().fromRequisitionInfo(event.getRequisition());
-		requisition = requisitionRepository.save(requisition);
-		return new RequisitionEvent(new RequisitionInfo().toRequisitionInfo(requisition));
-	}
-	
-	@Override
-		public RequisitionPageEvent requestAllByPriority(EmbeddedField... fields) throws Exception {
-			List<Requisition> all = requisitionCustomRepo.findAllActiveByPriority(fields);
-			List<RequisitionInfo> list = new ArrayList<RequisitionInfo>();
-			for (Requisition requisition : all) {
-				list.add(new RequisitionInfo().toRequisitionInfo(requisition));
-			}
-			return new RequisitionPageEvent(list);
-		}@Override
-		public RequisitionPageEvent requestAllByRequestingDepartment(EmbeddedField... fields) throws Exception {
-			List<Requisition> all = requisitionCustomRepo.findAllActiveByRequestingDepartment(fields);
-			List<RequisitionInfo> list = new ArrayList<RequisitionInfo>();
-			for (Requisition requisition : all) {
-				list.add(new RequisitionInfo().toRequisitionInfo(requisition));
-			}
-			return new RequisitionPageEvent(list);
-		}@Override
-		public RequisitionPageEvent requestAllByExpenseType(EmbeddedField... fields) throws Exception {
-			List<Requisition> all = requisitionCustomRepo.findAllActiveByExpenseType(fields);
-			List<RequisitionInfo> list = new ArrayList<RequisitionInfo>();
-			for (Requisition requisition : all) {
-				list.add(new RequisitionInfo().toRequisitionInfo(requisition));
-			}
-			return new RequisitionPageEvent(list);
-		}@Override
-		public RequisitionPageEvent requestAllByTransportationType(EmbeddedField... fields) throws Exception {
-			List<Requisition> all = requisitionCustomRepo.findAllActiveByTransportationType(fields);
-			List<RequisitionInfo> list = new ArrayList<RequisitionInfo>();
-			for (Requisition requisition : all) {
-				list.add(new RequisitionInfo().toRequisitionInfo(requisition));
-			}
-			return new RequisitionPageEvent(list);
-		}@Override
-		public RequisitionPageEvent requestAllByReceivingWarehouse(EmbeddedField... fields) throws Exception {
-			List<Requisition> all = requisitionCustomRepo.findAllActiveByReceivingWarehouse(fields);
-			List<RequisitionInfo> list = new ArrayList<RequisitionInfo>();
-			for (Requisition requisition : all) {
-				list.add(new RequisitionInfo().toRequisitionInfo(requisition));
-			}
-			return new RequisitionPageEvent(list);
-		}
-
-
 
 }

@@ -25,37 +25,11 @@ public class Requisition {
 	
 	@Field(value="_numericId")
 	private Long numericId;
-	
-//	@Indexed(unique=true)
-	private Integer consecutive;
-	
+
 	private List<RequisitionBody> requisitionBodyEntityList=new ArrayList<RequisitionBody>();
 
-	private Date date;
-
-	private Boolean stock;
-
-	private String country;
-
-	private String state;
-
-	private String populatedPlace;
-
-	private Date requiredOnDate;
-
-	private String priority;
-
-	private String requestingDepartment;
-
-	private String expenseType;
-
-	private String transportationType;
-
-	private String receivingWarehouse;
-
 	private Boolean active;
-
-
+	
 	private Date dateOfModification;
 	
 	private Date dateOfCreation;
@@ -63,7 +37,7 @@ public class Requisition {
 	private String userName;
 	
 	private String createdBy;
-	
+
 	public Long getNumericId() {
 		return numericId;
 	}
@@ -111,14 +85,37 @@ public class Requisition {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
+	public Boolean getActive() {
+		return active;	
+	}
 	
-	public Integer getConsecutive() {
-		return consecutive;	
+	public void setActive(Boolean active) {
+		this.active = active;	
 	}
-		
-	public void setConsecutive(Integer consecutive) {
-		this.consecutive = consecutive;	
-	}
+	
+	private Date date;
+
+	private Boolean stock;
+
+	private String country;
+
+	private String state;
+
+	private String populatedPlace;
+
+	private Date requiredOnDate;
+
+	private String priority;
+
+	private String requestingDepartment;
+
+	private String expenseType;
+
+	private String transportationType;
+
+	private String receivingWarehouse;
+
+	
 	public Date getDate() {
 		return date;	
 	}
@@ -195,13 +192,6 @@ public class Requisition {
 		
 	public void setReceivingWarehouse(String receivingWarehouse) {
 		this.receivingWarehouse = receivingWarehouse;	
-	}
-	public Boolean getActive() {
-		return active;	
-	}
-		
-	public void setActive(Boolean active) {
-		this.active = active;	
 	}
 
 	

@@ -1,83 +1,45 @@
-package co.com.cybersoft.docs.web.domain.$docName$;
+package co.com.cybersoft.docsTest.persistence.domain;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.stereotype.Component;
-
-$imports$
-import co.com.cybersoft.tables.core.domain.PriorityDetails;
 
 
 /**
- * Controller for $docName$Item
+ * 
  * @author Cybersystems 2014. All rights reserved.
  *
  */
-@Component
-@Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
-public class $upperDocName$BodyInfo implements Serializable{
 
-	$fields$
-	
-	private Boolean created;
-	
-	private String submit;
-	
+public class RequisitionBody {
+
 	private String id;
 	
-	private $upperDocName$BodyInfo $docName$BodyModificationInfo;
-
-	private Boolean selected;
-
-
-	public Boolean getCreated() {
-		return created;
-	}
-
-	public void setCreated(Boolean created) {
-		this.created = created;
-	}
-
-	public String getSubmit() {
-		return submit;
-	}
-
-	public void setSubmit(String submit) {
-		this.submit = submit;
-	}
+	private String userName;
+	
+	private String createdBy;
 
 	public String getId() {
 		return id;
 	}
-
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public $upperDocName$BodyInfo get$upperDocName$BodyModificationInfo() {
-		return $docName$BodyModificationInfo;
+	
+	public String getUserName() {
+		return userName;
 	}
-
-	public void set$upperDocName$BodyModificationInfo(
-			$upperDocName$BodyInfo $docName$BodyModificationInfo) {
-		this.$docName$BodyModificationInfo = $docName$BodyModificationInfo;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
-		public Boolean getSelected() {
-		return selected;
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
-	public void setSelected(Boolean selected) {
-		this.selected = selected;
-	}
+	$fields$
 	
-	$gettersSetters$
+	$gettersSetters$	
 
 }

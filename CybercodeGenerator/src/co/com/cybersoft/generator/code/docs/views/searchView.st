@@ -26,11 +26,11 @@
 	     <script type="text/javascript">
 	     	/* <![CDATA[ */
 	     	
-	     $(document).on("click", "a", function(event){
+	     \$(document).on("click", "a", function(event){
 	     	if (event.target.id!="about-ajax-popup"){
-		    	  var link = $(this);
+		    	  var link = \$(this);
 		    	  var target = link.attr("target");
-		    	  if($.trim(target).length > 0)
+		    	  if(\$.trim(target).length > 0)
 		    	  {
 		    	    window.open(link.attr("href"), target);
 		    	  }
@@ -43,41 +43,41 @@
 		       }
 	    	});
 	     
-	     $(document).keyup(function(e) {
+	     \$(document).keyup(function(e) {
 	    	  if(e.which == 13 || e.which == 107) {
-	     		  $('#new a').trigger('click');
+	     		  \$('#new a').trigger('click');
 	    	  }
 	    	});
 	    	
-	       $(document).keyup(function(e) {
+	       \$(document).keyup(function(e) {
 	    	  if(e.which == 39 || e.which == 34) {
-	     		  $('#_nextPage a').trigger('click');
+	     		  \$('#_nextPage a').trigger('click');
 	    	  }
 	    	});
 	     
-	     $(document).keyup(function(e) {
+	     \$(document).keyup(function(e) {
 	    	  if(e.which == 37 || e.which == 33) {
-	     		  $('#_previousPage a').trigger('click');
+	     		  \$('#_previousPage a').trigger('click');
 	    	  }
 	    	});
 	     
-	     $(document).keyup(function(e) {
+	     \$(document).keyup(function(e) {
 	    	  if(e.which == 35) {
-	     		  $('#_lastPage a').trigger('click');
+	     		  \$('#_lastPage a').trigger('click');
 	    	  }
 	    	});
 	     
-	     $(document).keyup(function(e) {
+	     \$(document).keyup(function(e) {
 	    	  if(e.which == 36) {
-	     		  $('#_firstPage a').trigger('click');
+	     		  \$('#_firstPage a').trigger('click');
 	    	  }
 	    	});	
 	    	
-	    $(window).load(function(){
-		$('#search tr').hover(function() {
-		    $(this).addClass('hover');
+	    \$(window).load(function(){
+		\$('#search tr').hover(function() {
+		    \$(this).addClass('hover');
 		}, function() {
-		    $(this).removeClass('hover');
+		    \$(this).removeClass('hover');
 		});
 		});
 
@@ -91,9 +91,9 @@
 	    	document.location=url;
 	    }
 	    
-	    $(document).ready( function () {
+	    \$(document).ready( function () {
 				
-				$('.about-ajax-popup').magnificPopup({
+				\$('.about-ajax-popup').magnificPopup({
 					type: 'ajax'
 				});
 			} );   	
@@ -117,23 +117,22 @@
 			<table class="table table-striped" >
 				<thead>
 					<tr>
-						$columnHeaders$
-						<th ><a th:href="@{${page.url}+'?field=_numericId'}" th:text="#{label.requisitionId}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=createdBy'}" th:text="#{label.createdBy}"></a></th>
+						<th ><a th:href="@{\${page.url}+'?field=_numericId'}" th:text="#{label.$docName$Id}"></a></th>
+						<th ><a th:href="@{\${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a></th>
+						<th ><a th:href="@{\${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a></th>
+						<th ><a th:href="@{\${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a></th>
+						<th ><a th:href="@{\${page.url}+'?field=createdBy'}" th:text="#{label.createdBy}"></a></th>
 
 					</tr>
 				</thead>
 				<tbody id="search">
-					<tr th:each="object: ${list}" th:onClick="'buildURL(\''+${object.id}+'\')'">
-						$columns$
-						<td th:text="${object.numericId}"></td>
-						<td th:text="${#calendars.format(object.dateOfModification,'MM/dd/yyyy HH:mm')}" ></td>
-						<td th:text="${object.userName}"></td>
-						<td th:text="${#calendars.format(object.dateOfCreation,'MM/dd/yyyy HH:mm')}" ></td>
-						<td th:text="${object.createdBy}"></td>
+					<tr th:each="object: \${list}" th:onClick="'buildURL(\''+\${object.id}+'\')'">
+						<td th:text="\${object.numericId}"></td>
+						<td th:text="\${#calendars.format(object.dateOfModification,'MM/dd/yyyy HH:mm')}" ></td>
+						<td th:text="\${object.userName}"></td>
+						<td th:text="\${#calendars.format(object.dateOfCreation,'MM/dd/yyyy HH:mm')}" ></td>
+						<td th:text="\${object.createdBy}"></td>
+
 					</tr>
 				</tbody>
 			</table>

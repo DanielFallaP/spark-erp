@@ -1,4 +1,4 @@
-package co.com.cybersoft.docsTest.web.controller.requisition;
+package co.com.cybersoft.docs.web.controller.$docName$;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,59 +13,59 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import co.com.cybersoft.docsTest.events.requisition.RequestRequisitionPageEvent;
-import co.com.cybersoft.docsTest.events.requisition.RequisitionPageEvent;
-import co.com.cybersoft.docsTest.persistence.domain.Requisition;
-import co.com.cybersoft.docsTest.persistence.services.requisition.RequisitionPersistenceService;
+import co.com.cybersoft.docs.events.$docName$.Request$upperDocName$PageEvent;
+import co.com.cybersoft.docs.events.$docName$.$upperDocName$PageEvent;
+import co.com.cybersoft.docs.persistence.domain.$upperDocName$;
+import co.com.cybersoft.docs.persistence.services.$docName$.$upperDocName$PersistenceService;
 import co.com.cybersoft.util.PageWrapper;
 
 /**
- * Search controller class for requisition
+ * Search controller class for $docName$
  * @author Cybersystems 2014. All rights reserved.
  *
  */
 @Controller
-@RequestMapping("/docs/searchRequisition")
-public class RequisitionSearchController {
+@RequestMapping("/docs/search$upperDocName$")
+public class $upperDocName$SearchController {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(RequisitionSearchController.class);
+	private static final Logger LOG = LoggerFactory.getLogger($upperDocName$SearchController.class);
 
 	@Autowired
-	private RequisitionPersistenceService requisitionService;
+	private $upperDocName$PersistenceService $docName$Service;
 	
 	
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String search(Model model, Pageable pageable, String field, HttpServletRequest request) throws Exception{
-		LOG.debug("Retrieving  requisition ");
-		RequisitionPageEvent info;
+		LOG.debug("Retrieving  $docName$ ");
+		$upperDocName$PageEvent info;
 		if (field!=null){
-			request.getSession().setAttribute("requisitionField", field);
-			Boolean direction=(Boolean) request.getSession().getAttribute("requisitionAscending");
-			if (request.getSession().getAttribute("requisitionAscending")!=null){
+			request.getSession().setAttribute("$docName$Field", field);
+			Boolean direction=(Boolean) request.getSession().getAttribute("$docName$Ascending");
+			if (request.getSession().getAttribute("$docName$Ascending")!=null){
 				direction=!direction;
-				request.getSession().setAttribute("requisitionAscending", direction);
+				request.getSession().setAttribute("$docName$Ascending", direction);
 			}
 			else
-				request.getSession().setAttribute("requisitionAscending", true);
+				request.getSession().setAttribute("$docName$Ascending", true);
 		}
 		PageRequest pageRequest=null;
-		if (field==null && request.getSession().getAttribute("requisitionField")==null){
-			info = requisitionService.requestRequisitionPage(new RequestRequisitionPageEvent(pageable));
+		if (field==null && request.getSession().getAttribute("$docName$Field")==null){
+			info = $docName$Service.request$upperDocName$Page(new Request$upperDocName$PageEvent(pageable));
 		}
 		else{
 			boolean direction;
-			if (request.getSession().getAttribute("requisitionAscending")!=null){
+			if (request.getSession().getAttribute("$docName$Ascending")!=null){
 				
-				direction=(boolean) request.getSession().getAttribute("requisitionAscending");
-				pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("requisitionField"):field));
+				direction=(boolean) request.getSession().getAttribute("$docName$Ascending");
+				pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("$docName$Field"):field));
 			}
-			info = requisitionService.requestRequisitionPage(new RequestRequisitionPageEvent(pageRequest));
+			info = $docName$Service.request$upperDocName$Page(new Request$upperDocName$PageEvent(pageRequest));
 		}
 		
-		PageWrapper<Requisition> page=new PageWrapper<Requisition>(info.getRequisitionPage(),"/docs/searchRequisition");
+		PageWrapper<$upperDocName$> page=new PageWrapper<$upperDocName$>(info.get$upperDocName$Page(),"/docs/search$upperDocName$");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
-		return "/docsTest/requisition/searchRequisition";
+		return "/docs/$docName$/search$upperDocName$";
 	}
 }

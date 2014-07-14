@@ -1,25 +1,24 @@
-package co.com.cybersoft.docsTest.persistence.services.startup;
-
-import javax.annotation.PostConstruct;
+package co.com.cybersoft.docs.persistence.services.startup;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 
+import co.com.cybersoft.man.services.sequence.SequenceService;
 import co.com.cybersoft.util.CyberUtils;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 
-public class SequenceStartupServiceImpl implements SequenceStartupService{
+public class SequenceServiceImpl implements SequenceService{
 
 	@Autowired
 	MongoOperations mongo;
 	
-	@PostConstruct
 	@Override
 	public void startupSequences() throws Exception {
 	
+		$checkAndStart$
 		checkAndStart("requisition_id", 1);
 		
 	}

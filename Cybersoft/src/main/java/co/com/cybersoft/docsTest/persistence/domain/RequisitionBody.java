@@ -13,6 +13,13 @@ public class RequisitionBody {
 
 	private String id;
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	
 	private String item;
 
 	private Date bodyRequiredOnDate;
@@ -24,49 +31,7 @@ public class RequisitionBody {
 	private Double localCurrencyUnitValue;
 
 	private Double foreignCurrencyUnitValue;
-
-	private Date dateOfModification;
 	
-	private Date dateOfCreation;
-	
-	private String userName;
-	
-	private String createdBy;
-	
-	public Date getDateOfModification() {
-		return dateOfModification;
-	}
-	public void setDateOfModification(Date dateOfModification) {
-		this.dateOfModification = dateOfModification;
-	}
-	
-	public Date getDateOfCreation() {
-		return dateOfCreation;
-	}
-	public void setDateOfCreation(Date dateOfCreation) {
-		this.dateOfCreation = dateOfCreation;
-	}
-	
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	
-	public String getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
 	
 	public String getItem() {
 		return item;	
@@ -110,6 +75,5 @@ public class RequisitionBody {
 	public void setForeignCurrencyUnitValue(Double foreignCurrencyUnitValue) {
 		this.foreignCurrencyUnitValue = foreignCurrencyUnitValue;	
 	}
-	
 
 }

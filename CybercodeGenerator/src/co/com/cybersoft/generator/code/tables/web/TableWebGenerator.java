@@ -153,26 +153,6 @@ public class TableWebGenerator {
 		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CreationController.java");
 	}
 
-	
-	private String generateCompoundReferenceParameters(Table table) {
-		List<Field> compositeFields = table.getCompositeFields();
-		String parameters="";
-		for (Field compositeField : compositeFields) {
-			List<Field> compoundReference = CodeUtil.getCompoundKey(cybersystems, compositeField.getRefType());
-			int i=0;
-			for (Field field : compoundReference) {
-				if (i<compoundReference.size()-1){
-					StringTemplate stringTemplate = new StringTemplate("		String $fieldName$ = request.getParameter(\"$fieldName$\");\n");
-					stringTemplate.setAttribute("fieldName", field.getName());
-					parameters+=stringTemplate.toString();
-				}
-				
-				i++;
-			}
-		}
-		return parameters;
-	}
-
 	private String generateCompoundReferenceVariables(Table table) {
 		List<Field> compositeFields = table.getCompositeFields();
 		String variables="";

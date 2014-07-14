@@ -103,14 +103,14 @@ public class RequisitionController {
 			
 			manualValidation(current, "requisitionBodyInfo", CyberUtils.additionForm);
 			
-			requisitionInfo.setCurrentRequisitionItemInfo(current);
-			requisitionEvent = requisitionService.saveRequisitionBody(new SaveRequisitionEvent(requisitionInfo));
+			requisitionInfo.setCurrentRequisitionBodyInfo(current);
+			requisitionEvent = requisitionService.createRequisitionBodyRecord(new SaveRequisitionEvent(requisitionInfo));
 			RequisitionBodyInfo requisitionBodyInfo = getRequisitionBodyInfo(request);
 			model.addAttribute("requisitionBodyInfo", requisitionBodyInfo);
 		}
 		else if (modified.getRequisitionBodyModificationInfo().getSubmit().endsWith("deletion")){
 			List<String> toDelete = Arrays.asList(requisitionInfo.getDeletion().split(","));
-			requisitionEvent=requisitionService.deleteRequisition(new SaveRequisitionEvent(requisitionInfo), toDelete);			
+			requisitionEvent=requisitionService.deleteRequisitionBodyRecords(new SaveRequisitionEvent(requisitionInfo), toDelete);			
 		}
 		else{
 			requisitionEvent = requisitionService.saveRequisition(new SaveRequisitionEvent(requisitionInfo));
@@ -195,7 +195,7 @@ public class RequisitionController {
 		try {
 			requisitionInfo.set_toSave(false);
 			RequisitionBodyInfo requisitionBodyInfo = getRequisitionBodyInfo(req);	
-			requisitionInfo.setCurrentRequisitionItemInfo(requisitionBodyInfo);
+			requisitionInfo.setCurrentRequisitionBodyInfo(requisitionBodyInfo);
 			RequisitionBodyInfo requisitionBodyModificationInfo = getRequisitionBodyModificationInfo(req);
 			requisitionInfo.setRequisitionBodyModificationInfo(requisitionBodyModificationInfo);
 			requisitionBodyInfo.setSubmit("");
@@ -320,7 +320,7 @@ public class RequisitionController {
 			}
 			
 			RequisitionBodyInfo requisitionBodyInfo = getRequisitionBodyInfo(request);	
-			requisitionInfo.setCurrentRequisitionItemInfo(requisitionBodyInfo);
+			requisitionInfo.setCurrentRequisitionBodyInfo(requisitionBodyInfo);
 			RequisitionBodyInfo requisitionBodyModificationInfo = getRequisitionBodyModificationInfo(request);
 			requisitionInfo.setRequisitionBodyModificationInfo(requisitionBodyModificationInfo);
 			requisitionBodyInfo.setSubmit("");

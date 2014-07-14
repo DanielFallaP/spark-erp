@@ -30,8 +30,6 @@ import co.com.cybersoft.docs.events.$docName$.Save$upperDocName$Event;
 import co.com.cybersoft.docs.persistence.services.$docName$.$upperDocName$PersistenceService;
 import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$Info;
 import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$BodyInfo;
-import co.com.cybersoft.util.CyberUtils;
-import co.com.cybersoft.util.SparkBindingException;
 $imports$
 import co.com.cybersoft.tables.core.services.country.CountryService;
 import co.com.cybersoft.tables.core.services.department.DepartmentService;
@@ -49,6 +47,8 @@ import co.com.cybersoft.tables.events.priority.PriorityPageEvent;
 import co.com.cybersoft.tables.events.state.StatePageEvent;
 import co.com.cybersoft.tables.events.transportationType.TransportationTypePageEvent;
 import co.com.cybersoft.tables.events.warehouse.WarehousePageEvent;
+import co.com.cybersoft.util.CyberUtils;
+import co.com.cybersoft.util.SparkBindingException;
 
 
 @Controller
@@ -56,12 +56,7 @@ import co.com.cybersoft.tables.events.warehouse.WarehousePageEvent;
 public class $upperDocName$Controller {
 	
 	@Autowired
-	@Qualifier("jsr303Validator") Validator validator;
-
-	@Autowired
 	private $upperDocName$PersistenceService $docName$Service;
-	
-	$fields$
 	
 	@Autowired
 		private PriorityService priorityService;
@@ -89,21 +84,23 @@ public class $upperDocName$Controller {
 		private PopulatedPlaceService populatedPlaceService;
 	
 	
+	@Autowired
+	@Qualifier("jsr303Validator") Validator validator;
 	
 	private static final Logger LOG = LoggerFactory.getLogger($upperDocName$Controller.class);
 	
 	
 		
 	@RequestMapping(method=RequestMethod.POST)
-	public String save$upperDocName$(@ModelAttribute("$docName$Info") $upperDocName$Info $docName$Info, @ModelAttribute("$docName$BodyInfo") $upperDocName$BodyInfo current, @ModelAttribute("$docName$ItemModificationInfo") $upperDocName$BodyInfo modified,Model model, HttpServletRequest request) throws Exception{
+	public String save$upperDocName$(@ModelAttribute("$docName$Info") $upperDocName$Info $docName$Info, @ModelAttribute("$docName$BodyInfo") $upperDocName$BodyInfo current, @ModelAttribute("$docName$BodyModificationInfo") $upperDocName$BodyInfo modified,Model model, HttpServletRequest request) throws Exception{
 		$upperDocName$Event $docName$Event=null;
-		if (modified.get$upperDocName$ItemModificationInfo().getSubmit().equals("modification")){
-			manualValidation(modified, "$docName$ItemModificationInfo", CyberUtils.modificationForm);
+		if (modified.get$upperDocName$BodyModificationInfo().getSubmit().equals("modification")){
+			manualValidation(modified.get$upperDocName$BodyModificationInfo(), "$docName$BodyModificationInfo", CyberUtils.modificationForm);
 			
-			$docName$Info.set$upperDocName$ItemModificationInfo(modified.get$upperDocName$ItemModificationInfo());
+			$docName$Info.set$upperDocName$BodyModificationInfo(modified.get$upperDocName$BodyModificationInfo());
 			$docName$Event = $docName$Service.update$upperDocName$Body(new Save$upperDocName$Event($docName$Info));
 		}
-		else if (modified.get$upperDocName$ItemModificationInfo().getSubmit().equals("creation")){
+		else if (modified.get$upperDocName$BodyModificationInfo().getSubmit().equals("creation")){
 			
 			manualValidation(current, "$docName$BodyInfo", CyberUtils.additionForm);
 			
@@ -112,7 +109,7 @@ public class $upperDocName$Controller {
 			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(request);
 			model.addAttribute("$docName$BodyInfo", $docName$BodyInfo);
 		}
-		else if (modified.get$upperDocName$ItemModificationInfo().getSubmit().endsWith("deletion")){
+		else if (modified.get$upperDocName$BodyModificationInfo().getSubmit().endsWith("deletion")){
 			List<String> toDelete = Arrays.asList($docName$Info.getDeletion().split(","));
 			$docName$Event=$docName$Service.delete$upperDocName$(new Save$upperDocName$Event($docName$Info), toDelete);			
 		}
@@ -120,37 +117,43 @@ public class $upperDocName$Controller {
 			$docName$Event = $docName$Service.save$upperDocName$(new Save$upperDocName$Event($docName$Info));
 		}
 		
-		$docName$Info.setCreated(true);
-		$docName$Info.setShowBody(true);
-		$docName$Info.set_toSave(true);
-		$docName$Info.setId($docName$Event.get$upperDocName$().getId());
-		$docName$Info.set$upperDocName$ItemList($docName$Event.get$upperDocName$().get$upperDocName$ItemList());
-		$docName$Info.setNumericId($docName$Event.get$upperDocName$().getNumericId());
-		$docName$Info.setDateOfCreation($docName$Event.get$upperDocName$().getDateOfCreation());
-		$docName$Info.setCreatedBy($docName$Event.get$upperDocName$().getCreatedBy());
+		if ($docName$Info.getCreated()!=null && !$docName$Info.getCreated()){
+			return "redirect:/docs/$docName$?id="+$docName$Event.get$upperDocName$().getId();
+		}
+		else{
+			
+//		$docName$Info.setCreated(true);
+			$docName$Info.setShowBody(true);
+			$docName$Info.set_toSave(true);
+			$docName$Info.setId($docName$Event.get$upperDocName$().getId());
+			$docName$Info.set$upperDocName$BodyList($docName$Event.get$upperDocName$().get$upperDocName$BodyList());
+			$docName$Info.setNumericId($docName$Event.get$upperDocName$().getNumericId());
+			$docName$Info.setDateOfCreation($docName$Event.get$upperDocName$().getDateOfCreation());
+			$docName$Info.setCreatedBy($docName$Event.get$upperDocName$().getCreatedBy());
 //		$docName$Info.get$upperDocName$ItemModificationInfo().get$upperDocName$ItemModificationInfo().setSubmit("");
-		
-		CountryPageEvent allCountryPageEvent = null;
-		StatePageEvent allStatePageEvent = null;
-		PopulatedPlacePageEvent allPopulatedPlacePageEvent = null;
-
+			
+			CountryPageEvent allCountryPageEvent = null;
+			StatePageEvent allStatePageEvent = null;
+			PopulatedPlacePageEvent allPopulatedPlacePageEvent = null;
+			
 			
 			allCountryPageEvent = countryService.requestAllByCountry();
 			$docName$Info.setCountryList(allCountryPageEvent.getCountryList());
-
+			
 			if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
-					allStatePageEvent = stateService.requestAllByCountryName($docName$Event.get$upperDocName$().getCountry());
-					$docName$Info.setStateList(allStatePageEvent.getStateList());
+				allStatePageEvent = stateService.requestAllByCountryName($docName$Event.get$upperDocName$().getCountry());
+				$docName$Info.setStateList(allStatePageEvent.getStateList());
 			}
 			if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
-					allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName($docName$Event.get$upperDocName$().getState());
-					$docName$Info.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
+				allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName($docName$Event.get$upperDocName$().getState());
+				$docName$Info.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
 			}
-
-		
-		model.addAttribute("$docName$Info",$docName$Info);
-		model.addAttribute("$docName$BodyInfoList", $docName$Info.get$upperDocName$ItemList());
-		return "/docs/$docName$/save$upperDocName$";
+			
+			
+			model.addAttribute("$docName$Info",$docName$Info);
+			model.addAttribute("$docName$BodyList", $docName$Info.get$upperDocName$BodyList());
+			return "/docs/$docName$/save$upperDocName$";
+		}
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
@@ -194,18 +197,18 @@ public class $upperDocName$Controller {
 			$docName$Info.set_toSave(false);
 			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(req);	
 			$docName$Info.setCurrent$upperDocName$BodyInfo($docName$BodyInfo);
-			$upperDocName$BodyInfo $docName$ItemModificationInfo = get$upperDocName$ItemModificationInfo(req);
-			$docName$Info.set$upperDocName$ItemModificationInfo($docName$ItemModificationInfo);
+			$upperDocName$BodyInfo $docName$BodyModificationInfo = get$upperDocName$BodyModificationInfo(req);
+			$docName$Info.set$upperDocName$BodyModificationInfo($docName$BodyModificationInfo);
 			$docName$BodyInfo.setSubmit("");
-			$docName$BodyInfo.set$upperDocName$ItemModificationInfo(new $upperDocName$BodyInfo());
+			$docName$BodyInfo.set$upperDocName$BodyModificationInfo(new $upperDocName$BodyInfo());
 			$upperDocName$BodyInfo submitModification = new $upperDocName$BodyInfo();
 			submitModification.setSubmit("");
-			$docName$ItemModificationInfo.set$upperDocName$ItemModificationInfo(submitModification);
+			$docName$BodyModificationInfo.set$upperDocName$BodyModificationInfo(submitModification);
 		
 			modelAndView.addObject("$docName$Info",$docName$Info);
-			modelAndView.addObject("$docName$BodyInfoList", $docName$Info.get$upperDocName$ItemList());
+			modelAndView.addObject("$docName$BodyList", $docName$Info.get$upperDocName$BodyList());
 			modelAndView.addObject("$docName$BodyInfo",$docName$BodyInfo);
-			modelAndView.addObject("$docName$ItemModificationInfo",$docName$ItemModificationInfo);
+			modelAndView.addObject("$docName$BodyModificationInfo",$docName$BodyModificationInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -256,43 +259,26 @@ public class $upperDocName$Controller {
 	private $upperDocName$Info get$upperDocName$Info(String id, @ModelAttribute("$docName$Info") $upperDocName$Info $docName$Info, Model model, HttpServletRequest request)  throws Exception {
 		$upperDocName$Info $docName$InfoSession = ($upperDocName$Info) request.getSession().getAttribute("$docName$Info");
 
-		if ($docName$Info.getCreated()!=null && $docName$Info.getCreated()){
-			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(request);	
-			$upperDocName$BodyInfo $docName$ItemModificationInfo = get$upperDocName$ItemModificationInfo(request);
-			$docName$Info.setCurrent$upperDocName$BodyInfo($docName$BodyInfo);
-			$docName$Info.set$upperDocName$ItemModificationInfo($docName$ItemModificationInfo);
-			$docName$BodyInfo.setSubmit("");
-			$upperDocName$BodyInfo submitModification = new $upperDocName$BodyInfo();
-			submitModification.setSubmit("");
-			$docName$ItemModificationInfo.set$upperDocName$ItemModificationInfo(submitModification);
-			
-			model.addAttribute("$docName$Info",$docName$InfoSession);
-			model.addAttribute("$docName$BodyInfoList", $docName$Info.get$upperDocName$ItemList());
-			model.addAttribute("$docName$BodyInfo", $docName$BodyInfo);
-			model.addAttribute("$docName$ItemModificationInfo",requisitionItemModificationInfo);
-			
-			return requisitionInfo;
-		}
-		else{
-			
-			if (id==null)
-				requisitionInfo = new $upperDocName$Info();
-			else{
-				requisitionInfo = requisitionService.request$upperDocName$Details(new Request$upperDocName$Event(id)).get$upperDocName$();
-				requisitionInfo.setShowBody(true);
+			if (id!=null || ($docName$Info.getCreated()!=null && $docName$Info.getCreated() && $docName$InfoSession!=null && $docName$InfoSession.getId()!=null)){
+				$docName$Info = $docName$Service.request$upperDocName$Details(id==null?new Request$upperDocName$Event($docName$InfoSession.getId()):new Request$upperDocName$Event(id)).get$upperDocName$();
+				$docName$Info.setShowBody(true);
+				$docName$Info.setCreated(true);
 			}
-			requisitionInfo.setCreated(true);
+			else{
+				$docName$Info = new $upperDocName$Info();
+			}
+			
 			
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
-			requisitionInfo.setPriorityList(allPriorityEvent.getPriorityList());
+			$docName$Info.setPriorityList(allPriorityEvent.getPriorityList());
 			DepartmentPageEvent allRequestingDepartmentEvent = departmentService.requestAllByDepartment();
-			requisitionInfo.setRequestingDepartmentList(allRequestingDepartmentEvent.getDepartmentList());
+			$docName$Info.setRequestingDepartmentList(allRequestingDepartmentEvent.getDepartmentList());
 			ExpenseTypePageEvent allExpenseTypeEvent = expenseTypeService.requestAllByExpenseType();
-			requisitionInfo.setExpenseTypeList(allExpenseTypeEvent.getExpenseTypeList());
+			$docName$Info.setExpenseTypeList(allExpenseTypeEvent.getExpenseTypeList());
 			TransportationTypePageEvent allTransportationTypeEvent = transportationTypeService.requestAllByTransportationType();
-			requisitionInfo.setTransportationTypeList(allTransportationTypeEvent.getTransportationTypeList());
+			$docName$Info.setTransportationTypeList(allTransportationTypeEvent.getTransportationTypeList());
 			WarehousePageEvent allReceivingWarehouseEvent = warehouseService.requestAllByWarehouse();
-			requisitionInfo.setReceivingWarehouseList(allReceivingWarehouseEvent.getWarehouseList());
+			$docName$Info.setReceivingWarehouseList(allReceivingWarehouseEvent.getWarehouseList());
 			
 			
 			CountryPageEvent allCountryPageEvent = null;
@@ -301,82 +287,80 @@ public class $upperDocName$Controller {
 			
 			
 			
-			if (id==null){
+			if (id!=null || ($docName$Info.getCreated()!=null && $docName$Info.getCreated() && $docName$InfoSession!=null && $docName$InfoSession.getId()!=null)){
 				allCountryPageEvent = countryService.requestAllByCountry();
-				requisitionInfo.setCountryList(allCountryPageEvent.getCountryList());
+				$docName$Info.setCountryList(allCountryPageEvent.getCountryList());
+
+				if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
+						allStatePageEvent = stateService.requestAllByCountryName($docName$Info.getCountry());
+						$docName$Info.setStateList(allStatePageEvent.getStateList());
+				}
+				if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
+						allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName($docName$Info.getState());
+						$docName$Info.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
+				}
+			}
+			else {
+				allCountryPageEvent = countryService.requestAllByCountry();
+				$docName$Info.setCountryList(allCountryPageEvent.getCountryList());
 				
 				if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
 					allStatePageEvent = stateService.requestAllByCountryName(allCountryPageEvent.getCountryList().get(0).getCountry());
-					requisitionInfo.setStateList(allStatePageEvent.getStateList());
+					$docName$Info.setStateList(allStatePageEvent.getStateList());
 				}
 				if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
 					allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(allStatePageEvent.getStateList().get(0).getState());
-					requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
+					$docName$Info.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
 				}
-
-				requisitionInfo.setId(null);
-				requisitionInfo.setDate(new Date());
-				requisitionInfo.setStock(true);
-				requisitionInfo.setRequiredOnDate(new Date());
-				requisitionInfo.setActive(true);
-			}
-			else{
-				allCountryPageEvent = countryService.requestAllByCountry();
-				requisitionInfo.setCountryList(allCountryPageEvent.getCountryList());
-
-				if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
-						allStatePageEvent = stateService.requestAllByCountryName(requisitionInfo.getCountry());
-						requisitionInfo.setStateList(allStatePageEvent.getStateList());
-				}
-				if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
-						allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(requisitionInfo.getState());
-						requisitionInfo.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
-				}
+				
+				$docName$Info.setId(null);
+				$docName$Info.setDate(new Date());
+				$docName$Info.setStock(true);
+				$docName$Info.setRequiredOnDate(new Date());
+				$docName$Info.setActive(true);
 			}
 			
-			$upperDocName$BodyInfo requisitionBodyInfo = get$upperDocName$BodyInfo(request);	
-			requisitionInfo.setCurrent$upperDocName$BodyInfo(requisitionBodyInfo);
-			$upperDocName$BodyInfo requisitionItemModificationInfo = get$upperDocName$ItemModificationInfo(request);
-			requisitionInfo.set$upperDocName$ItemModificationInfo(requisitionItemModificationInfo);
-			requisitionBodyInfo.setSubmit("");
+			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(request);	
+			$docName$Info.setCurrent$upperDocName$BodyInfo($docName$BodyInfo);
+			$upperDocName$BodyInfo $docName$BodyModificationInfo = get$upperDocName$BodyModificationInfo(request);
+			$docName$Info.set$upperDocName$BodyModificationInfo($docName$BodyModificationInfo);
+			$docName$BodyInfo.setSubmit("");
 			$upperDocName$BodyInfo submitModification = new $upperDocName$BodyInfo();
 			submitModification.setSubmit("");
-			requisitionItemModificationInfo.set$upperDocName$ItemModificationInfo(submitModification);
+			$docName$BodyModificationInfo.set$upperDocName$BodyModificationInfo(submitModification);
 		
-			request.getSession().setAttribute("requisitionInfo", requisitionInfo);
-			model.addAttribute("requisitionInfo",requisitionInfo);
-			model.addAttribute("requisitionBodyInfoList", requisitionInfo.get$upperDocName$ItemList());
-			model.addAttribute("requisitionBodyInfo", requisitionBodyInfo);
-			model.addAttribute("requisitionItemModificationInfo",requisitionItemModificationInfo);
+			request.getSession().setAttribute("$docName$Info", $docName$Info);
+			model.addAttribute("$docName$Info",$docName$Info);
+			model.addAttribute("$docName$BodyList", $docName$Info.get$upperDocName$BodyList());
+			model.addAttribute("$docName$BodyInfo", $docName$BodyInfo);
+			model.addAttribute("$docName$BodyModificationInfo",$docName$BodyModificationInfo);
 			
-			return requisitionInfo;
-		}
-		
+			return $docName$Info;
 	}
 		
 		private $upperDocName$BodyInfo get$upperDocName$BodyInfo(HttpServletRequest request) throws Exception {
-			$upperDocName$BodyInfo requisitionBodyInfo = new $upperDocName$BodyInfo();
+			$upperDocName$BodyInfo $docName$BodyInfo = new $upperDocName$BodyInfo();
 			
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
-			requisitionBodyInfo.setPriorityList(allPriorityEvent.getPriorityList());
+			$docName$BodyInfo.setPriorityList(allPriorityEvent.getPriorityList());
 			
-			requisitionBodyInfo.setId(null);
-			requisitionBodyInfo.setBodyRequiredOnDate(new Date());
+			$docName$BodyInfo.setId(null);
+			$docName$BodyInfo.setBodyRequiredOnDate(new Date());
 
-			request.getSession().setAttribute("requisitionBodyInfo", requisitionBodyInfo);
+			request.getSession().setAttribute("$docName$BodyInfo", $docName$BodyInfo);
 			
-			return requisitionBodyInfo;
+			return $docName$BodyInfo;
 		}
 		
 
-		private $upperDocName$BodyInfo get$upperDocName$ItemModificationInfo(HttpServletRequest request) throws Exception{
-			$upperDocName$BodyInfo requisitionItemModificationInfo = new $upperDocName$BodyInfo();
+		private $upperDocName$BodyInfo get$upperDocName$BodyModificationInfo(HttpServletRequest request) throws Exception{
+			$upperDocName$BodyInfo $docName$BodyModificationInfo = new $upperDocName$BodyInfo();
 			
 			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
-			requisitionItemModificationInfo.setPriorityList(allPriorityEvent.getPriorityList());
+			$docName$BodyModificationInfo.setPriorityList(allPriorityEvent.getPriorityList());
 
-			request.getSession().setAttribute("requisitionItemModificationInfo", requisitionItemModificationInfo);
+			request.getSession().setAttribute("$docName$BodyModificationInfo", $docName$BodyModificationInfo);
 			
-			return requisitionItemModificationInfo;
+			return $docName$BodyModificationInfo;
 		}
 }
