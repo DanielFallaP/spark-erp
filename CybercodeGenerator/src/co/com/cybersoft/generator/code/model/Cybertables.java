@@ -16,6 +16,8 @@ public class Cybertables {
 	
 	public final static String targetTableClassPath="build/java/co/com/cybersoft/tables";
 	
+	public final static String targetCodeClassPath="build/java/co/com/cybersoft/docs";
+	
 	public final static String rootClassPath="build/java/co/com/cybersoft/";
 	
 	public final static String targetViewPath="build/webapp/WEB-INF/views/";

@@ -8,6 +8,10 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import co.com.cybersoft.generator.code.docs.events.DocEventGenerator;
+import co.com.cybersoft.generator.code.docs.persistence.DocPersistenceGenerator;
+import co.com.cybersoft.generator.code.docs.services.DocServicesGenerator;
+import co.com.cybersoft.generator.code.docs.views.DocViewGenerator;
 import co.com.cybersoft.generator.code.docs.web.DocWebGenerator;
 import co.com.cybersoft.generator.code.model.Cyberdocs;
 
@@ -22,6 +26,10 @@ public class DocCodeGenerator {
 		
 		if (!cyberdocs.getDocuments().isEmpty()){
 			new DocWebGenerator(cyberdocs).generate();
+			new DocViewGenerator(cyberdocs).generate();
+			new DocServicesGenerator(cyberdocs).generate();
+			new DocPersistenceGenerator(cyberdocs).generate();
+			new DocEventGenerator(cyberdocs).generate();
 		}
 	}
 }
