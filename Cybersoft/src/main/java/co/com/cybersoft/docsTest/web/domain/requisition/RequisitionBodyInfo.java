@@ -23,18 +23,59 @@ import co.com.cybersoft.tables.core.domain.PriorityDetails;
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
 public class RequisitionBodyInfo implements Serializable{
 	
-	private Boolean created;
-	
 	private String submit;
 	
 	private String id;
 	
 	private RequisitionBodyInfo requisitionBodyModificationInfo;
 
+	private Boolean selected;
+	
+	private Boolean created;
+	
+	public Boolean getCreated() {
+		return created;
+	}
+
+	public void setCreated(Boolean created) {
+		this.created = created;
+	}
+
+	public String getSubmit() {
+		return submit;
+	}
+	
+	public void setSubmit(String submit) {
+		this.submit = submit;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public RequisitionBodyInfo getRequisitionBodyModificationInfo() {
+		return requisitionBodyModificationInfo;
+	}
+	
+	public void setRequisitionBodyModificationInfo(
+			RequisitionBodyInfo requisitionBodyModificationInfo) {
+		this.requisitionBodyModificationInfo = requisitionBodyModificationInfo;
+	}
+	
+	public Boolean getSelected() {
+		return selected;
+	}
+	
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
+
 	@NotEmpty
 	private String item;
-	
-	private Boolean selected;
 
 	private Date bodyRequiredOnDate;
 
@@ -50,46 +91,6 @@ public class RequisitionBodyInfo implements Serializable{
 
 	private Double foreignCurrencyUnitValue;
 
-	public Boolean getCreated() {
-		return created;
-	}
-
-	public void setCreated(Boolean created) {
-		this.created = created;
-	}
-
-	public String getSubmit() {
-		return submit;
-	}
-
-	public void setSubmit(String submit) {
-		this.submit = submit;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public RequisitionBodyInfo getRequisitionBodyModificationInfo() {
-		return requisitionBodyModificationInfo;
-	}
-
-	public void setRequisitionBodyModificationInfo(
-			RequisitionBodyInfo requisitionBodyModificationInfo) {
-		this.requisitionBodyModificationInfo = requisitionBodyModificationInfo;
-	}
-
-	public Boolean getSelected() {
-		return selected;
-	}
-
-	public void setSelected(Boolean selected) {
-		this.selected = selected;
-	}
 
 	public String getItem() {
 		return item;

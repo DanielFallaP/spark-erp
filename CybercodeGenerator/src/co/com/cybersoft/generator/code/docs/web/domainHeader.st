@@ -1,14 +1,10 @@
 package co.com.cybersoft.docs.web.domain.$docName$;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -18,14 +14,6 @@ import co.com.cybersoft.docs.persistence.domain.$upperDocName$;
 import co.com.cybersoft.docs.persistence.domain.$upperDocName$Body;
 
 $imports$
-import co.com.cybersoft.tables.core.domain.CountryDetails;
-import co.com.cybersoft.tables.core.domain.DepartmentDetails;
-import co.com.cybersoft.tables.core.domain.ExpenseTypeDetails;
-import co.com.cybersoft.tables.core.domain.PopulatedPlaceDetails;
-import co.com.cybersoft.tables.core.domain.PriorityDetails;
-import co.com.cybersoft.tables.core.domain.StateDetails;
-import co.com.cybersoft.tables.core.domain.TransportationTypeDetails;
-import co.com.cybersoft.tables.core.domain.WarehouseDetails;
 
 
 /**
@@ -63,12 +51,8 @@ public class $upperDocName$Info implements Serializable{
 	
 	private String deletion;
 
-	private Boolean active;
-	
 	$fields$
 	
-	$gettersSetters$
-
 	public $upperDocName$Info(){
 	}
 	
@@ -226,16 +210,17 @@ public class $upperDocName$Info implements Serializable{
 		this.deletion = deletion;
 	}
 	
-	
-	public Boolean getActive() {
-		return active;
+	public $upperDocName$Info to$upperDocName$Info($upperDocName$ entity){
+		BeanUtils.copyProperties(entity, this);
+		List<$upperDocName$BodyInfo> bodyList = new ArrayList<$upperDocName$BodyInfo>();
+		List<$upperDocName$Body> $docName$ItemEntityList = entity.get$upperDocName$BodyEntityList();
+		for ($upperDocName$Body $docName$Item : $docName$ItemEntityList) {
+			$upperDocName$BodyInfo $docName$ItemInfo = new $upperDocName$BodyInfo();
+			BeanUtils.copyProperties($docName$Item, $docName$ItemInfo);
+			bodyList.add($docName$ItemInfo);
+			this.set$upperDocName$BodyList(bodyList);
+		}
+		return this;
 	}
-	
-	
-	
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-	
 
 }

@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$BodyInfo;
 import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$Info;
+import co.com.cybersoft.tables.persistence.domain.*;
 
 /**
  * 
@@ -28,8 +29,6 @@ public class $upperDocName$ {
 
 	private List<$upperDocName$Body> $docName$BodyEntityList=new ArrayList<$upperDocName$Body>();
 
-	private Boolean active;
-	
 	private Date dateOfModification;
 	
 	private Date dateOfCreation;
@@ -84,13 +83,6 @@ public class $upperDocName$ {
 	}
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
-	}
-	public Boolean getActive() {
-		return active;	
-	}
-	
-	public void setActive(Boolean active) {
-		this.active = active;	
 	}
 	
 	$fields$

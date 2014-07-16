@@ -12,10 +12,10 @@ import java.util.Date;
 public class MainCodeGenerator {
 
 	public static void main(String[] args) {
-		TableCodeGenerator codeGenerator = new TableCodeGenerator();
+		TableCodeGenerator tableCodeGenerator = new TableCodeGenerator();
 		DocCodeGenerator docCodeGenerator = new DocCodeGenerator();
 		try {
-			codeGenerator.generate();
+//			tableCodeGenerator.generate();
 			docCodeGenerator.generate();
 		} catch (Exception e) {
 			e.printStackTrace();

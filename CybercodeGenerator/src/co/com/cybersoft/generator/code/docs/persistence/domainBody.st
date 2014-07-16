@@ -1,4 +1,5 @@
-package co.com.cybersoft.docsTest.persistence.domain;
+package co.com.cybersoft.docs.persistence.domain;
+import co.com.cybersoft.tables.persistence.domain.*;
 
 import java.util.Date;
 
@@ -9,7 +10,7 @@ import java.util.Date;
  *
  */
 
-public class RequisitionBody {
+public class $upperDocName$Body {
 
 	private String id;
 	

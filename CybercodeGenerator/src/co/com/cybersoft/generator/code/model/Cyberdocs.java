@@ -2,7 +2,7 @@ package co.com.cybersoft.generator.code.model;
 
 import java.util.List;
 
-public class Cyberdocs {
+public class Cyberdocs implements Cyberconstants{
 
 	private List<Document> documents;
 

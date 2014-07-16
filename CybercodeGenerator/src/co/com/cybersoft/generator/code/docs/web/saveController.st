@@ -30,25 +30,9 @@ import co.com.cybersoft.docs.events.$docName$.Save$upperDocName$Event;
 import co.com.cybersoft.docs.persistence.services.$docName$.$upperDocName$PersistenceService;
 import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$Info;
 import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$BodyInfo;
-$imports$
-import co.com.cybersoft.tables.core.services.country.CountryService;
-import co.com.cybersoft.tables.core.services.department.DepartmentService;
-import co.com.cybersoft.tables.core.services.expenseType.ExpenseTypeService;
-import co.com.cybersoft.tables.core.services.populatedPlace.PopulatedPlaceService;
-import co.com.cybersoft.tables.core.services.priority.PriorityService;
-import co.com.cybersoft.tables.core.services.state.StateService;
-import co.com.cybersoft.tables.core.services.transportationType.TransportationTypeService;
-import co.com.cybersoft.tables.core.services.warehouse.WarehouseService;
-import co.com.cybersoft.tables.events.country.CountryPageEvent;
-import co.com.cybersoft.tables.events.department.DepartmentPageEvent;
-import co.com.cybersoft.tables.events.expenseType.ExpenseTypePageEvent;
-import co.com.cybersoft.tables.events.populatedPlace.PopulatedPlacePageEvent;
-import co.com.cybersoft.tables.events.priority.PriorityPageEvent;
-import co.com.cybersoft.tables.events.state.StatePageEvent;
-import co.com.cybersoft.tables.events.transportationType.TransportationTypePageEvent;
-import co.com.cybersoft.tables.events.warehouse.WarehousePageEvent;
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.SparkBindingException;
+$imports$
 
 
 @Controller
@@ -58,39 +42,13 @@ public class $upperDocName$Controller {
 	@Autowired
 	private $upperDocName$PersistenceService $docName$Service;
 	
-	@Autowired
-		private PriorityService priorityService;
-
-	@Autowired
-		private DepartmentService departmentService;
-
-	@Autowired
-		private ExpenseTypeService expenseTypeService;
-
-	@Autowired
-		private TransportationTypeService transportationTypeService;
-
-	
-	@Autowired
-		private WarehouseService warehouseService;
-
-	@Autowired
-		private CountryService countryService;
-
-	@Autowired
-		private StateService stateService;
-
-	@Autowired
-		private PopulatedPlaceService populatedPlaceService;
-	
+	$fields$
 	
 	@Autowired
 	@Qualifier("jsr303Validator") Validator validator;
 	
 	private static final Logger LOG = LoggerFactory.getLogger($upperDocName$Controller.class);
 	
-	
-		
 	@RequestMapping(method=RequestMethod.POST)
 	public String save$upperDocName$(@ModelAttribute("$docName$Info") $upperDocName$Info $docName$Info, @ModelAttribute("$docName$BodyInfo") $upperDocName$BodyInfo current, @ModelAttribute("$docName$BodyModificationInfo") $upperDocName$BodyInfo modified,Model model, HttpServletRequest request) throws Exception{
 		$upperDocName$Event $docName$Event=null;
@@ -105,13 +63,13 @@ public class $upperDocName$Controller {
 			manualValidation(current, "$docName$BodyInfo", CyberUtils.additionForm);
 			
 			$docName$Info.setCurrent$upperDocName$BodyInfo(current);
-			$docName$Event = $docName$Service.save$upperDocName$Body(new Save$upperDocName$Event($docName$Info));
+			$docName$Event = $docName$Service.create$upperDocName$BodyRecord(new Save$upperDocName$Event($docName$Info));
 			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(request);
 			model.addAttribute("$docName$BodyInfo", $docName$BodyInfo);
 		}
 		else if (modified.get$upperDocName$BodyModificationInfo().getSubmit().endsWith("deletion")){
 			List<String> toDelete = Arrays.asList($docName$Info.getDeletion().split(","));
-			$docName$Event=$docName$Service.delete$upperDocName$(new Save$upperDocName$Event($docName$Info), toDelete);			
+			$docName$Event=$docName$Service.delete$upperDocName$BodyRecords(new Save$upperDocName$Event($docName$Info), toDelete);			
 		}
 		else{
 			$docName$Event = $docName$Service.save$upperDocName$(new Save$upperDocName$Event($docName$Info));
@@ -132,23 +90,7 @@ public class $upperDocName$Controller {
 			$docName$Info.setCreatedBy($docName$Event.get$upperDocName$().getCreatedBy());
 //		$docName$Info.get$upperDocName$ItemModificationInfo().get$upperDocName$ItemModificationInfo().setSubmit("");
 			
-			CountryPageEvent allCountryPageEvent = null;
-			StatePageEvent allStatePageEvent = null;
-			PopulatedPlacePageEvent allPopulatedPlacePageEvent = null;
-			
-			
-			allCountryPageEvent = countryService.requestAllByCountry();
-			$docName$Info.setCountryList(allCountryPageEvent.getCountryList());
-			
-			if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
-				allStatePageEvent = stateService.requestAllByCountryName($docName$Event.get$upperDocName$().getCountry());
-				$docName$Info.setStateList(allStatePageEvent.getStateList());
-			}
-			if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
-				allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName($docName$Event.get$upperDocName$().getState());
-				$docName$Info.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
-			}
-			
+			$compoundLists$
 			
 			model.addAttribute("$docName$Info",$docName$Info);
 			model.addAttribute("$docName$BodyList", $docName$Info.get$upperDocName$BodyList());
@@ -268,57 +210,7 @@ public class $upperDocName$Controller {
 				$docName$Info = new $upperDocName$Info();
 			}
 			
-			
-			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
-			$docName$Info.setPriorityList(allPriorityEvent.getPriorityList());
-			DepartmentPageEvent allRequestingDepartmentEvent = departmentService.requestAllByDepartment();
-			$docName$Info.setRequestingDepartmentList(allRequestingDepartmentEvent.getDepartmentList());
-			ExpenseTypePageEvent allExpenseTypeEvent = expenseTypeService.requestAllByExpenseType();
-			$docName$Info.setExpenseTypeList(allExpenseTypeEvent.getExpenseTypeList());
-			TransportationTypePageEvent allTransportationTypeEvent = transportationTypeService.requestAllByTransportationType();
-			$docName$Info.setTransportationTypeList(allTransportationTypeEvent.getTransportationTypeList());
-			WarehousePageEvent allReceivingWarehouseEvent = warehouseService.requestAllByWarehouse();
-			$docName$Info.setReceivingWarehouseList(allReceivingWarehouseEvent.getWarehouseList());
-			
-			
-			CountryPageEvent allCountryPageEvent = null;
-			StatePageEvent allStatePageEvent = null;
-			PopulatedPlacePageEvent allPopulatedPlacePageEvent = null;
-			
-			
-			
-			if (id!=null || ($docName$Info.getCreated()!=null && $docName$Info.getCreated() && $docName$InfoSession!=null && $docName$InfoSession.getId()!=null)){
-				allCountryPageEvent = countryService.requestAllByCountry();
-				$docName$Info.setCountryList(allCountryPageEvent.getCountryList());
-
-				if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
-						allStatePageEvent = stateService.requestAllByCountryName($docName$Info.getCountry());
-						$docName$Info.setStateList(allStatePageEvent.getStateList());
-				}
-				if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
-						allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName($docName$Info.getState());
-						$docName$Info.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
-				}
-			}
-			else {
-				allCountryPageEvent = countryService.requestAllByCountry();
-				$docName$Info.setCountryList(allCountryPageEvent.getCountryList());
-				
-				if (allCountryPageEvent!=null && !allCountryPageEvent.getCountryList().isEmpty()){	
-					allStatePageEvent = stateService.requestAllByCountryName(allCountryPageEvent.getCountryList().get(0).getCountry());
-					$docName$Info.setStateList(allStatePageEvent.getStateList());
-				}
-				if (allStatePageEvent!=null && !allStatePageEvent.getStateList().isEmpty()){	
-					allPopulatedPlacePageEvent = populatedPlaceService.requestAllByStateName(allStatePageEvent.getStateList().get(0).getState());
-					$docName$Info.setPopulatedPlaceList(allPopulatedPlacePageEvent.getPopulatedPlaceList());
-				}
-				
-				$docName$Info.setId(null);
-				$docName$Info.setDate(new Date());
-				$docName$Info.setStock(true);
-				$docName$Info.setRequiredOnDate(new Date());
-				$docName$Info.setActive(true);
-			}
+			$setListsAndDefaults$
 			
 			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(request);	
 			$docName$Info.setCurrent$upperDocName$BodyInfo($docName$BodyInfo);
@@ -341,11 +233,10 @@ public class $upperDocName$Controller {
 		private $upperDocName$BodyInfo get$upperDocName$BodyInfo(HttpServletRequest request) throws Exception {
 			$upperDocName$BodyInfo $docName$BodyInfo = new $upperDocName$BodyInfo();
 			
-			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
-			$docName$BodyInfo.setPriorityList(allPriorityEvent.getPriorityList());
+			$bodyAdditionLists$
 			
 			$docName$BodyInfo.setId(null);
-			$docName$BodyInfo.setBodyRequiredOnDate(new Date());
+			$defaults$
 
 			request.getSession().setAttribute("$docName$BodyInfo", $docName$BodyInfo);
 			
@@ -356,8 +247,7 @@ public class $upperDocName$Controller {
 		private $upperDocName$BodyInfo get$upperDocName$BodyModificationInfo(HttpServletRequest request) throws Exception{
 			$upperDocName$BodyInfo $docName$BodyModificationInfo = new $upperDocName$BodyInfo();
 			
-			PriorityPageEvent allPriorityEvent = priorityService.requestAllByPriority();
-			$docName$BodyModificationInfo.setPriorityList(allPriorityEvent.getPriorityList());
+			$bodyModificationLists$
 
 			request.getSession().setAttribute("$docName$BodyModificationInfo", $docName$BodyModificationInfo);
 			

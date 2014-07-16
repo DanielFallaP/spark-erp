@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import co.com.cybersoft.docs.events.$docName$.Request$upperDocName$Event;
 import co.com.cybersoft.docs.events.$docName$.Request$upperDocName$PageEvent;
 import co.com.cybersoft.docs.events.$docName$.$upperDocName$Event;
-import co.com.cybersoft.docs.events.$docName$.$upperDocName$ModificationEvent;
 import co.com.cybersoft.docs.events.$docName$.$upperDocName$PageEvent;
 import co.com.cybersoft.docs.events.$docName$.Save$upperDocName$Event;
 import co.com.cybersoft.docs.persistence.domain.$upperDocName$;
@@ -134,13 +133,6 @@ public class $upperDocName$PersistenceServiceImpl implements $upperDocName$Persi
 		
 		return new $upperDocName$Event($docName$Info);
 		
-	}
-
-	@Override
-	public $upperDocName$Event modify$upperDocName$($upperDocName$ModificationEvent event) throws Exception {
-		$upperDocName$ $docName$ = new $upperDocName$().from$upperDocName$Info(event.get$upperDocName$());
-		$docName$ = $docName$Repository.save($docName$);
-		return new $upperDocName$Event(new $upperDocName$Info().to$upperDocName$Info($docName$));
 	}
 	
 

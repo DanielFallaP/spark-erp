@@ -60,23 +60,6 @@
 	    	});
 	    	
 	    $datePickers$
-
-		\$( function () {
-			\$( "#date" ).datepicker();
-		} );
-		
-		\$( function () {
-			\$( "#requiredOnDate" ).datepicker();
-		} );
-
-		\$( function () {
-			\$( "#_requiredOnDateBodyModification" ).datepicker();
-		} );
-		
-		
-		\$( function () {
-			\$( "#bodyRequiredOnDate" ).datepicker();
-		} );
 		
 			function submitDeletion(){
 				var deletion="";
@@ -114,120 +97,8 @@
 		}
 		   
 		$compoundReferenceFunctions$   
-		   \$(function(){
-		   	  			\$("#country").change(function(){
-		   	  				var e=document.getElementById("country");
-		   	  	 		   	var country=e.options[e.selectedIndex].value;
-		   	  	 		   	var path=window.location.pathname.split("/");
-		   	  	 		    var prefix="";
-		   	  	 		   	if (path[1].localeCompare("docs")!=0){
-		   	  	 		   			prefix="/"+path[1];	
-		   	  	 		   	}
-		   	  	 		   	var url=prefix+"/docs/$docName$/retrieveCity/retrieve?country="+country;
-		   	  	 		 \$.ajax({
-		   		  	 		  url: url,
-		   		  	 		  beforeSend: function(xhr) {
-		   		  	            xhr.setRequestHeader("Accept", "application/json");
-		   		  	        }
-		   		  	 		 }).done(function(info){
-		   		  	 			var optionsAsString;
-		   		  	 			
-		   		  	 			optionsAsString = "";
-		   		  	 			var stateArray=info.stateList;
-		   		  	 					  	 			
-		   		  	 			if (stateArray!=null){
-		   		  	 				for(var i = 0; i < stateArray.length; i++) {
-		   		  	 			    optionsAsString += "<option value='" + stateArray[i].state + "'>" + stateArray[i].state + "</option>";
-		   		  	 				}
-		   		  	 				\$( 'select[name="state"]' ).find('option').remove().end().append( optionsAsString );
-		   		  	 			}
-		   		  	 			else {
-		   		  	 				\$( 'select[name="state"]' ).find('option').remove().end();
-		   		  	 			}
-		   		  	 			optionsAsString = "";
-		   		  	 			var populatedPlaceArray=info.populatedPlaceList;
-		   		  	 					  	 			
-		   		  	 			if (populatedPlaceArray!=null){
-		   		  	 				for(var i = 0; i < populatedPlaceArray.length; i++) {
-		   		  	 			    optionsAsString += "<option value='" + populatedPlaceArray[i].populatedPlace + "'>" + populatedPlaceArray[i].populatedPlace + "</option>";
-		   		  	 				}
-		   		  	 				\$( 'select[name="populatedPlace"]' ).find('option').remove().end().append( optionsAsString );
-		   		  	 			}
-		   		  	 			else {
-		   		  	 				\$( 'select[name="populatedPlace"]' ).find('option').remove().end();
-		   		  	 			}
-
-		   		  	 					  	 			
-		   		  	 		 });
-		   	  	 		  
-		   	  	 		  });
-		   			});
-		   \$(function(){
-		   	  			\$("#state").change(function(){
-		   	  				var e=document.getElementById("state");
-		   	  	 		   	var state=e.options[e.selectedIndex].value;
-		   	  	 		   	var path=window.location.pathname.split("/");
-		   	  	 		    var prefix="";
-		   	  	 		   	if (path[1].localeCompare("docs")!=0){
-		   	  	 		   			prefix="/"+path[1];	
-		   	  	 		   	}
-		   	  	 		   	var url=prefix+"/docs/$docName$/retrieveCity/retrieve?state="+state;
-		   	  	 		 \$.ajax({
-		   		  	 		  url: url,
-		   		  	 		  beforeSend: function(xhr) {
-		   		  	            xhr.setRequestHeader("Accept", "application/json");
-		   		  	        }
-		   		  	 		 }).done(function(info){
-		   		  	 			var optionsAsString;
-		   		  	 			
-		   		  	 			optionsAsString = "";
-		   		  	 			var populatedPlaceArray=info.populatedPlaceList;
-		   		  	 					  	 			
-		   		  	 			if (populatedPlaceArray!=null){
-		   		  	 				for(var i = 0; i < populatedPlaceArray.length; i++) {
-		   		  	 			    optionsAsString += "<option value='" + populatedPlaceArray[i].populatedPlace + "'>" + populatedPlaceArray[i].populatedPlace + "</option>";
-		   		  	 				}
-		   		  	 				\$( 'select[name="populatedPlace"]' ).find('option').remove().end().append( optionsAsString );
-		   		  	 			}
-		   		  	 			else {
-		   		  	 				\$( 'select[name="populatedPlace"]' ).find('option').remove().end();
-		   		  	 			}
-
-		   		  	 					  	 			
-		   		  	 		 });
-		   	  	 		  
-		   	  	 		  });
-		   			});
-		   
-			$setModificationFormFunction$
-			function setModificationFormValues(id){
-			   var selectedRow="#"+id;
-			   var link=\$("#$docName$-body-modification-form");
-			   var identification="#_id";	 
-			   \$(identification).val(id);
-			   \$(selectedRow).find('td').each(function (i){
-				  if (i==1){
-					    var field="#_itemModification";	 
-						\$(field).val(\$(this).html());
-				  }
-				  if (i==2){
-					  var field="#_requiredOnDateBodyModification";	 
-					  \$(field).val(\$(this).html());
-				  }
-				  if (i==3){
-					  var field="#_priorityBodyModification";	 
-					  \$(field).val(\$(this).html());
-				  }
-				  if (i==4){
-					  var field="#_quantityModification";	 
-					  \$(field).val(\$(this).html());
-				  }
-				  
-			   });
-			\$('.popup-with-form2').click();
-			document.getElementById("_itemModification").focus();
-			 popupVisible=true;
-		   }
+			   
+		$setModificationFormFunction$
 			
 		   \$(document).ready( function () {
 				\$('#$docName$BodyList').dataTable();
@@ -288,55 +159,6 @@
 				});
 			});
 		   
-		   
-		   \$(function(){
-	   		     \$("#item").autocomplete({
-	   		    	    source: function (request, response) {
-	   		    	    		var path=window.location.pathname.split("/");
-	   		    	    		var prefix="";
-	   		    	    		if (path[1].localeCompare("docs")!=0){
-	   		    	    			prefix="/"+path[1];	
-	   		    	    		}
-	   							\$.get(prefix+"/configuration/item/getDescriptionList?description="+request.term, {}, function (data) {
-	   		    	            var array=data.split("/////");
-	   		    	            if (data!="")
-	   		    	            	response(array);
-	   		    	            else
-	   		    	            	response(null);
-	   		    	        });
-	   		    	    },
-	   		    	    minLength: 3,
-	   	    	    		select: function(a, b){
-	   	    	    		\$(this).val(b.item.value);
-	   	    	    	}
-	   		    	});
-	   		    	 
-	   		     });
-		   
-		   \$(function(){
-	   		     \$("#_itemModification").autocomplete({
-	   		    	    source: function (request, response) {
-	   		    	    		var path=window.location.pathname.split("/");
-	   		    	    		var prefix="";
-	   		    	    		if (path[1].localeCompare("docs")!=0){
-	   		    	    			prefix="/"+path[1];	
-	   		    	    		}
-	   							\$.get(prefix+"/configuration/item/getDescriptionList?description="+request.term, {}, function (data) {
-	   		    	            var array=data.split("/////");
-	   		    	            if (data!="")
-	   		    	            	response(array);
-	   		    	            else
-	   		    	            	response(null);
-	   		    	        });
-	   		    	    },
-	   		    	    minLength: 3,
-	   	    	    		select: function(a, b){
-	   	    	    		\$(this).val(b.item.value);
-	   	    	    	}
-	   		    	});
-	   		    	 
-	   		     });
-		   
 		   function checkExceptions(){
 			   if (document.getElementById("_AdditionFormException")!=null){
 				   newEntry();
@@ -369,58 +191,9 @@
 		        	
 		        	<table>
 		        		$fieldRows$
-		        		<tr th:if="\${requiredOnDateExcep8} or \${requiredOnDateException}">
-		        			<td></td>
-		        			<td></td>
-		        			<td th:if="\${requiredOnDateException}" colspan="2"><div class="alert alert-error" th:text="#{\${requiredOnDateValidationErrorMessage}}"></div></td>
-		        			<td></td>
-		        			<td></td>
-		        		</tr>		        			        			
 		        		<tr>
-        		 			<td style="padding:0 15px;"><b th:text="#{label.$docName$Stock}+': '"></b></td>
-        		   			<td ><input type="checkbox" th:field="*{stock}" /></td>
-		        			<td style="padding:0 15px;"><b th:text="#{label.$docName$RequiredOnDate}+': '"></b></td>
-		        			<td ><input id="requiredOnDate" name="requiredOnDate" type="text" th:value="*{{requiredOnDate}}" /></td>
-		        			<td style="padding:0 15px;"><b th:text="#{label.$docName$Priority}+': '"></b></td>
-		        			<td ><select th:field="*{priority}"><option th:each="reference : \${$docName$Info.priorityList}" th:value="\${reference.priority}" th:text="#{\${reference.priority}}"></option></select></td>
-		        			<td th:if="\${priorityException}"><div class="alert alert-error" th:text="#{\${priorityValidationErrorMessage}}"></div></td>
-		        		</tr>
-		        		<tr>
-		        			<td style="padding:0 15px;"><b th:text="#{label.$docName$Country}+': '"></b></td>
-		        			<td><select id="country" onChange="countrySelectedRefresh()" th:field="*{country}"><option th:each="reference : \${$docName$Info.countryList}" th:value="\${reference.country}" th:text="\${reference.country}"></option></select></td>
-		        			<td style="padding:0 15px;"><b th:text="#{label.$docName$State}+': '"></b></td>
-		        			<td ><select id="state" onChange="stateSelectedRefresh()" th:field="*{state}"><option th:each="reference : \${$docName$Info.stateList}" th:value="\${reference.state}" th:text="\${reference.state}"></option></select></td>
-		        			<td th:if="\${stateException}"><div class="alert alert-error" th:text="#{\${stateValidationErrorMessage}}"></div></td>
-		        			<td style="padding:0 15px;"><b th:text="#{label.$docName$PopulatedPlace}+': '"></b></td>
-		        			<td><select id="populatedPlace" onChange="populatedPlaceSelectedRefresh()" th:field="*{populatedPlace}"><option th:each="reference : \${$docName$Info.populatedPlaceList}" th:value="\${reference.populatedPlace}" th:text="\${reference.populatedPlace}"></option></select></td>
-		        			<td th:if="\${populatedPlaceException}"><div class="alert alert-error" th:text="#{\${populatedPlaceValidationErrorMessage}}"></div></td>
-		        		</tr>
-		        		<tr th:if="\${dateException}">
-		        			<td th:if="\${dateException}" colspan="2"><div class="alert alert-error" th:text="#{\${dateValidationErrorMessage}}"></div></td>
-		        			<td></td>
-		        			<td></td>
-		        			<td></td>
-		        			<td></td>
-		        		</tr>	
-		        		<tr>
-		        			<td style="padding:0 15px;"><b th:text="#{label.date}+': '"></b></td>
-		        			<td><input id="date" name="date" type="text" th:value="*{{date}}" /></td>
-		        			<td style="padding:0 15px;"><b th:text="#{label.$docName$RequestingDepartment}+': '"></b></td>
-		        			<td><select id="requestingDepartment" onChange="requestingDepartmentSelectedRefresh()" th:field="*{requestingDepartment}"><option th:each="reference : \${$docName$Info.requestingDepartmentList}" th:value="\${reference.department}" th:text="\${reference.department}"></option></select></td>
-		        			<td th:if="\${requestingDepartmentException}"><div class="alert alert-error" th:text="#{\${requestingDepartmentValidationErrorMessage}}"></div></td>
-		        			<td style="padding:0 15px;"><b th:text="#{label.$docName$ExpenseType}+': '"></b></td>
-		        			<td><select id="expenseType" onChange="expenseTypeSelectedRefresh()" th:field="*{expenseType}"><option th:each="reference : \${$docName$Info.expenseTypeList}" th:value="\${reference.expenseType}" th:text="\${reference.expenseType}"></option></select></td>
-		        			<td th:if="\${expenseTypeException}"><div class="alert alert-error" th:text="#{\${expenseTypeValidationErrorMessage}}"></div></td>
-		        		</tr>
-		        		<tr>
-		        			<td style="padding:0 15px;"><b th:text="#{label.$docName$TransportationType}+': '"></b></td>
-		        			<td><select th:field="*{transportationType}"><option th:each="reference : \${$docName$Info.transportationTypeList}" th:value="\${reference.transportationType}" th:text="#{\${reference.transportationType}}"></option></select></td>
-		        			<td th:if="\${transportationTypeException}"><div class="alert alert-error" th:text="#{\${transportationTypeValidationErrorMessage}}"></div></td>
-		        			<td style="padding:0 15px;"><b th:text="#{label.$docName$ReceivingWarehouse}+': '"></b></td>
-		        			<td><select id="receivingWarehouse" onChange="receivingWarehouseSelectedRefresh()" th:field="*{receivingWarehouse}"><option th:each="reference : \${$docName$Info.receivingWarehouseList}" th:value="\${reference.warehouse}" th:text="\${reference.warehouse}"></option></select></td>
-		        			<td th:if="\${receivingWarehouseException}"><div class="alert alert-error" th:text="#{\${receivingWarehouseValidationErrorMessage}}"></div></td>
-		        			<td style="padding:0 15px;"><b th:text="#{label.$docName$State+': '}"></b></td>
-		        			<td th:text="#{label.$docName$StateIncomplete}"></td>
+		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionActive}+': '"></b></td>
+        		   			<td ><input id="active" type="checkbox" th:field="*{active}" /></td>
 		        		</tr>
 		        	</table>
 		        	<br/>
@@ -430,12 +203,7 @@
 							<tr>
 								<th ></th>
 								$bodyHeaderFields$
-								<th th:text="#{label.$docName$BodyItem}"></th>
-								<th th:text="#{label.$docName$BodyRequiredOnDate}"></th>
-								<th th:text="#{label.$docName$BodyPriority}"></th>
-								<th th:text="#{label.$docName$BodyQuantity}"></th>
-								<th th:text="#{label.$docName$BodyLocalCurrencyUnitValue}"></th>
-								<th th:text="#{label.$docName$BodyForeignCurrencyUnitValue}"></th>
+								<th th:text="#{label.requisitionBodyItem}"></th>
 							</tr>
 						</thead>
 						<tbody id="$docName$BodyList">
@@ -443,12 +211,6 @@
 								<td><div align="center" ><input type="checkbox" /></div></td>
 								$bodyFields$
 								<td th:text="\${object.item}" th:onClick="'setModificationFormValues(\''+\${object.id}+'\')'" ></td>
-								<td th:text="\${{object.bodyRequiredOnDate}}" th:onClick="'setModificationFormValues(\''+\${object.id}+'\')'" ></td>
-								<td th:text="#{\${object.priority}}" th:onClick="'setModificationFormValues(\''+\${object.id}+'\')'" ></td>
-								<td th:text="\${object.quantity}" th:onClick="'setModificationFormValues(\''+\${object.id}+'\')'"></td>
-								<td th:text="\${object.localCurrencyUnitValue}" th:onClick="'setModificationFormValues(\''+\${object.id}+'\')'"></td>
-								<td th:text="\${object.foreignCurrencyUnitValue}" th:onClick="'setModificationFormValues(\''+\${object.id}+'\')'"></td>
-							
 							</tr>
 						</tbody>
 		        	</table>
@@ -468,28 +230,12 @@
 		        	<input th:if='\${$docName$Info.created}' hidden="" value="true" th:field="*{created}"></input>
 		        	<input th:if="\${_AdditionFormException}" id="_AdditionFormException" hidden=""></input> 
 		        	<table>
-		        		$additionFormFields$		        			        			
+		        		$additionFormFields$
 		        		<tr>
-		        			<td ><b th:text="#{label.$docName$BodyItem}+': '"></b></td>
+		        			<td ><b th:text="#{label.requisitionBodyItem}+': '"></b></td>
 		        			<td><input id="item" type="text" th:field="*{item}" /></td>
 		        			<td th:if="\${itemException}"><div class="alert alert-error" th:text="#{\${itemValidationErrorMessage}}"></div></td>
-		        		</tr>
-		        		<tr>
-		        				<td ><b th:text="#{label.$docName$BodyRequiredOnDate}+': '"></b></td>
-		        				<td><input id="bodyRequiredOnDate" name="bodyRequiredOnDate" type="text" th:value="*{{bodyRequiredOnDate}}" /></td>
-		        				<td th:if="\${bodyRequiredOnDateException}"><div class="alert alert-error" th:text="#{\${bodyRequiredOnDateValidationErrorMessage}}"></div></td>
-		        		</tr>
-		        		<tr>
-		        			<td ><b th:text="#{label.$docName$BodyPriority}+': '"></b></td>
-		        			<td><select th:field="*{priority}"><option th:each="reference : \${$docName$BodyInfo.priorityList}" th:value="\${reference.priority}" th:text="#{\${reference.priority}}"></option></select></td>
-		        			<td th:if="\${priorityException}"><div class="alert alert-error" th:text="#{\${priorityValidationErrorMessage}}"></div></td>
-		        		</tr>
-		        		<tr>
-		        				<td ><b th:text="#{label.$docName$BodyQuantity}+': '"></b></td>
-		        				<td><input id="quantity" type="text" th:field="*{quantity}" /></td>
-		        				<td th:if="\${quantityException}"><div class="alert alert-error" th:text="#{\${quantityValidationErrorMessage}}"></div></td>
-		        		</tr>
-
+		        		</tr>      			        			
 		        		<tr>
 		        			<td>
 		        				<input type="button" th:value="#{label.save}" onclick="submitCreation();"/>
@@ -505,28 +251,12 @@
 		        	<input th:if='\${$docName$Info.created}' hidden="" value="true" th:field="*{created}"></input>
 		        	<input th:if="\${_ModificationFormException}" id="_ModificationFormException" hidden=""></input>
 		        	<table >
-		        		$modificationFormFields$		        			        			
+		        		$modificationFormFields$
 		        		<tr>
-		        			<td ><b th:text="#{label.$docName$BodyItem}+': '"></b></td>
-		        			<td><input id="_itemModification" type="text" th:field="*{$docName$BodyModificationInfo.item}" /></td>
-		        			<td th:if="\${_itemModification}"><div class="alert alert-error" th:text="#{\${itemValidationErrorMessage}}"></div></td>
-		        		</tr>
-		        		<tr>
-		        				<td ><b th:text="#{label.$docName$BodyRequiredOnDate}+': '"></b></td>
-		        				<td><input id="_requiredOnDateBodyModification" type="text" th:field="*{$docName$BodyModificationInfo.bodyRequiredOnDate}" /></td>
-		        				<td th:if="\${_requiredOnDateBodyException}"><div class="alert alert-error" th:text="#{\${requiredOnDateValidationErrorMessage}}"></div></td>
-		        		</tr>
-		        		<tr>
-		        			<td ><b th:text="#{label.$docName$BodyPriority}+': '"></b></td>
-		        			<td><select id="_priorityBodyModification" th:field="*{$docName$BodyModificationInfo.priority}"><option th:each="reference : \${$docName$BodyInfo.priorityList}" th:value="\${reference.priority}" th:text="#{\${reference.priority}}"></option></select></td>
-		        			<td th:if="\${_priorityBodyModificationException}"><div class="alert alert-error" th:text="#{\${priorityValidationErrorMessage}}"></div></td>
-		        		</tr>
-		        		<tr>
-		        				<td ><b th:text="#{label.$docName$BodyQuantity}+': '"></b></td>
-		        				<td><input id="_quantityModification" type="text" th:field="*{$docName$BodyModificationInfo.quantity}" /></td>
-		        				<td th:if="\${_quantityModificationException}"><div class="alert alert-error" th:text="#{\${quantityValidationErrorMessage}}"></div></td>
-		        		</tr>
-
+		        			<td ><b th:text="#{label.requisitionBodyItem}+': '"></b></td>
+		        			<td><input id="item" type="text" th:field="*{item}" /></td>
+		        			<td th:if="\${itemException}"><div class="alert alert-error" th:text="#{\${itemValidationErrorMessage}}"></div></td>
+		        		</tr>	        			        			
 		        		<tr>
 		        			<td>
 		        				<input type="button" th:value="#{label.save}" onclick="submitModification();"/>

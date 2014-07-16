@@ -19,7 +19,6 @@ public class SequenceServiceImpl implements SequenceService{
 	public void startupSequences() throws Exception {
 	
 		$checkAndStart$
-		checkAndStart("requisition_id", 1);
 		
 	}
 	
