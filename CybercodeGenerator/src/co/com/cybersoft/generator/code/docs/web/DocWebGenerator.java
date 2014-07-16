@@ -15,8 +15,12 @@ public class DocWebGenerator {
 	
 	private final Cyberdocs cyberdocs;
 	
-	public DocWebGenerator(Cyberdocs cyberdocs){
+	private final Cybertables cybertables;
+
+	
+	public DocWebGenerator(Cyberdocs cyberdocs, Cybertables cybertables){
 		this.cyberdocs=cyberdocs;
+		this.cybertables=cybertables;
 	}
 	
 	public void generate(){
@@ -127,7 +131,7 @@ public class DocWebGenerator {
 		
 		for (Field field : fields) {
 			if (field.getCompoundReference()){
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cyberdocs, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate stringTemplate = new StringTemplate("import co.com.cybersoft.tables.core.domain.$fieldName$Details;\n");
 					stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
@@ -202,7 +206,7 @@ public class DocWebGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cyberdocs, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					if (field.getRequired())
 						body+="@NotEmpty\n";
@@ -271,7 +275,7 @@ public class DocWebGenerator {
 			}
 			else{
 				
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cyberdocs, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					
 					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);

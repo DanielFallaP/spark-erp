@@ -190,7 +190,7 @@
 		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{$docName$BodyModificationInfo.submit}"></input>
 		        	
 		        	<table>
-		        		$fieldRows$
+		        		$headerFields$
 		        		<tr>
 		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionActive}+': '"></b></td>
         		   			<td ><input id="active" type="checkbox" th:field="*{active}" /></td>
@@ -203,14 +203,12 @@
 							<tr>
 								<th ></th>
 								$bodyHeaderFields$
-								<th th:text="#{label.requisitionBodyItem}"></th>
 							</tr>
 						</thead>
 						<tbody id="$docName$BodyList">
 							<tr th:each="object: \${$docName$BodyList}" th:id="\${object.id}"  >
 								<td><div align="center" ><input type="checkbox" /></div></td>
 								$bodyFields$
-								<td th:text="\${object.item}" th:onClick="'setModificationFormValues(\''+\${object.id}+'\')'" ></td>
 							</tr>
 						</tbody>
 		        	</table>
@@ -232,11 +230,6 @@
 		        	<table>
 		        		$additionFormFields$
 		        		<tr>
-		        			<td ><b th:text="#{label.requisitionBodyItem}+': '"></b></td>
-		        			<td><input id="item" type="text" th:field="*{item}" /></td>
-		        			<td th:if="\${itemException}"><div class="alert alert-error" th:text="#{\${itemValidationErrorMessage}}"></div></td>
-		        		</tr>      			        			
-		        		<tr>
 		        			<td>
 		        				<input type="button" th:value="#{label.save}" onclick="submitCreation();"/>
 		        			</td>
@@ -252,11 +245,6 @@
 		        	<input th:if="\${_ModificationFormException}" id="_ModificationFormException" hidden=""></input>
 		        	<table >
 		        		$modificationFormFields$
-		        		<tr>
-		        			<td ><b th:text="#{label.requisitionBodyItem}+': '"></b></td>
-		        			<td><input id="item" type="text" th:field="*{item}" /></td>
-		        			<td th:if="\${itemException}"><div class="alert alert-error" th:text="#{\${itemValidationErrorMessage}}"></div></td>
-		        		</tr>	        			        			
 		        		<tr>
 		        			<td>
 		        				<input type="button" th:value="#{label.save}" onclick="submitModification();"/>

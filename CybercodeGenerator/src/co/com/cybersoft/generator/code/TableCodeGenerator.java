@@ -9,7 +9,6 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import co.com.cybersoft.generator.code.config.TableConfigGenerator;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
@@ -48,7 +47,6 @@ public class TableCodeGenerator {
 			new TablePersistenceGenerator(cybersystems).generate();
 			new TableViewGenerator(cybersystems).generate();
 			new TableEventGenerator().generate(cybersystems);
-			new TableConfigGenerator().generate(cybersystems);
 			new TableDirectoryCleaner(cybersystems).clean();
 		}
 	}

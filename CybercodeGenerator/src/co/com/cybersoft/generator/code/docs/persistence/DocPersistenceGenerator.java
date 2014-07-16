@@ -14,9 +14,12 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
 public class DocPersistenceGenerator {
 
 	private final Cyberdocs cyberdocs;
+	
+	private final Cybertables cybertables;
 
-	public DocPersistenceGenerator(Cyberdocs cyberdocs){
+	public DocPersistenceGenerator(Cyberdocs cyberdocs, Cybertables cybertables){
 		this.cyberdocs=cyberdocs;
+		this.cybertables=cybertables;
 	}
 	
 	public void generate(){
@@ -63,7 +66,7 @@ public class DocPersistenceGenerator {
 		
 		if (document.hasCompoundIndex()){
 			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");
-			List<Field> compoundIndex = document.getCompoundIndex(cyberdocs);
+			List<Field> compoundIndex = document.getCompoundIndex(cybertables);
 			String dec="";
 			int i=0;
 			for (Field field : compoundIndex) {
@@ -134,7 +137,7 @@ public class DocPersistenceGenerator {
 		
 		if (document.hasCompoundIndex()){
 			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");
-			List<Field> compoundIndex = document.getCompoundIndex(cyberdocs);
+			List<Field> compoundIndex = document.getCompoundIndex(cybertables);
 			String dec="";
 			int i=0;
 			for (Field field : compoundIndex) {
@@ -174,7 +177,7 @@ public class DocPersistenceGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cyberdocs, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 					template.setAttribute("type", Cybertables.stringType);
@@ -213,7 +216,7 @@ public class DocPersistenceGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cyberdocs, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = new StringTemplate("private $type$ $name$;\n");
 					template.setAttribute("type", Cybertables.stringType);
@@ -251,7 +254,7 @@ public class DocPersistenceGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cyberdocs, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = new StringTemplate("private $type$ $name$;\n");
 					template.setAttribute("type", Cybertables.stringType);

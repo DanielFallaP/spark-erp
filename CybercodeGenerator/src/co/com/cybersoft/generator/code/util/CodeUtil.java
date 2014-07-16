@@ -12,7 +12,6 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
-import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
@@ -337,15 +336,6 @@ public class CodeUtil {
 		return new ArrayList<Field>();
 	}
 	
-	public static List<Field> getCompoundKey(Cyberdocs cyberdocs, String tableName){
-		List<Document> tables = cyberdocs.getDocuments();
-		for (Document table : tables) {
-			if (table.getName().equals(tableName))
-				return getCompoundReference(cyberdocs, tableName);
-		}
-		return new ArrayList<Field>();
-	}
-
 	public static List<Field> getCompoundReference(Cybertables spark, String tableName){
 		List<Table> tables = spark.getTables();
 		for (Table table : tables) {
@@ -357,26 +347,6 @@ public class CodeUtil {
 							reference.addAll(getCompoundReference(spark, field.getRefType()));
 						else if(field.getKeyCompound()){
 							field.setTableName(field.getRefType()==null?table.getName():field.getRefType());
-							reference.add(field);
-						}
-					}
-					return reference;
-			}
-		}
-		return new ArrayList<Field>();
-	}
-	
-	public static List<Field> getCompoundReference(Cyberdocs spark, String tableName){
-		List<Document> tables = spark.getDocuments();
-		for (Document docs : tables) {
-			if (docs.getName().equals(tableName)){
-					ArrayList<Field> reference = new ArrayList<Field>();
-					List<Field> fields = docs.getHeader();
-					for (Field field : fields) {
-						if (field.getCompoundReference()&& field.getKeyCompound())
-							reference.addAll(getCompoundReference(spark, field.getRefType()));
-						else if(field.getKeyCompound()){
-							field.setTableName(field.getRefType()==null?docs.getName():field.getRefType());
 							reference.add(field);
 						}
 					}

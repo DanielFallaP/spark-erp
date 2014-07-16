@@ -14,8 +14,11 @@ public class DocEventGenerator {
 	
 	private final Cyberdocs cyberdocs;
 	
-	public DocEventGenerator(Cyberdocs cyberdocs){
+	private final Cybertables cybertables;
+	
+	public DocEventGenerator(Cyberdocs cyberdocs, Cybertables cybertables){
 		this.cyberdocs=cyberdocs;
+		this.cybertables=cybertables;
 	}
 
 	public void generate(){

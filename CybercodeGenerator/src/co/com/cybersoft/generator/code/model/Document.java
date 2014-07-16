@@ -72,13 +72,13 @@ public class Document {
 		return list;
 	}
 	
-	public List<Field> getCompoundIndex(Cyberdocs cyberdocs){
+	public List<Field> getCompoundIndex(Cybertables cybertables){
 		ArrayList<Field> compoundIndex = new ArrayList<Field>();
 		for (Field field:header) {
 			if (field.getKeyCompound()&&!field.getCompoundReference())
 				compoundIndex.add(field);
 			if (field.getKeyCompound()&&field.getCompoundReference())
-				compoundIndex.addAll(CodeUtil.getCompoundKey(cyberdocs, field.getRefType()));
+				compoundIndex.addAll(CodeUtil.getCompoundKey(cybertables, field.getRefType()));
 		}
 		return compoundIndex;
 	}

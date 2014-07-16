@@ -5,15 +5,25 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
+import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
-public class TableConfigGenerator {
+public class ConfigGenerator {
+	
+	private final Cybertables cybersoft;
+	
+	private final Cyberdocs cyberdocs;
+	
+	public ConfigGenerator(Cybertables cybersoft, Cyberdocs cyberdocs){
+		this.cybersoft=cybersoft;
+		this.cyberdocs=cyberdocs;
+	}
 
-	public void generate(Cybertables cybersoft){
+	public void generate(){
 		generateCoreConfig(cybersoft);
-		generatePersistenceConfig(cybersoft);
+		generatePersistenceConfig(cybersoft, cyberdocs);
 	}
 	
 	private void generateCoreConfig(Cybertables cybersoft){
@@ -49,7 +59,7 @@ public class TableConfigGenerator {
 		CodeUtil.writeClass(template.toString(), Cybertables.rootClassPath+"/config", "CoreConfig.java");
 	}
 	
-	private void generatePersistenceConfig(Cybertables cybersoft){
+	private void generatePersistenceConfig(Cybertables cybersoft, Cyberdocs cyberdocs){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("config", Cybertables.configCodePath);
 		StringTemplate template = templateGroup.getInstanceOf("persistenceConfig");
 		

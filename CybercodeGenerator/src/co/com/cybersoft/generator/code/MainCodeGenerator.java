@@ -14,8 +14,10 @@ public class MainCodeGenerator {
 	public static void main(String[] args) {
 		TableCodeGenerator tableCodeGenerator = new TableCodeGenerator();
 		DocCodeGenerator docCodeGenerator = new DocCodeGenerator();
+		ConfigCodeGenerator configCodeGenerator = new ConfigCodeGenerator();
 		try {
-//			tableCodeGenerator.generate();
+			tableCodeGenerator.generate();
+			configCodeGenerator.generate();
 			docCodeGenerator.generate();
 		} catch (Exception e) {
 			e.printStackTrace();

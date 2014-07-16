@@ -4,7 +4,7 @@ function setModificationFormValues(id){
 			   var identification="#_id";	 
 			   \$(identification).val(id);
 			   \$(selectedRow).find('td').each(function (i){
-			   		$fieldValue$
+			   		$fieldValues$
 			   });
 			\$('.popup-with-form2').click();
 			document.getElementById("_itemModification").focus();

@@ -435,12 +435,12 @@
 						<tbody id="requisitionBodyList">
 							<tr th:each="object: ${requisitionBodyList}" th:id="${object.id}"  >
 								<td><div align="center" ><input type="checkbox" /></div></td>
-								<td th:text="${object.item}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'" ></td>
+								<td th:text="${{object.item}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'" ></td>
 								<td th:text="${{object.bodyRequiredOnDate}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'" ></td>
 								<td th:text="#{${object.priority}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'" ></td>
-								<td th:text="${object.quantity}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td>
-								<td th:text="${object.localCurrencyUnitValue}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td>
-								<td th:text="${object.foreignCurrencyUnitValue}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td>
+								<td th:text="${{object.quantity}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td>
+								<td th:text="${{object.localCurrencyUnitValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td>
+								<td th:text="${{object.foreignCurrencyUnitValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td>
 							
 							</tr>
 						</tbody>
