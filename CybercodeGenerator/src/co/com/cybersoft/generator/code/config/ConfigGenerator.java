@@ -7,6 +7,7 @@ import org.antlr.stringtemplate.StringTemplateGroup;
 
 import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
+import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
@@ -64,30 +65,57 @@ public class ConfigGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("persistenceConfig");
 		
 		List<Table> tables = cybersoft.getTables();
+		List<Document> documents = cyberdocs.getDocuments();
 		String imports="";
 		String beans="";
 		String repoFields="";
 		String repos="";
 		
 		//Imports
+		for (Document document: documents){
+			StringTemplate stringTemplate = templateGroup.getInstanceOf("persistenceConfigImport");
+			stringTemplate.setAttribute("tableName", document.getName());
+			stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+			stringTemplate.setAttribute("nature", "docs");
+			imports+=stringTemplate.toString()+"\n\n";
+		}
+		
 		for (Table table : tables) {
 			StringTemplate temp = templateGroup.getInstanceOf("persistenceConfigImport");
 			
 			temp.setAttribute("tableName",table.getName());
 			temp.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+			temp.setAttribute("nature","tables");
 			imports+=temp.toString()+"\n\n";
 		}
 		
 		//Beans
+		for (Document document : documents) {
+			StringTemplate temp = templateGroup.getInstanceOf("persistenceBeanDeclaration");
+			
+			temp.setAttribute("tableName",document.getName());
+			temp.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+			
+			beans+=temp.toString()+"\n\n";
+		}
+		
 		for (Table table : tables) {
 			StringTemplate temp = templateGroup.getInstanceOf("persistenceBeanDeclaration");
 			
 			temp.setAttribute("tableName",table.getName());
 			temp.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+			
 			beans+=temp.toString()+"\n\n";
 		}
 		
 		//Repo fields
+		for(Document document:documents){
+			StringTemplate temp = templateGroup.getInstanceOf("persistenceRepoField");
+			temp.setAttribute("tableName",document.getName());
+			temp.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+			repoFields+=temp.toString()+"\n\n";
+		}
+		
 		for (Table table : tables) {
 			StringTemplate temp = templateGroup.getInstanceOf("persistenceRepoField");
 			
@@ -97,6 +125,12 @@ public class ConfigGenerator {
 		}
 		
 		//Repos
+		for(Document document:documents){
+			StringTemplate stringTemplate = new StringTemplate("$entityName$Repository.class");
+			stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+			repos+=stringTemplate.toString()+",";
+		}
+		
 		int i=1;
 		for (Table table : tables) {
 			StringTemplate stringTemplate = new StringTemplate("$entityName$Repository.class");

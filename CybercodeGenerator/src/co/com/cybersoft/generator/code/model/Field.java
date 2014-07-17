@@ -26,6 +26,9 @@ public class Field {
 	private List<String> embeddedFields=new ArrayList<String>();
 	private String tableName;
 	
+	//For documents only
+	private List<String> bodyFields=new ArrayList<String>();
+	
 	public Boolean getDisplayable() {
 		return displayable;
 	}
@@ -147,6 +150,12 @@ public class Field {
 	
 	public boolean isEmbeddedReference(){
 		return !embeddedFields.isEmpty(); 
+	}
+	public List<String> getBodyFields() {
+		return bodyFields;
+	}
+	public void setBodyFields(List<String> bodyFields) {
+		this.bodyFields = bodyFields;
 	}
 
 }

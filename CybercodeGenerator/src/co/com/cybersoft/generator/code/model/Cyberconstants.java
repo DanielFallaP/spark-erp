@@ -41,4 +41,6 @@ public final static String tableCodePath="src/co/com/cybersoft/generator/code/ta
 	public static final String configurationURL = "configuration";
 
 	public static final String settingsURL = "settings";
+	
+	public static final int headerColumnsPerRow=3;
 }

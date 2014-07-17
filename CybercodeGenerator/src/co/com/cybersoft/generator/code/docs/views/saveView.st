@@ -99,6 +99,8 @@
 		$compoundReferenceFunctions$   
 			   
 		$setModificationFormFunction$
+		
+		$autoCompleteFunctions$
 			
 		   \$(document).ready( function () {
 				\$('#$docName$BodyList').dataTable();
@@ -191,10 +193,6 @@
 		        	
 		        	<table>
 		        		$headerFields$
-		        		<tr>
-		        			<td style="padding:0 15px;"><b th:text="#{label.requisitionActive}+': '"></b></td>
-        		   			<td ><input id="active" type="checkbox" th:field="*{active}" /></td>
-		        		</tr>
 		        	</table>
 		        	<br/>
 		        	<br/>

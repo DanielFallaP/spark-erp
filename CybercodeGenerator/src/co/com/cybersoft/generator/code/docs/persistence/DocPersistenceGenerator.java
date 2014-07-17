@@ -46,10 +46,10 @@ public class DocPersistenceGenerator {
 
 	private String generateSequences() {
 		String sequences="";
-		StringTemplate template = new StringTemplate("checkAndStart(\"$docName$_id\", 0);\n");
 		
 		List<Document> documents = cyberdocs.getDocuments();
 		for (Document document : documents) {
+			StringTemplate template = new StringTemplate("checkAndStart(\"$docName$_id\", 0);\n");
 			template.setAttribute("docName", document.getName());
 			sequences += template.toString();
 		}

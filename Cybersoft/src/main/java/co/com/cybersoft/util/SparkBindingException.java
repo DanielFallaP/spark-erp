@@ -25,5 +25,8 @@ public class SparkBindingException extends Exception{
 		return errors;
 	}
 
+	public String getOrigin() {
+		return origin;
+	}
 	
 }

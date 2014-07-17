@@ -1,10 +1,12 @@
 package co.com.cybersoft.generator.code.docs.views;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
+import co.com.cybersoft.generator.code.model.Cyberconstants;
 import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
@@ -54,9 +56,111 @@ public class DocViewGenerator {
 		CodeUtil.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/docs/"+document.getName(), "save"+CodeUtil.toCamelCase(document.getName())+".html");
 	}
 
+	
+
 	private String generateHeaderFields(Document document) {
-		// TODO Auto-generated method stub
-		return "";
+		String headerFields="";
+		List<Field> header = document.getHeader();
+		List<Field> headerRow=new ArrayList<Field>();
+		headerRow.add(header.get(0));
+		for (int i=1;i<header.size();i++) {
+			Field field=header.get(i);
+			if (i%Cyberconstants.headerColumnsPerRow!=0){
+				headerRow.add(field);
+			}
+			else{
+				headerFields+=generateHeaderRow(headerRow, document);
+				headerRow.clear();
+				headerRow.add(field);
+			}
+		}
+		
+		if (headerRow.size()!=0)
+			headerFields+=generateHeaderRow(headerRow, document);
+		return headerFields;
+	}
+
+	private String generateHeaderRow(List<Field> headerRow, Document document) {
+		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
+		StringTemplate headerRowTemplate = stringTemplateGroup.getInstanceOf("headerFieldRow");
+		String exceptions="";
+		String fields="";
+		for (Field field : headerRow) {
+			StringTemplate temp = stringTemplateGroup.getInstanceOf("headerFieldException");
+			temp.setAttribute("fieldName", field.getName());
+			exceptions+=temp.toString();
+			
+			StringTemplate template;
+			if (!field.isReference() && field.getVisible() && !field.getReadOnly()){
+				if (!field.getLargeText() && !field.getType().equals(Cybertables.booleanType))
+					template = stringTemplateGroup.getInstanceOf("editableHeaderField");
+				else if (field.getType().equals(Cybertables.booleanType))
+					template = stringTemplateGroup.getInstanceOf("editableHeaderCheckField");
+				else
+					template = stringTemplateGroup.getInstanceOf("editableHeaderTextAreaField");
+				template.setAttribute("docName", document.getName());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("fieldName", field.getName());
+				if (field.getType().equals(Cybertables.dateType))
+					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
+				fields+=template.toString()+"\n";
+			}
+			
+			if (field.isReference() && !field.getCompoundReference()){
+				if (CodeUtil.referencesLabelTable(field, cybertables)){
+					template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
+				}
+				else{
+					if (CodeUtil.generateAutoCompleteReference(field)){
+						template = stringTemplateGroup.getInstanceOf("referenceTableAutocompleteRow");
+					}
+					else{
+						template = stringTemplateGroup.getInstanceOf("referenceTableRow");
+						if (!field.getRequired()){
+							template.setAttribute("optionalReference", "<option value=\"\"></option>");
+						}
+					}
+				}
+				template.setAttribute("docName", document.getName());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("displayName", field.getDisplayField());
+				fields+=template.toString()+"\n";
+			}
+			
+			//TODO compound reference
+//			if (field.getCompoundReference()){
+//				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+//				for (Field compoundField: compoundKey) {
+//					template = stringTemplateGroup.getInstanceOf("referenceTableRow");
+//					template.setAttribute("docName", document.getName());
+//					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+//					template.setAttribute("fieldName", compoundField.getName());
+//					template.setAttribute("displayName", compoundField.getName());
+//					fields+=template.toString()+"\n";
+//				}
+//			}
+		}
+		
+		headerRowTemplate.setAttribute("fieldsExceptions", exceptions);
+		headerRowTemplate.setAttribute("fields", fields);
+		headerRowTemplate.setAttribute("rowExceptions", generateExceptionDisjunction(headerRow));
+
+		return headerRowTemplate.toString();
+	}
+
+	private String generateExceptionDisjunction(List<Field> headerRow) {
+		String disjunction="";
+		int i=0;
+		for (Field field : headerRow) {
+			StringTemplate stringTemplate = new StringTemplate("\\${$fieldName$Exception}");
+			stringTemplate.setAttribute("fieldName", field.getName());
+			disjunction+=stringTemplate.toString();
+			if (i!=headerRow.size()-1)
+				disjunction+=" or ";
+			i++;
+		}
+		return disjunction;
 	}
 
 	private String generateBodyFields(Document document) {

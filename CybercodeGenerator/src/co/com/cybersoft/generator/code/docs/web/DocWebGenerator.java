@@ -1,5 +1,7 @@
 package co.com.cybersoft.generator.code.docs.web;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
@@ -9,6 +11,7 @@ import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
+import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class DocWebGenerator {
@@ -49,13 +52,138 @@ public class DocWebGenerator {
 		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
 		
 		template.setAttribute("imports", generateSaveControllerImports(document));
+		template.setAttribute("fields", generateControllerReferencesServicesDeclarations(document));
+		template.setAttribute("setListsAndDefaults", generateReferencesImports(document.getHeader(),document.getName()));
+		template.setAttribute("bodyAdditionLists", generateReferencesImports(document.getBody(),document.getName()+"Body"));
+		template.setAttribute("bodyModificationLists", generateReferencesImports(document.getBody(),document.getName()+"BodyModification"));
 		
 		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"Controller.java");
 	}
+	
+	private String generateControllerReferencesServicesDeclarations(Document document){
+		
+		String declarations="";
+		
+		List<Field> fields = new ArrayList<Field>();
+		fields.addAll(document.getHeader());
+		fields.addAll(document.getBody());
+		HashSet<String> services = new HashSet<String>();
+		for (Field field : fields) {
+			if (field.isReference() && !field.getCompoundReference()){
+				if (!services.contains(field.getRefType())){
+					StringTemplate template = new StringTemplate("@Autowired\n"
+							+ "	private $entityName$Service $tableName$Service;");
+					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+					template.setAttribute("tableName", field.getRefType());
+					declarations+=template.toString()+"\n\n";
+					services.add(field.getRefType());
+				}
+			}
+		}
+		
+		List<Field> compositeFields = document.getCompositeFields();
+		for (Field compositeField : compositeFields) {
+			List<Field> compoundReference = CodeUtil.getCompoundKey(cybertables, compositeField.getRefType());
+			for (Field field : compoundReference) {
+				if (!services.contains(field.getName())){
+					StringTemplate template = new StringTemplate("@Autowired\n"
+							+ "	private $entityName$Service $tableName$Service;");
+					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("tableName", field.getName());
+					declarations+=template.toString()+"\n\n";
+					services.add(field.getName());
+				}
+			}
+		}
+		
+		return declarations;
+	}
+	
+	private String generateReferencesImports(List<Field> fields, String parent) {
+		String lists="";
+		for (Field field : fields) {
+			if (field.isReference()){
+				if (!field.isEmbeddedReference() && !field.getCompoundReference() && !CodeUtil.generateAutoCompleteReference(field)){
+					StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAllBy$referenceField$();\n"
+							+ "$parentTableName$Info.set$variableName$List(all$variableName$Event.get$entityName$List());\n");
+					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+					template.setAttribute("variableName", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("tableName", field.getRefType());
+					template.setAttribute("parentTableName", parent);
+					template.setAttribute("referenceField", CodeUtil.toCamelCase(field.getDisplayField()));
+					lists+=template.toString();
+				}
+				else{
+					if (field.isEmbeddedReference() && !CodeUtil.generateAutoCompleteReference(field)){
+						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
+						StringTemplate template = templateGroup.getInstanceOf("setEmbeddedReferences");
+						List<String> embeddedFields=field.getEmbeddedFields();
+						String decl="";
+						String requestParameters="";
+						int i=0;
+						for (String embeddedField : embeddedFields) {
+							StringTemplate temp = new StringTemplate("EmbeddedField $embeddedField$Field=new EmbeddedField(\"$fieldName$\", $embeddedFieldType$.class);\n");
+							temp.setAttribute("embeddedField", embeddedField+CodeUtil.toCamelCase(field.getName()));
+							temp.setAttribute("fieldName", embeddedField);
+							temp.setAttribute("embeddedFieldType", CodeUtil.getFieldType(cybertables,field.getRefType(), embeddedField));
+							decl+=temp.toString();
+							requestParameters+=embeddedField+CodeUtil.toCamelCase(field.getName())+"Field";
+							if (i!=embeddedFields.size()-1){
+								requestParameters+=",";
+							}
+							i++;
+						}
+						
+						template.setAttribute("embeddedFields", requestParameters);
+						template.setAttribute("embeddedFieldsDeclarations", decl);
+						template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+						template.setAttribute("variableName", CodeUtil.toCamelCase(field.getName()));
+						template.setAttribute("tableName", field.getRefType());
+						template.setAttribute("parentTableName", parent);
+						template.setAttribute("referenceField", CodeUtil.toCamelCase(field.getDisplayField()));
+						lists+=template.toString();
+					}
+					
+					
+				}
+			}
+		}
+		
+		return lists;
+	}
 
 	private String generateSaveControllerImports(Document document) {
-		// TODO Auto-generated method stub
-		String imports="";
+		List<Field> fields = new ArrayList<Field>();
+		fields.addAll(document.getHeader());
+		fields.addAll(document.getBody());
+		
+		String  imports="";
+		HashSet<String> referenceImports = new HashSet<String>();
+		for (Field field : fields) {
+			if (field.isReference() && !referenceImports.contains(field.getRefType())){
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
+						+ "import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;\n");
+				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("tableName", field.getRefType());
+				imports+=template.toString();
+				referenceImports.add(field.getRefType());
+			}
+		}
+		
+		List<Field> compositeFields = document.getCompositeFields();
+		for (Field compositeField : compositeFields) {
+			List<Field> compoundReference = CodeUtil.getCompoundKey(cybertables, compositeField.getRefType());
+			for (Field field : compoundReference) {
+				if (!referenceImports.contains(field.getName())){
+					StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
+							+ "import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;\n");
+					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("tableName", field.getName());
+					imports+=template.toString();
+					referenceImports.add(field.getName());
+				}
+			}
+		}
 		
 		return imports;
 	}

@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
-import javax.sql.DataSource;
 
 import co.com.cybersoft.docsTest.persistence.repository.requisition.RequisitionCustomRepo;
 import co.com.cybersoft.docsTest.persistence.repository.requisition.RequisitionCustomRepoImpl;
@@ -21,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.transaction.PlatformTransactionManager;
 
 $imports$
 

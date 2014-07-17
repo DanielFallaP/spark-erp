@@ -72,6 +72,9 @@ public class $upperDocName$Controller {
 			$docName$Event=$docName$Service.delete$upperDocName$BodyRecords(new Save$upperDocName$Event($docName$Info), toDelete);			
 		}
 		else{
+			manualValidation($docName$Info, "$docName$Info", "");
+			
+		
 			$docName$Event = $docName$Service.save$upperDocName$(new Save$upperDocName$Event($docName$Info));
 		}
 		
@@ -126,7 +129,7 @@ public class $upperDocName$Controller {
 		else if (exception instanceof SparkBindingException){
 			modelAndView.addObject("$docName$Info", $docName$Info);
 			modelAndView.addObject("$docName$ValidationException",true);
-			modelAndView = setErrors(modelAndView, ((SparkBindingException) exception).getErrors(), $docName$Info, CyberUtils.additionForm);
+			modelAndView = setErrors(modelAndView, ((SparkBindingException) exception).getErrors(), $docName$Info, ((SparkBindingException) exception).getOrigin());
 			modelAndView.setViewName("/docs/$docName$/save$upperDocName$");
 		}
 		else {
