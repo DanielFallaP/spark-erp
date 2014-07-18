@@ -59,9 +59,9 @@
 				});
 			} );
 		   
+		    $datePickerConfig$
 	       /* ]]> */
 	     </script>
-	    $datePickerConfig$
     </head>
     <body onload="setFocus()">
     	<div th:include="normal/layout :: header" ></div>

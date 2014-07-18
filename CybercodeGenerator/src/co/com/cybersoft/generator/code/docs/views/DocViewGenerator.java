@@ -37,9 +37,7 @@ public class DocViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("saveView");
 		template.setAttribute("docName", document.getName());
 		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
-		template.setAttribute("rows", generateFieldRows(document));
-		template.setAttribute("datePickerConfig", generateDateFieldPickers(document));
-		template.setAttribute("autocompleteReferenceFunctions", generateAutocompleteReferenceFunctions(document));
+		template.setAttribute("datePickers", generateDateFieldPickers(document));
 		template.setAttribute("modificationCompoundSelectionFunctions", generateCompoundSelectionFunctions(document));
 		template.setAttribute("setModificationFormFunction", generateModificationFormValues(document));
 		template.setAttribute("additionFormFields", generateAdditionFormFields(document));
@@ -47,6 +45,7 @@ public class DocViewGenerator {
 		template.setAttribute("bodyHeaderFields", generateBodyHeaderFields(document));
 		template.setAttribute("bodyFields", generateBodyFields(document));
 		template.setAttribute("headerFields", generateHeaderFields(document));
+		template.setAttribute("autoCompleteFunctions", generateAutocompleteReferenceFunctions(document));
 		
 		List<Field> fields = document.getHeader();
 		if (!fields.isEmpty()){
@@ -56,7 +55,51 @@ public class DocViewGenerator {
 		CodeUtil.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/docs/"+document.getName(), "save"+CodeUtil.toCamelCase(document.getName())+".html");
 	}
 
-	
+	private String generateAutocompleteReferenceFunctions(Document document) {
+		List<Field> fields = document.getHeader();
+		String functions="";
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.utilCodePath);
+		for (Field field : fields) {
+			if (CodeUtil.generateAutoCompleteReference(field)){
+				StringTemplate template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("displayField", field.getDisplayField());
+				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("referenceType", field.getRefType());
+				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
+
+				functions+="\n"+template.toString();
+			}
+		}
+		
+		fields=document.getBody();
+		for (Field field : fields) {
+			if (CodeUtil.generateAutoCompleteReference(field)){
+				StringTemplate template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("displayField", field.getDisplayField());
+				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("referenceType", field.getRefType());
+				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
+
+				functions+="\n"+template.toString();
+				
+				template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
+				template.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+field.getName());
+				template.setAttribute("displayField", field.getDisplayField());
+				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("referenceType", field.getRefType());
+				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
+
+				functions+="\n"+template.toString();
+			}
+		}
+		
+		return functions;
+	}
 
 	private String generateHeaderFields(Document document) {
 		String headerFields="";
@@ -108,17 +151,17 @@ public class DocViewGenerator {
 			
 			if (field.isReference() && !field.getCompoundReference()){
 				if (CodeUtil.referencesLabelTable(field, cybertables)){
-					template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
+					template = stringTemplateGroup.getInstanceOf("referenceHeaderLabelField");
 				}
 				else{
 					if (CodeUtil.generateAutoCompleteReference(field)){
-						template = stringTemplateGroup.getInstanceOf("referenceTableAutocompleteRow");
+						template = stringTemplateGroup.getInstanceOf("referenceHeaderAutocompleteRow");
 					}
 					else{
-						template = stringTemplateGroup.getInstanceOf("referenceTableRow");
-						if (!field.getRequired()){
+						template = stringTemplateGroup.getInstanceOf("referenceHeaderField");
+//						if (!field.getRequired()){
 							template.setAttribute("optionalReference", "<option value=\"\"></option>");
-						}
+//						}
 					}
 				}
 				template.setAttribute("docName", document.getName());
@@ -234,15 +277,18 @@ public class DocViewGenerator {
 					}
 					else{
 						template = stringTemplateGroup.getInstanceOf("referenceTableRow");
-						if (!field.getRequired()){
+//						if (!field.getRequired()){
 							template.setAttribute("optionalReference", "<option value=\"\"></option>");
-						}
+//						}
 					}
 				}
 				template.setAttribute("docName", document.getName());
 				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("displayName", field.getDisplayField());
+				template.setAttribute("fieldNameId", field.getName()+"Modification");
+				template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field.getName());
+
 				text+=template.toString()+"\n";
 			}
 			
@@ -296,15 +342,18 @@ public class DocViewGenerator {
 					}
 					else{
 						template = stringTemplateGroup.getInstanceOf("referenceTableRow");
-						if (!field.getRequired()){
+//						if (!field.getRequired()){
 							template.setAttribute("optionalReference", "<option value=\"\"></option>");
-						}
+//						}
 					}
 				}
 				template.setAttribute("docName", document.getName());
 				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("displayName", field.getDisplayField());
+				template.setAttribute("fieldNamePath", field.getName());
+				template.setAttribute("fieldNameId", field.getName());
+				
 				text+=template.toString()+"\n";
 			}
 			
@@ -336,6 +385,10 @@ public class DocViewGenerator {
 		for (Field field : body) {
 			StringTemplate template2 = templateGroup.getInstanceOf("fieldValue");
 			template2.setAttribute("i", i);
+			if (field.getType()!=null)
+				template2.setAttribute("varAssignment", field.getType().equals(Cyberconstants.booleanType)?"$(field).prop('checked', $(this).html()==\"true\");":"$(field).val($(this).html());");
+			else
+				template2.setAttribute("varAssignment", "$(field).val($(this).html());");
 			template2.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+field.getName());
 			fieldValues+=template2.toString();
 			i++;
@@ -351,19 +404,19 @@ public class DocViewGenerator {
 		return "";
 	}
 
-	private String generateAutocompleteReferenceFunctions(Document document) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
 	private String generateDateFieldPickers(Document document) {
-		// TODO Auto-generated method stub
-		return "";
-	}
-
-	private String generateFieldRows(Document document) {
-		// TODO Auto-generated method stub
-		return "";
+		String pickers="";
+		List<Field> fields = document.getAllFields();
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.utilCodePath);
+		for (Field field : fields) {
+			if (!field.isReference() && field.getType().equals(Cybertables.dateType)){
+				StringTemplate template = templateGroup.getInstanceOf("datePicker");
+				template.setAttribute("dateField", field.getName());
+				pickers+=template.toString()+"\n";
+			}
+		}
+		
+		return pickers;
 	}
 
 	private void generateSearchView(Document document) {

@@ -127,7 +127,7 @@ public class TableViewGenerator {
 	private Object generateAutocompleteReferenceFunctions(Table table) {
 		List<Field> fields = table.getFields();
 		String functions="";
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.tableCodePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.utilCodePath);
 		for (Field field : fields) {
 			if (CodeUtil.generateAutoCompleteReference(field)){
 				StringTemplate template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
@@ -181,7 +181,7 @@ public class TableViewGenerator {
 	private String generateDateFieldPickers(Table table){
 		String pickers="";
 		List<Field> fields = table.getFields();
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.tableCodePath+"views");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.utilCodePath);
 		for (Field field : fields) {
 			if (!field.isReference() && field.getType().equals(Cybertables.dateType)){
 				StringTemplate template = templateGroup.getInstanceOf("datePicker");

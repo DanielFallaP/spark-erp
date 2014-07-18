@@ -1,0 +1,2 @@
+<td ><b th:text="#{label.$docName$$upperFieldName$}+': '"></b></td>
+<td><select id="$fieldName$" onChange="$fieldName$SelectedRefresh()" th:field="*{$fieldName$}">$optionalReference$<option th:each="reference : \${$docName$Info.$fieldName$List}" th:value="\${reference.$displayName$}" th:text="\${reference.$displayName$}"></option></select></td>

@@ -83,5 +83,12 @@ public class Document {
 		return compoundIndex;
 	}
 	
+	public List<Field> getAllFields(){
+		ArrayList<Field> fields = new ArrayList<Field>();
+		fields.addAll(header);
+		fields.addAll(body);
+		
+		return fields;
+	}
 	
 }
