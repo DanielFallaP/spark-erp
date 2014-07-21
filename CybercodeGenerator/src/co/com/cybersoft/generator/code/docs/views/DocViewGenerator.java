@@ -221,6 +221,7 @@ public class DocViewGenerator {
 				StringTemplate template = templateGroup.getInstanceOf("labelBodyColumn");
 				template.setAttribute("fieldName", field.getName());
 				bodyFields+=template.toString();
+				
 			}
 			else{
 				StringTemplate template = templateGroup.getInstanceOf("labelBodyBooleanColumn");
