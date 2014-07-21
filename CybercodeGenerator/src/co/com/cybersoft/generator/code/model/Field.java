@@ -27,8 +27,16 @@ public class Field {
 	private String tableName;
 	
 	//For documents only
+	private String docRefType;
 	private List<String> bodyFields=new ArrayList<String>();
 	
+	
+	public String getDocRefType() {
+		return docRefType;
+	}
+	public void setDocRefType(String docRefType) {
+		this.docRefType = docRefType;
+	}
 	public Boolean getDisplayable() {
 		return displayable;
 	}
