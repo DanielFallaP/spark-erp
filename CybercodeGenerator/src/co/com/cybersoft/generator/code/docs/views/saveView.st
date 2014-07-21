@@ -190,6 +190,7 @@
 		        	<h3 th:if='\${$docName$Info.numericId!=null}' th:text="#{label.$docName$Title}+' '+\${$docName$Info.numericId}"></h3>
 		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
 		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{$docName$BodyModificationInfo.submit}"></input>
+		        	<input id="_trueValue" th:hidden="#{label.true}" />
 		        	
 		        	<table>
 		        		$headerFields$

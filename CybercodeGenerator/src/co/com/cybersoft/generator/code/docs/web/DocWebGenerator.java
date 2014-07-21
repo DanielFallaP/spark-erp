@@ -11,7 +11,6 @@ import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
-import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class DocWebGenerator {

@@ -31,6 +31,13 @@ public class ResourceGenerator {
 		HashMap<String, Integer> filesMap = new HashMap<String, Integer>();
 		filesMap.put("en", 2);
 		filesMap.put("es", 3);
+		filesMap.put("pt", 5);
+		filesMap.put("de", 6);
+		filesMap.put("fr", 7);
+		filesMap.put("it", 8);
+		filesMap.put("zh", 9);
+		filesMap.put("ko", 10);
+		filesMap.put("ja", 11);
 		
 		Connection con=null;
 		ResultSet resultSet =null;

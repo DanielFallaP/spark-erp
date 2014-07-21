@@ -207,24 +207,29 @@ public class DocViewGenerator {
 	}
 
 	private String generateBodyFields(Document document) {
-		String headers="";
+		String bodyFields="";
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 		List<Field> body = document.getBody();
 		
 		for (Field field : body) {
-			if (!CodeUtil.referencesLabelTable(field, cybertables)){
+			if (!CodeUtil.referencesLabelTable(field, cybertables)&& (field.getType()==null || !field.getType().equals(Cyberconstants.booleanType))){
 				StringTemplate template = templateGroup.getInstanceOf("bodyColumn");
 				template.setAttribute("fieldName", field.getName());
-				headers+=template.toString();
+				bodyFields+=template.toString();
 			}
-			else{
+			else if (CodeUtil.referencesLabelTable(field, cybertables)){
 				StringTemplate template = templateGroup.getInstanceOf("labelBodyColumn");
 				template.setAttribute("fieldName", field.getName());
-				headers+=template.toString();
+				bodyFields+=template.toString();
+			}
+			else{
+				StringTemplate template = templateGroup.getInstanceOf("labelBodyBooleanColumn");
+				template.setAttribute("fieldName", field.getName());
+				bodyFields+=template.toString();
 			}
 		}
 		
-		return headers;
+		return bodyFields;
 	}
 
 	private String generateBodyHeaderFields(Document document) {
