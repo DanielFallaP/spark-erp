@@ -114,8 +114,26 @@ public class DocPersistenceGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceImpl");
 		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
+		template.setAttribute("checkHeaderReferences", generateHeaderCheck(document));
+		template.setAttribute("checkAdditionReferences", generateBodyAdditionCheck(document));
+		template.setAttribute("checkModificationReferences", generateBodyModificationCheck(document));
 		
 		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"PersistenceServiceImpl.java");
+	}
+
+	private Object generateBodyModificationCheck(Document document) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private Object generateBodyAdditionCheck(Document document) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private Object generateHeaderCheck(Document document) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private void generatePersistenceInterface(Document document) {

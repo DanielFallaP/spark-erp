@@ -37,6 +37,7 @@ public class $upperDocName$PersistenceServiceImpl implements $upperDocName$Persi
 	}
 	
 	private $upperDocName$ updateBody($upperDocName$ $docName$, $upperDocName$Body modified){
+		
 		List<$upperDocName$Body> bodyList = $docName$.get$upperDocName$BodyEntityList();
 		for ($upperDocName$Body $docName$Item : bodyList) {
 			if ($docName$Item.getId().equals(modified.getId())){
@@ -59,6 +60,8 @@ public class $upperDocName$PersistenceServiceImpl implements $upperDocName$Persi
 	
 	@Override
 	public $upperDocName$Event save$upperDocName$(Save$upperDocName$Event event) throws Exception {
+		$checkHeaderReferences$
+		
 		$upperDocName$ $docName$=new $upperDocName$().from$upperDocName$Info(event.get$upperDocName$Info());
 		$docName$.setDateOfModification(new Date());
 		$docName$.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -73,6 +76,8 @@ public class $upperDocName$PersistenceServiceImpl implements $upperDocName$Persi
 
 	@Override
 	public $upperDocName$Event create$upperDocName$BodyRecord(Save$upperDocName$Event event)	throws Exception {
+		$checkAdditionReferences$
+		
 		$upperDocName$ $docName$ = $docName$Repository.findByNumericId(event.get$upperDocName$Info().getNumericId());
 		$upperDocName$Body $docName$Item = new $upperDocName$Body();
 		BeanUtils.copyProperties(event.get$upperDocName$Info().getCurrent$upperDocName$BodyInfo(), $docName$Item);
@@ -90,6 +95,8 @@ public class $upperDocName$PersistenceServiceImpl implements $upperDocName$Persi
 	
 	@Override
 	public $upperDocName$Event update$upperDocName$Body(Save$upperDocName$Event event) throws Exception {
+		$checkModificationReferences$
+
 		$upperDocName$ $docName$ = $docName$Repository.findByNumericId(event.get$upperDocName$Info().getNumericId());
 		$upperDocName$Body modified=new $upperDocName$Body();
 		BeanUtils.copyProperties(event.get$upperDocName$Info().get$upperDocName$BodyModificationInfo(), modified);
