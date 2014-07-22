@@ -16,6 +16,11 @@
 	        .sidebar-nav {
 	            padding: 9px 0;
 	        }
+	        
+	        .hideANDseek
+			{
+			    display: none;
+			}
 	    </style>
 	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
 <!-- 	      For production purposes, min version should be used -->
@@ -190,7 +195,7 @@
 		        	<h3 th:if='\${$docName$Info.numericId!=null}' th:text="#{label.$docName$Title}+' '+\${$docName$Info.numericId}"></h3>
 		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
 		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{$docName$BodyModificationInfo.submit}"></input>
-		        	<input id="_trueValue" th:hidden="#{label.true}" />
+		        	<input id="_trueValue" th:value="#{label.true}" type="hidden" />
 		        	
 		        	<table>
 		        		$headerFields$

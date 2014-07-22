@@ -1,1 +1,1 @@
-<th th:text="#{label.$docName$Body$upperFieldName$}"></th>
+<th $hide$ th:text="#{label.$docName$Body$upperFieldName$}"></th>

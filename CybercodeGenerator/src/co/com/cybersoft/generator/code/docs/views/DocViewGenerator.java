@@ -212,22 +212,21 @@ public class DocViewGenerator {
 		List<Field> body = document.getBody();
 		
 		for (Field field : body) {
+			StringTemplate template;
 			if (!CodeUtil.referencesLabelTable(field, cybertables)&& (field.getType()==null || !field.getType().equals(Cyberconstants.booleanType))){
-				StringTemplate template = templateGroup.getInstanceOf("bodyColumn");
-				template.setAttribute("fieldName", field.getName());
-				bodyFields+=template.toString();
+				template = templateGroup.getInstanceOf("bodyColumn");
 			}
 			else if (CodeUtil.referencesLabelTable(field, cybertables)){
-				StringTemplate template = templateGroup.getInstanceOf("labelBodyColumn");
-				template.setAttribute("fieldName", field.getName());
-				bodyFields+=template.toString();
-				
+				template = templateGroup.getInstanceOf("labelBodyColumn");
 			}
 			else{
-				StringTemplate template = templateGroup.getInstanceOf("labelBodyBooleanColumn");
-				template.setAttribute("fieldName", field.getName());
-				bodyFields+=template.toString();
+				template = templateGroup.getInstanceOf("labelBodyBooleanColumn");
 			}
+			template.setAttribute("fieldName", field.getName());
+			if (!field.getDisplayable())
+				template.setAttribute("hide", "class=\"hideANDseek\"");
+
+			bodyFields+=template.toString();
 		}
 		
 		return bodyFields;
@@ -242,6 +241,8 @@ public class DocViewGenerator {
 			StringTemplate template = templateGroup.getInstanceOf("headerBodyColumn");
 			template.setAttribute("docName", document.getName());
 			template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+			if (!field.getDisplayable())
+				template.setAttribute("hide", "class=\"hideANDseek\"" );
 			headers+=template.toString();
 		}
 		
@@ -391,10 +392,18 @@ public class DocViewGenerator {
 		for (Field field : body) {
 			StringTemplate template2 = templateGroup.getInstanceOf("fieldValue");
 			template2.setAttribute("i", i);
-			if (field.getType()!=null)
-				template2.setAttribute("varAssignment", field.getType().equals(Cyberconstants.booleanType)?"$(field).prop('checked', $(this).html()==\"true\");":"$(field).val($(this).html());");
-			else
-				template2.setAttribute("varAssignment", "$(field).val($(this).html());");
+			if (!field.isReference()){
+				if (field.getType().equals(Cyberconstants.booleanType))
+					template2.setAttribute("varAssignment", "$(field).prop('checked', $(this).html()==document.getElementById(\"_trueValue\").value);");
+				else
+					template2.setAttribute("varAssignment", "$(field).val($(this).html());");
+			}
+			else{
+				if (CodeUtil.referencesLabelTable(field, cybertables))
+					template2.setAttribute("varAssignment", "$(field).val($(this).attr(\"title\"));");
+				else
+					template2.setAttribute("varAssignment", "$(field).val($(this).html());");
+			}
 			template2.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+field.getName());
 			fieldValues+=template2.toString();
 			i++;
@@ -418,6 +427,10 @@ public class DocViewGenerator {
 			if (!field.isReference() && field.getType().equals(Cybertables.dateType)){
 				StringTemplate template = templateGroup.getInstanceOf("datePicker");
 				template.setAttribute("dateField", field.getName());
+				pickers+=template.toString()+"\n";
+				
+				template = templateGroup.getInstanceOf("datePicker");
+				template.setAttribute("dateField", document.getName()+"BodyModificationInfo\\\\."+field.getName());
 				pickers+=template.toString()+"\n";
 			}
 		}
