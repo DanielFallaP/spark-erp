@@ -8,7 +8,6 @@
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"3", "autocomplete":"true"},
 						{"name":"currency", "spanishName":"Nombre", "type":"String", "unique":"true", "length":"40", "autocomplete":"true", "labelField":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
-						
 					]
 		 },
 		 {  
@@ -475,7 +474,7 @@
 			"spanishName":"Condición de item",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
-						{"name":"itemCondition", "spanishName":"Descripción", "type":"String", "unique":"true", "labelField":"true"},
+						{"name":"itemCondition", "spanishName":"Descripción", "type":"String", "unique":"true", "autocomplete":"true", "labelField":"true"},
 						{"name":"conditionPercentage", "spanishName":"Porcentaje de cálculo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -686,7 +685,7 @@
 			"name":"quality",
 			"spanishName":"Calidad",
 			"fields":[
-						{"name":"quality", "spanishName":"Calidad", "type":"String", "unique":"true"},
+						{"name":"quality", "spanishName":"Calidad", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"costPercentage", "spanishName":"Porcentaje del costo", "type":"Double"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
