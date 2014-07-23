@@ -117,7 +117,7 @@
 			<table class="table table-striped" >
 				<thead>
 					<tr>
-						<th ><a th:href="@{\${page.url}+'?field=_numericId'}" th:text="#{label.$docName$Id}"></a></th>
+						<th ><a th:href="@{\${page.url}+'?field=_numericId'}" th:text="#{label.numericId}"></a></th>
 						<th ><a th:href="@{\${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a></th>
 						<th ><a th:href="@{\${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a></th>
 						<th ><a th:href="@{\${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a></th>

@@ -134,7 +134,7 @@ public class DocViewGenerator {
 			exceptions+=temp.toString();
 			
 			StringTemplate template;
-			if (!field.isReference() && field.getVisible() && !field.getReadOnly()){
+			if (!field.isReference() && field.getVisible()){
 				if (!field.getLargeText() && !field.getType().equals(Cybertables.booleanType))
 					template = stringTemplateGroup.getInstanceOf("editableHeaderField");
 				else if (field.getType().equals(Cybertables.booleanType))
@@ -144,6 +144,8 @@ public class DocViewGenerator {
 				template.setAttribute("docName", document.getName());
 				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
+				if (field.getReadOnly())
+					template.setAttribute("disabled", "disabled=\"disabled\"");
 				if (field.getType().equals(Cybertables.dateType))
 					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
 				fields+=template.toString()+"\n";
@@ -268,6 +270,8 @@ public class DocViewGenerator {
 				template.setAttribute("fieldNameId", field.getName()+"Modification");
 				template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field.getName());
 				template.setAttribute("modificationPrefix", "_");
+				if (field.getReadOnly())
+					template.setAttribute("disabled", "disabled=\"disabled\"");
 				if (field.getType().equals(Cybertables.dateType))
 					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
 				text+=template.toString()+"\n";
@@ -319,7 +323,7 @@ public class DocViewGenerator {
 		List<Field> fields = document.getBody();
 		String text="";
 		for (Field field : fields) {
-			if (!field.isReference() && field.getVisible() && !field.getReadOnly()){
+			if (!field.isReference() && field.getVisible() ){
 				StringTemplate template;
 				if (!field.getLargeText() && !field.getType().equals(Cybertables.booleanType))
 					template = stringTemplateGroup.getInstanceOf("editableTableRow");
@@ -333,6 +337,8 @@ public class DocViewGenerator {
 				template.setAttribute("fieldNameId", field.getName());
 				template.setAttribute("fieldNamePath", field.getName());
 				template.setAttribute("modificationPrefix", "");
+				if (field.getReadOnly())
+					template.setAttribute("disabled", "disabled=\"disabled\"");
 				if (field.getType().equals(Cybertables.dateType))
 					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
 				text+=template.toString()+"\n";

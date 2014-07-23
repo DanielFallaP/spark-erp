@@ -25,12 +25,19 @@ public class Field {
 	private String displayField;
 	private List<String> embeddedFields=new ArrayList<String>();
 	private String tableName;
+	private Boolean checkReference=Boolean.TRUE;
 	
 	//For documents only
 	private String docRefType;
 	private List<String> bodyFields=new ArrayList<String>();
 	
 	
+	public Boolean getCheckReference() {
+		return checkReference;
+	}
+	public void setCheckReference(Boolean checkReference) {
+		this.checkReference = checkReference;
+	}
 	public String getDocRefType() {
 		return docRefType;
 	}
@@ -153,7 +160,10 @@ public class Field {
 	}
 	
 	public boolean isReference(){
-		return this.type==null;
+		if (type==null && refType!=null)
+			return true;
+		else
+			return false;
 	}
 	
 	public boolean isEmbeddedReference(){

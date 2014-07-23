@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import co.com.cybersoft.docs.events.$docName$.Request$upperDocName$Event;
 import co.com.cybersoft.docs.events.$docName$.Request$upperDocName$PageEvent;
@@ -20,6 +21,8 @@ import co.com.cybersoft.docs.persistence.repository.$docName$.$upperDocName$Cust
 import co.com.cybersoft.docs.persistence.repository.$docName$.$upperDocName$Repository;
 import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$Info;
 
+$imports$
+
 /**
  * 
  * @author Cybersystems 2014. All rights reserved.
@@ -30,6 +33,8 @@ public class $upperDocName$PersistenceServiceImpl implements $upperDocName$Persi
 	private final $upperDocName$Repository $docName$Repository;
 	
 	private final $upperDocName$CustomRepo $docName$CustomRepo;
+	
+	$autocompleteRepos$
 	
 	public $upperDocName$PersistenceServiceImpl(final $upperDocName$Repository $docName$Repository, final $upperDocName$CustomRepo $docName$CustomRepo) {
 		this.$docName$Repository=$docName$Repository;

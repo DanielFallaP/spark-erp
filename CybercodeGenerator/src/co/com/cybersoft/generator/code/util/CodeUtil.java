@@ -61,6 +61,14 @@ public class CodeUtil {
 		}
 	}
 	
+	public static List<String> getFieldNames(List<Field> fields){
+		ArrayList<String> names = new ArrayList<String>();
+		for (Field field : fields) {
+			names.add(field.getName());
+		}
+		return names;
+	}
+	
 	public static String getGettersAndSetters(Cybertables spark,Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("util",Cybertables.utilCodePath);
 		List<Field> fields = table.getFields();

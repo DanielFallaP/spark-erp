@@ -37,7 +37,17 @@ public class $upperDocName$ {
 	private String userName;
 	
 	private String createdBy;
-
+	
+	private String stringId;
+	
+	public String getStringId() {
+		return stringId;
+	}
+	
+	public void setStringId(String stringId) {
+		this.stringId = stringId;
+	}
+	
 	public Long getNumericId() {
 		return numericId;
 	}

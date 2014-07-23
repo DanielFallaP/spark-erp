@@ -17,7 +17,9 @@ import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
+import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtil;
@@ -31,7 +33,7 @@ import com.mongodb.ServerAddress;
 
 public class LabelGenerator implements DBConstants{
 
-	public static final String viewsAbsolutePath="C:\\Users\\daniel\\git\\co.com.cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views";
+	public static final String viewsAbsolutePath="C:\\Users\\Raul\\git3\\Cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views";
 	
 	public final PreparedStatement insertionPst;
 	
@@ -39,7 +41,9 @@ public class LabelGenerator implements DBConstants{
 	
 	public final PreparedStatement spanishUpdatePst;
 	
-	private final Cybertables cybersoft;
+	private final Cybertables cybertables;
+	
+	private final Cyberdocs cyberdocs;
 	
 	private final DB mongoDB;
 	
@@ -63,9 +67,11 @@ public class LabelGenerator implements DBConstants{
 			ObjectMapper mapper = new ObjectMapper();
 			Cybertables cybersoft=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybertables.class);
 			
+			Cyberdocs cyberdocs=mapper.readValue(new InputStreamReader(new FileInputStream("Cyberdocs.json"), "UTF8"), Cyberdocs.class);
+
 			File rootDirectory = new File(viewsAbsolutePath);
 			
-			LabelGenerator labelGenerator = new LabelGenerator(cybersoft,insertionPst, englishUpdatePst, spanishUpdatePst, db);
+			LabelGenerator labelGenerator = new LabelGenerator(cybersoft, cyberdocs, insertionPst, englishUpdatePst, spanishUpdatePst, db);
 
 			//Inserts all labels found in the views directory
 			labelGenerator.insertLabels(rootDirectory);
@@ -85,50 +91,104 @@ public class LabelGenerator implements DBConstants{
 	}
 	
 	private void updateDefaultSpanishMessages() throws SQLException {
-		List<Table> tables = cybersoft.getTables();
+		List<Table> tables = cybertables.getTables();
+		SpanishDefaultGenerator generator = new SpanishDefaultGenerator(spanishUpdatePst);
 		for (Table table : tables) {
 			System.out.println("=============Inserting default Spanish messages for table: "+table.getName());
-			SpanishDefaultGenerator generator = new SpanishDefaultGenerator(spanishUpdatePst);
-			generator.updateDefaultSpanishMessages(table);
+			generator.updateDefaultSpanishTableMessages(table);
+		}
+		
+		List<Document> documents = cyberdocs.getDocuments();
+		for (Document document : documents) {
+			System.out.println("=============Inserting default Spanish messages for document: "+document.getName());
+			generator.updateDefaultSpanishDocumentMessages(document);
 		}
 	}
 
 	private void updateDefaultEnglishMessages() throws SQLException {
-		List<Table> tables = cybersoft.getTables();
+		List<Table> tables = cybertables.getTables();
 		for (Table table : tables) {
 			System.out.println("=============Inserting default English messages for table: "+table.getName());
-			updateDefaultEnglishMessages(table);
+			updateDefaultEnglishTableMessages(table);
+		}
+		
+		List<Document> documents = cyberdocs.getDocuments();
+		for (Document document : documents) {
+			System.out.println("=============Inserting default English messages for document: "+document.getName());
+			updateDefaultEnglishDocumentMessages(document);
 		}
 	}
 
-	private void updateDefaultEnglishMessages(Table table) throws SQLException {
+	
+	private void updateDefaultEnglishDocumentMessages(Document table) throws SQLException {
 		updateDefaultEnglishFields(table);
-		updateDefaultEnglishTableName(table);
+		updateDefaultEnglishDocumentName(table);
 		updateDefaultEnglishInfoName(table);
 		updateDefaultEnglishModificationName(table);
 		updateDefaultEnglishCreationName(table);
-		updateDefaultEnglishConfigurationName(table);
 	}
 
-	private void updateDefaultEnglishConfigurationName(Table table) throws SQLException {
-		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
-		englishUpdatePst.setString(2, table.getName()+"Configuration");
-		englishUpdatePst.execute();
-	}
-
-	private void updateDefaultEnglishCreationName(Table table) throws SQLException {
+	private void updateDefaultEnglishCreationName(Document table) throws SQLException {
 		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName())+" Creation");
 		englishUpdatePst.setString(2, table.getName()+"CreationTitle");
 		englishUpdatePst.execute();
 	}
 
-	private void updateDefaultEnglishModificationName(Table table) throws SQLException {
+	private void updateDefaultEnglishModificationName(Document table) throws SQLException {
 		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName())+" Modification");
 		englishUpdatePst.setString(2, table.getName()+"ModificationTitle");
 		englishUpdatePst.execute();
 	}
 
-	private void updateDefaultEnglishInfoName(Table table) throws SQLException {
+	private void updateDefaultEnglishInfoName(Document table) throws SQLException {
+		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
+		englishUpdatePst.setString(2, table.getName()+"Info");
+		englishUpdatePst.execute();
+	}
+
+	private void updateDefaultEnglishDocumentName(Document table) throws SQLException {
+		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
+		englishUpdatePst.setString(2, table.getName());
+		englishUpdatePst.execute();
+	}
+
+	private void updateDefaultEnglishFields(Document table) throws SQLException {
+		List<Field> fields = table.getAllFields();
+		for (Field field : fields) {
+			englishUpdatePst.setString(1, CodeUtil.getDefaultName(field.getName()));
+			englishUpdatePst.setString(2, table.getName()+CodeUtil.toCamelCase(field.getName()));
+			englishUpdatePst.execute();
+		}
+	}
+
+	private void updateDefaultEnglishTableMessages(Table table) throws SQLException {
+		updateDefaultEnglishTableFields(table);
+		updateDefaultEnglishTableName(table);
+		updateDefaultEnglishTableInfoName(table);
+		updateDefaultEnglishTableModificationName(table);
+		updateDefaultEnglishTableCreationName(table);
+		updateDefaultEnglishTableConfigurationName(table);
+	}
+
+	private void updateDefaultEnglishTableConfigurationName(Table table) throws SQLException {
+		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
+		englishUpdatePst.setString(2, table.getName()+"Configuration");
+		englishUpdatePst.execute();
+	}
+
+	private void updateDefaultEnglishTableCreationName(Table table) throws SQLException {
+		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName())+" Creation");
+		englishUpdatePst.setString(2, table.getName()+"CreationTitle");
+		englishUpdatePst.execute();
+	}
+
+	private void updateDefaultEnglishTableModificationName(Table table) throws SQLException {
+		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName())+" Modification");
+		englishUpdatePst.setString(2, table.getName()+"ModificationTitle");
+		englishUpdatePst.execute();
+	}
+
+	private void updateDefaultEnglishTableInfoName(Table table) throws SQLException {
 		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
 		englishUpdatePst.setString(2, table.getName()+"Info");
 		englishUpdatePst.execute();
@@ -140,7 +200,7 @@ public class LabelGenerator implements DBConstants{
 		englishUpdatePst.execute();
 	}
 
-	private void updateDefaultEnglishFields(Table table) throws SQLException {
+	private void updateDefaultEnglishTableFields(Table table) throws SQLException {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 			englishUpdatePst.setString(1, CodeUtil.getDefaultName(field.getName()));
@@ -149,8 +209,9 @@ public class LabelGenerator implements DBConstants{
 		}
 	}
 
-	public LabelGenerator(Cybertables cybersoft, PreparedStatement insertionPst, PreparedStatement updatePst, PreparedStatement spanishUpdatePst, DB mongoDB){
-		this.cybersoft=cybersoft;
+	public LabelGenerator(Cybertables cybersoft, Cyberdocs cyberdocs, PreparedStatement insertionPst, PreparedStatement updatePst, PreparedStatement spanishUpdatePst, DB mongoDB){
+		this.cybertables=cybersoft;
+		this.cyberdocs=cyberdocs;
 		this.insertionPst=insertionPst;
 		this.englishUpdatePst=updatePst;
 		this.spanishUpdatePst=spanishUpdatePst;
@@ -162,7 +223,7 @@ public class LabelGenerator implements DBConstants{
 	 * @throws SQLException 
 	 */
 	private void insertLabelTablesContent() throws SQLException {
-		List<Table> tables = cybersoft.getTables();
+		List<Table> tables = cybertables.getTables();
 		for (Table table : tables) {
 			if (table.getLabelTable()){
 				insertFromLabelTableContent(table);

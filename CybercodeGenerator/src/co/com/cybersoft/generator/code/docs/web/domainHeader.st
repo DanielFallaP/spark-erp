@@ -50,6 +50,16 @@ public class $upperDocName$Info implements Serializable{
 	private $upperDocName$BodyInfo $docName$BodyModificationInfo;
 	
 	private String deletion;
+	
+	private String stringId;
+	
+	public String getStringId() {
+		return stringId;
+	}
+	
+	public void setStringId(String stringId) {
+		this.stringId = stringId;
+	}
 
 	$fields$
 	

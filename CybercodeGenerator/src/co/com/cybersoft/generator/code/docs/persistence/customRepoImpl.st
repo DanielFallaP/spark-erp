@@ -39,7 +39,7 @@ public class $upperDocName$CustomRepoImpl implements $upperDocName$CustomRepo {
 			$docName$.setNumericId(numericID.longValue());
 			
 			BasicDBObject newDocument = new BasicDBObject();
-			newDocument.append("\$set", new BasicDBObject("_numericId", numericID.longValue()));
+			newDocument.append("\$set", new BasicDBObject("_numericId", numericID.longValue()).append("stringId", new Long(numericID.longValue()).toString()));
 			
 			BasicDBObject searchQuery = new BasicDBObject();
 			searchQuery.put("_id", new ObjectId($docName$2.getId()) );

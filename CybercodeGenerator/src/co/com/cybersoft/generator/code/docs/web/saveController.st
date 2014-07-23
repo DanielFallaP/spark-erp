@@ -53,7 +53,7 @@ public class $upperDocName$Controller {
 	public String save$upperDocName$(@ModelAttribute("$docName$Info") $upperDocName$Info $docName$Info, @ModelAttribute("$docName$BodyInfo") $upperDocName$BodyInfo current, @ModelAttribute("$docName$BodyModificationInfo") $upperDocName$BodyInfo modified,Model model, HttpServletRequest request) throws Exception{
 		$upperDocName$Event $docName$Event=null;
 		if (modified.get$upperDocName$BodyModificationInfo().getSubmit().equals("modification")){
-			manualValidation(modified.get$upperDocName$BodyModificationInfo(), "$docName$BodyModificationInfo", CyberUtils.modificationForm);
+			modificationManualValidation(modified.get$upperDocName$BodyModificationInfo(), "$docName$BodyModificationInfo", CyberUtils.modificationForm);
 			
 			$docName$Info.set$upperDocName$BodyModificationInfo(modified.get$upperDocName$BodyModificationInfo());
 			$docName$Event = $docName$Service.update$upperDocName$Body(new Save$upperDocName$Event($docName$Info));
@@ -106,13 +106,24 @@ public class $upperDocName$Controller {
 		return "/docs/$docName$/save$upperDocName$";
 	}
 	
+	private void modificationManualValidation($upperDocName$BodyInfo object, String objectName, String origin) throws Exception{
+		HashMap<Object, Object> errorMap = new HashMap<>();
+		MapBindingResult mapBindingResult = new MapBindingResult(errorMap, objectName);
+		validator.validate(object, mapBindingResult);
+					
+		if (!mapBindingResult.getAllErrors().isEmpty()){
+			throw new SparkBindingException(mapBindingResult.getAllErrors(), origin,object.getId());
+		}
+		
+	}
+	
 	private void manualValidation(Object object, String objectName, String origin) throws Exception{
 		HashMap<Object, Object> errorMap = new HashMap<>();
 		MapBindingResult mapBindingResult = new MapBindingResult(errorMap, objectName);
 		validator.validate(object, mapBindingResult);
 					
 		if (!mapBindingResult.getAllErrors().isEmpty()){
-			throw new SparkBindingException(mapBindingResult.getAllErrors(), origin);
+			throw new SparkBindingException(mapBindingResult.getAllErrors(), origin, "");
 		}
 	}
 	
@@ -123,13 +134,13 @@ public class $upperDocName$Controller {
 		if (exception instanceof BindException){
 			modelAndView.addObject("$docName$Info", $docName$Info);
 			modelAndView.addObject("$docName$ValidationException",true);
-			modelAndView = setErrors(modelAndView, ((BindException) exception).getAllErrors(), $docName$Info, "");
+			modelAndView = setErrors(modelAndView, ((BindException) exception).getAllErrors(), $docName$Info, "", "");
 			modelAndView.setViewName("/docs/$docName$/save$upperDocName$");
 		}
 		else if (exception instanceof SparkBindingException){
 			modelAndView.addObject("$docName$Info", $docName$Info);
 			modelAndView.addObject("$docName$ValidationException",true);
-			modelAndView = setErrors(modelAndView, ((SparkBindingException) exception).getErrors(), $docName$Info, ((SparkBindingException) exception).getOrigin());
+			modelAndView = setErrors(modelAndView, ((SparkBindingException) exception).getErrors(), $docName$Info, ((SparkBindingException) exception).getOrigin(), ((SparkBindingException) exception).getModifiedId());
 			modelAndView.setViewName("/docs/$docName$/save$upperDocName$");
 		}
 		else {
@@ -160,7 +171,7 @@ public class $upperDocName$Controller {
 		return modelAndView;
 	}
 	
-	private ModelAndView setErrors(ModelAndView model, List<ObjectError> errors, $upperDocName$Info $docName$Info, String origin){
+	private ModelAndView setErrors(ModelAndView model, List<ObjectError> errors, $upperDocName$Info $docName$Info, String origin, String modifiedId){
 		for (ObjectError error : errors) {
 			if (error instanceof FieldError){
 				FieldError fieldError=(FieldError) error;
@@ -171,6 +182,7 @@ public class $upperDocName$Controller {
 					
 					if (origin.equals(CyberUtils.modificationForm)){
 						model.addObject("_ModificationFormException", true);
+						model.addObject("_ModifiedId",modifiedId);
 					}
 					
 					if (fieldError.getCodes()[0].startsWith(CyberUtils.lengthValidation)
@@ -211,6 +223,8 @@ public class $upperDocName$Controller {
 			}
 			else{
 				$docName$Info = new $upperDocName$Info();
+				
+				$setDefaults$
 			}
 			
 			$setListsAndDefaults$
@@ -239,7 +253,7 @@ public class $upperDocName$Controller {
 			$bodyAdditionLists$
 			
 			$docName$BodyInfo.setId(null);
-			$defaults$
+			$setBodyDefaults$
 
 			request.getSession().setAttribute("$docName$BodyInfo", $docName$BodyInfo);
 			

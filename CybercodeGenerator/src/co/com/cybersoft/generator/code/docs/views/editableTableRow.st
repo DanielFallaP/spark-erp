@@ -1,5 +1,5 @@
 <tr>
 		<td ><b th:text="#{label.$docName$$upperFieldName$}+': '"></b></td>
-		<td><input id="$fieldNamePath$" name="$fieldNamePath$" type="text" th:value="*{{$fieldNamePath$}}" /></td>
+		<td><input $disabled$ id="$fieldNamePath$" name="$fieldNamePath$" type="text" th:value="*{{$fieldNamePath$}}" /></td>
 		<td th:if="\${$fieldName$Exception}"><div class="alert alert-error" th:text="#{\${$fieldName$ValidationErrorMessage}}"></div></td>
 </tr>

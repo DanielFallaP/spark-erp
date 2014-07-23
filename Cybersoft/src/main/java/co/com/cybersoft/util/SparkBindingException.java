@@ -16,9 +16,12 @@ public class SparkBindingException extends Exception{
 	
 	private final String origin;
 	
-	public SparkBindingException(List<ObjectError> errors, String origin){
+	private final String modifiedId;
+	
+	public SparkBindingException(List<ObjectError> errors, String origin, String modifiedId){
 		this.errors=errors;
 		this.origin=origin;
+		this.modifiedId=modifiedId;
 	}
 
 	public List<ObjectError> getErrors() {
@@ -28,5 +31,10 @@ public class SparkBindingException extends Exception{
 	public String getOrigin() {
 		return origin;
 	}
+
+	public String getModifiedId() {
+		return modifiedId;
+	}
+	
 	
 }

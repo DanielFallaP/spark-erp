@@ -345,7 +345,7 @@ public class TablePersistenceGenerator {
 	}
 
 	private String generateImports(Table table) {
-		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.utilCodePath);
 		
 		String imports="";
 		List<Field> fields = table.getFields();

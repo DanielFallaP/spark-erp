@@ -1,5 +1,7 @@
 package co.com.cybersoft.generator.code.docs.persistence;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
@@ -117,23 +119,118 @@ public class DocPersistenceGenerator {
 		template.setAttribute("checkHeaderReferences", generateHeaderCheck(document));
 		template.setAttribute("checkAdditionReferences", generateBodyAdditionCheck(document));
 		template.setAttribute("checkModificationReferences", generateBodyModificationCheck(document));
+		template.setAttribute("autocompleteRepos", generateAutoCompleteRepos(document));
+		template.setAttribute("imports", generateImports(document));
 		
 		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"PersistenceServiceImpl.java");
 	}
 
+	private Object generateImports(Document document) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.utilCodePath);
+		
+		String imports="";
+
+		List<Field> fields = document.getAllFields();
+		HashSet<String> references = new HashSet<String>();
+		for (Field field : fields) {
+			if (CodeUtil.generateAutoCompleteReference(field) && !references.contains(field.getRefType())){
+				StringTemplate template = templateGroup.getInstanceOf("referenceImport");
+				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("refType", field.getRefType());
+				imports+=template.toString()+"\n";
+				references.add(field.getRefType());
+			}
+		}
+		
+		return imports;
+	}
+
+	private Object generateAutoCompleteRepos(Document document) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
+		
+		String declarations="";
+		ArrayList<Field> fields = new ArrayList<Field>();
+		fields.addAll(document.getBody());
+		fields.addAll(document.getHeader());
+
+		HashSet<String> references = new HashSet<String>();
+		for (Field field : fields) {
+			if (CodeUtil.generateAutoCompleteReference(field) && !references.contains(field.getRefType())){
+				StringTemplate template = templateGroup.getInstanceOf("referenceDeclaration");
+				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("refType", field.getRefType());
+				declarations+=template.toString()+"\n";
+				references.add(field.getRefType());
+			}
+		}
+		
+		return declarations;
+	}
+
 	private Object generateBodyModificationCheck(Document document) {
-		// TODO Auto-generated method stub
-		return null;
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.documentCodePath+"persistence");
+	
+		String checks="";
+		List<Field> body = document.getBody();
+		for (Field field : body) {
+			if (field.isReference() && CodeUtil.generateAutoCompleteReference(field) && field.getCheckReference()){
+				StringTemplate template = templateGroup.getInstanceOf("bodyModificationReferenceField");
+				template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("refType", field.getRefType());
+				template.setAttribute("displayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("fieldName", field.getName());
+				
+				checks+=template.toString();
+			}
+		}
+		
+		return checks;
 	}
 
 	private Object generateBodyAdditionCheck(Document document) {
-		// TODO Auto-generated method stub
-		return null;
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.documentCodePath+"persistence");
+
+		String checks="";
+		List<Field> body = document.getBody();
+		for (Field field : body) {
+			if (field.isReference() && CodeUtil.generateAutoCompleteReference(field) && field.getCheckReference()){
+				StringTemplate template = templateGroup.getInstanceOf("bodyReferenceCheck");
+				template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("refType", field.getRefType());
+				template.setAttribute("displayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("fieldName", field.getName());
+				
+				checks+=template.toString();
+			}
+		}
+		
+		return checks;
 	}
 
 	private Object generateHeaderCheck(Document document) {
-		// TODO Auto-generated method stub
-		return null;
+		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.documentCodePath+"persistence");
+
+		String checks="";
+		List<Field> body = document.getHeader();
+		for (Field field : body) {
+			if (field.isReference() && CodeUtil.generateAutoCompleteReference(field) && field.getCheckReference()){
+				StringTemplate template = templateGroup.getInstanceOf("headerReferenceCheck");
+				template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("refType", field.getRefType());
+				template.setAttribute("displayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("fieldName", field.getName());
+				
+				checks+=template.toString();
+			}
+		}
+		
+		return checks;
 	}
 
 	private void generatePersistenceInterface(Document document) {

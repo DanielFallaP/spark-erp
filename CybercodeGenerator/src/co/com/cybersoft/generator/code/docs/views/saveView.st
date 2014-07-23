@@ -172,6 +172,7 @@
 			   }
 			   
 			   if (document.getElementById("_ModificationFormException")!=null){
+			   	   setModificationFormValues(document.getElementById("_ModificationFormExceptionId").value);
 				   \$('.popup-with-form2').click();
 					document.getElementById("_itemModification").focus();
 					 popupVisible=true;
@@ -191,8 +192,8 @@
 		        	<input th:if='\${$docName$Info.created}' hidden="" value="true" th:field="*{created}"></input>
 		        	<div ><a id="back" th:text="#{label.back}" th:href="@{/docs/search$upperDocName$}"></a></div>
 		        	
-		        	<h3 th:if='\${$docName$Info.numericId==null}' th:text="#{label.$docName$Title}"></h3>
-		        	<h3 th:if='\${$docName$Info.numericId!=null}' th:text="#{label.$docName$Title}+' '+\${$docName$Info.numericId}"></h3>
+		        	<h3 th:if='\${$docName$Info.numericId==null}' th:text="#{label.$docName$Info}"></h3>
+		        	<h3 th:if='\${$docName$Info.numericId!=null}' th:text="#{label.$docName$Info}+' '+\${$docName$Info.numericId}"></h3>
 		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
 		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{$docName$BodyModificationInfo.submit}"></input>
 		        	<input id="_trueValue" th:value="#{label.true}" type="hidden" />
@@ -227,7 +228,7 @@
 					<input th:if='\${$docName$Info.showBody}' id="newEntry" hidden=""/>
 			 <!-- Custom form for adding new records -->
 			 <form id="$docName$-body-form" class="white-popup mfp-hide"  th:object="\${$docName$BodyInfo}" method="post">
-		        	<h3 th:text="#{label.$docName$BodyCreationTitle}"></h3>
+		        	<h3 th:text="#{label.newRecord}"></h3>
 		        	<input id="_submit" hidden="" th:field="*{$docName$BodyModificationInfo.submit}"></input>
 		        	<input th:if='\${$docName$Info.created}' hidden="" value="true" th:field="*{created}"></input>
 		        	<input th:if="\${_AdditionFormException}" id="_AdditionFormException" hidden=""></input> 
@@ -242,11 +243,13 @@
 		        </form>
 		        
 		        <form id="$docName$-body-modification-form" class="white-popup mfp-hide" th:object="\${$docName$BodyModificationInfo}" method="post">
-		        	<h3 th:text="#{label.$docName$BodyModificationTitle}"></h3>
+		        	<h3 th:text="#{label.recordModification}"></h3>
 		        	<input id="_id" hidden="" th:field="*{$docName$BodyModificationInfo.id}"></input>
 		        	<input id="_modificationSubmit" hidden="hidden" th:field="*{$docName$BodyModificationInfo.submit}"></input>
 		        	<input th:if='\${$docName$Info.created}' hidden="" value="true" th:field="*{created}"></input>
 		        	<input th:if="\${_ModificationFormException}" id="_ModificationFormException" hidden=""></input>
+		        	<input th:if="\${_ModificationFormException}" id="_ModificationFormExceptionId" th:value="\${_ModifiedId}" hidden=""></input>
+		        	
 		        	<table >
 		        		$modificationFormFields$
 		        		<tr>

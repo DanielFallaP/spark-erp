@@ -55,10 +55,42 @@ public class DocWebGenerator {
 		template.setAttribute("setListsAndDefaults", generateReferencesImports(document.getHeader(),document.getName()));
 		template.setAttribute("bodyAdditionLists", generateReferencesImports(document.getBody(),document.getName()+"Body"));
 		template.setAttribute("bodyModificationLists", generateReferencesImports(document.getBody(),document.getName()+"BodyModification"));
+		template.setAttribute("setDefaults", generateDefaults(document));
+		template.setAttribute("setBodyDefaults", generateBodyDefaults(document));
 		
 		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"Controller.java");
 	}
 	
+	private Object generateBodyDefaults(Document document) {
+		List<Field> fields = document.getBody();
+		String defaults="";
+		for (Field field : fields) {
+			if (field.getDefaultValue()!=null){
+				StringTemplate stringTemplate = new StringTemplate("$tableName$BodyInfo.set$fieldName$($defaultValue$);\n");
+				stringTemplate.setAttribute("tableName", document.getName());
+				stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				stringTemplate.setAttribute("defaultValue", CodeUtil.getDefaultValue(field));
+				defaults+=stringTemplate.toString();
+			}
+		}
+		return defaults;
+	}
+
+	private Object generateDefaults(Document document) {
+		List<Field> fields = document.getHeader();
+		String defaults="";
+		for (Field field : fields) {
+			if (field.getDefaultValue()!=null){
+				StringTemplate stringTemplate = new StringTemplate("$tableName$Info.set$fieldName$($defaultValue$);\n");
+				stringTemplate.setAttribute("tableName", document.getName());
+				stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				stringTemplate.setAttribute("defaultValue", CodeUtil.getDefaultValue(field));
+				defaults+=stringTemplate.toString();
+			}
+		}
+		return defaults;
+	}
+
 	private String generateControllerReferencesServicesDeclarations(Document document){
 		
 		String declarations="";
