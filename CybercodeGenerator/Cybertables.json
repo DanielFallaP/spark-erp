@@ -731,7 +731,7 @@
 			"name":"deliveryLocation",
 			"spanishName":"Lugar de destino",
 			"fields":[
-						{"name":"code", "spanishName":"Código", "type":"Integer", "unique":"true", "length":"2"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
 						{"name":"address", "spanishName":"Dirección", "type":"String", "required":"false", "autocomplete":"true"},
 						{"name":"zipCode", "spanishName":"Código postal", "type":"String", "required":"false", "displayable":"false"},
 						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "compoundReference":"true"},

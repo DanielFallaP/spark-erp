@@ -25,7 +25,7 @@ import co.com.cybersoft.util.PageWrapper;
  *
  */
 @Controller
-@RequestMapping("/docs/searchRequisition")
+@RequestMapping("/docss/searchRequisition")
 public class RequisitionSearchController {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(RequisitionSearchController.class);

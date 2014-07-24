@@ -50,8 +50,6 @@ import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.SparkBindingException;
 
 
-@Controller
-@RequestMapping("/docs/requisition")
 public class RequisitionController {
 	
 	@Autowired

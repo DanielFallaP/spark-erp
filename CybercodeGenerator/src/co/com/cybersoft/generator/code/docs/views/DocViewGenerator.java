@@ -256,7 +256,7 @@ public class DocViewGenerator {
 		List<Field> fields = document.getBody();
 		String text="";
 		for (Field field : fields) {
-			if (!field.isReference() && field.getVisible() && !field.getReadOnly()){
+			if (!field.isReference() && field.getVisible()){
 				StringTemplate template;
 				if (!field.getLargeText() && !field.getType().equals(Cybertables.booleanType))
 					template = stringTemplateGroup.getInstanceOf("editableTableRow");

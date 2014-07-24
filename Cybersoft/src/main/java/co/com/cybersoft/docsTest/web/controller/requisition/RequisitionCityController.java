@@ -28,7 +28,7 @@ import co.com.cybersoft.tables.events.populatedPlace.PopulatedPlacePageEvent;
  *
  */
 @Controller
-@RequestMapping("/docs/requisition/retrieveCity")
+@RequestMapping("/docss/requisition/retrieveCity")
 public class RequisitionCityController {
 
 	@Autowired
