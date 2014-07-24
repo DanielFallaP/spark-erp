@@ -25,6 +25,11 @@ public class CodeUtil {
 		return character.toString().toUpperCase()+name.substring(1);
 	}
 	
+	public static String toLowerCamelCase(String name){
+		Character character= name.charAt(0);
+		return character.toString().toLowerCase()+name.substring(1);
+	}
+	
 	public static BufferedWriter initializeErrorFileWriting(String fileName) throws IOException{
 		File file = new File(fileName);
 		

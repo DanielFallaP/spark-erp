@@ -31,7 +31,17 @@ public class Field {
 	private String docRefType;
 	private List<String> bodyFields=new ArrayList<String>();
 	
+	private OnLoad onLoad;
 	
+	
+	
+	
+	public OnLoad getOnLoad() {
+		return onLoad;
+	}
+	public void setOnLoad(OnLoad onLoad) {
+		this.onLoad = onLoad;
+	}
 	public Boolean getCheckReference() {
 		return checkReference;
 	}

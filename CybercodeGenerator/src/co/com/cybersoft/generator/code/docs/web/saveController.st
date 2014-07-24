@@ -225,6 +225,7 @@ public class $upperDocName$Controller {
 				$docName$Info = new $upperDocName$Info();
 				
 				$setDefaults$
+				$setOnLoadHeaderValues$
 			}
 			
 			$setListsAndDefaults$
@@ -254,6 +255,7 @@ public class $upperDocName$Controller {
 			
 			$docName$BodyInfo.setId(null);
 			$setBodyDefaults$
+			$setOnLoadBodyValues$
 
 			request.getSession().setAttribute("$docName$BodyInfo", $docName$BodyInfo);
 			

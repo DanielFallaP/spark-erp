@@ -9,6 +9,8 @@ import co.com.cybersoft.man.services.currency.CurrencyUpdateService;
 import co.com.cybersoft.man.services.currency.OpenExchangeUpdateService;
 import co.com.cybersoft.man.services.excel.ReportingService;
 import co.com.cybersoft.man.services.excel.ReportingServiceImpl;
+import co.com.cybersoft.man.services.exchangeRate.ExchangeRateManService;
+import co.com.cybersoft.man.services.exchangeRate.ExchangeRateManServiceImpl;
 import co.com.cybersoft.man.services.sequence.SequenceService;
 import co.com.cybersoft.man.services.startup.SparkStartupService;
 import co.com.cybersoft.man.services.startup.SparkStartupServiceImpl;
@@ -49,6 +51,11 @@ public class ManCoreConfig {
 	@Bean
 	public TimerService timerService() throws Exception{
 		return new QuartzTimer();
+	}
+	
+	@Bean
+	public ExchangeRateManService exchangeRateManService() throws Exception{
+		return new ExchangeRateManServiceImpl();
 	}
 	
 	@Bean

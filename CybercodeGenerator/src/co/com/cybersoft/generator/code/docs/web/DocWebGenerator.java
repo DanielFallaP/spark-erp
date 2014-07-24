@@ -56,11 +56,43 @@ public class DocWebGenerator {
 		template.setAttribute("bodyAdditionLists", generateReferencesImports(document.getBody(),document.getName()+"Body"));
 		template.setAttribute("bodyModificationLists", generateReferencesImports(document.getBody(),document.getName()+"BodyModification"));
 		template.setAttribute("setDefaults", generateDefaults(document));
+		template.setAttribute("setOnLoadHeaderValues", generateOnLoadHeaderValues(document));
+		template.setAttribute("setOnLoadBodyValues", generateOnLoadBodyValues(document));
 		template.setAttribute("setBodyDefaults", generateBodyDefaults(document));
 		
 		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"Controller.java");
 	}
 	
+	private Object generateOnLoadBodyValues(Document document) {
+		List<Field> fields = document.getBody();
+		String defaults="";
+		for (Field field : fields) {
+			if (field.getOnLoad()!=null){
+				StringTemplate stringTemplate = new StringTemplate("$tableName$BodyInfo.set$fieldName$($defaultValue$);\n");
+				stringTemplate.setAttribute("tableName", document.getName());
+				stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				stringTemplate.setAttribute("defaultValue", field.getOnLoad().getName()+"."+field.getOnLoad().getMethodName()+"()");
+				defaults+=stringTemplate.toString();
+			}
+		}
+		return defaults;
+	}
+
+	private Object generateOnLoadHeaderValues(Document document) {
+		List<Field> fields = document.getHeader();
+		String defaults="";
+		for (Field field : fields) {
+			if (field.getOnLoad()!=null){
+				StringTemplate stringTemplate = new StringTemplate("$tableName$Info.set$fieldName$($defaultValue$);\n");
+				stringTemplate.setAttribute("tableName", document.getName());
+				stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				stringTemplate.setAttribute("defaultValue", field.getOnLoad().getName()+"."+field.getOnLoad().getMethodName()+"()");
+				defaults+=stringTemplate.toString();
+			}
+		}
+		return defaults;
+	}
+
 	private Object generateBodyDefaults(Document document) {
 		List<Field> fields = document.getBody();
 		String defaults="";
@@ -124,6 +156,18 @@ public class DocWebGenerator {
 					declarations+=template.toString()+"\n\n";
 					services.add(field.getName());
 				}
+			}
+		}
+		
+		List<Field> allFields = document.getAllFields();
+		for (Field field : allFields) {
+			if (field.getOnLoad()!=null ){
+				StringTemplate template = new StringTemplate("@Autowired\n"
+						+ "	private $upperServiceName$ $serciceName$;");
+				template.setAttribute("upperServiceName", field.getOnLoad().getClassName());
+				template.setAttribute("serciceName", field.getOnLoad().getName());
+				declarations+=template.toString()+"\n\n";
+				services.add(field.getName());
 			}
 		}
 		
