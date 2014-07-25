@@ -23,10 +23,11 @@
 						{"name":"requiredOnDate", "spanishName":"Requerido en Fecha", "type":"Date", "defaultValue":"today", "displayable":"false"},
 						{"name":"priority", "spanishName":"Prioridad", "refType":"priority", "displayField":"priority", "displayable":"false"},
 						{"name":"quantity", "spanishName":"Cantidad", "type":"Double"},
-						{"name":"localCurrencyUnitValue", "spanishName":"Valor unitario en moneda local", "type":"Double"},
-						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double"},
-						{"name":"foreignCurrencyUnitValue", "spanishName":"Valor unitario en moneda extranjera", "type":"Double"},
-						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double"},
+						{"name":"localCurrencyUnitValue", "spanishName":"Valor unitario en moneda local", "type":"Double", "readOnly":"true"},
+						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double", "readOnly":"true"},
+						{"name":"foreignCurrencyUnitValue", "spanishName":"Valor unitario en moneda extranjera", "type":"Double", "readOnly":"true"},
+						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double", "readOnly":"true"},
+						{"name":"lastPurchaseDate", "spanishName":"Fecha de última compra", "type":"Date", "defaultValue":"today", "readOnly":"true", "displayable":"false"},
 						{"name":"remarks", "spanishName":"Observaciones",  "type":"String", "largeText":"true", "displayable":"false"}
 						]
 		 },
