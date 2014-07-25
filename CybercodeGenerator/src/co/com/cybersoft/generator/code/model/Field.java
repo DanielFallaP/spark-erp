@@ -33,9 +33,14 @@ public class Field {
 	
 	private OnLoad onLoad;
 	
+	private JavaScriptAPI autoCompletePeerFunction;
 	
-	
-	
+	public JavaScriptAPI getAutoCompletePeerFunction() {
+		return autoCompletePeerFunction;
+	}
+	public void setAutoCompletePeerFunction(JavaScriptAPI autoCompletePeerFunction) {
+		this.autoCompletePeerFunction = autoCompletePeerFunction;
+	}
 	public OnLoad getOnLoad() {
 		return onLoad;
 	}

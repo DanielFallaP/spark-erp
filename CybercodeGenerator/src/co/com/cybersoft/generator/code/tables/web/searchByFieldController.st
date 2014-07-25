@@ -16,13 +16,13 @@ import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;
 import co.com.cybersoft.util.CyberUtils;
 
 @Controller
-@RequestMapping("/configuration/$tableName$/get$upperFieldName$List")
 public class $entityName$SearchBy$upperFieldName$Controller {
 
 	@Autowired
 	private $entityName$Service $tableName$Service;
 	
-	@RequestMapping(method=RequestMethod.GET)
+	$searchMethods$
+	@RequestMapping(value="/configuration/$tableName$/get$upperFieldName$List", method=RequestMethod.GET)
 		public void get$entityName$List(String $fieldName$, HttpServletResponse response) throws Exception{
 		$entityName$PageEvent $fieldName$Event = $tableName$Service.requestByContaining$upperFieldName$($fieldName$);
 		

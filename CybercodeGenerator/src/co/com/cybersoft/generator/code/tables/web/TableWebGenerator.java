@@ -103,10 +103,29 @@ public class TableWebGenerator {
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		template.setAttribute("fieldName", field.getName());
 		template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+		template.setAttribute("searchMethods", generateSearchMethods(table,field));
 		
 		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"SearchBy"+CodeUtil.toCamelCase(field.getName())+"Controller.java");
 	}
 	
+	private Object generateSearchMethods(Table table, Field originalField) {
+		String methods="";
+		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			StringTemplate template = templateGroup.getInstanceOf("searchByFieldMethod");
+			template.setAttribute("tableName", table.getName());
+			template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+			template.setAttribute("fieldName", originalField.getName());
+			template.setAttribute("upperFieldName", CodeUtil.toCamelCase(originalField.getName()));
+			template.setAttribute("returnField", CodeUtil.toCamelCase(field.getName()));
+			
+			methods+=template.toString()+"\n";
+		}
+		
+		return methods;
+	}
+
 	private void generateSearchController(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.tableCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchController");

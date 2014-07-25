@@ -24,6 +24,8 @@
 	    </style>
 	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
 <!-- 	      For production purposes, min version should be used -->
+
+		$javaScripts$
 		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
 		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
 		<script th:src="@{/resources/js/jquery.dataTables.js}"></script>
