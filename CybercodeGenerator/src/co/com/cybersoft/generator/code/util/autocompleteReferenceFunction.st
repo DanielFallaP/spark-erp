@@ -6,7 +6,7 @@
 		    	    		if (path[1].localeCompare("configuration")!=0){
 		    	    			prefix="/"+path[1];	
 		    	    		}
-							\$.get(prefix+"/configuration/$referenceType$/get$upperDisplayField$ListReturn$upperDisplayField$?$displayField$="+request.term, {}, function (data) {
+							\$.get(prefix+"/configuration/$referenceType$/getListBy$displayField$Return$upperDisplayField$?$displayField$="+request.term, {}, function (data) {
 		    	            var array=data.split("$arraySeparator$");
 		    	            if (data!="")
 		    	            	response(array);

@@ -12,10 +12,11 @@ import co.com.cybersoft.generator.code.model.JavaScriptAPI;
 public class JavaScriptAPIConnector {
 
 	public static Object generateAutoCompletePeerFunction(JavaScriptAPI api) {
-		String codeCall=api.getMethodName()+"(";
-		List<String> parameters = api.getParameters();
+		String codeCall="var otherFields = [\"inputMeasurementUnit\"];\n";
+		codeCall+=api.getMethodName()+"(";
+		List<Object> parameters = api.getParameters();
 		int i=0;
-		for (String parameter : parameters) {
+		for (Object parameter : parameters) {
 			codeCall+=parameter;
 			if (i!=parameters.size()-1){
 				codeCall+=",";
@@ -24,19 +25,21 @@ public class JavaScriptAPIConnector {
 		}
 		
 		i=0;
-		List<String> constantParameters = api.getConstantParameters();
+		List<Object> constantParameters = api.getConstantParameters();
 		if (!constantParameters.isEmpty())
 			codeCall+=",";
 		
-		for (String constantParameter : constantParameters) {
-			codeCall+="\""+constantParameter+"\"";
-			if (i!=constantParameters.size()-1){
-				codeCall+=",";
+		for (Object constantParameter : constantParameters) {
+			if (constantParameter instanceof String){
+				codeCall+="\""+constantParameter+"\"";
+				if (i!=constantParameters.size()-1){
+					codeCall+=",";
+				}
 			}
 			i++;
 		}
 		
-		return codeCall+")\n";
+		return codeCall+",otherFields);\n";
 	}
 
 	public static Object generateIncludeScripts(Document document) {
@@ -55,9 +58,9 @@ public class JavaScriptAPIConnector {
 	public static JavaScriptAPI getModificationAutoCompletePeerFunction(JavaScriptAPI autoCompletePeerFunction,Document document) {
 		JavaScriptAPI scriptAPI = new JavaScriptAPI();
 		
-		List<String> constantParameters = new ArrayList<String>(autoCompletePeerFunction.getConstantParameters());
+		List<Object> constantParameters = new ArrayList<Object>(autoCompletePeerFunction.getConstantParameters());
 		
-		String peerField = constantParameters.get(0);
+		String peerField = (String) constantParameters.get(0);
 		peerField=document.getName()+"BodyModificationInfo\\\\."+peerField;
 		constantParameters.remove(0);
 		constantParameters.add(0, peerField);

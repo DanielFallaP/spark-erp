@@ -17,8 +17,8 @@
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					],
 			"body":[
-						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code", "autocomplete":"true", "autoCompletePeerFunction":{"scriptLocation":"/resources/js/peerCompletion.js","methodName":"peerCompletion", "constantParameters":["itemDescription","getCodeListReturnDescription","item","code"],"parameters":["b"]}},
-						{"name":"itemDescription", "spanishName":"Descripción de ítem", "refType":"item", "displayField":"description", "autocomplete":"true","autoCompletePeerFunction":{"scriptLocation":"/resources/js/peerCompletion.js","methodName":"peerCompletion", "constantParameters":["item","getDescriptionListReturnCode","item","description"],"parameters":["b"]}},
+						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code", "autocomplete":"true", "autoCompletePeerFunction":{"scriptLocation":"/resources/js/peerCompletion.js","methodName":"peerCompletion", "constantParameters":["itemDescription","getListByCodeReturnDescription","item","code",["inputMeasurementUnit"]],"parameters":["b"]}},
+						{"name":"itemDescription", "spanishName":"Descripción de ítem", "refType":"item", "displayField":"description", "autocomplete":"true","autoCompletePeerFunction":{"scriptLocation":"/resources/js/peerCompletion.js","methodName":"peerCompletion", "constantParameters":["item","getListByDescriptionReturnCode","item","description"],"parameters":["b"]}},
 						{"name":"inputMeasurementUnit", "spanishName":"Unidad de medida entrada", "type":"String", "readOnly":"true"},
 						{"name":"requiredOnDate", "spanishName":"Requerido en Fecha", "type":"Date", "defaultValue":"today", "displayable":"false"},
 						{"name":"priority", "spanishName":"Prioridad", "refType":"priority", "displayField":"priority", "displayable":"false"},

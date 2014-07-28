@@ -7,18 +7,11 @@ public class JavaScriptAPI {
 	
 	private String methodName;
 	
-	private List<String> parameters;
+	private List<Object> parameters;
 	
-	private List<String> constantParameters;
+	private List<Object> constantParameters;
 	
 	
-	public List<String> getConstantParameters() {
-		return constantParameters;
-	}
-
-	public void setConstantParameters(List<String> constantParameters) {
-		this.constantParameters = constantParameters;
-	}
 
 	public String getScriptLocation() {
 		return scriptLocation;
@@ -36,12 +29,20 @@ public class JavaScriptAPI {
 		this.methodName = methodName;
 	}
 
-	public List<String> getParameters() {
+	public List<Object> getParameters() {
 		return parameters;
 	}
 
-	public void setParameters(List<String> parameters) {
+	public void setParameters(List<Object> parameters) {
 		this.parameters = parameters;
+	}
+
+	public List<Object> getConstantParameters() {
+		return constantParameters;
+	}
+
+	public void setConstantParameters(List<Object> constantParameters) {
+		this.constantParameters = constantParameters;
 	}
 
 	
