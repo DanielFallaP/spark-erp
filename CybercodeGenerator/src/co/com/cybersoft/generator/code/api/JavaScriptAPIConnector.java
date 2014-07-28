@@ -11,8 +11,9 @@ import co.com.cybersoft.generator.code.model.JavaScriptAPI;
 
 public class JavaScriptAPIConnector {
 
-	public static Object generateAutoCompletePeerFunction(JavaScriptAPI api) {
-		String codeCall="var otherFields = [\"inputMeasurementUnit\"];\n";
+	public static Object generateAutoCompletePeerFunction(JavaScriptAPI api, Document document, boolean modification) {
+		String codeCall="var otherFields = ";
+		codeCall+=getArrayFields((List<String>) api.getConstantParameters().get(api.getConstantParameters().size()-1))+";\n";
 		codeCall+=api.getMethodName()+"(";
 		List<Object> parameters = api.getParameters();
 		int i=0;
@@ -39,10 +40,29 @@ public class JavaScriptAPIConnector {
 			i++;
 		}
 		
-		return codeCall+",otherFields);\n";
+		codeCall+="otherFields,";
+		if (modification){
+			codeCall+="\""+document.getName()+"BodyModificationInfo\\\\."+"\"";
+		}
+		else
+			codeCall+="\"\"";
+		return codeCall+=");\n";
+	}
+	
+	public static String getArrayFields(List<String> array){
+		String response="[";
+		int i=0;
+		for (String string : array) {
+			response+="\""+string+"\"";
+			if (i!=array.size()-1){
+				response+=",";
+			}
+			i++;
+		}
+		return response+"]";
 	}
 
-	public static Object generateIncludeScripts(Document document) {
+	public static Object generateScriptsTags(Document document) {
 		List<Field> allFields = document.getAllFields();
 		String javaScripts="";
 		for (Field field : allFields) {
@@ -64,6 +84,7 @@ public class JavaScriptAPIConnector {
 		peerField=document.getName()+"BodyModificationInfo\\\\."+peerField;
 		constantParameters.remove(0);
 		constantParameters.add(0, peerField);
+		
 		scriptAPI.setParameters(autoCompletePeerFunction.getParameters());
 		scriptAPI.setConstantParameters(constantParameters);
 		scriptAPI.setMethodName(autoCompletePeerFunction.getMethodName());

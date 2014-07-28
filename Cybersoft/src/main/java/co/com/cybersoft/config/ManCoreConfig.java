@@ -11,6 +11,8 @@ import co.com.cybersoft.man.services.excel.ReportingService;
 import co.com.cybersoft.man.services.excel.ReportingServiceImpl;
 import co.com.cybersoft.man.services.exchangeRate.ExchangeRateManService;
 import co.com.cybersoft.man.services.exchangeRate.ExchangeRateManServiceImpl;
+import co.com.cybersoft.man.services.item.ItemManService;
+import co.com.cybersoft.man.services.item.ItemManServiceImpl;
 import co.com.cybersoft.man.services.sequence.SequenceService;
 import co.com.cybersoft.man.services.startup.SparkStartupService;
 import co.com.cybersoft.man.services.startup.SparkStartupServiceImpl;
@@ -26,6 +28,11 @@ public class ManCoreConfig {
 	@Bean 
 	public ReportingService reportingService(){
 		return new ReportingServiceImpl();
+	}
+	
+	@Bean
+	public ItemManService itemManService(){
+		return new ItemManServiceImpl();
 	}
 	
 	@Bean

@@ -137,6 +137,8 @@ public class TableViewGenerator {
 				template.setAttribute("referenceType", field.getRefType());
 				template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
+				template.setAttribute("namespace", Cybertables.tableNamespace);
+
 
 				functions+="\n"+template.toString();
 			}
@@ -216,7 +218,7 @@ public class TableViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("searchView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-		template.setAttribute("backURL", table.getLabelTable()?Cybertables.settingsURL:Cybertables.configurationURL);
+		template.setAttribute("backURL", table.getLabelTable()?Cybertables.settingsURL:Cybertables.tableNamespace);
 		template.setAttribute("columns", getOtherColumns(table));
 		template.setAttribute("columnHeaders", getHeaderColumns(table));
 		template.setAttribute("excel", table.getLabelTable()?"<div></div>":generateExcelLink(table));

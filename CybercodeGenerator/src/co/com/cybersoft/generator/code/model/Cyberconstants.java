@@ -38,7 +38,9 @@ public final static String tableCodePath="src/co/com/cybersoft/generator/code/ta
 	
 	public final static String todayValue="today";
 
-	public static final String configurationURL = "configuration";
+	public static final String tableNamespace = "configuration";
+	
+	public static final String docNamespace = "docs";
 
 	public static final String settingsURL = "settings";
 	

@@ -3,10 +3,10 @@
 		    	    source: function (request, response) {
 		    	    		var path=window.location.pathname.split("/");
 		    	    		var prefix="";
-		    	    		if (path[1].localeCompare("configuration")!=0){
+		    	    		if (path[1].localeCompare("$namespace$")!=0){
 		    	    			prefix="/"+path[1];	
 		    	    		}
-							\$.get(prefix+"/configuration/$referenceType$/getListBy$displayField$Return$upperDisplayField$?$displayField$="+request.term, {}, function (data) {
+							\$.get(prefix+"/configuration/$referenceType$/getListBy$upperDisplayField$Return$upperDisplayField$?$displayField$="+request.term, {}, function (data) {
 		    	            var array=data.split("$arraySeparator$");
 		    	            if (data!="")
 		    	            	response(array);

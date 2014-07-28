@@ -37,7 +37,7 @@ public class DocViewGenerator {
 	private void generateSaveView(Document document) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("saveView");
-		template.setAttribute("javaScripts", JavaScriptAPIConnector.generateIncludeScripts(document));
+		template.setAttribute("javaScripts", JavaScriptAPIConnector.generateScriptsTags(document));
 		template.setAttribute("docName", document.getName());
 		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
 		template.setAttribute("datePickers", generateDateFieldPickers(document));
@@ -73,9 +73,10 @@ public class DocViewGenerator {
 				template.setAttribute("referenceType", field.getRefType());
 				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
 				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
+				template.setAttribute("namespace", Cybertables.docNamespace);
 				
 				if (field.getAutoCompletePeerFunction()!=null)
-					template.setAttribute("onSelectionAPICall", JavaScriptAPIConnector.generateAutoCompletePeerFunction(field.getAutoCompletePeerFunction()));
+					template.setAttribute("onSelectionAPICall", JavaScriptAPIConnector.generateAutoCompletePeerFunction(field.getAutoCompletePeerFunction(), document, false));
 
 				functions+="\n"+template.toString();
 			}
@@ -91,8 +92,10 @@ public class DocViewGenerator {
 				template.setAttribute("referenceType", field.getRefType());
 				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
 				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
+				template.setAttribute("namespace", Cybertables.docNamespace);
+				
 				if (field.getAutoCompletePeerFunction()!=null)
-					template.setAttribute("onSelectionAPICall", JavaScriptAPIConnector.generateAutoCompletePeerFunction(field.getAutoCompletePeerFunction()));
+					template.setAttribute("onSelectionAPICall", JavaScriptAPIConnector.generateAutoCompletePeerFunction(field.getAutoCompletePeerFunction(), document, false));
 
 				functions+="\n"+template.toString();
 				
@@ -103,9 +106,11 @@ public class DocViewGenerator {
 				template.setAttribute("referenceType", field.getRefType());
 				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
 				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
+				template.setAttribute("namespace", Cybertables.docNamespace);
+				
 				if (field.getAutoCompletePeerFunction()!=null){
 					JavaScriptAPI modAPI=JavaScriptAPIConnector.getModificationAutoCompletePeerFunction(field.getAutoCompletePeerFunction(), document);
-					template.setAttribute("onSelectionAPICall", JavaScriptAPIConnector.generateAutoCompletePeerFunction(modAPI));
+					template.setAttribute("onSelectionAPICall", JavaScriptAPIConnector.generateAutoCompletePeerFunction(modAPI, document, true));
 				}
 
 				functions+="\n"+template.toString();

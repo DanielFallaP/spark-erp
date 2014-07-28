@@ -1,4 +1,4 @@
-function peerCompletion(field, peerField, method, table, fieldName, otherFields){
+function peerCompletion(field, peerField, method, table, fieldName, otherFields, modificationPrefix){
 							var prefix="";
 				    	    		var path=window.location.pathname.split("/");
 				    	    		if (path[1].localeCompare("configuration")!=0){
@@ -14,12 +14,16 @@ function peerCompletion(field, peerField, method, table, fieldName, otherFields)
 			    	    		if (otherFields!=null){
 			    	    			var i;
 			    	    			for (i = 0; i < otherFields.length; ++i) {
-			    	    				$.get(prefix+"/configuration/"+table+"/getListBy"+fieldName+"Return"+otherFields[i]+"?"+fieldName+"="+field.item.value, {}, function (data) {
+			    	    				var upperField=toCamelCase(otherFields[i]);
+			    	    				var lowerField=otherFields[i];
+			    	    				$.get(prefix+"/configuration/"+table+"/getListBy"+toCamelCase(fieldName)+"Return"+toCamelCase(otherFields[i])+"?"+fieldName+"="+field.item.value, {}, function (data) {
 							    	           var array=data.split("/////");
 							    	           if (data!=""){
-							    	        	   $("#inputMeasurementUnit").val(array[0]);
+							    	        	   $("#"+modificationPrefix+lowerField).val(array[0]);
 							    	           }
 							    	      });
 			    	    			}
 			    	    		}
+			    	    		
+			    	    		
 }

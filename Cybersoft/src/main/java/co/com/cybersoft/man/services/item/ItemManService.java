@@ -1,7 +1,9 @@
 package co.com.cybersoft.man.services.item;
 
-import co.com.cybersoft.tables.core.domain.ItemDetails;
+import co.com.cybersoft.tables.web.domain.itemPurchaseHistory.ItemPurchaseHistoryInfo;
+
 
 public interface ItemManService {
-	String getItemMeasurementUnit(String code);
+	ItemPurchaseHistoryInfo getItemLastPurchasePriceByDescription(String description) throws Exception;
+	ItemPurchaseHistoryInfo getItemLastPurchasePriceByItemCode(String item) throws Exception;
 }

@@ -26,6 +26,7 @@
 <!-- 	      For production purposes, min version should be used -->
 
 		$javaScripts$
+		<script th:src="@{/resources/js/util.js}"></script>
 		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
 		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
 		<script th:src="@{/resources/js/jquery.dataTables.js}"></script>
@@ -191,6 +192,7 @@
 			<div class="row-fluid">
 		        <form id="header-form" th:object="\${$docName$Info}" method="post" >
 		        	<input id="_submit" hidden="" th:field="*{$docName$BodyModificationInfo.submit}"></input>
+		        	<input id="_documentName" type="hidden" value="$docName$"></input>
 		        	<input th:if='\${$docName$Info.created}' hidden="" value="true" th:field="*{created}"></input>
 		        	<div ><a id="back" th:text="#{label.back}" th:href="@{/docs/search$upperDocName$}"></a></div>
 		        	
