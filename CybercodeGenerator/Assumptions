@@ -10,11 +10,12 @@ Assumptions:
 	- Priority in requisition is part of head or body, as it is defined in the business rules.
 	- Required on date in requisition is part of head or body, as it is defined in the business rules.
 	- Use Cost Discrimination By Item in requisition is part of head or body, as it is defined in the business rules.
-	- Business rules table: Priority by item defined as false implies priority is in the head of requisition.
-	- Business rules table: Required on date by item defined as false implies Required on date is in the head of requisition.
-	- Business rules table: Use Cost Discrimination By Item defined as false implies Cost Discrimination is in the head of requisition.
+	- Business rules table: Priority by item defined as false implies priority is in requisition head.
+	- Business rules table: Required on date by item defined as false implies Required on date is in requisition head.
+	- Business rules table: Use Cost Discrimination By Item defined as false implies Cost Discrimination is in requisition head.
 	- Business rules table: Use MiniMax By Item defined as false implies MiniMax by warehouse
-	- "Displayable = false" aplies to web an movile table display fields, aditional fields not displayable in mobile equipments must have "movileDisplayable = false"
+	- "Displayable = false" aplies to web and movile table display fields, aditional fields not displayable in mobile equipments must have "movileDisplayable = false"
+	- imported = true implies foreign currency, imported = false implies local currency 
 	- Purchase order: "imported = false" for the item Quotation accepted implied local purchase
 	- Requisition, purchase order and item receipt: stock = false implies comsumption
 	
