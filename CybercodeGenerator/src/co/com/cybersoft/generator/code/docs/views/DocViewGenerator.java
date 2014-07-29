@@ -80,6 +80,21 @@ public class DocViewGenerator {
 
 				functions+="\n"+template.toString();
 			}
+			if (CodeUtil.generateAutoCompleteReferenceCompoundField(field)){
+				StringTemplate template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("displayField", field.getDisplayField());
+				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("referenceType", field.getRefType());
+				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
+				template.setAttribute("namespace", Cybertables.docNamespace);
+				
+				if (field.getAutoCompletePeerFunction()!=null)
+					template.setAttribute("onSelectionAPICall", JavaScriptAPIConnector.generateAutoCompletePeerFunction(field.getAutoCompletePeerFunction(), document, false));
+
+				functions+="\n"+template.toString();
+			}
 		}
 		
 		fields=document.getBody();

@@ -13,14 +13,14 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class TablePersistenceGenerator {
 	
-	private final Cybertables cybersoft;
+	private final Cybertables cybertables;
 	
 	public TablePersistenceGenerator(Cybertables cybersoft){
-		this.cybersoft=cybersoft;
+		this.cybertables=cybersoft;
 	}
 	
 	public void generate(){
-		List<Table> tables = cybersoft.getTables();
+		List<Table> tables = cybertables.getTables();
 		for (Table table : tables) {
 			generateDomainClass(table);
 			generatePersistenceInterface(table);
@@ -62,7 +62,7 @@ public class TablePersistenceGenerator {
 		
 		if (table.hasCompoundIndex()){
 			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");
-			List<Field> compoundIndex = table.getCompoundIndex(cybersoft);
+			List<Field> compoundIndex = table.getCompoundIndex(cybertables);
 			String dec="";
 			int i=0;
 			for (Field field : compoundIndex) {
@@ -120,7 +120,7 @@ public class TablePersistenceGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersoft, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = new StringTemplate("private $type$ $name$;\n");
 					template.setAttribute("type", Cybertables.stringType);
@@ -158,7 +158,7 @@ public class TablePersistenceGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersoft, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 					template.setAttribute("type", Cybertables.stringType);
@@ -218,7 +218,7 @@ public class TablePersistenceGenerator {
 			}
 			else{
 				
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersoft, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
@@ -228,6 +228,13 @@ public class TablePersistenceGenerator {
 						stringTemplate.setAttribute("fieldName", compoundField.getName());
 						requestAll+=stringTemplate.toString();
 					}
+					
+					StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestByContaining$upperFieldName$(String $fieldName$) throws Exception;");
+					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					stringTemplate.setAttribute("fieldName", compoundField.getName());
+					
+					autocompleteRequests+=stringTemplate.toString();
 					
 				}
 			}
@@ -298,7 +305,7 @@ public class TablePersistenceGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersoft, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
@@ -309,6 +316,13 @@ public class TablePersistenceGenerator {
 						stringTemplate.setAttribute("tableName", table.getName());
 						requestImpl+=stringTemplate.toString();
 					}
+					
+					StringTemplate stringTemplate = templateGroup.getInstanceOf("autocompleteRequest");
+					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("tableName", table.getName());
+					stringTemplate.setAttribute("fieldName", compoundField.getName());
+					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					autocompleteRequests+=stringTemplate.toString();
 					
 				}
 			}
@@ -397,6 +411,18 @@ public class TablePersistenceGenerator {
 				subTemplate.setAttribute("fieldType", field.getType()!=null?CodeUtil.toCamelCase(field.getType()):Cybertables.stringType);
 				methods+=subTemplate.toString()+"\n";
 			}
+			else
+			{
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					StringTemplate subTemplate=new StringTemplate("$entityName$ findBy$fieldName$($fieldType$ value);\n");
+					subTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					subTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					subTemplate.setAttribute("fieldType", compoundField.getType()!=null?CodeUtil.toCamelCase(compoundField.getType()):Cybertables.stringType);
+					methods+=subTemplate.toString()+"\n";
+				}
+			}
+			
 		}
 		
 		template.setAttribute("findByFields", methods);
@@ -445,7 +471,7 @@ public class TablePersistenceGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersoft, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType()) && keyCompound.getKeyCompound()){
@@ -456,6 +482,11 @@ public class TablePersistenceGenerator {
 						findAllActive+=stringTemplate.toString();
 					}
 					
+					StringTemplate stringTemplate = new StringTemplate("List<$entityName$> findByContaining$upperFieldName$(String substring);\n");
+					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					
+					autocompleteQueries+=stringTemplate.toString();
 				}
 			}
 			i++;
@@ -511,7 +542,7 @@ public class TablePersistenceGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersoft, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				//The next field should complete the compound reference for the table 
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
@@ -525,6 +556,12 @@ public class TablePersistenceGenerator {
 						findAllActive+=stringTemplate.toString();
 					}
 					
+					StringTemplate subTemplate = templateGroup.getInstanceOf("byContainingField");
+					subTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					subTemplate.setAttribute("tableName", table.getName());
+					subTemplate.setAttribute("upperReferenceField", CodeUtil.toCamelCase(compoundField.getName()));
+					subTemplate.setAttribute("fieldName", compoundField.getName());
+					autocompleteQueries+=subTemplate.toString();
 				}
 			}
 			i++;

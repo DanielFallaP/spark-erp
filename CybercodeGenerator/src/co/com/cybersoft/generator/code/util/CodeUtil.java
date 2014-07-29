@@ -324,7 +324,11 @@ public class CodeUtil {
 	}
 	
 	public static boolean generateAutoCompleteReference(Field field){
-		return field.isReference()&&field.getAutocomplete();
+		return field.isReference()&&field.getAutocomplete()&&!field.getCompoundReference();
+	}
+	
+	public static boolean generateAutoCompleteReferenceCompoundField(Field field){
+		return field.isReference()&&field.getAutocomplete()&&field.getCompoundReference();
 	}
 	
 	public static String getFieldType(Cybertables cybersystems, String tableName, String fieldName){
@@ -350,15 +354,15 @@ public class CodeUtil {
 		return new ArrayList<Field>();
 	}
 	
-	public static List<Field> getCompoundReference(Cybertables spark, String tableName){
-		List<Table> tables = spark.getTables();
+	public static List<Field> getCompoundReference(Cybertables cybertables, String tableName){
+		List<Table> tables = cybertables.getTables();
 		for (Table table : tables) {
 			if (table.getName().equals(tableName)){
 					ArrayList<Field> reference = new ArrayList<Field>();
 					List<Field> fields = table.getFields();
 					for (Field field : fields) {
 						if (field.getCompoundReference()&& field.getKeyCompound())
-							reference.addAll(getCompoundReference(spark, field.getRefType()));
+							reference.addAll(getCompoundReference(cybertables, field.getRefType()));
 						else if(field.getKeyCompound()){
 							field.setTableName(field.getRefType()==null?table.getName():field.getRefType());
 							reference.add(field);

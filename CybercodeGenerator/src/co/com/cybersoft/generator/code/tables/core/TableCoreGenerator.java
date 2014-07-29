@@ -13,14 +13,14 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class TableCoreGenerator {
 	
-	private final Cybertables spark;
+	private final Cybertables cybertables;
 	
 	public TableCoreGenerator(Cybertables cybersoft){
-		this.spark=cybersoft;
+		this.cybertables=cybersoft;
 	}
 
 	public void generate(){
-		List<Table> tables = spark.getTables();
+		List<Table> tables = cybertables.getTables();
 		for (Table table : tables) {
 			generateCoreServiceInterface(table);
 			generateCoreServiceImplementation(table);
@@ -82,7 +82,7 @@ public class TableCoreGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(spark, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
@@ -93,6 +93,12 @@ public class TableCoreGenerator {
 						requestDeclarations+=stringTemplate.toString();
 					}
 					
+					StringTemplate stringTemplate = new StringTemplate("$entityUppercaseName$PageEvent requestByContaining$upperFieldName$(String $fieldName$) throws Exception;");
+					stringTemplate.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					stringTemplate.setAttribute("fieldName", compoundField.getName());
+					
+					autocompleteRequests+=stringTemplate.toString()+"\n";					
 				}
 			}
 			i++;
@@ -158,7 +164,7 @@ public class TableCoreGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(spark, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
@@ -169,6 +175,13 @@ public class TableCoreGenerator {
 						stringTemplate.setAttribute("tableName", table.getName());
 						requestImpl+=stringTemplate.toString();
 					}
+					
+					StringTemplate stringTemplate = templateGroup.getInstanceOf("autocompleteRequest");
+					stringTemplate.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("entityName", table.getName());
+					stringTemplate.setAttribute("fieldName", compoundField.getName());
+					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					autocompleteRequest+=stringTemplate.toString();
 					
 				}
 			}
@@ -186,8 +199,8 @@ public class TableCoreGenerator {
 	private void generateCoreDomainClass(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreDomain");
-		template.setAttribute("fieldDeclaration", CodeUtil.getFieldDeclarations(spark,table));
-		template.setAttribute("gettersAndSetters", CodeUtil.getGettersAndSetters(spark,table));
+		template.setAttribute("fieldDeclaration", CodeUtil.getFieldDeclarations(cybertables,table));
+		template.setAttribute("gettersAndSetters", CodeUtil.getGettersAndSetters(cybertables,table));
 		template.setAttribute("coreDomainClass", CodeUtil.toCamelCase(table.getName())+"Details");
 		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
 		

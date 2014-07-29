@@ -18,14 +18,14 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
  */
 public class TableWebGenerator {
 	
-	private final Cybertables cybersystems;
+	private final Cybertables cybertables;
 	
 	public TableWebGenerator(Cybertables cybersoft){
-		this.cybersystems=cybersoft;
+		this.cybertables=cybersoft;
 	}
 	
 	public void generate(){
-		List<Table> tables = cybersystems.getTables();
+		List<Table> tables = cybertables.getTables();
 		for (Table table : tables) {
 			if (!table.getSingletonTable()){
 				generateSearchController(table);
@@ -42,6 +42,13 @@ public class TableWebGenerator {
 			for (Field field : fields) {
 				if (CodeUtil.generateAutoComplete(field)){
 					generateSearchByFieldController(table,field);
+				}
+				
+				if (field.getCompoundReference()){
+					List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+					for (Field compoundField : compoundKey) {
+						generateSearchByFieldController(table, compoundField);
+					}
 				}
 			}
 			if (!table.getLabelTable() && !table.getSingletonTable())
@@ -113,14 +120,30 @@ public class TableWebGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
-			StringTemplate template = templateGroup.getInstanceOf("searchByFieldMethod");
-			template.setAttribute("tableName", table.getName());
-			template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-			template.setAttribute("fieldName", originalField.getName());
-			template.setAttribute("upperFieldName", CodeUtil.toCamelCase(originalField.getName()));
-			template.setAttribute("returnField", CodeUtil.toCamelCase(field.getName()));
-			
-			methods+=template.toString()+"\n";
+			if (!field.getCompoundReference()){
+				StringTemplate template = templateGroup.getInstanceOf("searchByFieldMethod");
+				template.setAttribute("tableName", table.getName());
+				template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+				template.setAttribute("fieldName", originalField.getName());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(originalField.getName()));
+				template.setAttribute("returnField", CodeUtil.toCamelCase(field.getName()));
+				
+				methods+=template.toString()+"\n";
+			}
+			else{
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					StringTemplate template = templateGroup.getInstanceOf("searchByFieldMethod");
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					template.setAttribute("fieldName", originalField.getName());
+					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(originalField.getName()));
+					template.setAttribute("returnField", CodeUtil.toCamelCase(compoundField.getName()));
+					
+					methods+=template.toString()+"\n";
+				}
+			}
+				
 		}
 		
 		return methods;
@@ -176,7 +199,7 @@ public class TableWebGenerator {
 		List<Field> compositeFields = table.getCompositeFields();
 		String variables="";
 		for (Field compositeField : compositeFields) {
-			List<Field> compoundReference = CodeUtil.getCompoundKey(cybersystems, compositeField.getRefType());
+			List<Field> compoundReference = CodeUtil.getCompoundKey(cybertables, compositeField.getRefType());
 			int i=0;
 			for (Field field : compoundReference) {
 				if (i<compoundReference.size()-1){
@@ -234,7 +257,7 @@ public class TableWebGenerator {
 	private String generateCompoundControllerLists(Field field, Table table) {
 		String compound="";
 			if (field.getCompoundReference()){
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 					if (compoundKey.size()>1){
 						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
 						StringTemplate stringTemplate = templateGroup.getInstanceOf("compoundControllerLists");
@@ -281,7 +304,7 @@ public class TableWebGenerator {
 //		int suffix=1;
 		for (Field field : fields) {
 			if (field.getCompoundReference()){
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				if (compoundKey.size()>1){
 					StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("compoundReferenceList");
@@ -337,7 +360,7 @@ public class TableWebGenerator {
 //		int suffix=1;
 		for (Field field : fields) {
 			if (field.getCompoundReference()){
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				if (compoundKey.size()>1){
 					StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("compoundReferenceList");
@@ -455,7 +478,7 @@ public class TableWebGenerator {
 		
 		for (Field field : fields) {
 			if (field.getCompoundReference()){
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate stringTemplate = new StringTemplate("import co.com.cybersoft.tables.core.domain.$fieldName$Details;\n");
 					stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
@@ -472,7 +495,7 @@ public class TableWebGenerator {
 
 		List<Field> compositeFields = table.getCompositeFields();
 		for (Field compositeField : compositeFields) {
-			List<Field> compoundReference = CodeUtil.getCompoundKey(cybersystems, compositeField.getRefType());
+			List<Field> compoundReference = CodeUtil.getCompoundKey(cybertables, compositeField.getRefType());
 			for (Field field : compoundReference) {
 					StringTemplate template = new StringTemplate("@Autowired\n"
 							+ "	private $entityName$Service $tableName$Service;");
@@ -506,7 +529,7 @@ public class TableWebGenerator {
 		
 		List<Field> compositeFields = table.getCompositeFields();
 		for (Field compositeField : compositeFields) {
-			List<Field> compoundReference = CodeUtil.getCompoundKey(cybersystems, compositeField.getRefType());
+			List<Field> compoundReference = CodeUtil.getCompoundKey(cybertables, compositeField.getRefType());
 			for (Field field : compoundReference) {
 				if (!services.contains(field.getName())){
 					StringTemplate template = new StringTemplate("@Autowired\n"
@@ -527,7 +550,7 @@ public class TableWebGenerator {
 		HashSet<String> referenceImports = new HashSet<String>();
 		List<Field> compositeFields = table.getCompositeFields();
 		for (Field compositeField : compositeFields) {
-			List<Field> compoundReference = CodeUtil.getCompoundKey(cybersystems, compositeField.getRefType());
+			List<Field> compoundReference = CodeUtil.getCompoundKey(cybertables, compositeField.getRefType());
 			for (Field field : compoundReference) {
 				if (!referenceImports.contains(field.getName())){
 					StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
@@ -561,7 +584,7 @@ public class TableWebGenerator {
 		
 		List<Field> compositeFields = table.getCompositeFields();
 		for (Field compositeField : compositeFields) {
-			List<Field> compoundReference = CodeUtil.getCompoundKey(cybersystems, compositeField.getRefType());
+			List<Field> compoundReference = CodeUtil.getCompoundKey(cybertables, compositeField.getRefType());
 			for (Field field : compoundReference) {
 				if (!referenceImports.contains(field.getName())){
 					StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
@@ -605,7 +628,7 @@ public class TableWebGenerator {
 							StringTemplate temp = new StringTemplate("EmbeddedField $embeddedField$Field=new EmbeddedField(\"$fieldName$\", $embeddedFieldType$.class);\n");
 							temp.setAttribute("embeddedField", embeddedField+CodeUtil.toCamelCase(field.getName()));
 							temp.setAttribute("fieldName", embeddedField);
-							temp.setAttribute("embeddedFieldType", CodeUtil.getFieldType(cybersystems,field.getRefType(), embeddedField));
+							temp.setAttribute("embeddedFieldType", CodeUtil.getFieldType(cybertables,field.getRefType(), embeddedField));
 							decl+=temp.toString();
 							requestParameters+=embeddedField+CodeUtil.toCamelCase(field.getName())+"Field";
 							if (i!=embeddedFields.size()-1){
@@ -697,7 +720,7 @@ public class TableWebGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					if (field.getRequired())
 						body+="@NotEmpty\n";
@@ -766,7 +789,7 @@ public class TableWebGenerator {
 			}
 			else{
 				
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					
 					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);

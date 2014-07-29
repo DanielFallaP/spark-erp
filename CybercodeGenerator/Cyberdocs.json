@@ -4,14 +4,14 @@
 			"name":"requisition",		
 			"spanishName":"Requisición",		
 			"header":[
-						{"name":"city", "spanishName":"Ciudad", "type":"String"},						
+						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"populatedPlace", "autocomplete":"true"},						
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "defaultValue":"today","readOnly":"true"},
 						{"name":"stock", "spanishName":"Inventario", "type":"Boolean", "defaultValue":"true"},
 						{"name":"requiredOnDate", "spanishName":"Requerido en Fecha", "type":"Date", "defaultValue":"today"},
 						{"name":"priority", "spanishName":"Prioridad", "refType":"priority", "displayField":"priority"},
 						{"name":"requestingDepartment", "spanishName":"Departamento que solicita", "refType":"department", "displayField":"department"},
 						{"name":"expenseType", "spanishName":"Tipo de gasto", "refType":"expenseType", "displayField":"expenseType"},
-						{"name":"transportationType", "spanishName":"Transporte", "refType":"transportationType", "displayField":"transportationType"},
+						{"name":"transportationType", "spanishName":"Transporte", "refType":"transportationType", "displayField":"transportationType","required":"false"},
 						{"name":"receivingWarehouse", "spanishName":"Bodega que recibe", "refType":"warehouse", "displayField":"warehouse"},
 						{"name":"deliveryLocation", "spanishName":"Lugar de destino", "refType":"deliveryLocation", "displayField":"code"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
