@@ -4,9 +4,10 @@ import java.util.Date;
 
 /**
  * This class is the main class for generating all
- * CRUD operations conforming to the reference architecture
- * of CYBERSOFT
- * @author Daniel Falla, Cybersoft 
+ * CRUD operations over documents and tables
+ * conforming to the reference architecture
+ * of CYBERSYSTEMS
+ * @author Daniel Falla, Cybersystems
  *
  */
 public class MainCodeGenerator {

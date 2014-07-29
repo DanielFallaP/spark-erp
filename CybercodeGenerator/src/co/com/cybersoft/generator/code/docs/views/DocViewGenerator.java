@@ -110,7 +110,7 @@ public class DocViewGenerator {
 				
 				if (field.getAutoCompletePeerFunction()!=null){
 					JavaScriptAPI modAPI=JavaScriptAPIConnector.getModificationAutoCompletePeerFunction(field.getAutoCompletePeerFunction(), document);
-					template.setAttribute("onSelectionAPICall", JavaScriptAPIConnector.generateAutoCompletePeerFunction(modAPI, document, true));
+					template.setAttribute("onSelectionAPICall", JavaScriptAPIConnector.generateAutoCompletePeerModFunction(modAPI, document, true));
 				}
 
 				functions+="\n"+template.toString();

@@ -11,7 +11,25 @@ public class JavaScriptAPI {
 	
 	private List<Object> constantParameters;
 	
+	private String embeddedCodeFile;
 	
+	private String embeddedModificationCodeFile;
+	
+	public String getEmbeddedModificationCodeFile() {
+		return embeddedModificationCodeFile;
+	}
+
+	public void setEmbeddedModificationCodeFile(String embeddedModificationCodeFile) {
+		this.embeddedModificationCodeFile = embeddedModificationCodeFile;
+	}
+
+	public String getEmbeddedCodeFile() {
+		return embeddedCodeFile;
+	}
+
+	public void setEmbeddedCodeFile(String embeddedCodeFile) {
+		this.embeddedCodeFile = embeddedCodeFile;
+	}
 
 	public String getScriptLocation() {
 		return scriptLocation;

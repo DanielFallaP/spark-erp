@@ -2,6 +2,7 @@ package co.com.cybersoft.generator.code.util;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -367,6 +368,23 @@ public class CodeUtil {
 			}
 		}
 		return new ArrayList<Field>();
+	}
+
+	public static String getTextFileContent(String filePath){
+		File file = new File(filePath);
+	    FileInputStream fis;
+		try {
+			fis = new FileInputStream(file);
+			byte[] data = new byte[(int)file.length()];
+			fis.read(data);
+			fis.close();
+			//
+			String s = new String(data, "UTF-8");
+			return s;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 	
 }

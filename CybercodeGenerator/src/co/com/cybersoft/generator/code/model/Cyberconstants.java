@@ -8,6 +8,8 @@ public final static String tableCodePath="src/co/com/cybersoft/generator/code/ta
 	
 	public final static String configCodePath="src/co/com/cybersoft/generator/code/config/";
 	
+	public final static String embeddedCodePath="src/co/com/cybersoft/generator/code/api/";
+	
 	public final static String utilCodePath="src/co/com/cybersoft/generator/code/util/";
 	
 	public final static String targetTableClassPath="build/java/co/com/cybersoft/tables";
