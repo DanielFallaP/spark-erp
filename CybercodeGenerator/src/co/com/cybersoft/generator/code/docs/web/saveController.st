@@ -55,13 +55,14 @@ public class $upperDocName$Controller {
 		if (modified.get$upperDocName$BodyModificationInfo().getSubmit().equals("modification")){
 			modificationManualValidation(modified.get$upperDocName$BodyModificationInfo(), "$docName$BodyModificationInfo", CyberUtils.modificationForm);
 			
+			$rowModificationOperations$
 			$docName$Info.set$upperDocName$BodyModificationInfo(modified.get$upperDocName$BodyModificationInfo());
 			$docName$Event = $docName$Service.update$upperDocName$Body(new Save$upperDocName$Event($docName$Info));
 		}
 		else if (modified.get$upperDocName$BodyModificationInfo().getSubmit().equals("creation")){
-			
 			manualValidation(current, "$docName$BodyInfo", CyberUtils.additionForm);
 			
+			$rowAdditionOperations$			
 			$docName$Info.setCurrent$upperDocName$BodyInfo(current);
 			$docName$Event = $docName$Service.create$upperDocName$BodyRecord(new Save$upperDocName$Event($docName$Info));
 			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(request);
@@ -74,7 +75,7 @@ public class $upperDocName$Controller {
 		else{
 			manualValidation($docName$Info, "$docName$Info", "");
 			
-		
+			$headerOperations$	
 			$docName$Event = $docName$Service.save$upperDocName$(new Save$upperDocName$Event($docName$Info));
 		}
 		
@@ -83,7 +84,6 @@ public class $upperDocName$Controller {
 		}
 		else{
 			
-//		$docName$Info.setCreated(true);
 			$docName$Info.setShowBody(true);
 			$docName$Info.set_toSave(true);
 			$docName$Info.setId($docName$Event.get$upperDocName$().getId());
@@ -91,7 +91,6 @@ public class $upperDocName$Controller {
 			$docName$Info.setNumericId($docName$Event.get$upperDocName$().getNumericId());
 			$docName$Info.setDateOfCreation($docName$Event.get$upperDocName$().getDateOfCreation());
 			$docName$Info.setCreatedBy($docName$Event.get$upperDocName$().getCreatedBy());
-//		$docName$Info.get$upperDocName$ItemModificationInfo().get$upperDocName$ItemModificationInfo().setSubmit("");
 			
 			$compoundLists$
 			

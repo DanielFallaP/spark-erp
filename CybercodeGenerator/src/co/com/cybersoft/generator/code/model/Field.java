@@ -19,6 +19,7 @@ public class Field {
 	private Boolean keyCompound=Boolean.FALSE;
 	private Boolean compoundReference=Boolean.FALSE;
 	private Boolean displayable=Boolean.TRUE;
+	private ArithmeticExpression value;
 	
 	//For references only
 	private String refType;
@@ -35,6 +36,12 @@ public class Field {
 	
 	private JavaScriptAPI autoCompletePeerFunction;
 	
+	public ArithmeticExpression getValue() {
+		return value;
+	}
+	public void setValue(ArithmeticExpression value) {
+		this.value = value;
+	}
 	public JavaScriptAPI getAutoCompletePeerFunction() {
 		return autoCompletePeerFunction;
 	}

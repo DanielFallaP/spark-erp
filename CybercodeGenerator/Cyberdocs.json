@@ -24,9 +24,9 @@
 						{"name":"priority", "spanishName":"Prioridad", "refType":"priority", "displayField":"priority", "displayable":"false"},
 						{"name":"quantity", "spanishName":"Cantidad", "type":"Double"},
 						{"name":"localCurrencyUnitValue", "spanishName":"Valor unitario en moneda local", "type":"Double", "required":"false"},
-						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double", "required":"false"},
+						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double", "required":"false","value":{"leftOperand":"quantity","operation":"*","rightOperand":"localCurrencyUnitValue"}},
 						{"name":"foreignCurrencyUnitValue", "spanishName":"Valor unitario en moneda extranjera", "type":"Double", "required":"false"},
-						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double", "required":"false"},
+						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double", "required":"false","value":{"leftOperand":"quantity","operation":"*","rightOperand":"localCurrencyUnitValue"}},
 						{"name":"lastPurchaseDate", "spanishName":"Fecha de última compra", "type":"Date", "defaultValue":"today", "displayable":"false", "required":"false"},
 						{"name":"remarks", "spanishName":"Observaciones",  "type":"String", "largeText":"true", "displayable":"false"}
 						]
@@ -61,9 +61,9 @@
 						{"name":"deliveryDate", "spanishName":"Fecha de envio", "type":"Date", "defaultValue":"today"},
 						{"name":"quantity", "spanishName":"Cantidad cotizada", "type":"Double"},
 						{"name":"localCurrencyUnitValue", "spanishName":"Valor unitario en moneda local", "type":"Double"},
-						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double"},
+						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double","value":{"leftOperand":"quantity","operation":"*","rightOperand":"localCurrencyUnitValue"}},
 						{"name":"foreignCurrencyUnitValue", "spanishName":"Valor unitario en moneda extranjera", "type":"Double"},
-						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double"},
+						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double","value":{"leftOperand":"quantity","operation":"*","rightOperand":"localCurrencyUnitValue"}},
 						{"name":"proposalDate", "spanishName":"Fecha de propuesta", "type":"Date", "defaultValue":"today", "displayable":"false"},
 						{"name":"remarks", "spanishName":"Observaciones",  "type":"String", "largeText":"true", "displayable":"false"},
 						{"name":"accepted", "spanishName":"Aceptado", "type":"Boolean", "defaultValue":"false"}
