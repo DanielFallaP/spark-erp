@@ -48,6 +48,9 @@ public class DocViewGenerator {
 		template.setAttribute("bodyHeaderFields", generateBodyHeaderFields(document));
 		template.setAttribute("bodyFields", generateBodyFields(document));
 		template.setAttribute("headerFields", generateHeaderFields(document));
+		
+		template.setAttribute("firstBodyField", document.getBody().get(0).getName());
+
 		template.setAttribute("autoCompleteFunctions", generateAutocompleteReferenceFunctions(document));
 		
 		List<Field> fields = document.getHeader();

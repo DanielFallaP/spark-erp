@@ -42,7 +42,7 @@
 	      function newEntry(){
 			   \$('.popup-with-form').click();
 			   popupVisible=true;
-		   		document.getElementById("item").focus();
+		   		document.getElementById("$firstBodyField$").focus();
 		   }
 
 		   \$(document).keyup(function(e) {

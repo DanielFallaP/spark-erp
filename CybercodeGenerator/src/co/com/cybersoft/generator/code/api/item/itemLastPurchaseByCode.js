@@ -13,6 +13,13 @@
 				   		  	 			var purchaseDate=info.purchaseDate;
 				   		  	 			var localCurrencyValue=info.localCurrencyValue;
 				   		  	 			var foreignCurrencyValue=info.foreignCurrencyValue;
+				   		  	 			if (info.purchaseDate!=null){
+				   		  	 				var lastPurchaseDate=dateFormat(new Date(info.purchaseDate));				   		  	 			
+				   		  	 				$("#lastPurchaseDate").val(lastPurchaseDate);
+				   		  	 			}else{
+				   		  	 				$("#lastPurchaseDate").val("");
+				   		  	 			}
 				   		  	 			$("#localCurrencyUnitValue").val(localCurrencyValue);
 				   		  	 			$("#foreignCurrencyUnitValue").val(foreignCurrencyValue);
+
 				   		  	 		 });
