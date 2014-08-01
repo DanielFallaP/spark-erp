@@ -12,6 +12,7 @@ import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
+import co.com.cybersoft.generator.code.model.JavaArithmeticExpression;
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
 public class DocWebGenerator {
@@ -60,10 +61,71 @@ public class DocWebGenerator {
 		template.setAttribute("setOnLoadHeaderValues", JavaAPIConnector.generateOnLoadHeaderValues(document));
 		template.setAttribute("setOnLoadBodyValues", JavaAPIConnector.generateOnLoadBodyValues(document));
 		template.setAttribute("setBodyDefaults", generateBodyDefaults(document));
+		template.setAttribute("rowModificationOperations", generateRowModificationOperations(document));
+		template.setAttribute("rowAdditionOperations", generateRowAdditonOperations(document));
 		
 		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"Controller.java");
 	}
 	
+	private Object generateRowAdditonOperations(Document document) {
+		String variables="";
+		String operations="";
+		
+		List<Field> body = document.getBody();
+		HashSet<String> set = new HashSet<String>();
+		for (Field field : body) {
+			if (field.getValue()!=null){
+				List<String> fieldsFromExpression = CodeUtil.getFieldsFromExpression(field.getValue());
+				for (String fieldFromExp : fieldsFromExpression) {
+					if (!set.contains(fieldFromExp)){
+						StringTemplate stringTemplate = new StringTemplate("$fieldType$ $fieldName$=current.get$upperFieldName$();\n");
+						stringTemplate.setAttribute("fieldName", fieldFromExp);
+						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(fieldFromExp));
+						stringTemplate.setAttribute("fieldType", field.getType());
+						
+						variables+=stringTemplate.toString();
+						set.add(fieldFromExp);
+					}
+				}
+				StringTemplate template = new StringTemplate("current.set$upperFieldName$($arithmeticExpression$);\n");
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("arithmeticExpression", JavaArithmeticExpression.getJavaArithmeticExpression(field.getValue()));
+				operations+=template.toString();
+			}
+		}
+		return variables+operations;	}
+
+	private Object generateRowModificationOperations(Document document) {
+		String variables="";
+		String operations="";
+		
+		List<Field> body = document.getBody();
+		HashSet<String> set = new HashSet<String>();
+		for (Field field : body) {
+			if (field.getValue()!=null){
+				List<String> fieldsFromExpression = CodeUtil.getFieldsFromExpression(field.getValue());
+				for (String fieldFromExp : fieldsFromExpression) {
+					if (!set.contains(fieldFromExp)){
+						StringTemplate stringTemplate = new StringTemplate("$fieldType$ $fieldName$=modified.get$upperDocName$BodyModificationInfo().get$upperFieldName$();\n");
+						stringTemplate.setAttribute("fieldName", fieldFromExp);
+						stringTemplate.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(fieldFromExp));
+						stringTemplate.setAttribute("fieldType", field.getType());
+						
+						variables+=stringTemplate.toString();
+						set.add(fieldFromExp);
+					}
+				}
+				StringTemplate template = new StringTemplate("modified.get$upperDocName$BodyModificationInfo().set$upperFieldName$($arithmeticExpression$);\n");
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("arithmeticExpression", JavaArithmeticExpression.getJavaArithmeticExpression(field.getValue()));
+				operations+=template.toString();
+			}
+		}
+		return variables+operations;
+	}
+
 	private Object generateBodyDefaults(Document document) {
 		List<Field> fields = document.getBody();
 		String defaults="";

@@ -26,7 +26,7 @@
 						{"name":"localCurrencyUnitValue", "spanishName":"Valor unitario en moneda local", "type":"Double", "required":"false"},
 						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double", "required":"false","value":{"leftOperand":"quantity","operation":"*","rightOperand":"localCurrencyUnitValue"}},
 						{"name":"foreignCurrencyUnitValue", "spanishName":"Valor unitario en moneda extranjera", "type":"Double", "required":"false"},
-						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double", "required":"false","value":{"leftOperand":"quantity","operation":"*","rightOperand":"localCurrencyUnitValue"}},
+						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double", "required":"false","value":{"leftOperand":"quantity","operation":"*","rightOperand":"foreignCurrencyUnitValue"}},
 						{"name":"lastPurchaseDate", "spanishName":"Fecha de última compra", "type":"Date", "defaultValue":"today", "displayable":"false", "required":"false"},
 						{"name":"remarks", "spanishName":"Observaciones",  "type":"String", "largeText":"true", "displayable":"false"}
 						]

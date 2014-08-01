@@ -7,12 +7,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
+import co.com.cybersoft.generator.code.model.ArithmeticExpression;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
@@ -389,6 +391,30 @@ public class CodeUtil {
 			e.printStackTrace();
 		}
 		return "";
+	}
+	
+	public static List<String> getFieldsFromExpression(ArithmeticExpression expression){
+		if (expression.getLeftOperand()==null && expression.getRightOperand()==null){
+			List<String> fieldsFromExpression = getFieldsFromExpression(expression.getLhs());
+			fieldsFromExpression.addAll(getFieldsFromExpression(expression.getRhs()));
+			return fieldsFromExpression;
+		}
+		else{
+			if (expression.getLeftOperand()!=null && expression.getRightOperand()!=null){
+				return Arrays.asList(expression.getLeftOperand(),expression.getRightOperand());
+			}
+			else if (expression.getRhs()!=null){
+				List<String> fieldsFromExpression = getFieldsFromExpression(expression.getRhs());
+				fieldsFromExpression.add(expression.getLeftOperand());
+				return fieldsFromExpression;
+			}
+			else{
+				List<String> fieldsFromExpression = getFieldsFromExpression(expression.getLhs());
+				fieldsFromExpression.add(expression.getRightOperand());
+				return fieldsFromExpression;
+			}
+				
+		}
 	}
 	
 }
