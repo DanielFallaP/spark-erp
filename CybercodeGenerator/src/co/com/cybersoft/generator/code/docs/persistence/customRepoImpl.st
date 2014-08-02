@@ -1,5 +1,7 @@
 package co.com.cybersoft.docs.persistence.repository.$docName$;
 
+import org.springframework.data.mongodb.core.query.BasicQuery;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;

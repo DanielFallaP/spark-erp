@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -80,7 +82,7 @@ public class DataPopulation implements DBConstants{
 		reader.close();
 	}
 	
-	private void insertRecord(Table table, String[] data){
+	private void insertRecord(Table table, String[] data) throws ParseException{
 			List<Field> fields = table.getFields();
 			DBCollection collection = mongoDB.getCollection(table.getName());
 			BasicDBObject doc=new BasicDBObject();
@@ -120,14 +122,17 @@ public class DataPopulation implements DBConstants{
 		throw exception;
 	}
 	
-	private void appendValue(BasicDBObject doc, Field field, String stringValue, DB mongo){
+	private void appendValue(BasicDBObject doc, Field field, String stringValue, DB mongo) throws ParseException{
 			if (field.getType()!=null && !stringValue.equals("")){
 				if (field.getType().equals(Cybertables.doubleType))
 					doc.append(field.getName(), Double.parseDouble(stringValue));
 				else if (field.getType().equals(Cybertables.booleanType))
 					doc.append(field.getName(), Boolean.parseBoolean(stringValue));
-				else if (field.getType().equals(Cybertables.dateType))
-					doc.append(field.getName(), stringValue);
+				else if (field.getType().equals(Cybertables.dateType)){
+					SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+					Date parse = dateFormat.parse(stringValue);
+					doc.append(field.getName(), parse);
+				}
 				else if (field.getType().equals(Cybertables.integerType))
 					doc.append(field.getName(), Integer.parseInt(stringValue));
 				else if (field.getType().equals(Cybertables.longType))

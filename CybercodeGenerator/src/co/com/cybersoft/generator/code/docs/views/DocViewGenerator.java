@@ -202,6 +202,15 @@ public class DocViewGenerator {
 				fields+=template.toString()+"\n";
 			}
 			
+			if (field.getDocRefType()!=null){
+				template = stringTemplateGroup.getInstanceOf("editableHeaderField");
+				template.setAttribute("docName", document.getName());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("fieldName", field.getName());
+				
+				fields+=template.toString();
+			}
+			
 			if (field.isReference() && !field.getCompoundReference()){
 				if (CodeUtil.referencesLabelTable(field, cybertables)){
 					template = stringTemplateGroup.getInstanceOf("referenceHeaderLabelField");

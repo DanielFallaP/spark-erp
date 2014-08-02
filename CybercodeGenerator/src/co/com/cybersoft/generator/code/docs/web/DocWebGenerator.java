@@ -8,6 +8,7 @@ import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
 import co.com.cybersoft.generator.code.api.JavaAPIConnector;
+import co.com.cybersoft.generator.code.model.Cyberconstants;
 import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
@@ -394,39 +395,52 @@ public class DocWebGenerator {
 		
 		//Attributes
 		for (Field field : fields) {
-			if (!field.getCompoundReference()&&field.getDocRefType()==null){
+			if (!field.getCompoundReference()){
 				
-				if (!field.isReference() && !field.getType().equals(Cybertables.booleanType)){
-					if (field.getLength()!=null && field.getType().equals(Cybertables.stringType)){
-						body+="@Length(max="+field.getLength()+")\n";
+				if (field.getDocRefType()!=null){
+					if (field.getRequired())
+						body+="@NotEmpty\n";
+				}
+				else{
+					
+					if (!field.isReference() && !field.getType().equals(Cybertables.booleanType)){
+						if (field.getLength()!=null && field.getType().equals(Cybertables.stringType)){
+							body+="@Length(max="+field.getLength()+")\n";
+						}
+						if (field.getRequired()&&field.getVisible()&&(field.isReference()|| field.getType().equals(Cybertables.stringType))){
+							body+="@NotEmpty\n";
+						}
+						
+						if (field.getRequired()&&field.getVisible()&&!field.isReference()&&(field.getType().equals(Cybertables.integerType)
+								||field.getType().equals(Cybertables.longType) || field.getType().equals(Cybertables.doubleType))){
+							body+="@NotNull\n";
+						}
+						
+						if (field.getLength()!=null && !field.isReference() && (field.getType().equals(Cybertables.integerType)
+								||field.getType().equals(Cybertables.longType) || field.getType().equals(Cybertables.doubleType))){
+							body+="@Range(max="+CodeUtil.getMaxNumber(field.getLength())+")\n";
+						}
 					}
-					if (field.getRequired()&&field.getVisible()&&(field.isReference()|| field.getType().equals(Cybertables.stringType))){
+					
+					if (field.isReference()&&field.getRequired()){
 						body+="@NotEmpty\n";
 					}
-					
-					if (field.getRequired()&&field.getVisible()&&!field.isReference()&&(field.getType().equals(Cybertables.integerType)
-							||field.getType().equals(Cybertables.longType) || field.getType().equals(Cybertables.doubleType))){
-						body+="@NotNull\n";
-					}
-					
-					if (field.getLength()!=null && !field.isReference() && (field.getType().equals(Cybertables.integerType)
-							||field.getType().equals(Cybertables.longType) || field.getType().equals(Cybertables.doubleType))){
-						body+="@Range(max="+CodeUtil.getMaxNumber(field.getLength())+")\n";
-					}
-				}
-				
-				if (field.isReference()&&field.getRequired()){
-					body+="@NotEmpty\n";
 				}
 				
 				StringTemplate fieldTemplate;
 				
-				if (!field.isReference()){
+				if (!field.isReference()&&field.getDocRefType()==null){
 					fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
 					fieldTemplate.setAttribute("type", field.getType());
 					fieldTemplate.setAttribute("name", field.getName());
 					body+=fieldTemplate.toString();
 					body+="\n";			
+				}
+				else if (field.getDocRefType()!=null){
+					fieldTemplate = new StringTemplate("private String $name$;\n\n");
+					fieldTemplate.setAttribute("name", field.getName());
+					body+=fieldTemplate.toString();
+					body+="\n";
 				}
 				else{
 					fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
@@ -476,14 +490,21 @@ public class DocWebGenerator {
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				
-				if (!field.isReference()){
+				if (!field.isReference()&&field.getDocRefType()==null){
 					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
 					gettersSettersTemplate.setAttribute("type", field.getType());
 					gettersSettersTemplate.setAttribute("name", field.getName());
 					gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 					body+=gettersSettersTemplate.toString()+"\n\n";
-				}
+				}else if(field.getDocRefType()!=null){
+					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
+					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
+					gettersSettersTemplate.setAttribute("type", Cyberconstants.stringType);
+					gettersSettersTemplate.setAttribute("name", field.getName());
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+					body+=gettersSettersTemplate.toString()+"\n\n";
+				}				
 				else{
 						StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 						StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("listGetters");

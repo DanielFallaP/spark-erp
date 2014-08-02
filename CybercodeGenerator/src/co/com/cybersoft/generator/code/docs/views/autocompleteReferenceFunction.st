@@ -6,7 +6,7 @@
 		    	    		if (path[1].localeCompare("$namespace$")!=0){
 		    	    			prefix="/"+path[1];	
 		    	    		}
-							\$.get(prefix+"/docs/$referenceType$/get$upperReferenceType$List?$numericId$="+request.term, {}, function (data) {
+							\$.get(prefix+"/docs/$referenceType$/get$upperReferenceType$List?numericId="+request.term, {}, function (data) {
 		    	            var array=data.split("$arraySeparator$");
 		    	            if (data!="")
 		    	            	response(array);

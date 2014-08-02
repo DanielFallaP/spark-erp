@@ -32,6 +32,7 @@ public class Field {
 	private String docRefType;
 	private List<String> bodyFields=new ArrayList<String>();
 	private List<String> headerFields=new ArrayList<String>();
+	private Boolean searchDisplayable=Boolean.FALSE;
 	
 	private OnLoad onLoad;
 	
@@ -48,6 +49,13 @@ public class Field {
 	}
 	public void setValue(ArithmeticExpression value) {
 		this.value = value;
+	}
+	
+	public Boolean getSearchDisplayable() {
+		return searchDisplayable;
+	}
+	public void setSearchDisplayable(Boolean searchDisplayable) {
+		this.searchDisplayable = searchDisplayable;
 	}
 	public JavaScriptAPI getAutoCompletePeerFunction() {
 		return autoCompletePeerFunction;

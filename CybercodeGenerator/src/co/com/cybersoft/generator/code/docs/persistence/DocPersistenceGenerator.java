@@ -280,7 +280,7 @@ public class DocPersistenceGenerator {
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-				template.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
+				template.setAttribute("type", field.isReference()||field.getDocRefType()!=null?Cybertables.stringType:field.getType());
 				template.setAttribute("name", field.getName());
 				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
 				text+=template.toString()+"\n";
@@ -319,7 +319,7 @@ public class DocPersistenceGenerator {
 					body+="@Indexed(unique=true)\n";
 				}
 				StringTemplate template = new StringTemplate("private $type$ $name$;\n");
-				template.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
+				template.setAttribute("type", field.isReference()||field.getDocRefType()!=null?Cybertables.stringType:field.getType());
 				template.setAttribute("name", field.getName());
 				body+=template.toString();
 				body+="\n";
