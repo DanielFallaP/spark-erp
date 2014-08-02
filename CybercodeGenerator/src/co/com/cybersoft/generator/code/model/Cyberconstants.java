@@ -2,7 +2,9 @@ package co.com.cybersoft.generator.code.model;
 
 public interface Cyberconstants {
 
-public final static String tableCodePath="src/co/com/cybersoft/generator/code/tables/";
+	public final static String rowsPerSearch="10";
+	
+	public final static String tableCodePath="src/co/com/cybersoft/generator/code/tables/";
 	
 	public final static String documentCodePath="src/co/com/cybersoft/generator/code/docs/";
 	

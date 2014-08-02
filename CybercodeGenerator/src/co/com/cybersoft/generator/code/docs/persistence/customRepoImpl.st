@@ -11,6 +11,9 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 
+import java.util.List;
+
+
 /**
  * 
  * @author Cybersystems 2014. All rights reserved.
@@ -48,6 +51,14 @@ public class $upperDocName$CustomRepoImpl implements $upperDocName$CustomRepo {
 		}
 		
 		return $docName$2;
+	}
+	
+	@Override
+	public List<$upperDocName$> findByContainingNumericId(String numericId) throws Exception{
+		numericId=CyberUtils.escapePCRECharacters(numericId);
+		BasicQuery query = new BasicQuery("{\"stringId\": {\$regex : '" + numericId + "',\$options:'i'}, \"active\":true }");
+		query.limit($rowsPerSearch$);
+		return mongo.find(query, $upperDocName$.class);
 	}
 
 }

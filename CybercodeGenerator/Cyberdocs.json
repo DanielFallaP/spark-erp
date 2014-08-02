@@ -50,7 +50,7 @@
 			"header":[
 						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"populatedPlace", "autocomplete":"true"},						
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "defaultValue":"today"},
-						{"name":"requisitionNumber", "spanishName":"No.Requisición", "type":"String"},
+						{"name":"requisitionNumber", "spanishName":"No.Requisición", "docRefType":"requisition","bodyFields":["item","itemDescription"]},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					],
 		 	"body":[

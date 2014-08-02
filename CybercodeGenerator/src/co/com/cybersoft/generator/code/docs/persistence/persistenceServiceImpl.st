@@ -147,5 +147,17 @@ public class $upperDocName$PersistenceServiceImpl implements $upperDocName$Persi
 		
 	}
 	
+	
+	@Override
+	public $upperDocName$PageEvent requestByContainingNumericId(String numericId)
+			throws Exception {
+		ArrayList<$upperDocName$Info> list = new ArrayList<$upperDocName$Info>();
+		List<$upperDocName$> $docName$List = $docName$CustomRepo.findByContainingNumericId(numericId);
+		for ($upperDocName$ $docName$ : $docName$List) {
+			list.add(new $upperDocName$Info().to$upperDocName$Info($docName$));
+		}
+		return new $upperDocName$PageEvent(list);
+	}
+	
 
 }

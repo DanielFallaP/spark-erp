@@ -27,6 +27,6 @@ public interface $upperDocName$PersistenceService {
 
 	$upperDocName$Event request$upperDocName$Details(Request$upperDocName$Event event) throws Exception;
 	
-	
+	$upperDocName$PageEvent requestByContainingNumericId(String numericId) throws Exception;
 	
 }

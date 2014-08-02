@@ -31,11 +31,18 @@ public class Field {
 	//For documents only
 	private String docRefType;
 	private List<String> bodyFields=new ArrayList<String>();
+	private List<String> headerFields=new ArrayList<String>();
 	
 	private OnLoad onLoad;
 	
 	private JavaScriptAPI autoCompletePeerFunction;
 	
+	public List<String> getHeaderFields() {
+		return headerFields;
+	}
+	public void setHeaderFields(List<String> headerFields) {
+		this.headerFields = headerFields;
+	}
 	public ArithmeticExpression getValue() {
 		return value;
 	}

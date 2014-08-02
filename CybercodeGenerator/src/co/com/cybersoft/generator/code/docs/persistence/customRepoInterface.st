@@ -1,6 +1,7 @@
 package co.com.cybersoft.docs.persistence.repository.$docName$;
 
 import co.com.cybersoft.docs.persistence.domain.$upperDocName$;
+import java.util.List;
 
 /**
  * 
@@ -10,5 +11,8 @@ import co.com.cybersoft.docs.persistence.domain.$upperDocName$;
 public interface $upperDocName$CustomRepo {
 
 	$upperDocName$ save($upperDocName$ $docName$) throws Exception;
+	
+	List<$upperDocName$> findByContainingNumericId(String numericId) throws Exception;
+	
 
 }

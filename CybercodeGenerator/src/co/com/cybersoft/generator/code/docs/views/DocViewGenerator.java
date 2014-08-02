@@ -67,6 +67,8 @@ public class DocViewGenerator {
 		List<Field> fields = document.getHeader();
 		String functions="";
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.utilCodePath);
+		StringTemplateGroup templateGroup2 = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
+
 		for (Field field : fields) {
 			if (CodeUtil.generateAutoCompleteReference(field)){
 				StringTemplate template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
@@ -95,6 +97,18 @@ public class DocViewGenerator {
 				
 				if (field.getAutoCompletePeerFunction()!=null)
 					template.setAttribute("onSelectionAPICall", JavaScriptAPIConnector.generateAutoCompletePeerFunction(field.getAutoCompletePeerFunction(), document, false));
+
+				functions+="\n"+template.toString();
+			}
+			
+			if (CodeUtil.generateAutocompleteDocReference(field)){
+				StringTemplate template = templateGroup2.getInstanceOf("autocompleteReferenceFunction");
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("referenceType", field.getDocRefType());
+				template.setAttribute("upperReferenceType", CodeUtil.toCamelCase(field.getDocRefType()));
+				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
+				template.setAttribute("namespace", Cybertables.docNamespace);
 
 				functions+="\n"+template.toString();
 			}
@@ -171,7 +185,7 @@ public class DocViewGenerator {
 			exceptions+=temp.toString();
 			
 			StringTemplate template;
-			if (!field.isReference() && field.getVisible()){
+			if (!field.isReference() && field.getDocRefType()==null && field.getVisible()){
 				if (!field.getLargeText() && !field.getType().equals(Cybertables.booleanType))
 					template = stringTemplateGroup.getInstanceOf("editableHeaderField");
 				else if (field.getType().equals(Cybertables.booleanType))
@@ -467,7 +481,7 @@ public class DocViewGenerator {
 		List<Field> fields = document.getAllFields();
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.utilCodePath);
 		for (Field field : fields) {
-			if (!field.isReference() && field.getType().equals(Cybertables.dateType)){
+			if (!field.isReference() && field.getDocRefType()==null && field.getType().equals(Cybertables.dateType)){
 				StringTemplate template = templateGroup.getInstanceOf("datePicker");
 				template.setAttribute("dateField", field.getName());
 				pickers+=template.toString()+"\n";

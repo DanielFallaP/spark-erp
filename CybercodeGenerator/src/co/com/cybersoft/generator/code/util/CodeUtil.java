@@ -329,6 +329,10 @@ public class CodeUtil {
 		return field.isReference()&&field.getAutocomplete()&&!field.getCompoundReference();
 	}
 	
+	public static boolean generateAutocompleteDocReference(Field field){
+		return field.getDocRefType()!=null;
+	}
+	
 	public static boolean generateAutoCompleteReferenceCompoundField(Field field){
 		return field.isReference()&&field.getAutocomplete()&&field.getCompoundReference();
 	}

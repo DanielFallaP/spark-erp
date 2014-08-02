@@ -32,9 +32,19 @@ public class DocWebGenerator {
 		for (Document document : documents) {
 			generateSaveController(document);
 			generateSearchController(document);
+			generateSearchByIdController(document);
 			generateDomainHeader(document);
 			generateDomainBody(document);
 		}
+	}
+
+	private void generateSearchByIdController(Document document) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.documentCodePath+"web");
+		StringTemplate template = templateGroup.getInstanceOf("searchControllerById");
+		template.setAttribute("docName", document.getName());
+		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		
+		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"SearchByNumericIdController.java");
 	}
 
 	private void generateSearchController(Document document) {
@@ -340,7 +350,7 @@ public class DocWebGenerator {
 		}
 		
 			for (Field field : fields) {
-				if (!field.isReference()){
+				if (!field.isReference()&&field.getDocRefType()==null){
 					if(field.getRequired() && field.getVisible() && (field.getType().equals(Cybertables.integerType) || 
 							field.getType().equals(Cybertables.longType) || field.getType().equals(Cybertables.doubleType))){
 						imports+="import javax.validation.constraints.NotNull;\n";
@@ -384,7 +394,7 @@ public class DocWebGenerator {
 		
 		//Attributes
 		for (Field field : fields) {
-			if (!field.getCompoundReference()){
+			if (!field.getCompoundReference()&&field.getDocRefType()==null){
 				
 				if (!field.isReference() && !field.getType().equals(Cybertables.booleanType)){
 					if (field.getLength()!=null && field.getType().equals(Cybertables.stringType)){
