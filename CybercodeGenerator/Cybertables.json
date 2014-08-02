@@ -5,7 +5,7 @@
 			"name":"currency",		
 			"spanishName":"Moneda",		
 			"fields":[
-						{"name":"code", "spanishName":"Código", "refType":"currencyCode", "displayField":"symbol"},
+						{"name":"code", "spanishName":"Código", "refType":"currencyCode", "displayField":"currency"},
 						{"name":"currency", "spanishName":"Nombre", "type":"String", "unique":"true", "length":"40", "autocomplete":"true", "labelField":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -849,7 +849,7 @@
 						{"name":"currencyName", "spanishName":"Nombre de moneda", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"country", "spanishName":"Pais", "refType":"country", "displayField":"country"},
 						{"name":"currency", "spanishName":"Código", "type":"String", "unique":"true", "length":"3"},
-						{"name":"symbol", "spanishName":"Símbolo", "type":"String"},
+						{"name":"symbol", "spanishName":"Símbolo", "type":"String", "length":"4"},
 						{"name":"dec1", "spanishName":"Decimal1", "type":"Integer"},
 						{"name":"dec2", "spanishName":"Decimal2", "type":"Integer"},
 						{"name":"dec3", "spanishName":"Decimal3", "type":"Integer"},
