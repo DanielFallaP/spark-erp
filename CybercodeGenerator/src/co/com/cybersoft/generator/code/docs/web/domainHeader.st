@@ -53,6 +53,7 @@ public class $upperDocName$Info implements Serializable{
 	
 	private String stringId;
 	
+	
 	public String getStringId() {
 		return stringId;
 	}
