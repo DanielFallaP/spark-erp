@@ -51,8 +51,7 @@ public class $upperDocName$Info implements Serializable{
 	
 	private String deletion;
 	
-	private String stringId;
-	
+	private String stringId;	
 	
 	public String getStringId() {
 		return stringId;
