@@ -35,6 +35,7 @@ public class $upperDocName$PersistenceServiceImpl implements $upperDocName$Persi
 	private final $upperDocName$CustomRepo $docName$CustomRepo;
 	
 	$autocompleteRepos$
+	$docReference$
 	
 	public $upperDocName$PersistenceServiceImpl(final $upperDocName$Repository $docName$Repository, final $upperDocName$CustomRepo $docName$CustomRepo) {
 		this.$docName$Repository=$docName$Repository;
@@ -70,6 +71,9 @@ public class $upperDocName$PersistenceServiceImpl implements $upperDocName$Persi
 		$upperDocName$ $docName$=new $upperDocName$().from$upperDocName$Info(event.get$upperDocName$Info());
 		$docName$.setDateOfModification(new Date());
 		$docName$.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		$docReferenceFields$
+		
 		if ($docName$.getId()==null){
 			$docName$.setDateOfCreation(new Date());
 			$docName$.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());

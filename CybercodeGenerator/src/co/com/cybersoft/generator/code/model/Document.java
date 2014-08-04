@@ -91,4 +91,14 @@ public class Document {
 		return fields;
 	}
 	
+	public Field getDocReferenceField(){
+		List<Field> header = getHeader();
+		for (Field field : header) {
+			if (field.getDocRefType()!=null&&field.getBodyFields()!=null&&!field.getBodyFields().isEmpty()){
+				return field;
+			}
+		}
+		return null;
+	}
+	
 }

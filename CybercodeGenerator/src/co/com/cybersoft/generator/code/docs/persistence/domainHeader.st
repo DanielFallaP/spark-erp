@@ -97,8 +97,12 @@ public class $upperDocName$ {
 	}
 	
 	$fields$
+
+	$referenceFields$
 	
 	$gettersSetters$
+	
+	
 	
 	public $upperDocName$ from$upperDocName$Info($upperDocName$Info webInfo){
 		BeanUtils.copyProperties(webInfo, this);

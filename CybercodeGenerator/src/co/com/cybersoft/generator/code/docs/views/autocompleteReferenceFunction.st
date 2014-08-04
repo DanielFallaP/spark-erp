@@ -19,6 +19,7 @@
 	    	    		$onSelectionAPICall$
 	    	    		
 	    	    		\$(this).val(b.item.value);
+	    	    		$submitHeader$
 	    	    	}
 		    	});
 		    	 

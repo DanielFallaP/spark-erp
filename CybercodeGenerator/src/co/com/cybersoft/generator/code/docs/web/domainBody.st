@@ -31,6 +31,8 @@ public class $upperDocName$BodyInfo implements Serializable{
 	
 	$fields$
 	
+	$referenceFields$
+	
 	public Boolean getCreated() {
 		return created;
 	}

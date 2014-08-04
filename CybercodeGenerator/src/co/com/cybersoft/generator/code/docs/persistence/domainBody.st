@@ -23,5 +23,7 @@ public class $upperDocName$Body {
 	
 	$fields$
 	
+	$referenceFields$
+	
 	$gettersSetters$
 }

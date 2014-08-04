@@ -109,6 +109,9 @@ public class DocViewGenerator {
 				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
 				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
 				template.setAttribute("namespace", Cybertables.docNamespace);
+				if (field.getBodyFields()!=null&&!field.getBodyFields().isEmpty()){
+					template.setAttribute("submitHeader","submitHeader();");
+				}
 
 				functions+="\n"+template.toString();
 			}
@@ -273,6 +276,16 @@ public class DocViewGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 		List<Field> body = document.getBody();
 		
+		Field referenceField = document.getDocReferenceField();
+		if (referenceField!=null){
+			List<String> fields = referenceField.getBodyFields();
+			for (String field : fields) {
+				StringTemplate template = templateGroup.getInstanceOf("bodyColumn");
+				template.setAttribute("fieldName", field);
+				bodyFields+=template.toString();
+			}
+		}
+		
 		for (Field field : body) {
 			StringTemplate template;
 			if (!CodeUtil.referencesLabelTable(field, cybertables)&& (field.getType()==null || !field.getType().equals(Cyberconstants.booleanType))){
@@ -298,6 +311,17 @@ public class DocViewGenerator {
 		String headers="";
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 		List<Field> body = document.getBody();
+		Field referenceField = document.getDocReferenceField();
+		if (referenceField!=null){
+			List<String> bodyFields = referenceField.getBodyFields();
+			for (String field : bodyFields) {
+				StringTemplate template = templateGroup.getInstanceOf("headerBodyColumn");
+				template.setAttribute("docName", referenceField.getDocRefType());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field));
+				
+				headers+=template.toString();
+			}
+		}
 		
 		for (Field field : body) {
 			StringTemplate template = templateGroup.getInstanceOf("headerBodyColumn");
@@ -315,6 +339,23 @@ public class DocViewGenerator {
 		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views", Cybertables.documentCodePath+"views");
 		List<Field> fields = document.getBody();
 		String text="";
+		
+		Field referenceField = document.getDocReferenceField();
+		if (referenceField!=null){
+			List<String> bodyFields = referenceField.getBodyFields();
+			for (String field : bodyFields) {
+				StringTemplate template;
+				template = stringTemplateGroup.getInstanceOf("editableTableRow");
+				template.setAttribute("docName", referenceField.getDocRefType());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field));
+				template.setAttribute("fieldName", field);
+				template.setAttribute("fieldNameId", field+"Modification");
+				template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field);
+				template.setAttribute("modificationPrefix", "_");
+				text+=template.toString()+"\n";
+			}
+		}
+		
 		for (Field field : fields) {
 			if (!field.isReference() && field.getVisible()){
 				StringTemplate template;
@@ -382,6 +423,22 @@ public class DocViewGenerator {
 		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views", Cybertables.documentCodePath+"views");
 		List<Field> fields = document.getBody();
 		String text="";
+		
+		Field referenceField = document.getDocReferenceField();
+		if (referenceField!=null){
+			List<String> bodyFields = referenceField.getBodyFields();
+			for (String field : bodyFields) {
+				StringTemplate template;
+				template = stringTemplateGroup.getInstanceOf("editableTableRow");
+				template.setAttribute("docName", referenceField.getDocRefType());
+				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field));
+				template.setAttribute("fieldName", field);
+				template.setAttribute("fieldNameId", field);
+				template.setAttribute("fieldNamePath", field);
+				template.setAttribute("modificationPrefix", "");
+				text+=template.toString()+"\n";
+			}
+		}
 		for (Field field : fields) {
 			if (!field.isReference() && field.getVisible() ){
 				StringTemplate template;
@@ -455,6 +512,19 @@ public class DocViewGenerator {
 		List<Field> body = document.getBody();
 		
 		int i=1;
+		Field referenceField = document.getDocReferenceField();
+		if (referenceField!=null){
+			List<String> bodyFields = referenceField.getBodyFields();
+			for (String field : bodyFields) {
+				StringTemplate template2 = templateGroup.getInstanceOf("fieldValue");
+				template2.setAttribute("i", i);
+				template2.setAttribute("varAssignment", "$(field).val($(this).html());");
+				template2.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+field);
+				fieldValues+=template2.toString();
+				i++;
+			}
+		}
+		
 		for (Field field : body) {
 			StringTemplate template2 = templateGroup.getInstanceOf("fieldValue");
 			template2.setAttribute("i", i);

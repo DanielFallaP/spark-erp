@@ -66,8 +66,6 @@ public class $upperDocName$Info implements Serializable{
 	public $upperDocName$Info(){
 	}
 	
-	
-	
 	public Long getNumericId() {
 		return numericId;
 	}
