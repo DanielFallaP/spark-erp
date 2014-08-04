@@ -1,4 +1,3 @@
-		$upperDocRef$ $docRef$ = $docRef$Repository.findByNumericId(Long.parseLong($docName$.get$upperDocRef$Number()));
 		List<$upperDocRef$Body> $docRef$BodyEntityList = $docRef$.get$upperDocRef$BodyEntityList();
 		ArrayList<$upperDocName$Body> $docName$BodyList = new ArrayList<$upperDocName$Body>();
 		for ($upperDocRef$Body $docRef$Body : $docRef$BodyEntityList) {

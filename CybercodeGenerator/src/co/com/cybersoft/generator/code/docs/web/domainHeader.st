@@ -63,6 +63,8 @@ public class $upperDocName$Info implements Serializable{
 
 	$fields$
 	
+	$referenceFields$
+	
 	public $upperDocName$Info(){
 	}
 	

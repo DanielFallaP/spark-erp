@@ -91,10 +91,20 @@ public class Document {
 		return fields;
 	}
 	
-	public Field getDocReferenceField(){
+	public Field getBodyDocReferenceField(){
 		List<Field> header = getHeader();
 		for (Field field : header) {
 			if (field.getDocRefType()!=null&&field.getBodyFields()!=null&&!field.getBodyFields().isEmpty()){
+				return field;
+			}
+		}
+		return null;
+	}
+	
+	public Field getHeaderDocReferenceField(){
+		List<Field> header = getHeader();
+		for (Field field : header) {
+			if (field.getDocRefType()!=null&&field.getHeaderFields()!=null&&!field.getHeaderFields().isEmpty()){
 				return field;
 			}
 		}

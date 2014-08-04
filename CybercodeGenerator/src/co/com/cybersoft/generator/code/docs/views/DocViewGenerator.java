@@ -276,7 +276,7 @@ public class DocViewGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 		List<Field> body = document.getBody();
 		
-		Field referenceField = document.getDocReferenceField();
+		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
 			List<String> fields = referenceField.getBodyFields();
 			for (String field : fields) {
@@ -311,7 +311,7 @@ public class DocViewGenerator {
 		String headers="";
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 		List<Field> body = document.getBody();
-		Field referenceField = document.getDocReferenceField();
+		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
 			List<String> bodyFields = referenceField.getBodyFields();
 			for (String field : bodyFields) {
@@ -340,7 +340,7 @@ public class DocViewGenerator {
 		List<Field> fields = document.getBody();
 		String text="";
 		
-		Field referenceField = document.getDocReferenceField();
+		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
 			List<String> bodyFields = referenceField.getBodyFields();
 			for (String field : bodyFields) {
@@ -424,7 +424,7 @@ public class DocViewGenerator {
 		List<Field> fields = document.getBody();
 		String text="";
 		
-		Field referenceField = document.getDocReferenceField();
+		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
 			List<String> bodyFields = referenceField.getBodyFields();
 			for (String field : bodyFields) {
@@ -512,7 +512,7 @@ public class DocViewGenerator {
 		List<Field> body = document.getBody();
 		
 		int i=1;
-		Field referenceField = document.getDocReferenceField();
+		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
 			List<String> bodyFields = referenceField.getBodyFields();
 			for (String field : bodyFields) {

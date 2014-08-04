@@ -35,7 +35,7 @@
 			"name":"requisitionDistribution",		
 			"spanishName":"Requisición distribución",		
 			"header":[
-						{"name":"requisitionNumber", "spanishName":"No.Requisición", "docRefType":"requisition"},
+						{"name":"requisitionNumber", "spanishName":"No.Requisición", "type":"String"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
                      ],
 			"body":[

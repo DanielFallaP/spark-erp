@@ -19,6 +19,7 @@ public class Field {
 	private Boolean keyCompound=Boolean.FALSE;
 	private Boolean compoundReference=Boolean.FALSE;
 	private Boolean displayable=Boolean.TRUE;
+	private Boolean mobileDisplayable=Boolean.TRUE;
 	private ArithmeticExpression value;
 	
 	//For references only
@@ -38,6 +39,12 @@ public class Field {
 	
 	private JavaScriptAPI autoCompletePeerFunction;
 	
+	public Boolean getMobileDisplayable() {
+		return mobileDisplayable;
+	}
+	public void setMobileDisplayable(Boolean mobileDisplayable) {
+		this.mobileDisplayable = mobileDisplayable;
+	}
 	public List<String> getHeaderFields() {
 		return headerFields;
 	}

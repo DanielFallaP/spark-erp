@@ -71,8 +71,9 @@ public class $upperDocName$PersistenceServiceImpl implements $upperDocName$Persi
 		$upperDocName$ $docName$=new $upperDocName$().from$upperDocName$Info(event.get$upperDocName$Info());
 		$docName$.setDateOfModification(new Date());
 		$docName$.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
-		
+		$getDocReference$
 		$docReferenceFields$
+		$headerReferences$
 		
 		if ($docName$.getId()==null){
 			$docName$.setDateOfCreation(new Date());

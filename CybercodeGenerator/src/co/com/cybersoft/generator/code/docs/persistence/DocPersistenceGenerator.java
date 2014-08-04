@@ -90,7 +90,29 @@ public class DocPersistenceGenerator {
 
 	private Object generateReferenceDomainFieldsAndGS(Document document) {
 		String fields="";
-		Field referenceField = document.getDocReferenceField();
+		Field referenceField = document.getBodyDocReferenceField();
+		if (referenceField!=null){
+				List<String> bodyFields = referenceField.getBodyFields();
+				for (String field : bodyFields) {
+					StringTemplate fieldTemplate = new StringTemplate("private String $name$;\n\n");
+					fieldTemplate.setAttribute("name", field);
+					fields+=fieldTemplate.toString();
+					fields+="\n";
+					
+					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
+					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
+					gettersSettersTemplate.setAttribute("type", Cyberconstants.stringType);
+					gettersSettersTemplate.setAttribute("name", field);
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field));
+					fields+=gettersSettersTemplate.toString()+"\n\n";
+				}
+		}
+		return fields;
+	}
+	
+	private Object generateHeaderReferenceDomainFieldsAndGS(Document document) {
+		String fields="";
+		Field referenceField = document.getHeaderDocReferenceField();
 		if (referenceField!=null){
 				List<String> bodyFields = referenceField.getBodyFields();
 				for (String field : bodyFields) {
@@ -147,14 +169,47 @@ public class DocPersistenceGenerator {
 		template.setAttribute("autocompleteRepos", generateAutoCompleteRepos(document));
 		template.setAttribute("docReference", generateDocReference(document));
 		template.setAttribute("imports", generateImports(document));
+		template.setAttribute("getDocReference", generateDocReferenceVariable(document));
 		template.setAttribute("docReferenceFields", generateDocReferenceFields(document));
+		template.setAttribute("headerReferences", generateHeaderReferences(document));
+
 		
 		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"PersistenceServiceImpl.java");
 	}
 
+	private Object generateDocReferenceVariable(Document document) {
+		String variable="";
+		if (document.getBodyDocReferenceField()!=null || document.getHeaderDocReferenceField()!=null){
+			Field referenceField=document.getBodyDocReferenceField()!=null?document.getBodyDocReferenceField():document.getHeaderDocReferenceField();
+			StringTemplate stringTemplate = new StringTemplate("$upperDocRef$ $docRef$ = $docRef$Repository.findByNumericId(Long.parseLong($docName$.get$upperRefField$()));\n");
+			stringTemplate.setAttribute("docName", document.getName());
+			stringTemplate.setAttribute("docRef", referenceField.getDocRefType());
+			stringTemplate.setAttribute("upperRefField", CodeUtil.toCamelCase(referenceField.getName()));
+			stringTemplate.setAttribute("upperDocRef", CodeUtil.toCamelCase(referenceField.getDocRefType()));
+			variable=stringTemplate.toString();
+		}
+		return variable;
+	}
+
+	private Object generateHeaderReferences(Document document) {
+		String references="";
+		Field referenceField = document.getHeaderDocReferenceField();
+		if (referenceField!=null){
+			List<String> headerFields = referenceField.getHeaderFields();
+			for (String field : headerFields) {
+				StringTemplate stringTemplate = new StringTemplate("$docName$.set$upperFieldName$($docRef$.get$upperFieldName$());\n");
+				stringTemplate.setAttribute("docName", document.getName());
+				stringTemplate.setAttribute("docRef", referenceField.getDocRefType());
+				stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field));
+				references+=stringTemplate.toString();
+			}
+		}
+		return references;
+	}
+
 	private Object generateDocReference(Document document) {
 		String reference="";
-		Field field = document.getDocReferenceField();
+		Field field = document.getBodyDocReferenceField();
 		if (field!=null){
 			StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 			StringTemplate template = templateGroup.getInstanceOf("referenceDeclaration");
@@ -162,12 +217,22 @@ public class DocPersistenceGenerator {
 			template.setAttribute("refType", field.getDocRefType());
 			reference+=template.toString()+"\n";
 		}
+		
+		Field field2=document.getHeaderDocReferenceField();
+		if (field==null&&field2!=null){
+			StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
+			StringTemplate template = templateGroup.getInstanceOf("referenceDeclaration");
+			template.setAttribute("upperRefType", CodeUtil.toCamelCase(field2.getDocRefType()));
+			template.setAttribute("refType", field2.getDocRefType());
+			reference+=template.toString()+"\n";		}
+			
+		
 		return reference;
 	}
 
 	private Object generateDocReferenceFields(Document document) {
 		String getFields="";
-		Field referenceField = document.getDocReferenceField();
+		Field referenceField = document.getBodyDocReferenceField();
 		if(referenceField!=null){
 			List<String> bodyFields = referenceField.getBodyFields();
 			StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.documentCodePath+"persistence");
@@ -198,12 +263,22 @@ public class DocPersistenceGenerator {
 		
 		HashSet<String> references = new HashSet<String>();
 		String imports="";
-		Field referenceField = document.getDocReferenceField();
+		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
 			StringTemplate template=templateGroup.getInstanceOf("importDocReference");
 			template.setAttribute("upperRefType", CodeUtil.toCamelCase(referenceField.getDocRefType()));
 			template.setAttribute("refType", referenceField.getDocRefType());
 			imports+=template.toString()+"\n";
+			references.add(referenceField.getDocRefType());
+		}
+		
+		referenceField=document.getHeaderDocReferenceField();
+		if (referenceField!=null && !references.contains(referenceField.getDocRefType())){
+			StringTemplate template=templateGroup.getInstanceOf("importDocReference");
+			template.setAttribute("upperRefType", CodeUtil.toCamelCase(referenceField.getDocRefType()));
+			template.setAttribute("refType", referenceField.getDocRefType());
+			imports+=template.toString()+"\n";
+			references.add(referenceField.getDocRefType());
 		}
 
 		List<Field> fields = document.getAllFields();
@@ -324,6 +399,7 @@ public class DocPersistenceGenerator {
 		template.setAttribute("gettersSetters", generateGettersSetters(document.getHeader()));
 		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
+		template.setAttribute("referenceFields", generateHeaderReferenceDomainFieldsAndGS(document));
 		
 		if (document.hasCompoundIndex()){
 			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");

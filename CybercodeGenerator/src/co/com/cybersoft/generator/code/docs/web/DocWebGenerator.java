@@ -324,13 +324,14 @@ public class DocWebGenerator {
 		template.setAttribute("fields", generateDomainFieldsAndGS(document.getHeader()));
 		template.setAttribute("docName", document.getName());
 		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("referenceFields", generateHeaderReferenceDomainFieldsAndGS(document));
 		template.setAttribute("imports", generateDomainClassImports(document.getHeader()));
 		CodeUtil.writeClass(template.toString(),Cybertables.targetDocumentClassPath+"/web/domain/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"Info.java");
 	}
 
 	private Object generateReferenceDomainFieldsAndGS(Document document) {
 		String fields="";
-		Field referenceField = document.getDocReferenceField();
+		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
 				List<String> bodyFields = referenceField.getBodyFields();
 				for (String field : bodyFields) {
@@ -349,6 +350,29 @@ public class DocWebGenerator {
 		}
 		return fields;
 	}
+	
+	private Object generateHeaderReferenceDomainFieldsAndGS(Document document) {
+		String fields="";
+		Field referenceField = document.getHeaderDocReferenceField();
+		if (referenceField!=null){
+				List<String> bodyFields = referenceField.getBodyFields();
+				for (String field : bodyFields) {
+					StringTemplate fieldTemplate = new StringTemplate("private String $name$;\n\n");
+					fieldTemplate.setAttribute("name", field);
+					fields+=fieldTemplate.toString();
+					fields+="\n";
+					
+					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
+					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
+					gettersSettersTemplate.setAttribute("type", Cyberconstants.stringType);
+					gettersSettersTemplate.setAttribute("name", field);
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field));
+					fields+=gettersSettersTemplate.toString()+"\n\n";
+				}
+		}
+		return fields;
+	}
+
 
 	private String generateDomainClassImports(List<Field> fields) {
 		String imports="";
