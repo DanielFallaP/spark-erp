@@ -35,7 +35,7 @@
 			"name":"requisitionDistribution",		
 			"spanishName":"Requisición distribución",		
 			"header":[
-						{"name":"requisitionNumber", "spanishName":"No.Requisición", "type":"String"},
+						{"name":"requisitionNumber", "spanishName":"No.Requisición", "docRefType":"requisition"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
                      ],
 			"body":[
@@ -84,12 +84,10 @@
 						{"name":"deliveryType", "spanishName":"Tipo de entrega", "type":"String", "defaultValue":"Immediately"},
 						{"name":"priority", "spanishName":"prioridad", "refType":"priority", "displayField":"priority"},
 						{"name":"imported", "spanishName":"Importado", "type":"Boolean", "defaultValue":"false"},
+						{"name":"quotationNumber", "spanishName":"No.Cotización", "docRefType":"quotation","bodyFields":["item"],"headerFields":["requisitionNumber"]},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					],                                                                                                                                                
 			"body":[
-						{"name":"item", "spanishName":"Item", "refType":"item", "displayField":"code","autocomplete":"true"},
-						{"name":"requisitionNumber", "spanishName":"No.Requisición", "type":"String"},
-						{"name":"quotationNumber", "spanishName":"No.Cotización", "type":"String"},
 						{"name":"acceptedQuantity", "spanishName":"Cantidad aceptada", "type":"Double"},
 						{"name":"acceptDate", "spanishName":"Fecha de aceptación", "type":"Date", "defaultValue":"today"},
 						{"name":"supplierSelectionReason", "spanishName":"Razón de selección de proveedor", "refType":"supplierSelectionReason", "displayField":"supplierSelectionReason"}
