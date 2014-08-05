@@ -118,6 +118,7 @@
 				<thead>
 					<tr>
 						<th ><a th:href="@{\${page.url}+'?field=_numericId'}" th:text="#{label.numericId}"></a></th>
+						$searchFieldsHeaders$
 						<th ><a th:href="@{\${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a></th>
 						<th ><a th:href="@{\${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a></th>
 						<th ><a th:href="@{\${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a></th>
@@ -128,6 +129,7 @@
 				<tbody id="search">
 					<tr th:each="object: \${list}" th:onClick="'buildURL(\''+\${object.id}+'\')'">
 						<td th:text="\${object.numericId}"></td>
+						$searchFieldsColumns$
 						<td th:text="\${#calendars.format(object.dateOfModification,'MM/dd/yyyy HH:mm')}" ></td>
 						<td th:text="\${object.userName}"></td>
 						<td th:text="\${#calendars.format(object.dateOfCreation,'MM/dd/yyyy HH:mm')}" ></td>

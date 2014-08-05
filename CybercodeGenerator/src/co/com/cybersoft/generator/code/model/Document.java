@@ -101,6 +101,16 @@ public class Document {
 		return null;
 	}
 	
+	public Field getDocReferenceField(){
+		List<Field> header = getHeader();
+		for (Field field : header) {
+			if (field.getDocRefType()!=null){
+				return field;
+			}
+		}
+		return null;
+	}
+	
 	public Field getHeaderDocReferenceField(){
 		List<Field> header = getHeader();
 		for (Field field : header) {

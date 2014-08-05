@@ -17,14 +17,14 @@ import co.com.cybersoft.generator.code.util.CodeUtil;
  */
 public class TableViewGenerator {
 	
-	private final Cybertables cybersystems;
+	private final Cybertables cybertables;
 	
 	public TableViewGenerator(Cybertables cybersoft){
-		this.cybersystems=cybersoft;
+		this.cybertables=cybersoft;
 	}
 
 	public void generate(){
-		List<Table> tables = cybersystems.getTables();
+		List<Table> tables = cybertables.getTables();
 		for (Table table : tables) {
 			if (!table.getSingletonTable()){
 				generateCreateView(table);
@@ -36,8 +36,8 @@ public class TableViewGenerator {
 			}
 		}
 		
-		generateLinksView(cybersystems);
-		generateSettingsView(cybersystems);
+		generateLinksView(cybertables);
+		generateSettingsView(cybertables);
 	}
 	
 	private void generateSetView(Table table) {
@@ -59,7 +59,7 @@ public class TableViewGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.tableCodePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("settings");
 		
-		List<Table> tables = cybersystems.getTables();
+		List<Table> tables = cybertables.getTables();
 		String links="";
 		int i=0;
 		for (Table table : tables) {
@@ -107,7 +107,7 @@ public class TableViewGenerator {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 			if (field.getCompoundReference()){
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (int i=0; i< compoundKey.size()-1; i++) {
 					Field compoundField = compoundKey.get(i);
 					StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.tableCodePath+"views");
@@ -148,7 +148,7 @@ public class TableViewGenerator {
 	}
 
 	private String generateSelectFunctions(Field compoundField, int i) {
-		List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, compoundField.getRefType());
+		List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, compoundField.getRefType());
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.tableCodePath+"views");
 		String functions="";
 		for (;i<compoundKey.size();i++) {
@@ -256,7 +256,7 @@ public class TableViewGenerator {
 			
 			if (field.isReference() && !field.getCompoundReference()){
 				StringTemplate template;
-				if (CodeUtil.referencesLabelTable(field, cybersystems)){
+				if (CodeUtil.referencesLabelTable(field, cybertables)){
 					template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
 				}
 				else{
@@ -278,7 +278,7 @@ public class TableViewGenerator {
 			}
 			
 			if (field.getCompoundReference()){
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField: compoundKey) {
 					StringTemplate template = stringTemplateGroup.getInstanceOf("referenceTableRow");
 					template.setAttribute("tableName", table.getName());
@@ -317,7 +317,7 @@ public class TableViewGenerator {
 				}
 				if (field.isReference()){
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
-					if (CodeUtil.referencesLabelTable(field, cybersystems)){
+					if (CodeUtil.referencesLabelTable(field, cybertables)){
 						template = templateGroup.getInstanceOf("otherLabelTableColumn");
 					}
 					else{
@@ -329,7 +329,7 @@ public class TableViewGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
 					template.setAttribute("fieldName", compoundField.getName());
@@ -384,7 +384,7 @@ public class TableViewGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("columnHeader");
 					template.setAttribute("fieldName", compoundField.getName());

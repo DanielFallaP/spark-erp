@@ -49,4 +49,6 @@ public interface Cyberconstants {
 	public static final String settingsURL = "settings";
 	
 	public static final int headerColumnsPerRow=3;
+
+	public static final String numericIdName = "numericId";
 }

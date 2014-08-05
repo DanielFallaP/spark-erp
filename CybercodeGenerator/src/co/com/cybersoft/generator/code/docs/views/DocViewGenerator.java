@@ -160,15 +160,47 @@ public class DocViewGenerator {
 		List<Field> header = document.getHeader();
 		List<Field> headerRow=new ArrayList<Field>();
 		headerRow.add(header.get(0));
+		int k=0;
 		for (int i=1;i<header.size();i++) {
 			Field field=header.get(i);
-			if (i%Cyberconstants.headerColumnsPerRow!=0){
-				headerRow.add(field);
+			if (field.getDocRefType()==null || (field.getDocRefType()!=null&&field.getHeaderFields().size()==0)){
+				if ((i+k)%Cyberconstants.headerColumnsPerRow!=0){
+					headerRow.add(field);
+				}
+				else{
+					headerFields+=generateHeaderRow(headerRow, document);
+					headerRow.clear();
+					headerRow.add(field);
+				}
 			}
 			else{
-				headerFields+=generateHeaderRow(headerRow, document);
-				headerRow.clear();
-				headerRow.add(field);
+				if (field.getDocRefType()!=null && !field.getHeaderFields().isEmpty()){
+					int j=0;
+					for (; j < field.getHeaderFields().size(); j++) {
+						String fieldName = field.getHeaderFields().get(j);
+						Field field2 = new Field();
+						field2.setName(fieldName);
+						field2.setType(Cyberconstants.stringType);
+						if ((i+j)%Cyberconstants.headerColumnsPerRow!=0){
+							headerRow.add(field2);
+						}
+						else{
+							headerFields += generateHeaderRow(headerRow,document);
+							headerRow.clear();
+							headerRow.add(field2);
+						}
+					}
+					if ((i+j)%Cyberconstants.headerColumnsPerRow!=0){
+						headerRow.add(field);
+					}
+					else{
+						headerFields += generateHeaderRow(headerRow,document);
+						headerRow.clear();
+						headerRow.add(field);
+					}
+					k+=j;
+
+				}
 			}
 		}
 		
@@ -579,7 +611,104 @@ public class DocViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("searchView");
 		template.setAttribute("docName", document.getName());
 		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
-		
+		template.setAttribute("searchFieldsHeaders", getHeaderColumns(document));
+		template.setAttribute("searchFieldsColumns", getColumns(document));
+
 		CodeUtil.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/docs/"+document.getName(), "search"+CodeUtil.toCamelCase(document.getName())+".html");
+	}
+
+	private Object getColumns(Document document) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
+		List<Field> fields = document.getHeader();
+		String text="";
+		for (Field field : fields) {
+			if (!field.getCompoundReference() && field.getSearchDisplayable()){
+				if (!field.isReference() && field.getDocRefType()==null && field.getVisible() && !field.getLargeText() && !field.getType().equals(Cybertables.booleanType)){
+					StringTemplate template;
+					if (field.getType().equals(Cybertables.dateType)){
+						template = templateGroup.getInstanceOf("otherDateColumn");
+					}
+					else{
+						template = templateGroup.getInstanceOf("otherColumn");
+					}
+					template.setAttribute("fieldName", field.getName());
+					text+=template.toString()+"\n";
+				}
+				
+				if (field.getDocRefType()!=null){
+					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
+					template.setAttribute("fieldName", field.getName());
+					text+=template.toString()+"\n";
+				}
+				
+				if (!field.isReference() && field.getDocRefType()==null && field.getVisible() && !field.getLargeText() && field.getType().equals(Cybertables.booleanType)){
+					StringTemplate template = templateGroup.getInstanceOf("booleanColumn");
+					template.setAttribute("fieldName", field.getName());
+					text+=template.toString()+"\n";
+				}
+				if (field.isReference()){
+					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
+					if (CodeUtil.referencesLabelTable(field, cybertables)){
+						template = templateGroup.getInstanceOf("otherLabelTableColumn");
+					}
+					else{
+						template = templateGroup.getInstanceOf("otherColumn");
+					}
+					
+					template.setAttribute("fieldName", field.getName());
+					text+=template.toString()+"\n";
+				}
+			}
+			else{
+				//TODO compound reference
+//				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+//				for (Field compoundField : compoundKey) {
+//					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
+//					template.setAttribute("fieldName", compoundField.getName());
+//					text+=template.toString()+"\n";
+//				}
+			}
+		}
+		
+		return text;
+	}
+
+	private Object getHeaderColumns(Document document) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
+		List<Field> fields = document.getHeader();
+		
+		String text="";
+		for (Field field : fields) {
+			if (!field.getCompoundReference() && field.getSearchDisplayable()){
+				if (!field.isReference() && field.getVisible() && !field.getLargeText()){
+					StringTemplate template = templateGroup.getInstanceOf("columnHeader");
+					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("docName", document.getName());
+					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					text+=template.toString()+"\n";
+				}
+				
+				if (field.isReference()){
+					StringTemplate template = templateGroup.getInstanceOf("columnHeader");
+					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("docName", document.getName());
+					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					text+=template.toString()+"\n";
+				}
+			}
+			else{
+				//TODO referencias compuestas
+//				List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+//				for (Field compoundField : compoundKey) {
+//					StringTemplate template = templateGroup.getInstanceOf("columnHeader");
+//					template.setAttribute("fieldName", compoundField.getName());
+//					template.setAttribute("tableName", table.getName());
+//					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+//					text+=template.toString()+"\n";
+//				}
+			}
+		}
+		
+		return text;
 	}
 }
