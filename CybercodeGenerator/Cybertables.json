@@ -858,7 +858,27 @@
 						{"name":"hex3", "spanishName":"Hexadecimal3", "type":"String", "displayable":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
+		 },
+		 {
+		 	"name":"user",
+		 	"spanishName":"Usuarios",
+		 	"fields":[
+		 				{"name":"user", "spanishName":"Nombre de usuario", "type":"String", "unique":"true", "length":"10"},
+		 				{"name":"password", "spanishName":"Contraseña", "type":"String"},
+		 				{"name":"firstNames", "spanishName":"Nombres", "type":"String","length":"40"},
+		 				{"name":"lastName", "spanishName":"Apellidos", "type":"String","length":"40"},
+		 				{"name":"email", "spanishName":"Email", "type":"String","length":"30", "unique":"true"},
+		 				{"name":"role", "spanishName":"Rol", "refType":"role", "displayField":"role"},
+		 				{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+		 			 ]
+		 },
+		 {
+		 	"name":"role",
+		 	"spanishName":"Rol",
+		 	"fields":[
+		 				{"name":"role", "spanishName":"Rol", "type":"String", "unique":"true"},
+		 				{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+		 			]
 		 }
-		 
 	 ]
 }

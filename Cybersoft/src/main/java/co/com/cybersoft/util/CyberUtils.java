@@ -53,13 +53,15 @@ public class CyberUtils {
 	
 	public final static String countersCollection="counters";
 	
+	public final static String dataBaseName="cybersoft";
+
+	public final static String getNextSequence="function getNextSequence(name) {   var ret = db.counters.findAndModify(          {            query: { _id: name },            update: { $inc: { seq: 1 } },            new: true          }   );   return ret.seq;}";
+	
 	public static String escapePCRECharacters(String string){
 		for (Character escapeCharacter : PCREEscapeCharacters) {
 			string=string.replace(escapeCharacter.toString(), stringLiteralEscape+escapeCharacter);
 		}
 		return string;
 	}
-	
-	public final static String getNextSequence="function getNextSequence(name) {   var ret = db.counters.findAndModify(          {            query: { _id: name },            update: { $inc: { seq: 1 } },            new: true          }   );   return ret.seq;}";
 	
 }

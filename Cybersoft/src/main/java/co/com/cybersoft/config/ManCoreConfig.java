@@ -24,14 +24,13 @@ import co.com.cybersoft.man.services.timer.TimerService;
 @Configuration
 public class ManCoreConfig {
 	
-	
 	@Bean 
-	public ReportingService reportingService(){
+	public ReportingService reportingService() throws Exception{
 		return new ReportingServiceImpl();
 	}
 	
 	@Bean
-	public ItemManService itemManService(){
+	public ItemManService itemManService() throws Exception{
 		return new ItemManServiceImpl();
 	}
 	

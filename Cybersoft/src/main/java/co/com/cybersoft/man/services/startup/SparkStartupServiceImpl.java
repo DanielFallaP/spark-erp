@@ -13,8 +13,10 @@ import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import co.com.cybersoft.man.jobs.CleanupDirectoryJob;
 import co.com.cybersoft.man.jobs.UpdateTodayRateJob;
 import co.com.cybersoft.man.services.currency.CurrencyUpdateService;
+import co.com.cybersoft.man.services.excel.ReportingService;
 import co.com.cybersoft.man.services.sequence.SequenceService;
 import co.com.cybersoft.man.services.tenancy.TenantConfigurationService;
 import co.com.cybersoft.man.services.timer.TimerService;
@@ -32,13 +34,31 @@ public class SparkStartupServiceImpl implements SparkStartupService{
 	
 	@Autowired
 	private SequenceService sequenceStartupService; 
+	
+	@Autowired
+	private ReportingService reportingService;
 
 	@PostConstruct
 	@Override
-	public void bootSPARK() throws Exception {
+	public void SPARK() throws Exception {
 		bootTenantConfig();
 		bootCurrencyConfig();
+		bootExcelDirectoryCleanupConfig();
 		bootSequences();
+	}
+
+	private void bootExcelDirectoryCleanupConfig() throws Exception{
+		// Clean up the directory for generated excel files
+		reportingService.cleanupExcelDirectory();
+		
+		//Schedule daily jobs for continuous cleansing
+		Map<String,ReportingService> map = new HashMap<String, ReportingService>();
+		map.put("reportingService", reportingService);
+		JobDetail job = JobBuilder.newJob(CleanupDirectoryJob.class)
+				.withIdentity("cleanupExcelDir").usingJobData(new JobDataMap(map))
+				.build();
+
+		timerService.scheduleFirstThingDailyJob(job);		
 	}
 
 	private void bootSequences() throws Exception{
@@ -58,7 +78,7 @@ public class SparkStartupServiceImpl implements SparkStartupService{
 		Map<String,CurrencyUpdateService> map = new HashMap<String, CurrencyUpdateService>();
 		map.put("currencyUpdateService", currencyUpdateService);
 		JobDetail job = JobBuilder.newJob(UpdateTodayRateJob.class)
-				.withIdentity("testJob").usingJobData(new JobDataMap(map))
+				.withIdentity("currencyConfig").usingJobData(new JobDataMap(map))
 				.build();
 
 		

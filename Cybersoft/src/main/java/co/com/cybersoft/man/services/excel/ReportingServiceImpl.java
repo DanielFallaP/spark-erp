@@ -229,4 +229,10 @@ public class ReportingServiceImpl implements ReportingService {
         
         return styles;
 	}
+
+	@Override
+	public void cleanupExcelDirectory() throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("==============Directory cleared");
+	}
 }

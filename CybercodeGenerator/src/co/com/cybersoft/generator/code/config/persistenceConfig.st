@@ -21,6 +21,9 @@ import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
+import co.com.cybersoft.util.CyberUtils;
+
+
 
 @Configuration
 @EnableMongoRepositories(basePackages={"co.com.cybersoft.tables.persistence.repository","co.com.cybersoft.docs.persistence.repository"},
@@ -29,7 +32,7 @@ public class PersistenceConfig {
 	
 	@Bean
 	public	MongoTemplate mongoTemplate(Mongo mongo) throws UnknownHostException{
-		return new MongoTemplate(mongo,"cybersoft");
+		return new MongoTemplate(mongo,CyberUtils.dataBaseName);
 	}
 	
 	@Bean
@@ -37,7 +40,7 @@ public class PersistenceConfig {
 		//Mongo setup. For replica set configurations, it is necessary to supply
 		//the seed members to auto-discover the primary instance
 		MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress(getDBAddress(),27017)));
-		return mongoClient.getDB("cybersoft");
+		return mongoClient.getDB(CyberUtils.dataBaseName);
 	}
 	
 	@Bean

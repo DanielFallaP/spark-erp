@@ -10,7 +10,12 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
-
+/**
+ * Schedules a Quartz Job to be executed first thing
+ * in the morning on a daily basis
+ * @author Daniel
+ *
+ */
 public class QuartzTimer implements TimerService{
 
 	@Override
