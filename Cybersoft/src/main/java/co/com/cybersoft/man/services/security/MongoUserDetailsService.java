@@ -27,7 +27,7 @@ public class MongoUserDetailsService implements UserDetailsService{
 			throws UsernameNotFoundException {
 			try {
 				User user = mongo.findOne(new Query(Criteria.where("user").is(userName)), User.class);
-				org.springframework.security.core.userdetails.User userDetail = new org.springframework.security.core.userdetails.User(user.getUser(),user.getPassword(),true,true,true,true,getAuthorities(user.getRole()));
+				org.springframework.security.core.userdetails.User userDetail = new org.springframework.security.core.userdetails.User(user.getUser(),user.getPassword(),true,true,true,true,getAuthorities("ROLE_"+user.getRole().toUpperCase()));
 				return userDetail;
 			} catch (Exception e) {
 				e.printStackTrace();
