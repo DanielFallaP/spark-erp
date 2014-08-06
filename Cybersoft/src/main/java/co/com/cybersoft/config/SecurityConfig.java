@@ -33,8 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
-			.antMatchers("/configuration/**").hasRole("ADMIN")
-			.antMatchers("/docs/**").hasRole("DOCUMENT MANAGER")
+			.antMatchers("/configuration/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
+			.antMatchers("/settings/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
+			.antMatchers("/docs/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_SUPER')")
 			.antMatchers("/resources/js/jquery-1.11.0.min.js","/resources/css/bootstrap-responsive.min.css", "/resources/css/bootstrap.min.css", "/resources/img/spark_large.png").permitAll()
             .anyRequest().authenticated()
             .and()

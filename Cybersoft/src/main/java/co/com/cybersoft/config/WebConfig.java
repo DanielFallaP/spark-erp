@@ -1,5 +1,6 @@
 package co.com.cybersoft.config;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,6 +25,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.mvc.method.annotation.ServletWebArgumentResolverAdapter;
+import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.springsecurity3.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.thymeleaf.spring3.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
@@ -86,6 +89,9 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	public SpringTemplateEngine templateEngine(){
 		SpringTemplateEngine engine = new SpringTemplateEngine();
 		engine.setTemplateResolver(templateResolver());
+		HashSet<IDialect> dialects = new HashSet<IDialect>();
+		dialects.add(new SpringSecurityDialect());
+		engine.setAdditionalDialects(dialects);
 		return engine;
 	}
 	
