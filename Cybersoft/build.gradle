@@ -60,6 +60,9 @@ dependencies {
   //{!end deps}
 
   compile 'org.springframework:spring-tx'
+  
+  //AMQP
+  compile 'org.springframework.amqp:spring-rabbit:1.3.5.RELEASE'
 
   compile 'org.slf4j:slf4j-api:1.7.5'
   runtime 'org.slf4j:slf4j-log4j12:1.7.5'
