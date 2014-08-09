@@ -2,6 +2,13 @@ package co.com.cybersoft.util;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class CyberUtils {
 
@@ -57,11 +64,40 @@ public class CyberUtils {
 
 	public final static String getNextSequence="function getNextSequence(name) {   var ret = db.counters.findAndModify(          {            query: { _id: name },            update: { $inc: { seq: 1 } },            new: true          }   );   return ret.seq;}";
 	
+	public final static String itemMessageTemplateDir="mail/item";
+	
 	public static String escapePCRECharacters(String string){
 		for (Character escapeCharacter : PCREEscapeCharacters) {
 			string=string.replace(escapeCharacter.toString(), stringLiteralEscape+escapeCharacter);
 		}
 		return string;
+	}
+	
+	public MimeMessage getSimpleMessage(String from, String to, String subject, String text) throws Exception{
+		Properties props = new Properties();
+		props.setProperty("mail.transport.protocol", "smtp");     
+	    props.setProperty("mail.host", "smtp.gmail.com");  
+	    props.put("mail.smtp.auth", "true");  
+	    props.put("mail.smtp.port", "465");  
+	    props.put("mail.debug", "true");  
+	    props.put("mail.smtp.socketFactory.port", "465");  
+	    props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");  
+	    props.put("mail.smtp.socketFactory.fallback", "false");  
+	    Session session = Session.getDefaultInstance(props,  
+	    new javax.mail.Authenticator() {
+	       protected PasswordAuthentication getPasswordAuthentication() {  
+	       return new PasswordAuthentication("danielfap16@gmail.com","8thisbu6");  
+	   }  
+	   });
+	    
+
+		MimeMessage message = new MimeMessage(session);
+		message.setFrom(new InternetAddress(from));
+		message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+		message.setSubject(subject);
+		message.setText(text);
+		
+		return message;
 	}
 	
 }

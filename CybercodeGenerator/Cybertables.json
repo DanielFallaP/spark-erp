@@ -645,6 +645,7 @@
 						{"name":"inventoryGroupForConsumptionItems", "spanishName":"Grupo de inventario para ítems de consumo", "refType":"stockGroup", "displayField":"stockGroup", "embeddedFields":["code"]},
 						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "displayField":"code", "embeddedFields":["currency"]},
 						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "displayField":"code", "embeddedFields":["currency"]},
+						{"name":"chiefAdminUser", "spanishName":"Usuario administrador encargado", "refType":"user", "displayField":"user"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
