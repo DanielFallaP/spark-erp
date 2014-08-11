@@ -17,7 +17,7 @@ public class MainCodeGenerator {
 		DocCodeGenerator docCodeGenerator = new DocCodeGenerator();
 		ConfigCodeGenerator configCodeGenerator = new ConfigCodeGenerator();
 		try {
-			tableCodeGenerator.generate();
+//			tableCodeGenerator.generate();
 			configCodeGenerator.generate();
 			docCodeGenerator.generate();
 		} catch (Exception e) {

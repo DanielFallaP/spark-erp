@@ -8,4 +8,5 @@ public interface ItemManService {
 	ItemPurchaseHistoryInfo getItemLastPurchasePriceByDescription(String description) throws Exception;
 	ItemPurchaseHistoryInfo getItemLastPurchasePriceByItemCode(String item) throws Exception;
 	void checkAndSendVerificationMessage(String requestingUser, RequisitionInfo requisition) throws Exception;
+	RequisitionInfo checkRequisition(RequisitionInfo requisitionInfo) throws Exception;
 }

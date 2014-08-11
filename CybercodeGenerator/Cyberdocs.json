@@ -2,7 +2,9 @@
 	"documents":[
 		 {  
 			"name":"requisition",		
-			"spanishName":"Requisición",		
+			"spanishName":"Requisición",
+			"onHeaderSave":{"className":"co.com.cybersoft.man.services.item.ItemManService", "methodName":"checkAndSendVerificationMessage","parameters":["SecurityContextHolder.getContext().getAuthentication().getName()","requisitionInfo"]},
+			"onHeaderPreSave":{"className":"co.com.cybersoft.man.services.item.ItemManService", "methodName":"checkRequisition","parameters":["requisitionInfo"],"returnVar":"requisitionInfo"},	
 			"header":[
 						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"populatedPlace", "autocomplete":"true"},						
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "defaultValue":"today"},
@@ -15,11 +17,12 @@
 						{"name":"receivingWarehouse", "spanishName":"Bodega que recibe", "refType":"warehouse", "displayField":"warehouse"},
 						{"name":"deliveryLocation", "spanishName":"Lugar de destino", "refType":"deliveryLocation", "displayField":"code","searchDisplayable":"true"},
 						{"name":"ready", "spanishName":"Lista",  "type":"Boolean", "defaultValue":"false","searchDisplayable":"true"},
+						{"name":"checkDocument", "visible":"false",  "type":"Boolean", "defaultValue":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true","searchDisplayable":"true"}
 					],
 			"body":[
-						{"name":"item", "spanishName":"Item", "required":"false", "refType":"item", "displayField":"code", "autocomplete":"true", "autoCompletePeerFunction":{"scriptLocation":"/resources/js/peerCompletion.js","methodName":"peerCompletion", "constantParameters":["itemDescription","getListByCodeReturnDescription","item","code",["inputMeasurementUnit"]],"parameters":["b"],"embeddedCodeFile":"item/itemLastPurchaseByCode.js","embeddedModificationCodeFile":"item/itemLastPurchaseModificationByCode.js"}},
-						{"name":"itemDescription", "spanishName":"Descripción de ítem", "refType":"item", "displayField":"description", "autocomplete":"true","autoCompletePeerFunction":{"scriptLocation":"/resources/js/peerCompletion.js","methodName":"peerCompletion", "constantParameters":["item","getListByDescriptionReturnCode","item","description",["inputMeasurementUnit"]],"parameters":["b"],"embeddedCodeFile":"item/itemLastPurchaseByDescription.js","embeddedModificationCodeFile":"item/itemLastPurchaseModificationByDescription.js"}},
+						{"name":"item", "spanishName":"Item", "checkReference":"false", "required":"false", "refType":"item", "displayField":"code", "autocomplete":"true", "autoCompletePeerFunction":{"scriptLocation":"/resources/js/peerCompletion.js","methodName":"peerCompletion", "constantParameters":["itemDescription","getListByCodeReturnDescription","item","code",["inputMeasurementUnit"]],"parameters":["b"],"embeddedCodeFile":"item/itemLastPurchaseByCode.js","embeddedModificationCodeFile":"item/itemLastPurchaseModificationByCode.js"}},
+						{"name":"itemDescription", "spanishName":"Descripción de ítem", "unique":"true","checkReference":"false","refType":"item", "displayField":"description", "autocomplete":"true","autoCompletePeerFunction":{"scriptLocation":"/resources/js/peerCompletion.js","methodName":"peerCompletion", "constantParameters":["item","getListByDescriptionReturnCode","item","description",["inputMeasurementUnit"]],"parameters":["b"],"embeddedCodeFile":"item/itemLastPurchaseByDescription.js","embeddedModificationCodeFile":"item/itemLastPurchaseModificationByDescription.js"}},
 						{"name":"inputMeasurementUnit", "spanishName":"Unidad de medida entrada", "type":"String"},
 						{"name":"requiredOnDate", "spanishName":"Requerido en Fecha", "type":"Date", "defaultValue":"today", "displayable":"false"},
 						{"name":"priority", "spanishName":"Prioridad", "refType":"priority", "displayField":"priority", "displayable":"false"},

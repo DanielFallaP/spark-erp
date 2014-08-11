@@ -1,6 +1,6 @@
 package co.com.cybersoft.generator.code.model;
 
-import java.util.Map;
+import java.util.List;
 
 import co.com.cybersoft.generator.code.util.CodeUtil;
 
@@ -9,7 +9,11 @@ public class JavaAPI {
 	
 	protected String methodName;
 	
-	protected Map<String,String> parameters;
+	protected List<String> parameters;
+	
+	protected List<String> constantParameters;
+	
+	private String returnVar;
 	
 	protected String coordinates;
 	
@@ -17,6 +21,14 @@ public class JavaAPI {
 		return CodeUtil.toLowerCamelCase(className.substring(className.lastIndexOf('.')+1));
 	}
 	
+	public String getReturnVar() {
+		return returnVar;
+	}
+
+	public void setReturnVar(String returnVar) {
+		this.returnVar = returnVar;
+	}
+
 	public String getClassName() {
 		return className;
 	}
@@ -33,12 +45,20 @@ public class JavaAPI {
 		this.methodName = methodName;
 	}
 
-	public Map<String, String> getParameters() {
+	public List<String> getParameters() {
 		return parameters;
 	}
 
-	public void setParameters(Map<String, String> parameters) {
+	public void setParameters(List<String> parameters) {
 		this.parameters = parameters;
+	}
+
+	public List<String> getConstantParameters() {
+		return constantParameters;
+	}
+
+	public void setConstantParameters(List<String> constantParameters) {
+		this.constantParameters = constantParameters;
 	}
 
 	public String getCoordinates() {

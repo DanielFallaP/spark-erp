@@ -161,16 +161,22 @@ public class DocViewGenerator {
 		List<Field> headerRow=new ArrayList<Field>();
 		headerRow.add(header.get(0));
 		int k=0;
+		int hiddenFields=0;
 		for (int i=1;i<header.size();i++) {
 			Field field=header.get(i);
 			if (field.getDocRefType()==null || (field.getDocRefType()!=null&&field.getHeaderFields().size()==0)){
-				if ((i+k)%Cyberconstants.headerColumnsPerRow!=0){
-					headerRow.add(field);
+				if (field.getVisible()){
+					if ((i+k-hiddenFields)%Cyberconstants.headerColumnsPerRow!=0){
+						headerRow.add(field);
+					}
+					else{
+						headerFields+=generateHeaderRow(headerRow, document);
+						headerRow.clear();
+						headerRow.add(field);
+					}
 				}
 				else{
-					headerFields+=generateHeaderRow(headerRow, document);
-					headerRow.clear();
-					headerRow.add(field);
+					hiddenFields++;
 				}
 			}
 			else{
@@ -181,7 +187,7 @@ public class DocViewGenerator {
 						Field field2 = new Field();
 						field2.setName(fieldName);
 						field2.setType(Cyberconstants.stringType);
-						if ((i+j)%Cyberconstants.headerColumnsPerRow!=0){
+						if ((i+j-hiddenFields)%Cyberconstants.headerColumnsPerRow!=0){
 							headerRow.add(field2);
 						}
 						else{
@@ -190,7 +196,7 @@ public class DocViewGenerator {
 							headerRow.add(field2);
 						}
 					}
-					if ((i+j)%Cyberconstants.headerColumnsPerRow!=0){
+					if ((i+j-hiddenFields)%Cyberconstants.headerColumnsPerRow!=0){
 						headerRow.add(field);
 					}
 					else{

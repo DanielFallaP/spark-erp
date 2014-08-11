@@ -32,6 +32,7 @@ import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$Info;
 import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$BodyInfo;
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.SparkBindingException;
+import org.springframework.security.core.context.SecurityContextHolder;
 $imports$
 
 
@@ -53,14 +54,14 @@ public class $upperDocName$Controller {
 	public String save$upperDocName$(@ModelAttribute("$docName$Info") $upperDocName$Info $docName$Info, @ModelAttribute("$docName$BodyInfo") $upperDocName$BodyInfo current, @ModelAttribute("$docName$BodyModificationInfo") $upperDocName$BodyInfo modified,Model model, HttpServletRequest request) throws Exception{
 		$upperDocName$Event $docName$Event=null;
 		if (modified.get$upperDocName$BodyModificationInfo().getSubmit().equals("modification")){
-			modificationManualValidation(modified.get$upperDocName$BodyModificationInfo(), "$docName$BodyModificationInfo", CyberUtils.modificationForm);
+			modificationManualValidation(modified.get$upperDocName$BodyModificationInfo(), "$docName$BodyModificationInfo", CyberUtils.modificationForm, $docName$Info);
 			
 			$rowModificationOperations$
 			$docName$Info.set$upperDocName$BodyModificationInfo(modified.get$upperDocName$BodyModificationInfo());
 			$docName$Event = $docName$Service.update$upperDocName$Body(new Save$upperDocName$Event($docName$Info));
 		}
 		else if (modified.get$upperDocName$BodyModificationInfo().getSubmit().equals("creation")){
-			manualValidation(current, "$docName$BodyInfo", CyberUtils.additionForm);
+			manualValidation(current, "$docName$BodyInfo", CyberUtils.additionForm, $docName$Info);
 			
 			$rowAdditionOperations$			
 			$docName$Info.setCurrent$upperDocName$BodyInfo(current);
@@ -73,10 +74,11 @@ public class $upperDocName$Controller {
 			$docName$Event=$docName$Service.delete$upperDocName$BodyRecords(new Save$upperDocName$Event($docName$Info), toDelete);			
 		}
 		else{
-			manualValidation($docName$Info, "$docName$Info", "");
+			manualValidation($docName$Info, "$docName$Info", "", $docName$Info);
 			
-			$headerOperations$	
+			$onHeaderPreSave$
 			$docName$Event = $docName$Service.save$upperDocName$(new Save$upperDocName$Event($docName$Info));
+			$onHeaderSave$	
 		}
 		
 		if ($docName$Info.getCreated()!=null && !$docName$Info.getCreated()){
@@ -105,10 +107,15 @@ public class $upperDocName$Controller {
 		return "/docs/$docName$/save$upperDocName$";
 	}
 	
-	private void modificationManualValidation($upperDocName$BodyInfo object, String objectName, String origin) throws Exception{
+	private void modificationManualValidation($upperDocName$BodyInfo object, String objectName, String origin, $upperDocName$Info $docName$) throws Exception{
 		HashMap<Object, Object> errorMap = new HashMap<>();
 		MapBindingResult mapBindingResult = new MapBindingResult(errorMap, objectName);
 		validator.validate(object, mapBindingResult);
+		
+		if ($docName$.get$upperDocName$BodyList().contains(object)){
+			errorMap.put("error", "duplicateError");
+			throw new SparkBindingException(mapBindingResult.getAllErrors(), origin, "");
+		}
 					
 		if (!mapBindingResult.getAllErrors().isEmpty()){
 			throw new SparkBindingException(mapBindingResult.getAllErrors(), origin,object.getId());
@@ -116,10 +123,17 @@ public class $upperDocName$Controller {
 		
 	}
 	
-	private void manualValidation(Object object, String objectName, String origin) throws Exception{
+	private void manualValidation(Object object, String objectName, String origin, $upperDocName$Info $docName$) throws Exception{
 		HashMap<Object, Object> errorMap = new HashMap<>();
 		MapBindingResult mapBindingResult = new MapBindingResult(errorMap, objectName);
 		validator.validate(object, mapBindingResult);
+		
+		if (object instanceof $upperDocName$BodyInfo){
+			if ($docName$.get$upperDocName$BodyList().contains(object)){
+				errorMap.put("error", "duplicateError");
+				throw new SparkBindingException(mapBindingResult.getAllErrors(), origin, "");
+			}
+		}
 					
 		if (!mapBindingResult.getAllErrors().isEmpty()){
 			throw new SparkBindingException(mapBindingResult.getAllErrors(), origin, "");

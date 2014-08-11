@@ -14,6 +14,26 @@ public class Document {
 	private List<Field> header;
 	
 	private List<Field> body;
+	
+	private JavaAPI onHeaderSave;
+	
+	private JavaAPI onHeaderPreSave;
+	
+	public JavaAPI getOnHeaderPreSave() {
+		return onHeaderPreSave;
+	}
+
+	public void setOnHeaderPreSave(JavaAPI onHeaderPreSave) {
+		this.onHeaderPreSave = onHeaderPreSave;
+	}
+
+	public JavaAPI getOnHeaderSave() {
+		return onHeaderSave;
+	}
+
+	public void setOnHeaderSave(JavaAPI onHeaderSave) {
+		this.onHeaderSave = onHeaderSave;
+	}
 
 	public String getName() {
 		return name;
@@ -115,6 +135,16 @@ public class Document {
 		List<Field> header = getHeader();
 		for (Field field : header) {
 			if (field.getDocRefType()!=null&&field.getHeaderFields()!=null&&!field.getHeaderFields().isEmpty()){
+				return field;
+			}
+		}
+		return null;
+	}
+	
+	
+	public Field getBodyKey(){
+		for (Field field : body) {
+			if (field.getUnique()){
 				return field;
 			}
 		}

@@ -11,10 +11,14 @@ import javax.mail.internet.MimeMessage;
  */
 public class MailSender implements Runnable{
 	
-	private MimeMessage message;
+	protected MimeMessage message;
 	
 	public MailSender(MimeMessage message){
 		this.message=message;
+	}
+	
+	public MailSender(){
+		
 	}
 
 	@Override

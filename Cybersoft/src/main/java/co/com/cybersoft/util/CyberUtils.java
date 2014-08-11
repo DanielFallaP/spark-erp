@@ -1,5 +1,8 @@
 package co.com.cybersoft.util;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -64,7 +67,7 @@ public class CyberUtils {
 
 	public final static String getNextSequence="function getNextSequence(name) {   var ret = db.counters.findAndModify(          {            query: { _id: name },            update: { $inc: { seq: 1 } },            new: true          }   );   return ret.seq;}";
 	
-	public final static String itemMessageTemplateDir="mail/item";
+	public final static String itemMessageTemplateDir="mail/item/";
 	
 	public static String escapePCRECharacters(String string){
 		for (Character escapeCharacter : PCREEscapeCharacters) {
@@ -86,7 +89,7 @@ public class CyberUtils {
 	    Session session = Session.getDefaultInstance(props,  
 	    new javax.mail.Authenticator() {
 	       protected PasswordAuthentication getPasswordAuthentication() {  
-	       return new PasswordAuthentication("danielfap16@gmail.com","8thisbu6");  
+	       return new PasswordAuthentication("danielfap16@gmail.com","987daniel");  
 	   }  
 	   });
 	    
@@ -98,6 +101,17 @@ public class CyberUtils {
 		message.setText(text);
 		
 		return message;
+	}
+	
+	public static String getTextFileContent(InputStream input) throws Exception{
+		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        StringBuilder out = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            out.append(line+"\n");
+        }
+        reader.close();
+		return out.toString();
 	}
 	
 }

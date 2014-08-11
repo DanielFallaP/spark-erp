@@ -74,5 +74,5 @@ public class $upperDocName$BodyInfo implements Serializable{
 		this.selected = selected;
 	}
 	
-
+	$overrideEquals$
 }

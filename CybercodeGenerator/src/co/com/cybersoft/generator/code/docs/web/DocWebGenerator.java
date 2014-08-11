@@ -74,6 +74,8 @@ public class DocWebGenerator {
 		template.setAttribute("setBodyDefaults", generateBodyDefaults(document));
 		template.setAttribute("rowModificationOperations", generateRowModificationOperations(document));
 		template.setAttribute("rowAdditionOperations", generateRowAdditonOperations(document));
+		template.setAttribute("onHeaderSave", JavaAPIConnector.generateOnHeaderSave(document));
+		template.setAttribute("onHeaderPreSave", JavaAPIConnector.generateOnHeaderPreSave(document));
 		
 		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"Controller.java");
 	}
@@ -207,14 +209,31 @@ public class DocWebGenerator {
 		for (Field field : allFields) {
 			if (field.getOnLoad()!=null ){
 				StringTemplate template = new StringTemplate("@Autowired\n"
-						+ "	private $upperServiceName$ $serciceName$;");
+						+ "	private $upperServiceName$ $serviceName$;");
 				template.setAttribute("upperServiceName", field.getOnLoad().getClassName());
-				template.setAttribute("serciceName", field.getOnLoad().getName());
+				template.setAttribute("serviceName", field.getOnLoad().getName());
 				declarations+=template.toString()+"\n\n";
-				services.add(field.getName());
+				services.add(field.getOnLoad().getName());
 			}
 		}
 		
+		if (document.getOnHeaderSave()!=null&&!services.contains(document.getOnHeaderSave().getName())){
+			StringTemplate template = new StringTemplate("@Autowired\n"
+					+ "	private $upperServiceName$ $serviceName$;");
+			template.setAttribute("upperServiceName", document.getOnHeaderSave().getClassName());
+			template.setAttribute("serviceName", document.getOnHeaderSave().getName());
+			declarations+=template.toString()+"\n\n";
+			services.add(document.getOnHeaderSave().getName());
+		}
+		
+		if (document.getOnHeaderPreSave()!=null&&!services.contains(document.getOnHeaderPreSave().getName())){
+			StringTemplate template = new StringTemplate("@Autowired\n"
+					+ "	private $upperServiceName$ $serviceName$;");
+			template.setAttribute("upperServiceName", document.getOnHeaderPreSave().getClassName());
+			template.setAttribute("serviceName", document.getOnHeaderPreSave().getName());
+			declarations+=template.toString()+"\n\n";
+			services.add(document.getOnHeaderPreSave().getName());
+		}
 		return declarations;
 	}
 	
@@ -315,9 +334,25 @@ public class DocWebGenerator {
 		template.setAttribute("referenceFields", generateReferenceDomainFieldsAndGS(document));
 		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
 		template.setAttribute("imports", generateDomainClassImports(document.getBody()));
+		template.setAttribute("overrideEquals", generateEqualsOverride(document));
+
 		CodeUtil.writeClass(template.toString(),Cybertables.targetDocumentClassPath+"/web/domain/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"BodyInfo.java");
 	}
 	
+	private Object generateEqualsOverride(Document document) {
+		String override="";
+		Field bodyKey = document.getBodyKey();
+		if (bodyKey!=null){
+			StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.documentCodePath+"web");
+			StringTemplate template = templateGroup.getInstanceOf("equals");
+			template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+			template.setAttribute("upperKeyName", CodeUtil.toCamelCase(bodyKey.getName()));
+			template.setAttribute("keyName", bodyKey.getName());
+			override=template.toString();
+		}
+		return override;
+	}
+
 	private void generateDomainHeader(Document document){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.documentCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("domainHeader");
