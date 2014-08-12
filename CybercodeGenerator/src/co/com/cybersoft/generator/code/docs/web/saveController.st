@@ -112,7 +112,7 @@ public class $upperDocName$Controller {
 		MapBindingResult mapBindingResult = new MapBindingResult(errorMap, objectName);
 		validator.validate(object, mapBindingResult);
 		
-		if ($docName$.get$upperDocName$BodyList().contains(object)){
+		if ($docName$.get$upperDocName$BodyList().indexOf(object)!=$docName$.get$upperDocName$BodyList().lastIndexOf(object)){
 			errorMap.put("error", "duplicateError");
 			throw new SparkBindingException(mapBindingResult.getAllErrors(), origin, "");
 		}

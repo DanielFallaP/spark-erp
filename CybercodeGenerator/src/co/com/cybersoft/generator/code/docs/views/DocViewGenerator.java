@@ -338,7 +338,9 @@ public class DocViewGenerator {
 			template.setAttribute("fieldName", field.getName());
 			if (!field.getDisplayable())
 				template.setAttribute("hide", "class=\"hideANDseek\"");
-
+			
+			if (field.getType()!=null && (field.getType().equals(Cyberconstants.integerType) || field.getType().equals(Cyberconstants.longType)||field.getType().equals(Cyberconstants.doubleType)))
+				template.setAttribute("alignment", "class=\"right\"");
 			bodyFields+=template.toString();
 		}
 		
