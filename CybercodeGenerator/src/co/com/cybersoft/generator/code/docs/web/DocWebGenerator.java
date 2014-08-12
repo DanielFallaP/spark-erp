@@ -370,7 +370,7 @@ public class DocWebGenerator {
 		if (referenceField!=null){
 				List<String> bodyFields = referenceField.getBodyFields();
 				for (String field : bodyFields) {
-					StringTemplate fieldTemplate = new StringTemplate("private String $name$;\n\n");
+					StringTemplate fieldTemplate = new StringTemplate("@NotEmpty\nprivate String $name$;\n\n");
 					fieldTemplate.setAttribute("name", field);
 					fields+=fieldTemplate.toString();
 					fields+="\n";

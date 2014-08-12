@@ -104,10 +104,9 @@
 		}
 		   
 		$compoundReferenceFunctions$   
-			   
 		$setModificationFormFunction$
-		
 		$autoCompleteFunctions$
+		$changeDocReferenceFunctions$
 			
 		   \$(document).ready( function () {
 				\$('#$docName$BodyList').dataTable();

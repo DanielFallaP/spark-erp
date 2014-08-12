@@ -1,5 +1,5 @@
 \$(document).ready( function () {
 							 
-			    \$( "#$dateField$" ).datepicker();
+			    \$( "#$dateField$" ).datepicker({ dateFormat: 'dd/mm/yy' });
 } ); 
 

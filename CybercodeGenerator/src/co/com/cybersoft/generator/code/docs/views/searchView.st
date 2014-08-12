@@ -130,9 +130,9 @@
 					<tr th:each="object: \${list}" th:onClick="'buildURL(\''+\${object.id}+'\')'">
 						<td th:text="\${object.numericId}"></td>
 						$searchFieldsColumns$
-						<td th:text="\${#calendars.format(object.dateOfModification,'MM/dd/yyyy HH:mm')}" ></td>
+						<td th:text="\${#calendars.format(object.dateOfModification,'dd/MM/yyyy HH:mm')}" ></td>
 						<td th:text="\${object.userName}"></td>
-						<td th:text="\${#calendars.format(object.dateOfCreation,'MM/dd/yyyy HH:mm')}" ></td>
+						<td th:text="\${#calendars.format(object.dateOfCreation,'dd/MM/yyyy HH:mm')}" ></td>
 						<td th:text="\${object.createdBy}"></td>
 
 					</tr>

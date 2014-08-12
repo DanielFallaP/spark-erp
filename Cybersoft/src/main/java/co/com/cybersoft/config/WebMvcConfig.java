@@ -17,7 +17,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport{
 		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService(false);
 
         DateFormatterRegistrar registrar = new DateFormatterRegistrar();
-        registrar.setFormatter(new DateFormatter("MM/dd/yyyy"));
+        registrar.setFormatter(new DateFormatter("dd/MM/yyyy"));
         registrar.registerFormatters(conversionService);
         addFormatters(conversionService);
         return conversionService;

@@ -6,18 +6,18 @@ function toCamelCase(string){
 function dateFormat(date){
 	var month;
 	var day;
-	if (date.getMonth()<10)
-		month="0"+date.getMonth();
+	if (date.getMonth()<9)
+		month="0"+(date.getMonth()+1);
 	else
-		month=date.getMonth();
+		month=date.getMonth()+1;
 	
-	if (date.getDay()<10)
-		day="0"+date.getDay();
+	if (date.getDate()<10)
+		day="0"+date.getDate();
 	else
-		day=date.getDay();
+		day=date.getDate();
 	
 	
-	return month+"/"+day+"/"+date.getFullYear();
+	return day+"/"+month+"/"+date.getFullYear();
 }
 
 function getUrlParameter(sParam)

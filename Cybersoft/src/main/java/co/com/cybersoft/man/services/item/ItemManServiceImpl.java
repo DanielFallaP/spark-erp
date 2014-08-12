@@ -40,11 +40,9 @@ public class ItemManServiceImpl implements ItemManService{
 	
 	@Override
 	public ItemPurchaseHistoryInfo getItemLastPurchasePriceByItemCode(String item) throws Exception{
-		Criteria criteria=new Criteria("item");		
-		criteria.is(item);
 		
 		Query query=new Query();
-		query.addCriteria(criteria).with(new Sort(Sort.Direction.DESC,"purchaseDate"));
+		query.addCriteria(Criteria.where("item").is(item)).with(new Sort(Sort.Direction.DESC,"purchaseDate"));
 		
 		List<ItemPurchaseHistory> history = mongo.find(query, ItemPurchaseHistory.class);
 		

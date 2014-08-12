@@ -6,7 +6,7 @@
 		    	    		if (path[1].localeCompare("configuration")!=0){
 		    	    			prefix="/"+path[1];	
 		    	    		}
-							\$.get(prefix+"/configuration/$tableName$/getListBy$upperFieldName$Return$upperFieldName$?$fieldName$="+request.term, {}, function (data) {
+							\$.get(prefix+"/common/$tableName$/getListBy$upperFieldName$Return$upperFieldName$?$fieldName$="+request.term, {}, function (data) {
 		    	            var array=data.split("$arraySeparator$");
 		    	            if (data!="")
 		    	            	response(array);
@@ -22,7 +22,7 @@
 	    	    		if (path[1].localeCompare("configuration")!=0){
 	    	    			prefix="/"+path[1];	
 	    	    		}
-	    	    		window.open(prefix+"/configuration/$tableName$/create$entityName$/fromList?field=$fieldName$&value="+encodeURIComponent(b.item.value),"_self");
+	    	    		window.open(prefix+"/common/$tableName$/create$entityName$/fromList?field=$fieldName$&value="+encodeURIComponent(b.item.value),"_self");
 	    	    	}
 		    	});
 		    	 

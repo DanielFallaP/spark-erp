@@ -48,7 +48,8 @@ public class DocViewGenerator {
 		template.setAttribute("bodyHeaderFields", generateBodyHeaderFields(document));
 		template.setAttribute("bodyFields", generateBodyFields(document));
 		template.setAttribute("headerFields", generateHeaderFields(document));
-		
+		template.setAttribute("changeDocReferenceFunctions", generateChangeDocReferencesFunctions(document));
+
 		template.setAttribute("firstBodyField", document.getBody().get(0).getName());
 
 		template.setAttribute("autoCompleteFunctions", generateAutocompleteReferenceFunctions(document));
@@ -62,6 +63,43 @@ public class DocViewGenerator {
 	}
 
 	
+
+	private Object generateChangeDocReferencesFunctions(Document document) {
+		String functions="";
+		Field referenceField = document.getDocReferenceField();
+		if (referenceField!=null && referenceField.getBodyFields().size()>1){
+			List<String> bodyFields = referenceField.getBodyFields();
+			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
+			//Addition fields functions
+			for (String bodyField : bodyFields) {
+				StringTemplate template = templateGroup.getInstanceOf("changeDocReference");
+				String changeSelection="";
+				for (String field : bodyFields) {
+					StringTemplate changeSelectionTemplate = new StringTemplate("\\$('#$fieldName$ :nth-child('+(\\$(this)[0].selectedIndex+1)+')').prop('selected', true);");
+					changeSelectionTemplate.setAttribute("fieldName", field);
+					changeSelection+=changeSelectionTemplate.toString()+"\n";
+				}
+				template.setAttribute("fieldName", bodyField);
+				template.setAttribute("references", changeSelection);
+				functions+=template.toString()+"\n";
+			}
+			
+			//Modification fields functions
+			for (String bodyField : bodyFields) {
+				StringTemplate template = templateGroup.getInstanceOf("changeDocReference");
+				String changeSelection="";
+				for (String field : bodyFields) {
+					StringTemplate changeSelectionTemplate = new StringTemplate("\\$('#$fieldName$ :nth-child('+(\\$(this)[0].selectedIndex+1)+')').prop('selected', true);");
+					changeSelectionTemplate.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+field);
+					changeSelection+=changeSelectionTemplate.toString()+"\n";
+				}
+				template.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+bodyField);
+				template.setAttribute("references", changeSelection);
+				functions+=template.toString()+"\n";
+			}
+		}
+		return functions;
+	}
 
 	private String generateAutocompleteReferenceFunctions(Document document) {
 		List<Field> fields = document.getHeader();
@@ -385,13 +423,14 @@ public class DocViewGenerator {
 			List<String> bodyFields = referenceField.getBodyFields();
 			for (String field : bodyFields) {
 				StringTemplate template;
-				template = stringTemplateGroup.getInstanceOf("editableTableRow");
-				template.setAttribute("docName", referenceField.getDocRefType());
+				template = stringTemplateGroup.getInstanceOf("docReferenceRow");
+				template.setAttribute("docName", document.getName());
 				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field));
 				template.setAttribute("fieldName", field);
-				template.setAttribute("fieldNameId", field+"Modification");
+				template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field);
 				template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field);
 				template.setAttribute("modificationPrefix", "_");
+				template.setAttribute("optionalReference", "<option value=\"\"></option>");
 				text+=template.toString()+"\n";
 			}
 		}
@@ -469,13 +508,15 @@ public class DocViewGenerator {
 			List<String> bodyFields = referenceField.getBodyFields();
 			for (String field : bodyFields) {
 				StringTemplate template;
-				template = stringTemplateGroup.getInstanceOf("editableTableRow");
-				template.setAttribute("docName", referenceField.getDocRefType());
+				template = stringTemplateGroup.getInstanceOf("docReferenceRow");
+				template.setAttribute("docName", document.getName());
 				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field));
 				template.setAttribute("fieldName", field);
 				template.setAttribute("fieldNameId", field);
 				template.setAttribute("fieldNamePath", field);
 				template.setAttribute("modificationPrefix", "");
+				template.setAttribute("optionalReference", "<option value=\"\"></option>");
+
 				text+=template.toString()+"\n";
 			}
 		}

@@ -19,6 +19,36 @@ public class Document {
 	
 	private JavaAPI onHeaderPreSave;
 	
+	private Boolean deleteOriginal=Boolean.TRUE;
+	
+	private Boolean delete=Boolean.TRUE;
+	
+	private Boolean add=Boolean.TRUE;
+	
+	public Boolean getDelete() {
+		return delete;
+	}
+
+	public void setDelete(Boolean delete) {
+		this.delete = delete;
+	}
+
+	public Boolean getAdd() {
+		return add;
+	}
+
+	public void setAdd(Boolean add) {
+		this.add = add;
+	}
+
+	public Boolean getDeleteOriginal() {
+		return deleteOriginal;
+	}
+
+	public void setDeleteOriginal(Boolean deleteOriginal) {
+		this.deleteOriginal = deleteOriginal;
+	}
+
 	public JavaAPI getOnHeaderPreSave() {
 		return onHeaderPreSave;
 	}

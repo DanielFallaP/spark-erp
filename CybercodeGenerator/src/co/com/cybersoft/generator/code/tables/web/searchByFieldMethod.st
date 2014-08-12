@@ -1,4 +1,4 @@
-@RequestMapping(value="/configuration/$tableName$/getListBy$upperFieldName$Return$returnField$", method=RequestMethod.GET)
+@RequestMapping(value="/common/$tableName$/getListBy$upperFieldName$Return$returnField$", method=RequestMethod.GET)
 		public void get$entityName$ListReturn$returnField$(String $fieldName$, HttpServletResponse response) throws Exception{
 		$entityName$PageEvent $fieldName$Event = $tableName$Service.requestByContaining$upperFieldName$($fieldName$);
 		
