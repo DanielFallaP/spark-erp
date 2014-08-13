@@ -208,21 +208,20 @@
 		        	<table th:if='\${$docName$Info.showBody}' id="$docName$BodyList" class="table table-striped">
 		        		<thead>
 							<tr>
-								<th ></th>
+								$checkHeader$
 								$bodyHeaderFields$
 							</tr>
 						</thead>
 						<tbody id="$docName$BodyList">
 							<tr th:each="object: \${$docName$BodyList}" th:id="\${object.id}"  >
-								<td><div align="center" ><input type="checkbox" /></div></td>
+								$checkColumn$
 								$bodyFields$
 							</tr>
 						</tbody>
 		        	</table>
-					<button th:if='\${$docName$Info.showBody}'  th:text="#{label.newEntryDocTable}" onclick="newEntry();return false;"></button>
-					 
-       				<input th:if='\${$docName$Info.showBody}' type="button" th:value="#{label.deleteSelection}" onclick="submitDeletion();"/>
-       				<a class="popup-with-form" href="#$docName$-body-form" hidden=""></a>
+		        	$additionButton$
+		        	$deletionButton$
+					<a class="popup-with-form" href="#$docName$-body-form" hidden=""></a>
        				<a class="popup-with-form2" href="#$docName$-body-modification-form" hidden=""></a>
 							        				
        				<div align="right" ><input type="button" th:value="#{label.save}" onclick="submitHeader();"/></div>

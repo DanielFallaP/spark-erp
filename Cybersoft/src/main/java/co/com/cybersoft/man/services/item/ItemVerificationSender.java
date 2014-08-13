@@ -45,14 +45,14 @@ public class ItemVerificationSender implements Runnable{
 			template.setAttribute("user", user.getFirstNames());
 			String itemList="";
 			for (String item : items) {
-				itemList+="		"+item+".\n";
+				itemList+="		-"+item+".\n";
 			}
 			template.setAttribute("itemList", itemList);
 			template.setAttribute("requestingUser", reqUser.getFirstNames()+" "+reqUser.getLastName());
 			template.setAttribute("requestingUserMail", reqUser.getEmail());
 			
 			//Send the message
-			Transport.send(new CyberUtils().getSimpleMessage(user.getEmail(), reqUser.getEmail(), "Verificación de referencias de artículos", template.toString()));
+			Transport.send(new CyberUtils().getSimpleMessage(reqUser.getEmail(), user.getEmail(), "Verificación de referencias de artículos", template.toString()));
 			
 			LOG.debug("Email message sent to "+user.getUser()+" requested by "+reqUser.getUser()+" regarding item verification");
 		} catch (Exception e) {

@@ -21,24 +21,24 @@ public class Document {
 	
 	private Boolean deleteOriginal=Boolean.TRUE;
 	
-	private Boolean delete=Boolean.TRUE;
+	private Boolean deletion=Boolean.TRUE;
 	
-	private Boolean add=Boolean.TRUE;
+	private Boolean addition=Boolean.TRUE;
 	
-	public Boolean getDelete() {
-		return delete;
+	public Boolean getDeletion() {
+		return deletion;
 	}
 
-	public void setDelete(Boolean delete) {
-		this.delete = delete;
+	public void setDeletion(Boolean deletion) {
+		this.deletion = deletion;
 	}
 
-	public Boolean getAdd() {
-		return add;
+	public Boolean getAddition() {
+		return addition;
 	}
 
-	public void setAdd(Boolean add) {
-		this.add = add;
+	public void setAddition(Boolean addition) {
+		this.addition = addition;
 	}
 
 	public Boolean getDeleteOriginal() {

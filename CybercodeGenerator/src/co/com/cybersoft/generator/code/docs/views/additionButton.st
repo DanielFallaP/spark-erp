@@ -1,0 +1,1 @@
+<button th:if='\${$docName$Info.showBody}'  th:text="#{label.newEntryDocTable}" onclick="newEntry();return false;"></button>

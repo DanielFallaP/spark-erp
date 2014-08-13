@@ -53,6 +53,8 @@
 			"name":"quotation",		
 			"spanishName":"Cotización",
 			"deleteOriginal":"false",
+			"addition":"false",
+			"deletion":"false",
 			"header":[
 						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"populatedPlace", "autocomplete":"true"},						
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "defaultValue":"today"},

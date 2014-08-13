@@ -1,0 +1,1 @@
+<input th:if='\${$docName$Info.showBody}' type="button" th:value="#{label.deleteSelection}" onclick="submitDeletion();"/>

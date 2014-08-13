@@ -49,10 +49,14 @@ public class DocViewGenerator {
 		template.setAttribute("bodyFields", generateBodyFields(document));
 		template.setAttribute("headerFields", generateHeaderFields(document));
 		template.setAttribute("changeDocReferenceFunctions", generateChangeDocReferencesFunctions(document));
+		template.setAttribute("additionButton", generateAdditionButton(document));
+		template.setAttribute("deletionButton", generateDeletionButton(document));
 
 		template.setAttribute("firstBodyField", document.getBody().get(0).getName());
 
 		template.setAttribute("autoCompleteFunctions", generateAutocompleteReferenceFunctions(document));
+		template.setAttribute("checkHeader", generateCheckHeader(document));
+		template.setAttribute("checkColumn", generateCheckColumn(document));
 		
 		List<Field> fields = document.getHeader();
 		if (!fields.isEmpty()){
@@ -63,6 +67,42 @@ public class DocViewGenerator {
 	}
 
 	
+
+	private Object generateCheckHeader(Document document) {
+		String column="";
+		if (document.getDeletion())
+			return new StringTemplate("<th ></th>").toString();
+		return column;
+	}
+
+	private Object generateCheckColumn(Document document) {
+		String header="";
+		if (document.getDeletion())
+			return new StringTemplate("<td><div align=\"center\" ><input type=\"checkbox\" /></div></td>").toString();
+		return header;
+	}
+
+	private Object generateAdditionButton(Document document) {
+		String addition="";
+		if (document.getAddition()){
+			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
+			StringTemplate template = templateGroup.getInstanceOf("additionButton");
+			template.setAttribute("docName", document.getName());
+			addition=template.toString();
+		}
+		return addition;
+	}
+
+	private Object generateDeletionButton(Document document) {
+		String deletion="";
+		if (document.getDeletion()){
+			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
+			StringTemplate template = templateGroup.getInstanceOf("deletionButton");
+			template.setAttribute("docName", document.getName());
+			deletion=template.toString();
+		}
+		return deletion;
+	}
 
 	private Object generateChangeDocReferencesFunctions(Document document) {
 		String functions="";
@@ -598,7 +638,10 @@ public class DocViewGenerator {
 			List<String> bodyFields = referenceField.getBodyFields();
 			for (String field : bodyFields) {
 				StringTemplate template2 = templateGroup.getInstanceOf("fieldValue");
-				template2.setAttribute("i", i);
+				if (document.getDeletion())
+					template2.setAttribute("i", i);
+				else
+					template2.setAttribute("i", i-1);
 				template2.setAttribute("varAssignment", "$(field).val($(this).html());");
 				template2.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+field);
 				fieldValues+=template2.toString();
@@ -608,7 +651,10 @@ public class DocViewGenerator {
 		
 		for (Field field : body) {
 			StringTemplate template2 = templateGroup.getInstanceOf("fieldValue");
-			template2.setAttribute("i", i);
+			if (document.getDeletion())
+				template2.setAttribute("i", i);
+			else
+				template2.setAttribute("i", i-1);
 			if (!field.isReference()){
 				if (field.getType().equals(Cyberconstants.booleanType))
 					template2.setAttribute("varAssignment", "$(field).prop('checked', $(this).html()==document.getElementById(\"_trueValue\").value);");
