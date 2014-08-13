@@ -29,9 +29,19 @@ public class $upperDocName$BodyInfo implements Serializable{
 	
 	private Boolean created;
 	
+	private Boolean _enableDeletion=Boolean.FALSE;
+	
 	$fields$
 	
 	$referenceFields$
+	
+	public Boolean get_enableDeletion() {
+		return _enableDeletion;
+	}
+
+	public void set_enableDeletion(Boolean _enableDeletion) {
+		this._enableDeletion = _enableDeletion;
+	}
 	
 	public Boolean getCreated() {
 		return created;

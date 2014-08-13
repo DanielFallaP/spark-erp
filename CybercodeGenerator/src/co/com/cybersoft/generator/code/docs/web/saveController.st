@@ -266,6 +266,7 @@ public class $upperDocName$Controller {
 			
 			$bodyAdditionLists$
 			
+			$docName$BodyInfo.set_enableDeletion(Boolean.TRUE);
 			$docName$BodyInfo.setId(null);
 			$setBodyDefaults$
 			$setOnLoadBodyValues$

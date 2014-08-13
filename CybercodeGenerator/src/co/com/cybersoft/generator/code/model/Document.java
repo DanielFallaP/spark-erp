@@ -19,7 +19,7 @@ public class Document {
 	
 	private JavaAPI onHeaderPreSave;
 	
-	private Boolean deleteOriginal=Boolean.TRUE;
+	private Boolean originalDeletion;
 	
 	private Boolean deletion=Boolean.TRUE;
 	
@@ -41,12 +41,12 @@ public class Document {
 		this.addition = addition;
 	}
 
-	public Boolean getDeleteOriginal() {
-		return deleteOriginal;
+	public Boolean getOriginalDeletion() {
+		return originalDeletion;
 	}
 
-	public void setDeleteOriginal(Boolean deleteOriginal) {
-		this.deleteOriginal = deleteOriginal;
+	public void setOriginalDeletion(Boolean originalDeletion) {
+		this.originalDeletion = originalDeletion;
 	}
 
 	public JavaAPI getOnHeaderPreSave() {

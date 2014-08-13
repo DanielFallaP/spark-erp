@@ -45,7 +45,7 @@ public class ItemVerificationSender implements Runnable{
 			template.setAttribute("user", user.getFirstNames());
 			String itemList="";
 			for (String item : items) {
-				itemList+="		-"+item+".\n";
+				itemList+="		- "+item+".\n";
 			}
 			template.setAttribute("itemList", itemList);
 			template.setAttribute("requestingUser", reqUser.getFirstNames()+" "+reqUser.getLastName());

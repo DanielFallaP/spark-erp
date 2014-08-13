@@ -253,6 +253,10 @@
 		        	
 		        	<table >
 		        		$modificationFormFields$
+		        		<tr hidden="">
+		        		 			<td ></td>
+		        		   			<td ><input  type="checkbox" id="$docName$BodyModificationInfo._enableDeletion" th:field="*{$docName$BodyModificationInfo._enableDeletion}" /></td>
+		        		</tr>
 		        		<tr>
 		        			<td>
 		        				<input type="button" th:value="#{label.save}" onclick="submitModification();"/>

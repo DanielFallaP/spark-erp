@@ -70,21 +70,30 @@ public class DocViewGenerator {
 
 	private Object generateCheckHeader(Document document) {
 		String column="";
-		if (document.getDeletion())
+		if (document.getDeletion()||document.getOriginalDeletion()!=null)
 			return new StringTemplate("<th ></th>").toString();
 		return column;
 	}
 
 	private Object generateCheckColumn(Document document) {
 		String header="";
-		if (document.getDeletion())
+		if (document.getDeletion() && document.getOriginalDeletion()==null)
 			return new StringTemplate("<td><div align=\"center\" ><input type=\"checkbox\" /></div></td>").toString();
+		else if (document.getOriginalDeletion()!=null && !document.getOriginalDeletion())
+			return new StringTemplate("<td><div align=\"center\" ><input th:if=\"\\${object._enableDeletion}\" type=\"checkbox\" /></div></td>").toString();
+			
 		return header;
 	}
 
 	private Object generateAdditionButton(Document document) {
 		String addition="";
-		if (document.getAddition()){
+		if (document.getAddition() && document.getOriginalDeletion()==null){
+			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
+			StringTemplate template = templateGroup.getInstanceOf("additionButton");
+			template.setAttribute("docName", document.getName());
+			addition=template.toString();
+		}
+		else if (document.getOriginalDeletion()!=null && !document.getOriginalDeletion()){
 			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 			StringTemplate template = templateGroup.getInstanceOf("additionButton");
 			template.setAttribute("docName", document.getName());
@@ -95,7 +104,13 @@ public class DocViewGenerator {
 
 	private Object generateDeletionButton(Document document) {
 		String deletion="";
-		if (document.getDeletion()){
+		if (document.getDeletion() && document.getOriginalDeletion()==null){
+			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
+			StringTemplate template = templateGroup.getInstanceOf("deletionButton");
+			template.setAttribute("docName", document.getName());
+			deletion=template.toString();
+		}
+		else if (document.getOriginalDeletion()!=null && !document.getOriginalDeletion()){
 			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 			StringTemplate template = templateGroup.getInstanceOf("deletionButton");
 			template.setAttribute("docName", document.getName());

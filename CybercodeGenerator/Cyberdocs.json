@@ -52,9 +52,7 @@
 		{  
 			"name":"quotation",		
 			"spanishName":"Cotización",
-			"deleteOriginal":"false",
-			"addition":"false",
-			"deletion":"false",
+			"originalDeletion":"false",
 			"header":[
 						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"populatedPlace", "autocomplete":"true"},						
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "defaultValue":"today"},
@@ -79,7 +77,9 @@
 		},
 		{  
 			"name":"supplierAssignment",		
-			"spanishName":"Asigna proveedor",		
+			"spanishName":"Asigna proveedor",
+			"addition":"false",
+			"deletion":"false",		
 			"header":[
 						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"populatedPlace", "autocomplete":"true"},						
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "defaultValue":"today"},
@@ -92,7 +92,7 @@
 						{"name":"deliveryType", "spanishName":"Tipo de entrega", "type":"String", "defaultValue":"Immediately"},
 						{"name":"priority", "spanishName":"prioridad", "refType":"priority", "displayField":"priority"},
 						{"name":"imported", "spanishName":"Importado", "type":"Boolean", "defaultValue":"false"},
-						{"name":"quotationNumber", "spanishName":"No.Cotización", "docRefType":"quotation","bodyFields":["item"],"headerFields":["requisitionNumber","receivingWarehouse"],"searchDisplayable":"true"},
+						{"name":"quotationNumber", "spanishName":"No.Cotización", "docRefType":"quotation","bodyFields":["item","thirdParty"],"headerFields":["requisitionNumber","receivingWarehouse"],"searchDisplayable":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					],                                                                                                                                                
 			"body":[
