@@ -22,7 +22,7 @@ import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -129,25 +129,25 @@ public class LabelGenerator implements DBConstants{
 	}
 
 	private void updateDefaultEnglishCreationName(Document table) throws SQLException {
-		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName())+" Creation");
+		englishUpdatePst.setString(1, CodeUtils.getDefaultName(table.getName())+" Creation");
 		englishUpdatePst.setString(2, table.getName()+"CreationTitle");
 		englishUpdatePst.execute();
 	}
 
 	private void updateDefaultEnglishModificationName(Document table) throws SQLException {
-		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName())+" Modification");
+		englishUpdatePst.setString(1, CodeUtils.getDefaultName(table.getName())+" Modification");
 		englishUpdatePst.setString(2, table.getName()+"ModificationTitle");
 		englishUpdatePst.execute();
 	}
 
 	private void updateDefaultEnglishInfoName(Document table) throws SQLException {
-		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
+		englishUpdatePst.setString(1, CodeUtils.getDefaultName(table.getName()));
 		englishUpdatePst.setString(2, table.getName()+"Info");
 		englishUpdatePst.execute();
 	}
 
 	private void updateDefaultEnglishDocumentName(Document table) throws SQLException {
-		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
+		englishUpdatePst.setString(1, CodeUtils.getDefaultName(table.getName()));
 		englishUpdatePst.setString(2, table.getName());
 		englishUpdatePst.execute();
 	}
@@ -155,8 +155,8 @@ public class LabelGenerator implements DBConstants{
 	private void updateDefaultEnglishFields(Document table) throws SQLException {
 		List<Field> fields = table.getAllFields();
 		for (Field field : fields) {
-			englishUpdatePst.setString(1, CodeUtil.getDefaultName(field.getName()));
-			englishUpdatePst.setString(2, table.getName()+CodeUtil.toCamelCase(field.getName()));
+			englishUpdatePst.setString(1, CodeUtils.getDefaultName(field.getName()));
+			englishUpdatePst.setString(2, table.getName()+CodeUtils.toCamelCase(field.getName()));
 			englishUpdatePst.execute();
 		}
 	}
@@ -171,31 +171,31 @@ public class LabelGenerator implements DBConstants{
 	}
 
 	private void updateDefaultEnglishTableConfigurationName(Table table) throws SQLException {
-		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
+		englishUpdatePst.setString(1, CodeUtils.getDefaultName(table.getName()));
 		englishUpdatePst.setString(2, table.getName()+"Configuration");
 		englishUpdatePst.execute();
 	}
 
 	private void updateDefaultEnglishTableCreationName(Table table) throws SQLException {
-		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName())+" Creation");
+		englishUpdatePst.setString(1, CodeUtils.getDefaultName(table.getName())+" Creation");
 		englishUpdatePst.setString(2, table.getName()+"CreationTitle");
 		englishUpdatePst.execute();
 	}
 
 	private void updateDefaultEnglishTableModificationName(Table table) throws SQLException {
-		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName())+" Modification");
+		englishUpdatePst.setString(1, CodeUtils.getDefaultName(table.getName())+" Modification");
 		englishUpdatePst.setString(2, table.getName()+"ModificationTitle");
 		englishUpdatePst.execute();
 	}
 
 	private void updateDefaultEnglishTableInfoName(Table table) throws SQLException {
-		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
+		englishUpdatePst.setString(1, CodeUtils.getDefaultName(table.getName()));
 		englishUpdatePst.setString(2, table.getName()+"Info");
 		englishUpdatePst.execute();
 	}
 
 	private void updateDefaultEnglishTableName(Table table) throws SQLException {
-		englishUpdatePst.setString(1, CodeUtil.getDefaultName(table.getName()));
+		englishUpdatePst.setString(1, CodeUtils.getDefaultName(table.getName()));
 		englishUpdatePst.setString(2, table.getName());
 		englishUpdatePst.execute();
 	}
@@ -203,8 +203,8 @@ public class LabelGenerator implements DBConstants{
 	private void updateDefaultEnglishTableFields(Table table) throws SQLException {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
-			englishUpdatePst.setString(1, CodeUtil.getDefaultName(field.getName()));
-			englishUpdatePst.setString(2, table.getName()+CodeUtil.toCamelCase(field.getName()));
+			englishUpdatePst.setString(1, CodeUtils.getDefaultName(field.getName()));
+			englishUpdatePst.setString(2, table.getName()+CodeUtils.toCamelCase(field.getName()));
 			englishUpdatePst.execute();
 		}
 	}
@@ -240,7 +240,7 @@ public class LabelGenerator implements DBConstants{
 		System.out.println("====================Inserting labels in label table: "+table.getName());
 		DBCollection collection = mongoDB.getCollection(table.getName());
 		DBCursor cursor = collection.find();
-		String labelField = CodeUtil.getLabelField(table);
+		String labelField = CodeUtils.getLabelField(table);
 		while (cursor.hasNext()){
 			DBObject object = cursor.next();
 			String label = (String) object.get(labelField);

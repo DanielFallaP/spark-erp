@@ -9,7 +9,7 @@ import org.antlr.stringtemplate.StringTemplateGroup;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Table;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class TablePersistenceGenerator {
 	
@@ -39,16 +39,16 @@ public class TablePersistenceGenerator {
 			if (!field.getCompoundReference() && !field.isReference() && field.getType().equals(Cybertables.stringType)){
 				StringTemplate stringTemplate = templateGroup.getInstanceOf("queryByField");
 				stringTemplate.setAttribute("fieldName", field.getName());
-				stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				stringTemplate.setAttribute("tableName", table.getName());
 				byFields+=stringTemplate.toString();
 			}
 		}
-		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("queriesByFields", byFields);
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceFactory.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"PersistenceFactory.java");
 	}
 
 	public void generateDomainClass(Table table){
@@ -56,8 +56,8 @@ public class TablePersistenceGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("persistenceDomain");
 		template.setAttribute("fieldDeclaration", generateDomainClassFieldDeclaration(table));
 		template.setAttribute("gettersAndSetters", generateGettersSetters(table));
-		template.setAttribute("coreDomainClass",CodeUtil.toCamelCase(table.getName())+"Details");
-		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("coreDomainClass",CodeUtils.toCamelCase(table.getName())+"Details");
+		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("variableName", table.getName());
 		
 		if (table.hasCompoundIndex()){
@@ -85,14 +85,14 @@ public class TablePersistenceGenerator {
 						+ "$fieldName$Entity = new $refType$();\n"+
 								"BeanUtils.copyProperties(details.get$upperFieldName$Details(), $fieldName$Entity);}\n");
 				subTemp.setAttribute("fieldName", field.getName());
-				subTemp.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				subTemp.setAttribute("refType", CodeUtil.toCamelCase(field.getRefType()));
+				subTemp.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+				subTemp.setAttribute("refType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("embeddedReferences", subTemp.toString());
 			}
 		}
 		
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/domain", CodeUtil.toCamelCase(table.getName())+".java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/domain", CodeUtils.toCamelCase(table.getName())+".java");
 	}
 	
 	private String generateDomainClassFieldDeclaration(Table table){
@@ -113,14 +113,14 @@ public class TablePersistenceGenerator {
 				
 				if (field.isEmbeddedReference()){
 					StringTemplate subTemp = new StringTemplate("private $type$ $name$;\n");
-					subTemp.setAttribute("type", CodeUtil.toCamelCase(field.getRefType()));
+					subTemp.setAttribute("type", CodeUtils.toCamelCase(field.getRefType()));
 					subTemp.setAttribute("name", field.getName()+"Entity");
 					body+=subTemp.toString();
 					body+="\n";
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = new StringTemplate("private $type$ $name$;\n");
 					template.setAttribute("type", Cybertables.stringType);
@@ -146,24 +146,24 @@ public class TablePersistenceGenerator {
 				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 				template.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
 				template.setAttribute("name", field.getName());
-				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 				text+=template.toString()+"\n";
 				
 				if (field.isEmbeddedReference()){
 					template = templateGroup.getInstanceOf("getterSetter");
-					template.setAttribute("type", CodeUtil.toCamelCase(field.getRefType()));
+					template.setAttribute("type", CodeUtils.toCamelCase(field.getRefType()));
 					template.setAttribute("name", field.getName()+"Entity");
-					template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName())+"Entity");
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName())+"Entity");
 					text+=template.toString()+"\n";
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 					template.setAttribute("type", Cybertables.stringType);
 					template.setAttribute("name", compoundField.getName());
-					template.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					text+=template.toString()+"\n";
 				}
 			}
@@ -175,7 +175,7 @@ public class TablePersistenceGenerator {
 	private void generatePersistenceInterface(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceInterface");
-		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("entityName",CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
 		List<Field> fields = table.getFields();
@@ -185,17 +185,17 @@ public class TablePersistenceGenerator {
 		int i=0;
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
-				if (CodeUtil.generateQueryForReferences(field)){
+				if (CodeUtils.generateQueryForReferences(field)){
 					StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$referencedField$(EmbeddedField... fields) throws Exception;\n");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("referencedField", CodeUtil.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("referencedField", CodeUtils.toCamelCase(field.getName()));
 					requestAll+=stringTemplate.toString();
 				}
 				
-				if (CodeUtil.generateAutoComplete(field)){
+				if (CodeUtils.generateAutoComplete(field)){
 					StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestByContaining$upperFieldName$(String $fieldName$) throws Exception;");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 					stringTemplate.setAttribute("fieldName", field.getName());
 					
 					autocompleteRequests+=stringTemplate.toString();
@@ -205,8 +205,8 @@ public class TablePersistenceGenerator {
 					Field keyCompound = fields.get(i+1);
 					if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getDisplayField()));
 						stringTemplate.setAttribute("fieldName", field.getDisplayField());
 						requestAll+=stringTemplate.toString();
 						
@@ -218,20 +218,20 @@ public class TablePersistenceGenerator {
 			}
 			else{
 				
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 						stringTemplate.setAttribute("fieldName", compoundField.getName());
 						requestAll+=stringTemplate.toString();
 					}
 					
 					StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestByContaining$upperFieldName$(String $fieldName$) throws Exception;");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					stringTemplate.setAttribute("fieldName", compoundField.getName());
 					
 					autocompleteRequests+=stringTemplate.toString();
@@ -243,14 +243,14 @@ public class TablePersistenceGenerator {
 		template.setAttribute("requestAll", requestAll);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceService.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"PersistenceService.java");
 	
 	}
 	
 	private void generatePersistenceImpl(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceImplementation");
-		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("entityName",CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("active", table.isActiveReference()?"Active":"");
 		template.setAttribute("autocompleteRepos", generateAutoCompleteRepos(table));
@@ -258,9 +258,9 @@ public class TablePersistenceGenerator {
 		template.setAttribute("imports", generateImports(table));
 		
 		StringTemplateGroup subTemplateGroup=new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
-		if(CodeUtil.generateDescriptionAutocomplete(table)){
+		if(CodeUtils.generateDescriptionAutocomplete(table)){
 			StringTemplate subTemplate = subTemplateGroup.getInstanceOf("fieldPersistenceServiceImpl");
-			subTemplate.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+			subTemplate.setAttribute("entityName",CodeUtils.toCamelCase(table.getName()));
 			subTemplate.setAttribute("tableName", table.getName());
 			template.setAttribute("queryByField", subTemplate.toString());
 		}
@@ -272,21 +272,21 @@ public class TablePersistenceGenerator {
 		int i=0;
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
-				if (CodeUtil.generateQueryForReferences(field)){
+				if (CodeUtils.generateQueryForReferences(field)){
 					StringTemplate stringTemplate = subTemplateGroup.getInstanceOf("requestAll");
 					stringTemplate.setAttribute("repo", table.isActiveReference()?"CustomRepo":"Repository");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 					stringTemplate.setAttribute("tableName", table.getName());
-					stringTemplate.setAttribute("upperReferencedField", CodeUtil.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("upperReferencedField", CodeUtils.toCamelCase(field.getName()));
 					requestImpl+=stringTemplate.toString();
 				}
 				
-				if (CodeUtil.generateAutoComplete(field)){
+				if (CodeUtils.generateAutoComplete(field)){
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("autocompleteRequest");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 					stringTemplate.setAttribute("tableName", table.getName());
 					stringTemplate.setAttribute("fieldName", field.getName());
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 					autocompleteRequests+=stringTemplate.toString();
 				}
 				
@@ -294,9 +294,9 @@ public class TablePersistenceGenerator {
 					Field keyCompound = fields.get(i+1);
 					if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompound");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 						stringTemplate.setAttribute("tableName", table.getName());
-						stringTemplate.setAttribute("upperReferencedField", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("upperReferencedField", CodeUtils.toCamelCase(field.getDisplayField()));
 						stringTemplate.setAttribute("referencedField", field.getDisplayField());
 						requestImpl+=stringTemplate.toString();
 						
@@ -305,23 +305,23 @@ public class TablePersistenceGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompound");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-						stringTemplate.setAttribute("upperReferencedField", CodeUtil.toCamelCase(compoundField.getName()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperReferencedField", CodeUtils.toCamelCase(compoundField.getName()));
 						stringTemplate.setAttribute("referencedField", compoundField.getName());
 						stringTemplate.setAttribute("tableName", table.getName());
 						requestImpl+=stringTemplate.toString();
 					}
 					
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("autocompleteRequest");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 					stringTemplate.setAttribute("tableName", table.getName());
 					stringTemplate.setAttribute("fieldName", compoundField.getName());
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					autocompleteRequests+=stringTemplate.toString();
 					
 				}
@@ -332,7 +332,7 @@ public class TablePersistenceGenerator {
 		template.setAttribute("requestAll", requestImpl);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"PersistenceServiceImpl.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"PersistenceServiceImpl.java");
 		
 	}
 	
@@ -342,14 +342,14 @@ public class TablePersistenceGenerator {
 		String checks="";
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
-			if (CodeUtil.generateAutoCompleteReference(field)){
+			if (CodeUtils.generateAutoCompleteReference(field)){
 				StringTemplate template = templateGroup.getInstanceOf("referenceCheck");
-				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("refType", field.getRefType());
-				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
-				template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperDisplayField", CodeUtils.toCamelCase(field.getDisplayField()));
+				template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				checks+=template.toString()+"\n";
 			}
 		}
@@ -364,9 +364,9 @@ public class TablePersistenceGenerator {
 		String imports="";
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
-			if (CodeUtil.generateAutoCompleteReference(field)){
+			if (CodeUtils.generateAutoCompleteReference(field)){
 				StringTemplate template = templateGroup.getInstanceOf("referenceImport");
-				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("refType", field.getRefType());
 				imports+=template.toString()+"\n";
 			}
@@ -381,9 +381,9 @@ public class TablePersistenceGenerator {
 		String declarations="";
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
-			if (CodeUtil.generateAutoCompleteReference(field)){
+			if (CodeUtils.generateAutoCompleteReference(field)){
 				StringTemplate template = templateGroup.getInstanceOf("referenceDeclaration");
-				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("refType", field.getRefType());
 				declarations+=template.toString()+"\n";
 			}
@@ -397,7 +397,7 @@ public class TablePersistenceGenerator {
 		//Repository interface generation
 		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("repository");
-		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("entityName",CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
 		//Add methods to search by each field
@@ -406,19 +406,19 @@ public class TablePersistenceGenerator {
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				StringTemplate subTemplate=new StringTemplate("$entityName$ findBy$fieldName$($fieldType$ value);\n");
-				subTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-				subTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
-				subTemplate.setAttribute("fieldType", field.getType()!=null?CodeUtil.toCamelCase(field.getType()):Cybertables.stringType);
+				subTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+				subTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+				subTemplate.setAttribute("fieldType", field.getType()!=null?CodeUtils.toCamelCase(field.getType()):Cybertables.stringType);
 				methods+=subTemplate.toString()+"\n";
 			}
 			else
 			{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate subTemplate=new StringTemplate("$entityName$ findBy$fieldName$($fieldType$ value);\n");
-					subTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					subTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
-					subTemplate.setAttribute("fieldType", compoundField.getType()!=null?CodeUtil.toCamelCase(compoundField.getType()):Cybertables.stringType);
+					subTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+					subTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
+					subTemplate.setAttribute("fieldType", compoundField.getType()!=null?CodeUtils.toCamelCase(compoundField.getType()):Cybertables.stringType);
 					methods+=subTemplate.toString()+"\n";
 				}
 			}
@@ -427,11 +427,11 @@ public class TablePersistenceGenerator {
 		
 		template.setAttribute("findByFields", methods);
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"Repository.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"Repository.java");
 		
 		//Custom repository interface generation
 		template = templateGroup.getInstanceOf("customRepositoryInterface");
-		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("entityName",CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		
 		
@@ -441,17 +441,17 @@ public class TablePersistenceGenerator {
 		int i=0;
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
-				if (CodeUtil.generateQueryForReferences(field)){
+				if (CodeUtils.generateQueryForReferences(field)){
 					StringTemplate stringTemplate = new StringTemplate("List<$entityName$> findAllActiveBy$upperReferenceField$(EmbeddedField ...fields) throws Exception;\n");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperReferenceField", CodeUtil.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("upperReferenceField", CodeUtils.toCamelCase(field.getName()));
 					findAllActive+=stringTemplate.toString();
 				}
 				
-				if (CodeUtil.generateAutoComplete(field)){
+				if (CodeUtils.generateAutoComplete(field)){
 					StringTemplate stringTemplate = new StringTemplate("List<$entityName$> findByContaining$upperFieldName$(String substring);\n");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 					
 					autocompleteQueries+=stringTemplate.toString();
 				}
@@ -460,8 +460,8 @@ public class TablePersistenceGenerator {
 					Field keyCompound = fields.get(i+1);
 					if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = new StringTemplate("List<$entityName$> findBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getDisplayField()));
 						stringTemplate.setAttribute("fieldName", field.getDisplayField());
 						findAllActive+=stringTemplate.toString();
 						
@@ -471,20 +471,20 @@ public class TablePersistenceGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType()) && keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = new StringTemplate("List<$entityName$> findBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 						stringTemplate.setAttribute("fieldName", compoundField.getName());
 						findAllActive+=stringTemplate.toString();
 					}
 					
 					StringTemplate stringTemplate = new StringTemplate("List<$entityName$> findByContaining$upperFieldName$(String substring);\n");
-					stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					
 					autocompleteQueries+=stringTemplate.toString();
 				}
@@ -495,11 +495,11 @@ public class TablePersistenceGenerator {
 		template.setAttribute("findAllActive", findAllActive);
 		template.setAttribute("autocompleteQuery", autocompleteQueries);
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepo.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"CustomRepo.java");
 		
 		//Custom repository implementation generation
 		template = templateGroup.getInstanceOf("customRepositoryImplementation");
-		template.setAttribute("entityName",CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("entityName",CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 
 		references = new HashSet<String>();
@@ -508,20 +508,20 @@ public class TablePersistenceGenerator {
 		i=0;
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
-				if (CodeUtil.generateQueryForReferences(field)){
+				if (CodeUtils.generateQueryForReferences(field)){
 					StringTemplate subTemplate = templateGroup.getInstanceOf("findAllActive");
-					subTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					subTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 					subTemplate.setAttribute("tableName", table.getName());
-					subTemplate.setAttribute("upperReferenceField", CodeUtil.toCamelCase(field.getName()));
+					subTemplate.setAttribute("upperReferenceField", CodeUtils.toCamelCase(field.getName()));
 					subTemplate.setAttribute("referenceField", field.getName());
 					findAllActive+=subTemplate.toString();
 				}
 				
-				if (CodeUtil.generateAutoComplete(field)){
+				if (CodeUtils.generateAutoComplete(field)){
 					StringTemplate subTemplate = templateGroup.getInstanceOf("byContainingField");
-					subTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					subTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 					subTemplate.setAttribute("tableName", table.getName());
-					subTemplate.setAttribute("upperReferenceField", CodeUtil.toCamelCase(field.getName()));
+					subTemplate.setAttribute("upperReferenceField", CodeUtils.toCamelCase(field.getName()));
 					subTemplate.setAttribute("fieldName", field.getName());
 					autocompleteQueries+=subTemplate.toString();
 				}
@@ -530,11 +530,11 @@ public class TablePersistenceGenerator {
 					Field keyCompound = fields.get(i+1);
 					if (field.isReference() &&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompoundCustomRepo");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getDisplayField()));
 						stringTemplate.setAttribute("fieldName", field.getDisplayField());
 						stringTemplate.setAttribute("tableName", table.getName());
-						stringTemplate.setAttribute("upperKeyField", CodeUtil.toCamelCase(keyCompound.getName()));
+						stringTemplate.setAttribute("upperKeyField", CodeUtils.toCamelCase(keyCompound.getName()));
 						findAllActive+=stringTemplate.toString();
 						
 						references.add(field.getRefType()+field.getDisplayField());
@@ -542,24 +542,24 @@ public class TablePersistenceGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				//The next field should complete the compound reference for the table 
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompoundCustomRepo");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 						stringTemplate.setAttribute("fieldName", compoundField.getName());
 						stringTemplate.setAttribute("tableName", table.getName());
-						stringTemplate.setAttribute("upperKeyField", CodeUtil.toCamelCase(keyCompound.getName()));
+						stringTemplate.setAttribute("upperKeyField", CodeUtils.toCamelCase(keyCompound.getName()));
 						findAllActive+=stringTemplate.toString();
 					}
 					
 					StringTemplate subTemplate = templateGroup.getInstanceOf("byContainingField");
-					subTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+					subTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 					subTemplate.setAttribute("tableName", table.getName());
-					subTemplate.setAttribute("upperReferenceField", CodeUtil.toCamelCase(compoundField.getName()));
+					subTemplate.setAttribute("upperReferenceField", CodeUtils.toCamelCase(compoundField.getName()));
 					subTemplate.setAttribute("fieldName", compoundField.getName());
 					autocompleteQueries+=subTemplate.toString();
 				}
@@ -570,7 +570,7 @@ public class TablePersistenceGenerator {
 		template.setAttribute("findAllActive", findAllActive);
 		template.setAttribute("byContainingFields", autocompleteQueries);
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtil.toCamelCase(table.getName())+"CustomRepoImpl.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"CustomRepoImpl.java");
 		
 	}
 

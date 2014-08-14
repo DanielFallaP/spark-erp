@@ -9,7 +9,7 @@ import co.com.cybersoft.generator.code.model.Cyberconstants;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.JavaScriptAPI;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class JavaScriptAPIConnector {
 
@@ -50,7 +50,7 @@ public class JavaScriptAPIConnector {
 			codeCall+="\"\"";
 		codeCall+=");\n";
 		if (api.getEmbeddedCodeFile()!=null){
-			codeCall+=CodeUtil.getTextFileContent(Cyberconstants.embeddedCodePath+api.getEmbeddedCodeFile());
+			codeCall+=CodeUtils.getTextFileContent(Cyberconstants.embeddedCodePath+api.getEmbeddedCodeFile());
 		}
 		
 		return codeCall;
@@ -93,7 +93,7 @@ public class JavaScriptAPIConnector {
 			codeCall+="\"\"";
 		codeCall+=");\n";
 		if (api.getEmbeddedModificationCodeFile()!=null){
-			codeCall+=CodeUtil.getTextFileContent(Cyberconstants.embeddedCodePath+api.getEmbeddedModificationCodeFile());
+			codeCall+=CodeUtils.getTextFileContent(Cyberconstants.embeddedCodePath+api.getEmbeddedModificationCodeFile());
 		}
 		
 		return codeCall;

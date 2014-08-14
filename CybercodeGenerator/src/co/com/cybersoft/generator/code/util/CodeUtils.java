@@ -13,14 +13,17 @@ import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
+import org.springframework.beans.BeanUtils;
 
 import co.com.cybersoft.generator.code.model.ArithmeticExpression;
+import co.com.cybersoft.generator.code.model.Cyberconstants;
+import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
 
-public class CodeUtil {
+public class CodeUtils {
 	
 	
 	public static String toCamelCase(String name){
@@ -87,24 +90,24 @@ public class CodeUtil {
 				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 				template.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
 				template.setAttribute("name", field.getName());
-				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 				text+=template.toString()+"\n";
 				
 				if (field.isEmbeddedReference()){
 					StringTemplate temp = templateGroup.getInstanceOf("getterSetter");
-					temp.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
+					temp.setAttribute("type", CodeUtils.toCamelCase(field.getRefType())+"Details");
 					temp.setAttribute("name", field.getName()+"Details");
-					temp.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName())+"Details");
+					temp.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName())+"Details");
 					text+=temp.toString()+"\n";
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(spark, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(spark, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 					template.setAttribute("type", Cybertables.stringType);
 					template.setAttribute("name", compoundField.getName());
-					template.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					text+=template.toString()+"\n";
 				}
 			}
@@ -131,14 +134,14 @@ public class CodeUtil {
 				
 				if (field.isEmbeddedReference()){
 					fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-					fieldTemplate.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
+					fieldTemplate.setAttribute("type", CodeUtils.toCamelCase(field.getRefType())+"Details");
 					fieldTemplate.setAttribute("name", field.getName()+"Details");
 					text+=fieldTemplate.toString();
 					text+="\n";
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(spark, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(spark, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
 					fieldTemplate.setAttribute("type", Cybertables.stringType);
@@ -419,6 +422,88 @@ public class CodeUtil {
 			}
 				
 		}
+	}
+	
+	public static List<Field> getDocReferenceHeaderFields(Document document, Cyberdocs cyberdocs) {
+		Field referenceField = document.getHeaderDocReferenceField();
+		if (referenceField!=null && !referenceField.getHeaderFields().isEmpty()){
+			List<Field> fields = new ArrayList<>();
+			List<String> headerFields = referenceField.getHeaderFields();
+			for (String headerField : headerFields) {
+				fields.add(getDocReferenceHeaderField(cyberdocs, referenceField, headerField));
+			}
+			return fields;
+		}
+		return null;
+	}
+	
+	private static Field getDocReferenceHeaderField(Cyberdocs cyberdocs, Field referenceField, String fieldName){
+		Document referencedDoc=null;
+		List<Document> documents = cyberdocs.getDocuments();
+		for (Document document : documents) {
+			if (document.getName().equals(referenceField.getDocRefType())){
+				referencedDoc=document;
+				break;
+			}
+		}
+		
+		List<Field> header = referencedDoc.getHeader();
+		for (Field field : header) {
+			if (field.getName().equals(fieldName)){
+				if (field.getType()!=null)
+					return field;
+				else{
+					Field field2 = new Field();
+					BeanUtils.copyProperties(field, field2);
+					field2.setType(Cyberconstants.stringType);
+					return field2;
+				}
+			}
+		}
+		
+		referenceField = referencedDoc.getHeaderDocReferenceField();
+		return getDocReferenceHeaderField(cyberdocs, referenceField, fieldName);
+	}
+
+	public static List<Field> getDocReferenceBodyFields(Document document, Cyberdocs cyberdocs) {
+		Field referenceField = document.getBodyDocReferenceField();
+		if (referenceField!=null && !referenceField.getBodyFields().isEmpty()){
+			List<Field> fields = new ArrayList<>();
+			List<String> bodyFields = referenceField.getBodyFields();
+			for (String bodyField : bodyFields) {
+				fields.add(getDocReferenceBodyField(cyberdocs, referenceField, bodyField));
+			}
+			return fields;
+		}
+		return null;
+	}
+	
+	private static Field getDocReferenceBodyField(Cyberdocs cyberdocs, Field referenceField, String fieldName){
+		Document referencedDoc=null;
+		List<Document> documents = cyberdocs.getDocuments();
+		for (Document document : documents) {
+			if (document.getName().equals(referenceField.getDocRefType())){
+				referencedDoc=document;
+				break;
+			}
+		}
+		
+		List<Field> body = referencedDoc.getBody();
+		for (Field field : body) {
+			if (field.getName().equals(fieldName)){
+				if (field.getRefType()==null)
+					return field;
+				else{
+					Field field2 = new Field();
+					BeanUtils.copyProperties(field, field2);
+					field2.setType(Cyberconstants.stringType);
+					return field2;
+				}
+			}
+		}
+		
+		referenceField = referencedDoc.getBodyDocReferenceField();
+		return getDocReferenceBodyField(cyberdocs, referenceField, fieldName);
 	}
 	
 }

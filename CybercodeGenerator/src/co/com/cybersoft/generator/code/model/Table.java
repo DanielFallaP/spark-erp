@@ -3,7 +3,7 @@ package co.com.cybersoft.generator.code.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class Table {
 	private String name;
@@ -44,7 +44,7 @@ public class Table {
 	}
 	
 	public boolean isActiveReference(){
-		if (CodeUtil.containsField(this, Cybertables.activeFieldName))
+		if (CodeUtils.containsField(this, Cybertables.activeFieldName))
 			return true;
 		else
 			return false;
@@ -64,7 +64,7 @@ public class Table {
 			if (field.getKeyCompound()&&!field.getCompoundReference())
 				compoundIndex.add(field);
 			if (field.getKeyCompound()&&field.getCompoundReference())
-				compoundIndex.addAll(CodeUtil.getCompoundKey(spark, field.getRefType()));
+				compoundIndex.addAll(CodeUtils.getCompoundKey(spark, field.getRefType()));
 		}
 		return compoundIndex;
 	}

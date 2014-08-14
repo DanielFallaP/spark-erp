@@ -17,7 +17,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -57,7 +57,7 @@ public class DataPopulation implements DBConstants{
 		FileReader fileReader = new FileReader(dataTablePath);
 		BufferedReader reader = new BufferedReader(fileReader);
 		
-		BufferedWriter bufferedWriter = CodeUtil.initializeErrorFileWriting("insertionErrors.txt");
+		BufferedWriter bufferedWriter = CodeUtils.initializeErrorFileWriting("insertionErrors.txt");
 		String line = reader.readLine();
 			while(line!=null){
 				try {
@@ -72,7 +72,7 @@ public class DataPopulation implements DBConstants{
 					}
 				} catch (Exception e) {
 					String errorLine=line+"   "+e.getMessage();
-					bufferedWriter = CodeUtil.writeErrorLine(errorLine, bufferedWriter);
+					bufferedWriter = CodeUtils.writeErrorLine(errorLine, bufferedWriter);
 					line=reader.readLine();
 					continue;
 				}
@@ -93,7 +93,7 @@ public class DataPopulation implements DBConstants{
 					i++;
 				}
 				else{
-					List<Field> compoundKey = CodeUtil.getCompoundKey(cybersystems, field.getRefType());
+					List<Field> compoundKey = CodeUtils.getCompoundKey(cybersystems, field.getRefType());
 					for (Field compoundField : compoundKey) {
 						appendValue(doc, compoundField, data[i+1], mongoDB);
 						i++;

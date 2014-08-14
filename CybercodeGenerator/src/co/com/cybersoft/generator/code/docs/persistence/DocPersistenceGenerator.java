@@ -12,7 +12,7 @@ import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class DocPersistenceGenerator {
 
@@ -44,7 +44,7 @@ public class DocPersistenceGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("startup");
 		template.setAttribute("checkAndStart", generateSequences());
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/startup", "SequenceServiceImpl.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/startup", "SequenceServiceImpl.java");
 	}
 
 	private String generateSequences() {
@@ -65,7 +65,7 @@ public class DocPersistenceGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("domainBody");
 		template.setAttribute("fields", generateDomainClassBodyFieldDeclaration(document));
 		template.setAttribute("gettersSetters", generateGettersSetters(document.getBody()));
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("referenceFields", generateReferenceDomainFieldsAndGS(document));
 		
 		if (document.hasCompoundIndex()){
@@ -85,25 +85,26 @@ public class DocPersistenceGenerator {
 			template.setAttribute("compoundIndex", subTemplate.toString());
 		}
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/domain", CodeUtil.toCamelCase(document.getName())+"Body.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/domain", CodeUtils.toCamelCase(document.getName())+"Body.java");
 	}
 
 	private Object generateReferenceDomainFieldsAndGS(Document document) {
 		String fields="";
 		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
-				List<String> bodyFields = referenceField.getBodyFields();
-				for (String field : bodyFields) {
-					StringTemplate fieldTemplate = new StringTemplate("private String $name$;\n\n");
-					fieldTemplate.setAttribute("name", field);
+				List<Field> bodyFields = CodeUtils.getDocReferenceBodyFields(document, cyberdocs);
+				for (Field field : bodyFields) {
+					StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+					fieldTemplate.setAttribute("name", field.getName());
+					fieldTemplate.setAttribute("type", field.getType());
 					fields+=fieldTemplate.toString();
 					fields+="\n";
 					
 					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
-					gettersSettersTemplate.setAttribute("type", Cyberconstants.stringType);
-					gettersSettersTemplate.setAttribute("name", field);
-					gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field));
+					gettersSettersTemplate.setAttribute("type", field.getType());
+					gettersSettersTemplate.setAttribute("name", field.getName());
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 					fields+=gettersSettersTemplate.toString()+"\n\n";
 				}
 		}
@@ -114,18 +115,19 @@ public class DocPersistenceGenerator {
 		String fields="";
 		Field referenceField = document.getHeaderDocReferenceField();
 		if (referenceField!=null){
-				List<String> bodyFields = referenceField.getHeaderFields();
-				for (String field : bodyFields) {
-					StringTemplate fieldTemplate = new StringTemplate("private String $name$;\n\n");
-					fieldTemplate.setAttribute("name", field);
+				List<Field> headerFields  = CodeUtils.getDocReferenceHeaderFields(document, cyberdocs);
+				for (Field field : headerFields) {
+					StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+					fieldTemplate.setAttribute("name", field.getName());
+					fieldTemplate.setAttribute("type", field.getType());
 					fields+=fieldTemplate.toString();
 					fields+="\n";
 					
 					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
-					gettersSettersTemplate.setAttribute("type", Cyberconstants.stringType);
-					gettersSettersTemplate.setAttribute("name", field);
-					gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field));
+					gettersSettersTemplate.setAttribute("type", field.getType());
+					gettersSettersTemplate.setAttribute("name", field.getName());
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 					fields+=gettersSettersTemplate.toString()+"\n\n";
 				}
 		}
@@ -136,32 +138,32 @@ public class DocPersistenceGenerator {
 		//Repository interface generation
 				StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.documentCodePath+"persistence");
 				StringTemplate template = templateGroup.getInstanceOf("repository");
-				template.setAttribute("upperDocName",CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("upperDocName",CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("docName", document.getName());
 				
-				CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/repository/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"Repository.java");
+				CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/repository/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"Repository.java");
 				
 				//Custom repository interface generation
 				template = templateGroup.getInstanceOf("customRepoInterface");
-				template.setAttribute("upperDocName",CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("upperDocName",CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("docName", document.getName());
 				
 				
-				CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/repository/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"CustomRepo.java");
+				CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/repository/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"CustomRepo.java");
 				
 				//Custom repository implementation generation
 				template = templateGroup.getInstanceOf("customRepoImpl");
-				template.setAttribute("upperDocName",CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("upperDocName",CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("docName", document.getName());
 				template.setAttribute("rowsPerSearch", Cyberconstants.rowsPerSearch);
 				
-				CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/repository/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"CustomRepoImpl.java");
+				CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/repository/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"CustomRepoImpl.java");
 	}
 
 	private void generatePersistenceImpl(Document document) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.documentCodePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceImpl");
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
 		template.setAttribute("checkHeaderReferences", generateHeaderCheck(document));
 		template.setAttribute("checkAdditionReferences", generateBodyAdditionCheck(document));
@@ -174,7 +176,7 @@ public class DocPersistenceGenerator {
 		template.setAttribute("headerReferences", generateHeaderReferences(document));
 
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"PersistenceServiceImpl.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"PersistenceServiceImpl.java");
 	}
 
 	private Object generateDocReferenceVariable(Document document) {
@@ -184,8 +186,8 @@ public class DocPersistenceGenerator {
 			StringTemplate stringTemplate = new StringTemplate("$upperDocRef$ $docRef$ = $docRef$Repository.findByNumericId(Long.parseLong($docName$.get$upperRefField$()));\n");
 			stringTemplate.setAttribute("docName", document.getName());
 			stringTemplate.setAttribute("docRef", referenceField.getDocRefType());
-			stringTemplate.setAttribute("upperRefField", CodeUtil.toCamelCase(referenceField.getName()));
-			stringTemplate.setAttribute("upperDocRef", CodeUtil.toCamelCase(referenceField.getDocRefType()));
+			stringTemplate.setAttribute("upperRefField", CodeUtils.toCamelCase(referenceField.getName()));
+			stringTemplate.setAttribute("upperDocRef", CodeUtils.toCamelCase(referenceField.getDocRefType()));
 			variable=stringTemplate.toString();
 		}
 		return variable;
@@ -200,7 +202,7 @@ public class DocPersistenceGenerator {
 				StringTemplate stringTemplate = new StringTemplate("$docName$.set$upperFieldName$($docRef$.get$upperFieldName$());\n");
 				stringTemplate.setAttribute("docName", document.getName());
 				stringTemplate.setAttribute("docRef", referenceField.getDocRefType());
-				stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field));
+				stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
 				references+=stringTemplate.toString();
 			}
 		}
@@ -213,7 +215,7 @@ public class DocPersistenceGenerator {
 		if (field!=null){
 			StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.tableCodePath+"persistence");
 			StringTemplate template = templateGroup.getInstanceOf("referenceDeclaration");
-			template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getDocRefType()));
+			template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getDocRefType()));
 			template.setAttribute("refType", field.getDocRefType());
 			reference+=template.toString()+"\n";
 		}
@@ -228,10 +230,10 @@ public class DocPersistenceGenerator {
 			List<String> bodyFields = referenceField.getBodyFields();
 			StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.documentCodePath+"persistence");
 			StringTemplate stringTemplate = templateGroup.getInstanceOf("bodyReference");
-			stringTemplate.setAttribute("upperDocRef", CodeUtil.toCamelCase(referenceField.getDocRefType()));
+			stringTemplate.setAttribute("upperDocRef", CodeUtils.toCamelCase(referenceField.getDocRefType()));
 			stringTemplate.setAttribute("docRef", referenceField.getDocRefType());
 			stringTemplate.setAttribute("docName", document.getName());
-			stringTemplate.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+			stringTemplate.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 			
 			String fields="";
 			for (String field : bodyFields) {
@@ -239,7 +241,7 @@ public class DocPersistenceGenerator {
 				StringTemplate template = new StringTemplate("$docName$Body.set$upperFieldName$($docRef$Body.get$upperFieldName$());\n");
 				template.setAttribute("docRef", referenceField.getDocRefType());
 				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
 				fields+=template.toString();
 			}
 			
@@ -257,7 +259,7 @@ public class DocPersistenceGenerator {
 		Field referenceField = document.getDocReferenceField();
 		if (referenceField!=null){
 			StringTemplate template=templateGroup.getInstanceOf("importDocReference");
-			template.setAttribute("upperRefType", CodeUtil.toCamelCase(referenceField.getDocRefType()));
+			template.setAttribute("upperRefType", CodeUtils.toCamelCase(referenceField.getDocRefType()));
 			template.setAttribute("refType", referenceField.getDocRefType());
 			imports+=template.toString()+"\n";
 			references.add(referenceField.getDocRefType());
@@ -265,9 +267,9 @@ public class DocPersistenceGenerator {
 				
 		List<Field> fields = document.getAllFields();
 		for (Field field : fields) {
-			if (CodeUtil.generateAutoCompleteReference(field) && !references.contains(field.getRefType())){
+			if (CodeUtils.generateAutoCompleteReference(field) && !references.contains(field.getRefType())){
 				StringTemplate template = templateGroup.getInstanceOf("referenceImport");
-				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("refType", field.getRefType());
 				imports+=template.toString()+"\n";
 				references.add(field.getRefType());
@@ -287,9 +289,9 @@ public class DocPersistenceGenerator {
 
 		HashSet<String> references = new HashSet<String>();
 		for (Field field : fields) {
-			if (CodeUtil.generateAutoCompleteReference(field) && !references.contains(field.getRefType())){
+			if (CodeUtils.generateAutoCompleteReference(field) && !references.contains(field.getRefType())){
 				StringTemplate template = templateGroup.getInstanceOf("referenceDeclaration");
-				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("refType", field.getRefType());
 				declarations+=template.toString()+"\n";
 				references.add(field.getRefType());
@@ -305,13 +307,13 @@ public class DocPersistenceGenerator {
 		String checks="";
 		List<Field> body = document.getBody();
 		for (Field field : body) {
-			if (field.isReference() && CodeUtil.generateAutoCompleteReference(field) && field.getCheckReference()){
+			if (field.isReference() && CodeUtils.generateAutoCompleteReference(field) && field.getCheckReference()){
 				StringTemplate template = templateGroup.getInstanceOf("bodyModificationReferenceField");
-				template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("refType", field.getRefType());
-				template.setAttribute("displayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("displayField", CodeUtils.toCamelCase(field.getDisplayField()));
 				template.setAttribute("fieldName", field.getName());
 				
 				checks+=template.toString();
@@ -327,13 +329,13 @@ public class DocPersistenceGenerator {
 		String checks="";
 		List<Field> body = document.getBody();
 		for (Field field : body) {
-			if (field.isReference() && CodeUtil.generateAutoCompleteReference(field) && field.getCheckReference()){
+			if (field.isReference() && CodeUtils.generateAutoCompleteReference(field) && field.getCheckReference()){
 				StringTemplate template = templateGroup.getInstanceOf("bodyReferenceCheck");
-				template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("refType", field.getRefType());
-				template.setAttribute("displayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("displayField", CodeUtils.toCamelCase(field.getDisplayField()));
 				template.setAttribute("fieldName", field.getName());
 				
 				checks+=template.toString();
@@ -349,13 +351,13 @@ public class DocPersistenceGenerator {
 		String checks="";
 		List<Field> body = document.getHeader();
 		for (Field field : body) {
-			if (field.isReference() && CodeUtil.generateAutoCompleteReference(field) && field.getCheckReference()){
+			if (field.isReference() && CodeUtils.generateAutoCompleteReference(field) && field.getCheckReference()){
 				StringTemplate template = templateGroup.getInstanceOf("headerReferenceCheck");
-				template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("refType", field.getRefType());
-				template.setAttribute("displayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("displayField", CodeUtils.toCamelCase(field.getDisplayField()));
 				template.setAttribute("fieldName", field.getName());
 				
 				checks+=template.toString()+"\n";
@@ -363,11 +365,11 @@ public class DocPersistenceGenerator {
 			
 			if (field.getDocRefType()!=null && field.getCheckReference()){
 				StringTemplate template = templateGroup.getInstanceOf("headerDocReferenceCheck");
-				template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				template.setAttribute("upperRefType", CodeUtil.toCamelCase(field.getDocRefType()));
+				template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getDocRefType()));
 				template.setAttribute("refType", field.getDocRefType());
-				template.setAttribute("displayField", CodeUtil.toCamelCase(Cyberconstants.numericIdName));
+				template.setAttribute("displayField", CodeUtils.toCamelCase(Cyberconstants.numericIdName));
 				template.setAttribute("fieldName", field.getName());
 				
 				checks+=template.toString()+"\n";
@@ -380,10 +382,10 @@ public class DocPersistenceGenerator {
 	private void generatePersistenceInterface(Document document) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.documentCodePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceInterface");
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"PersistenceService.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"PersistenceService.java");
 	}
 
 	private void generateDomainHeaderClass(Document document) {
@@ -391,7 +393,7 @@ public class DocPersistenceGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("domainHeader");
 		template.setAttribute("fields", generateDomainClassHeaderFieldDeclaration(document));
 		template.setAttribute("gettersSetters", generateGettersSetters(document.getHeader()));
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
 		template.setAttribute("referenceFields", generateHeaderReferenceDomainFieldsAndGS(document));
 		
@@ -412,7 +414,7 @@ public class DocPersistenceGenerator {
 			template.setAttribute("compoundIndex", subTemplate.toString());
 		}
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/domain", CodeUtil.toCamelCase(document.getName())+".java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/domain", CodeUtils.toCamelCase(document.getName())+".java");
 	}
 
 	private String generateGettersSetters(List<Field> fields) {
@@ -425,24 +427,24 @@ public class DocPersistenceGenerator {
 				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 				template.setAttribute("type", field.isReference()||field.getDocRefType()!=null?Cybertables.stringType:field.getType());
 				template.setAttribute("name", field.getName());
-				template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 				text+=template.toString()+"\n";
 				
 				if (field.isEmbeddedReference()){
 					template = templateGroup.getInstanceOf("getterSetter");
-					template.setAttribute("type", CodeUtil.toCamelCase(field.getRefType()));
+					template.setAttribute("type", CodeUtils.toCamelCase(field.getRefType()));
 					template.setAttribute("name", field.getName()+"Entity");
-					template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName())+"Entity");
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName())+"Entity");
 					text+=template.toString()+"\n";
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 					template.setAttribute("type", Cybertables.stringType);
 					template.setAttribute("name", compoundField.getName());
-					template.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					text+=template.toString()+"\n";
 				}
 			}
@@ -469,14 +471,14 @@ public class DocPersistenceGenerator {
 				
 				if (field.isEmbeddedReference()){
 					StringTemplate subTemp = new StringTemplate("private $type$ $name$;\n");
-					subTemp.setAttribute("type", CodeUtil.toCamelCase(field.getRefType()));
+					subTemp.setAttribute("type", CodeUtils.toCamelCase(field.getRefType()));
 					subTemp.setAttribute("name", field.getName()+"Entity");
 					body+=subTemp.toString();
 					body+="\n";
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = new StringTemplate("private $type$ $name$;\n");
 					template.setAttribute("type", Cybertables.stringType);
@@ -507,14 +509,14 @@ public class DocPersistenceGenerator {
 				
 				if (field.isEmbeddedReference()){
 					StringTemplate subTemp = new StringTemplate("private $type$ $name$;\n");
-					subTemp.setAttribute("type", CodeUtil.toCamelCase(field.getRefType()));
+					subTemp.setAttribute("type", CodeUtils.toCamelCase(field.getRefType()));
 					subTemp.setAttribute("name", field.getName()+"Entity");
 					body+=subTemp.toString();
 					body+="\n";
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = new StringTemplate("private $type$ $name$;\n");
 					template.setAttribute("type", Cybertables.stringType);

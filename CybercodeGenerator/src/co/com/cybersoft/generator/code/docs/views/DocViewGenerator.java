@@ -13,7 +13,7 @@ import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.JavaScriptAPI;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class DocViewGenerator {
 
@@ -39,7 +39,7 @@ public class DocViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("saveView");
 		template.setAttribute("javaScripts", JavaScriptAPIConnector.generateScriptsTags(document));
 		template.setAttribute("docName", document.getName());
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("datePickers", generateDateFieldPickers(document));
 		template.setAttribute("modificationCompoundSelectionFunctions", generateCompoundSelectionFunctions(document));
 		template.setAttribute("setModificationFormFunction", generateModificationFormValues(document));
@@ -63,7 +63,7 @@ public class DocViewGenerator {
 			template.setAttribute("firstField", fields.get(0).getName());
 		}
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/docs/"+document.getName(), "save"+CodeUtil.toCamelCase(document.getName())+".html");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/docs/"+document.getName(), "save"+CodeUtils.toCamelCase(document.getName())+".html");
 	}
 
 	
@@ -163,13 +163,13 @@ public class DocViewGenerator {
 		StringTemplateGroup templateGroup2 = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 
 		for (Field field : fields) {
-			if (CodeUtil.generateAutoCompleteReference(field)){
+			if (CodeUtils.generateAutoCompleteReference(field)){
 				StringTemplate template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("displayField", field.getDisplayField());
-				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("upperDisplayField", CodeUtils.toCamelCase(field.getDisplayField()));
 				template.setAttribute("referenceType", field.getRefType());
-				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("entityName", CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
 				template.setAttribute("namespace", Cybertables.docNamespace);
 				
@@ -178,13 +178,13 @@ public class DocViewGenerator {
 
 				functions+="\n"+template.toString();
 			}
-			if (CodeUtil.generateAutoCompleteReferenceCompoundField(field)){
+			if (CodeUtils.generateAutoCompleteReferenceCompoundField(field)){
 				StringTemplate template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("displayField", field.getDisplayField());
-				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("upperDisplayField", CodeUtils.toCamelCase(field.getDisplayField()));
 				template.setAttribute("referenceType", field.getRefType());
-				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("entityName", CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
 				template.setAttribute("namespace", Cybertables.docNamespace);
 				
@@ -194,12 +194,12 @@ public class DocViewGenerator {
 				functions+="\n"+template.toString();
 			}
 			
-			if (CodeUtil.generateAutocompleteDocReference(field)){
+			if (CodeUtils.generateAutocompleteDocReference(field)){
 				StringTemplate template = templateGroup2.getInstanceOf("autocompleteReferenceFunction");
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("referenceType", field.getDocRefType());
-				template.setAttribute("upperReferenceType", CodeUtil.toCamelCase(field.getDocRefType()));
-				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("upperReferenceType", CodeUtils.toCamelCase(field.getDocRefType()));
+				template.setAttribute("entityName", CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
 				template.setAttribute("namespace", Cybertables.docNamespace);
 				if (field.getBodyFields()!=null&&!field.getBodyFields().isEmpty()){
@@ -212,13 +212,13 @@ public class DocViewGenerator {
 		
 		fields=document.getBody();
 		for (Field field : fields) {
-			if (CodeUtil.generateAutoCompleteReference(field)){
+			if (CodeUtils.generateAutoCompleteReference(field)){
 				StringTemplate template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("displayField", field.getDisplayField());
-				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("upperDisplayField", CodeUtils.toCamelCase(field.getDisplayField()));
 				template.setAttribute("referenceType", field.getRefType());
-				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("entityName", CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
 				template.setAttribute("namespace", Cybertables.docNamespace);
 				
@@ -230,9 +230,9 @@ public class DocViewGenerator {
 				template = templateGroup.getInstanceOf("autocompleteReferenceFunction");
 				template.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+field.getName());
 				template.setAttribute("displayField", field.getDisplayField());
-				template.setAttribute("upperDisplayField", CodeUtil.toCamelCase(field.getDisplayField()));
+				template.setAttribute("upperDisplayField", CodeUtils.toCamelCase(field.getDisplayField()));
 				template.setAttribute("referenceType", field.getRefType());
-				template.setAttribute("entityName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("entityName", CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
 				template.setAttribute("namespace", Cybertables.docNamespace);
 				
@@ -280,6 +280,7 @@ public class DocViewGenerator {
 						Field field2 = new Field();
 						field2.setName(fieldName);
 						field2.setType(Cyberconstants.stringType);
+						field2.setReadOnly(true);
 						if ((i+j-hiddenFields)%Cyberconstants.headerColumnsPerRow!=0){
 							headerRow.add(field2);
 						}
@@ -327,10 +328,10 @@ public class DocViewGenerator {
 				else
 					template = stringTemplateGroup.getInstanceOf("editableHeaderTextAreaField");
 				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
 				if (field.getReadOnly())
-					template.setAttribute("disabled", "disabled=\"disabled\"");
+					template.setAttribute("disabled", "readonly=\"readonly\"");
 				if (field.getType().equals(Cybertables.dateType))
 					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
 				fields+=template.toString()+"\n";
@@ -339,18 +340,18 @@ public class DocViewGenerator {
 			if (field.getDocRefType()!=null){
 				template = stringTemplateGroup.getInstanceOf("editableHeaderField");
 				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
 				
 				fields+=template.toString();
 			}
 			
 			if (field.isReference() && !field.getCompoundReference()){
-				if (CodeUtil.referencesLabelTable(field, cybertables)){
+				if (CodeUtils.referencesLabelTable(field, cybertables)){
 					template = stringTemplateGroup.getInstanceOf("referenceHeaderLabelField");
 				}
 				else{
-					if (CodeUtil.generateAutoCompleteReference(field)){
+					if (CodeUtils.generateAutoCompleteReference(field)){
 						template = stringTemplateGroup.getInstanceOf("referenceHeaderAutocompleteRow");
 					}
 					else{
@@ -361,7 +362,7 @@ public class DocViewGenerator {
 					}
 				}
 				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("displayName", field.getDisplayField());
 				fields+=template.toString()+"\n";
@@ -409,20 +410,34 @@ public class DocViewGenerator {
 		
 		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
-			List<String> fields = referenceField.getBodyFields();
-			for (String field : fields) {
-				StringTemplate template = templateGroup.getInstanceOf("bodyColumn");
-				template.setAttribute("fieldName", field);
+			List<Field> fields = CodeUtils.getDocReferenceBodyFields(document, cyberdocs);
+			for (Field field : fields) {
+				StringTemplate template;
+				if (!CodeUtils.referencesLabelTable(field, cybertables)&& (field.getType()==null || !field.getType().equals(Cyberconstants.booleanType))){
+					template = templateGroup.getInstanceOf("bodyColumn");
+				}
+				else if (CodeUtils.referencesLabelTable(field, cybertables)){
+					template = templateGroup.getInstanceOf("labelBodyColumn");
+				}
+				else{
+					template = templateGroup.getInstanceOf("labelBodyBooleanColumn");
+				}
+				template.setAttribute("fieldName", field.getName());
+				if (!field.getDisplayable())
+					template.setAttribute("hide", "class=\"hideANDseek\"");
+				
+				if (field.getType()!=null && (field.getType().equals(Cyberconstants.integerType) || field.getType().equals(Cyberconstants.longType)||field.getType().equals(Cyberconstants.doubleType)))
+					template.setAttribute("alignment", "class=\"right\"");
 				bodyFields+=template.toString();
 			}
 		}
 		
 		for (Field field : body) {
 			StringTemplate template;
-			if (!CodeUtil.referencesLabelTable(field, cybertables)&& (field.getType()==null || !field.getType().equals(Cyberconstants.booleanType))){
+			if (!CodeUtils.referencesLabelTable(field, cybertables)&& (field.getType()==null || !field.getType().equals(Cyberconstants.booleanType))){
 				template = templateGroup.getInstanceOf("bodyColumn");
 			}
-			else if (CodeUtil.referencesLabelTable(field, cybertables)){
+			else if (CodeUtils.referencesLabelTable(field, cybertables)){
 				template = templateGroup.getInstanceOf("labelBodyColumn");
 			}
 			else{
@@ -450,7 +465,7 @@ public class DocViewGenerator {
 			for (String field : bodyFields) {
 				StringTemplate template = templateGroup.getInstanceOf("headerBodyColumn");
 				template.setAttribute("docName", referenceField.getDocRefType());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
 				
 				headers+=template.toString();
 			}
@@ -459,7 +474,7 @@ public class DocViewGenerator {
 		for (Field field : body) {
 			StringTemplate template = templateGroup.getInstanceOf("headerBodyColumn");
 			template.setAttribute("docName", document.getName());
-			template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+			template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 			if (!field.getDisplayable())
 				template.setAttribute("hide", "class=\"hideANDseek\"" );
 			headers+=template.toString();
@@ -480,7 +495,7 @@ public class DocViewGenerator {
 				StringTemplate template;
 				template = stringTemplateGroup.getInstanceOf("docReferenceRow");
 				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
 				template.setAttribute("fieldName", field);
 				template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field);
 				template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field);
@@ -500,13 +515,13 @@ public class DocViewGenerator {
 				else
 					template = stringTemplateGroup.getInstanceOf("editableTextAreaRow");
 				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("fieldNameId", field.getName()+"Modification");
 				template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field.getName());
 				template.setAttribute("modificationPrefix", "_");
 				if (field.getReadOnly())
-					template.setAttribute("disabled", "disabled=\"disabled\"");
+					template.setAttribute("disabled", "readonly=\"readonly\"");
 				if (field.getType().equals(Cybertables.dateType))
 					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
 				text+=template.toString()+"\n";
@@ -514,11 +529,11 @@ public class DocViewGenerator {
 			
 			if (field.isReference() && !field.getCompoundReference()){
 				StringTemplate template;
-				if (CodeUtil.referencesLabelTable(field, cybertables)){
+				if (CodeUtils.referencesLabelTable(field, cybertables)){
 					template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
 				}
 				else{
-					if (CodeUtil.generateAutoCompleteReference(field)){
+					if (CodeUtils.generateAutoCompleteReference(field)){
 						template = stringTemplateGroup.getInstanceOf("referenceTableAutocompleteRow");
 					}
 					else{
@@ -529,7 +544,7 @@ public class DocViewGenerator {
 					}
 				}
 				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("displayName", field.getDisplayField());
 				template.setAttribute("fieldNameId", field.getName()+"Modification");
@@ -539,11 +554,11 @@ public class DocViewGenerator {
 			}
 			
 			if (field.getCompoundReference()){
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField: compoundKey) {
 					StringTemplate template = stringTemplateGroup.getInstanceOf("referenceTableRow");
 					template.setAttribute("docName", document.getName());
-					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					template.setAttribute("fieldName", compoundField.getName());
 					template.setAttribute("displayName", compoundField.getName());
 					text+=template.toString()+"\n";
@@ -565,7 +580,7 @@ public class DocViewGenerator {
 				StringTemplate template;
 				template = stringTemplateGroup.getInstanceOf("docReferenceRow");
 				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
 				template.setAttribute("fieldName", field);
 				template.setAttribute("fieldNameId", field);
 				template.setAttribute("fieldNamePath", field);
@@ -585,13 +600,13 @@ public class DocViewGenerator {
 				else
 					template = stringTemplateGroup.getInstanceOf("editableTextAreaRow");
 				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("fieldNameId", field.getName());
 				template.setAttribute("fieldNamePath", field.getName());
 				template.setAttribute("modificationPrefix", "");
 				if (field.getReadOnly())
-					template.setAttribute("disabled", "disabled=\"disabled\"");
+					template.setAttribute("disabled", "readonly=\"readonly\"");
 				if (field.getType().equals(Cybertables.dateType))
 					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
 				text+=template.toString()+"\n";
@@ -599,11 +614,11 @@ public class DocViewGenerator {
 			
 			if (field.isReference() && !field.getCompoundReference()){
 				StringTemplate template;
-				if (CodeUtil.referencesLabelTable(field, cybertables)){
+				if (CodeUtils.referencesLabelTable(field, cybertables)){
 					template = stringTemplateGroup.getInstanceOf("referenceLabelTableRow");
 				}
 				else{
-					if (CodeUtil.generateAutoCompleteReference(field)){
+					if (CodeUtils.generateAutoCompleteReference(field)){
 						template = stringTemplateGroup.getInstanceOf("referenceTableAutocompleteRow");
 					}
 					else{
@@ -614,7 +629,7 @@ public class DocViewGenerator {
 					}
 				}
 				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("displayName", field.getDisplayField());
 				template.setAttribute("fieldNamePath", field.getName());
@@ -624,11 +639,11 @@ public class DocViewGenerator {
 			}
 			
 			if (field.getCompoundReference()){
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField: compoundKey) {
 					StringTemplate template = stringTemplateGroup.getInstanceOf("referenceTableRow");
 					template.setAttribute("docName", document.getName());
-					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					template.setAttribute("fieldName", compoundField.getName());
 					template.setAttribute("displayName", compoundField.getName());
 					text+=template.toString()+"\n";
@@ -677,7 +692,7 @@ public class DocViewGenerator {
 					template2.setAttribute("varAssignment", "$(field).val($(this).html());");
 			}
 			else{
-				if (CodeUtil.referencesLabelTable(field, cybertables))
+				if (CodeUtils.referencesLabelTable(field, cybertables))
 					template2.setAttribute("varAssignment", "$(field).val($(this).attr(\"title\"));");
 				else
 					template2.setAttribute("varAssignment", "$(field).val($(this).html());");
@@ -720,11 +735,11 @@ public class DocViewGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("searchView");
 		template.setAttribute("docName", document.getName());
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("searchFieldsHeaders", getHeaderColumns(document));
 		template.setAttribute("searchFieldsColumns", getColumns(document));
 
-		CodeUtil.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/docs/"+document.getName(), "search"+CodeUtil.toCamelCase(document.getName())+".html");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/docs/"+document.getName(), "search"+CodeUtils.toCamelCase(document.getName())+".html");
 	}
 
 	private Object getColumns(Document document) {
@@ -758,7 +773,7 @@ public class DocViewGenerator {
 				}
 				if (field.isReference()){
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
-					if (CodeUtil.referencesLabelTable(field, cybertables)){
+					if (CodeUtils.referencesLabelTable(field, cybertables)){
 						template = templateGroup.getInstanceOf("otherLabelTableColumn");
 					}
 					else{
@@ -794,7 +809,7 @@ public class DocViewGenerator {
 					StringTemplate template = templateGroup.getInstanceOf("columnHeader");
 					template.setAttribute("fieldName", field.getName());
 					template.setAttribute("docName", document.getName());
-					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 					text+=template.toString()+"\n";
 				}
 				
@@ -802,7 +817,7 @@ public class DocViewGenerator {
 					StringTemplate template = templateGroup.getInstanceOf("columnHeader");
 					template.setAttribute("fieldName", field.getName());
 					template.setAttribute("docName", document.getName());
-					template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 					text+=template.toString()+"\n";
 				}
 			}

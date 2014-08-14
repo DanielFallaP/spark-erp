@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 import co.com.cybersoft.generator.code.model.Cybertables;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class TableDirectoryCleaner {
 
@@ -62,12 +62,12 @@ public class TableDirectoryCleaner {
 	}
 	
 	private void cleanPackage(File pack) throws IOException{
-		if (!CodeUtil.containsTable(cybersoft, pack.getName()) && pack.isDirectory())
+		if (!CodeUtils.containsTable(cybersoft, pack.getName()) && pack.isDirectory())
 			FileUtils.deleteDirectory(pack);
 	}
 	
 	private void cleanFile(File file) throws IOException{
-		if (!CodeUtil.isGeneratedFile(cybersoft, file.getName())){
+		if (!CodeUtils.isGeneratedFile(cybersoft, file.getName())){
 			file.delete();
 		}
 	}

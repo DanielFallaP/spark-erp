@@ -14,7 +14,7 @@ import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.JavaArithmeticExpression;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class DocWebGenerator {
 	
@@ -43,25 +43,25 @@ public class DocWebGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.documentCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchControllerById");
 		template.setAttribute("docName", document.getName());
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"SearchByNumericIdController.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"SearchByNumericIdController.java");
 	}
 
 	private void generateSearchController(Document document) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.documentCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("searchController");
 		template.setAttribute("docName", document.getName());
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"SearchController.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"SearchController.java");
 	}
 
 	private void generateSaveController(Document document) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.documentCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("saveController");
 		template.setAttribute("docName", document.getName());
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		
 		template.setAttribute("imports", generateSaveControllerImports(document));
 		template.setAttribute("fields", generateControllerReferencesServicesDeclarations(document));
@@ -77,7 +77,7 @@ public class DocWebGenerator {
 		template.setAttribute("onHeaderSave", JavaAPIConnector.generateOnHeaderSave(document));
 		template.setAttribute("onHeaderPreSave", JavaAPIConnector.generateOnHeaderPreSave(document));
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"Controller.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"Controller.java");
 	}
 	
 	private Object generateRowAdditonOperations(Document document) {
@@ -88,12 +88,12 @@ public class DocWebGenerator {
 		HashSet<String> set = new HashSet<String>();
 		for (Field field : body) {
 			if (field.getValue()!=null){
-				List<String> fieldsFromExpression = CodeUtil.getFieldsFromExpression(field.getValue());
+				List<String> fieldsFromExpression = CodeUtils.getFieldsFromExpression(field.getValue());
 				for (String fieldFromExp : fieldsFromExpression) {
 					if (!set.contains(fieldFromExp)){
 						StringTemplate stringTemplate = new StringTemplate("$fieldType$ $fieldName$=current.get$upperFieldName$();\n");
 						stringTemplate.setAttribute("fieldName", fieldFromExp);
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(fieldFromExp));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(fieldFromExp));
 						stringTemplate.setAttribute("fieldType", field.getType());
 						
 						variables+=stringTemplate.toString();
@@ -101,7 +101,7 @@ public class DocWebGenerator {
 					}
 				}
 				StringTemplate template = new StringTemplate("current.set$upperFieldName$($arithmeticExpression$);\n");
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("arithmeticExpression", JavaArithmeticExpression.getJavaArithmeticExpression(field.getValue()));
 				operations+=template.toString();
 			}
@@ -116,13 +116,13 @@ public class DocWebGenerator {
 		HashSet<String> set = new HashSet<String>();
 		for (Field field : body) {
 			if (field.getValue()!=null){
-				List<String> fieldsFromExpression = CodeUtil.getFieldsFromExpression(field.getValue());
+				List<String> fieldsFromExpression = CodeUtils.getFieldsFromExpression(field.getValue());
 				for (String fieldFromExp : fieldsFromExpression) {
 					if (!set.contains(fieldFromExp)){
 						StringTemplate stringTemplate = new StringTemplate("$fieldType$ $fieldName$=modified.get$upperDocName$BodyModificationInfo().get$upperFieldName$();\n");
 						stringTemplate.setAttribute("fieldName", fieldFromExp);
-						stringTemplate.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(fieldFromExp));
+						stringTemplate.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(fieldFromExp));
 						stringTemplate.setAttribute("fieldType", field.getType());
 						
 						variables+=stringTemplate.toString();
@@ -130,8 +130,8 @@ public class DocWebGenerator {
 					}
 				}
 				StringTemplate template = new StringTemplate("modified.get$upperDocName$BodyModificationInfo().set$upperFieldName$($arithmeticExpression$);\n");
-				template.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+				template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("arithmeticExpression", JavaArithmeticExpression.getJavaArithmeticExpression(field.getValue()));
 				operations+=template.toString();
 			}
@@ -146,8 +146,8 @@ public class DocWebGenerator {
 			if (field.getDefaultValue()!=null){
 				StringTemplate stringTemplate = new StringTemplate("$tableName$BodyInfo.set$fieldName$($defaultValue$);\n");
 				stringTemplate.setAttribute("tableName", document.getName());
-				stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
-				stringTemplate.setAttribute("defaultValue", CodeUtil.getDefaultValue(field));
+				stringTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+				stringTemplate.setAttribute("defaultValue", CodeUtils.getDefaultValue(field));
 				defaults+=stringTemplate.toString();
 			}
 		}
@@ -161,8 +161,8 @@ public class DocWebGenerator {
 			if (field.getDefaultValue()!=null){
 				StringTemplate stringTemplate = new StringTemplate("$tableName$Info.set$fieldName$($defaultValue$);\n");
 				stringTemplate.setAttribute("tableName", document.getName());
-				stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
-				stringTemplate.setAttribute("defaultValue", CodeUtil.getDefaultValue(field));
+				stringTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+				stringTemplate.setAttribute("defaultValue", CodeUtils.getDefaultValue(field));
 				defaults+=stringTemplate.toString();
 			}
 		}
@@ -182,7 +182,7 @@ public class DocWebGenerator {
 				if (!services.contains(field.getRefType())){
 					StringTemplate template = new StringTemplate("@Autowired\n"
 							+ "	private $entityName$Service $tableName$Service;");
-					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+					template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
 					template.setAttribute("tableName", field.getRefType());
 					declarations+=template.toString()+"\n\n";
 					services.add(field.getRefType());
@@ -192,12 +192,12 @@ public class DocWebGenerator {
 		
 		List<Field> compositeFields = document.getCompositeFields();
 		for (Field compositeField : compositeFields) {
-			List<Field> compoundReference = CodeUtil.getCompoundKey(cybertables, compositeField.getRefType());
+			List<Field> compoundReference = CodeUtils.getCompoundKey(cybertables, compositeField.getRefType());
 			for (Field field : compoundReference) {
 				if (!services.contains(field.getName())){
 					StringTemplate template = new StringTemplate("@Autowired\n"
 							+ "	private $entityName$Service $tableName$Service;");
-					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("entityName", CodeUtils.toCamelCase(field.getName()));
 					template.setAttribute("tableName", field.getName());
 					declarations+=template.toString()+"\n\n";
 					services.add(field.getName());
@@ -241,18 +241,18 @@ public class DocWebGenerator {
 		String lists="";
 		for (Field field : fields) {
 			if (field.isReference()){
-				if (!field.isEmbeddedReference() && !field.getCompoundReference() && !CodeUtil.generateAutoCompleteReference(field)){
+				if (!field.isEmbeddedReference() && !field.getCompoundReference() && !CodeUtils.generateAutoCompleteReference(field)){
 					StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAllBy$referenceField$();\n"
 							+ "$parentTableName$Info.set$variableName$List(all$variableName$Event.get$entityName$List());\n");
-					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-					template.setAttribute("variableName", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
+					template.setAttribute("variableName", CodeUtils.toCamelCase(field.getName()));
 					template.setAttribute("tableName", field.getRefType());
 					template.setAttribute("parentTableName", parent);
-					template.setAttribute("referenceField", CodeUtil.toCamelCase(field.getDisplayField()));
+					template.setAttribute("referenceField", CodeUtils.toCamelCase(field.getDisplayField()));
 					lists+=template.toString();
 				}
 				else{
-					if (field.isEmbeddedReference() && !CodeUtil.generateAutoCompleteReference(field)){
+					if (field.isEmbeddedReference() && !CodeUtils.generateAutoCompleteReference(field)){
 						StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.tableCodePath+"web");
 						StringTemplate template = templateGroup.getInstanceOf("setEmbeddedReferences");
 						List<String> embeddedFields=field.getEmbeddedFields();
@@ -261,11 +261,11 @@ public class DocWebGenerator {
 						int i=0;
 						for (String embeddedField : embeddedFields) {
 							StringTemplate temp = new StringTemplate("EmbeddedField $embeddedField$Field=new EmbeddedField(\"$fieldName$\", $embeddedFieldType$.class);\n");
-							temp.setAttribute("embeddedField", embeddedField+CodeUtil.toCamelCase(field.getName()));
+							temp.setAttribute("embeddedField", embeddedField+CodeUtils.toCamelCase(field.getName()));
 							temp.setAttribute("fieldName", embeddedField);
-							temp.setAttribute("embeddedFieldType", CodeUtil.getFieldType(cybertables,field.getRefType(), embeddedField));
+							temp.setAttribute("embeddedFieldType", CodeUtils.getFieldType(cybertables,field.getRefType(), embeddedField));
 							decl+=temp.toString();
-							requestParameters+=embeddedField+CodeUtil.toCamelCase(field.getName())+"Field";
+							requestParameters+=embeddedField+CodeUtils.toCamelCase(field.getName())+"Field";
 							if (i!=embeddedFields.size()-1){
 								requestParameters+=",";
 							}
@@ -274,11 +274,11 @@ public class DocWebGenerator {
 						
 						template.setAttribute("embeddedFields", requestParameters);
 						template.setAttribute("embeddedFieldsDeclarations", decl);
-						template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
-						template.setAttribute("variableName", CodeUtil.toCamelCase(field.getName()));
+						template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
+						template.setAttribute("variableName", CodeUtils.toCamelCase(field.getName()));
 						template.setAttribute("tableName", field.getRefType());
 						template.setAttribute("parentTableName", parent);
-						template.setAttribute("referenceField", CodeUtil.toCamelCase(field.getDisplayField()));
+						template.setAttribute("referenceField", CodeUtils.toCamelCase(field.getDisplayField()));
 						lists+=template.toString();
 					}
 					
@@ -301,7 +301,7 @@ public class DocWebGenerator {
 			if (field.isReference() && !referenceImports.contains(field.getRefType())){
 				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
 						+ "import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;\n");
-				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("tableName", field.getRefType());
 				imports+=template.toString();
 				referenceImports.add(field.getRefType());
@@ -310,12 +310,12 @@ public class DocWebGenerator {
 		
 		List<Field> compositeFields = document.getCompositeFields();
 		for (Field compositeField : compositeFields) {
-			List<Field> compoundReference = CodeUtil.getCompoundKey(cybertables, compositeField.getRefType());
+			List<Field> compoundReference = CodeUtils.getCompoundKey(cybertables, compositeField.getRefType());
 			for (Field field : compoundReference) {
 				if (!referenceImports.contains(field.getName())){
 					StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
 							+ "import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;\n");
-					template.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
+					template.setAttribute("entityName", CodeUtils.toCamelCase(field.getName()));
 					template.setAttribute("tableName", field.getName());
 					imports+=template.toString();
 					referenceImports.add(field.getName());
@@ -332,11 +332,11 @@ public class DocWebGenerator {
 		template.setAttribute("fields", generateDomainFieldsAndGS(document.getBody()));
 		template.setAttribute("docName", document.getName());
 		template.setAttribute("referenceFields", generateReferenceDomainFieldsAndGS(document));
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("imports", generateDomainClassImports(document.getBody()));
 		template.setAttribute("overrideEquals", generateEqualsOverride(document));
 
-		CodeUtil.writeClass(template.toString(),Cybertables.targetDocumentClassPath+"/web/domain/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"BodyInfo.java");
+		CodeUtils.writeClass(template.toString(),Cybertables.targetDocumentClassPath+"/web/domain/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"BodyInfo.java");
 	}
 	
 	private Object generateEqualsOverride(Document document) {
@@ -345,8 +345,8 @@ public class DocWebGenerator {
 		if (bodyKey!=null){
 			StringTemplateGroup templateGroup = new StringTemplateGroup("web",Cybertables.documentCodePath+"web");
 			StringTemplate template = templateGroup.getInstanceOf("equals");
-			template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
-			template.setAttribute("upperKeyName", CodeUtil.toCamelCase(bodyKey.getName()));
+			template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
+			template.setAttribute("upperKeyName", CodeUtils.toCamelCase(bodyKey.getName()));
 			template.setAttribute("keyName", bodyKey.getName());
 			override=template.toString();
 		}
@@ -358,28 +358,29 @@ public class DocWebGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("domainHeader");
 		template.setAttribute("fields", generateDomainFieldsAndGS(document.getHeader()));
 		template.setAttribute("docName", document.getName());
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("referenceFields", generateHeaderReferenceDomainFieldsAndGS(document));
 		template.setAttribute("imports", generateDomainClassImports(document.getHeader()));
-		CodeUtil.writeClass(template.toString(),Cybertables.targetDocumentClassPath+"/web/domain/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"Info.java");
+		CodeUtils.writeClass(template.toString(),Cybertables.targetDocumentClassPath+"/web/domain/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"Info.java");
 	}
 
 	private Object generateReferenceDomainFieldsAndGS(Document document) {
 		String fields="";
 		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
-				List<String> bodyFields = referenceField.getBodyFields();
-				for (String field : bodyFields) {
-					StringTemplate fieldTemplate = new StringTemplate("@NotEmpty\nprivate String $name$;\n\n");
-					fieldTemplate.setAttribute("name", field);
+				List<Field> referenceBodyFields = CodeUtils.getDocReferenceBodyFields(document,cyberdocs);
+				for (Field field : referenceBodyFields) {
+					StringTemplate fieldTemplate = new StringTemplate("@NotEmpty\nprivate $referenceType$ $name$;\n\n");
+					fieldTemplate.setAttribute("name", field.getName());
+					fieldTemplate.setAttribute("referenceType", field.getType());
 					fields+=fieldTemplate.toString();
 					fields+="\n";
 					
 					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
-					gettersSettersTemplate.setAttribute("type", Cyberconstants.stringType);
-					gettersSettersTemplate.setAttribute("name", field);
-					gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field));
+					gettersSettersTemplate.setAttribute("type", field.getType());
+					gettersSettersTemplate.setAttribute("name", field.getName());
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 					fields+=gettersSettersTemplate.toString()+"\n\n";
 				}
 		}
@@ -390,18 +391,19 @@ public class DocWebGenerator {
 		String fields="";
 		Field referenceField = document.getHeaderDocReferenceField();
 		if (referenceField!=null){
-				List<String> bodyFields = referenceField.getHeaderFields();
-				for (String field : bodyFields) {
-					StringTemplate fieldTemplate = new StringTemplate("private String $name$;\n\n");
-					fieldTemplate.setAttribute("name", field);
+				List<Field> headerFields = CodeUtils.getDocReferenceHeaderFields(document, cyberdocs);
+				for (Field field : headerFields) {
+					StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+					fieldTemplate.setAttribute("name", field.getName());
+					fieldTemplate.setAttribute("type", field.getType());
 					fields+=fieldTemplate.toString();
 					fields+="\n";
 					
 					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
-					gettersSettersTemplate.setAttribute("type", Cyberconstants.stringType);
-					gettersSettersTemplate.setAttribute("name", field);
-					gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field));
+					gettersSettersTemplate.setAttribute("type", field.getType());
+					gettersSettersTemplate.setAttribute("name", field.getName());
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 					fields+=gettersSettersTemplate.toString()+"\n\n";
 				}
 		}
@@ -461,17 +463,17 @@ public class DocWebGenerator {
 			
 			if (field.isReference()){
 				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.domain.$entityName$Details;\n");
-				template.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
 				imports+=template.toString();
 			}
 		}
 		
 		for (Field field : fields) {
 			if (field.getCompoundReference()){
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate stringTemplate = new StringTemplate("import co.com.cybersoft.tables.core.domain.$fieldName$Details;\n");
-					stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					stringTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					imports+=stringTemplate.toString();
 				}
 			}
@@ -508,7 +510,7 @@ public class DocWebGenerator {
 						
 						if (field.getLength()!=null && !field.isReference() && (field.getType().equals(Cybertables.integerType)
 								||field.getType().equals(Cybertables.longType) || field.getType().equals(Cybertables.doubleType))){
-							body+="@Range(max="+CodeUtil.getMaxNumber(field.getLength())+")\n";
+							body+="@Range(max="+CodeUtils.getMaxNumber(field.getLength())+")\n";
 						}
 					}
 					
@@ -540,14 +542,14 @@ public class DocWebGenerator {
 					body+="\n";
 					
 					fieldTemplate = new StringTemplate("private List<$entityName$Details> $tableName$List;");
-					fieldTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getRefType()));
+					fieldTemplate.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
 					fieldTemplate.setAttribute("tableName", field.getName());
 					body+=fieldTemplate.toString();
 					body+="\n";				
 					
 					if (field.isEmbeddedReference()){
 						fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-						fieldTemplate.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
+						fieldTemplate.setAttribute("type", CodeUtils.toCamelCase(field.getRefType())+"Details");
 						fieldTemplate.setAttribute("name", field.getName()+"Details");
 						body+=fieldTemplate.toString();
 						body+="\n";				
@@ -556,7 +558,7 @@ public class DocWebGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					if (field.getRequired())
 						body+="@NotEmpty\n";
@@ -567,7 +569,7 @@ public class DocWebGenerator {
 					body+="\n";
 					
 					fieldTemplate = new StringTemplate("private List<$entityName$Details> $tableName$List;");
-					fieldTemplate.setAttribute("entityName", CodeUtil.toCamelCase(compoundField.getTableName()));
+					fieldTemplate.setAttribute("entityName", CodeUtils.toCamelCase(compoundField.getTableName()));
 					fieldTemplate.setAttribute("tableName", compoundField.getTableName());
 					body+=fieldTemplate.toString();
 					body+="\n";				
@@ -585,37 +587,37 @@ public class DocWebGenerator {
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
 					gettersSettersTemplate.setAttribute("type", field.getType());
 					gettersSettersTemplate.setAttribute("name", field.getName());
-					gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 					body+=gettersSettersTemplate.toString()+"\n\n";
 				}else if(field.getDocRefType()!=null){
 					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
 					gettersSettersTemplate.setAttribute("type", Cyberconstants.stringType);
 					gettersSettersTemplate.setAttribute("name", field.getName());
-					gettersSettersTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 					body+=gettersSettersTemplate.toString()+"\n\n";
 				}				
 				else{
 						StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 						StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("listGetters");
-						gettersSettersTemplate.setAttribute("entityName", CodeUtil.toCamelCase(field.getName()));
+						gettersSettersTemplate.setAttribute("entityName", CodeUtils.toCamelCase(field.getName()));
 						gettersSettersTemplate.setAttribute("tableName", field.getName());
-						gettersSettersTemplate.setAttribute("refEntityName", CodeUtil.toCamelCase(field.getRefType()));
+						gettersSettersTemplate.setAttribute("refEntityName", CodeUtils.toCamelCase(field.getRefType()));
 						body+=gettersSettersTemplate.toString()+"\n\n";			
 						
 						StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 						template.setAttribute("type", Cybertables.stringType);
 						template.setAttribute("name", field.getName());
-						template.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+						template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 						
 						if (field.isEmbeddedReference()){
 							StringTemplate addOps = new StringTemplate("\nfor ($referenceType$Details $referenceField$Details : $referenceField$List) {\n"+
 									"if ($referenceField$Details.get$upperFieldName$().equals($referenceField$))\n"+
 									"this.$referenceField$Details=$referenceField$Details;}\n");
-							addOps.setAttribute("referenceType", CodeUtil.toCamelCase(field.getRefType()));
+							addOps.setAttribute("referenceType", CodeUtils.toCamelCase(field.getRefType()));
 							addOps.setAttribute("referenceField", field.getName());
-							addOps.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
-							addOps.setAttribute("upperDisplayName", CodeUtil.toCamelCase(field.getName()));
+							addOps.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getDisplayField()));
+							addOps.setAttribute("upperDisplayName", CodeUtils.toCamelCase(field.getName()));
 							template.setAttribute("addOps", addOps.toString());
 						}
 						
@@ -623,29 +625,29 @@ public class DocWebGenerator {
 						
 						if (field.isEmbeddedReference()){
 							StringTemplate addGetterSetter=templateGroup.getInstanceOf("getterSetter");
-							addGetterSetter.setAttribute("type", CodeUtil.toCamelCase(field.getRefType())+"Details");
+							addGetterSetter.setAttribute("type", CodeUtils.toCamelCase(field.getRefType())+"Details");
 							addGetterSetter.setAttribute("name", field.getName()+"Details");
-							addGetterSetter.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName())+"Details");
+							addGetterSetter.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName())+"Details");
 							body+=addGetterSetter.toString()+"\n\n";
 						}
 				}
 			}
 			else{
 				
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					
 					StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("listGetters");
-					gettersSettersTemplate.setAttribute("entityName", CodeUtil.toCamelCase(compoundField.getTableName()));
+					gettersSettersTemplate.setAttribute("entityName", CodeUtils.toCamelCase(compoundField.getTableName()));
 					gettersSettersTemplate.setAttribute("tableName", compoundField.getTableName());
-					gettersSettersTemplate.setAttribute("refEntityName", CodeUtil.toCamelCase(compoundField.getTableName()));
+					gettersSettersTemplate.setAttribute("refEntityName", CodeUtils.toCamelCase(compoundField.getTableName()));
 					body+=gettersSettersTemplate.toString()+"\n\n";			
 					
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 					template.setAttribute("type", Cybertables.stringType);
 					template.setAttribute("name", compoundField.getName());
-					template.setAttribute("fieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					
 					body+=template.toString()+"\n\n";
 				}

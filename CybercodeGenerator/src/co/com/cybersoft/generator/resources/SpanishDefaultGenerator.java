@@ -7,7 +7,7 @@ import java.util.List;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class SpanishDefaultGenerator {
 	private final PreparedStatement updatePst;
@@ -63,7 +63,7 @@ public class SpanishDefaultGenerator {
 		for (Field field : fields) {
 			if (field.getSpanishName()!=null){
 				updatePst.setString(1, field.getSpanishName());
-				updatePst.setString(2, document.getName()+CodeUtil.toCamelCase(field.getName()));
+				updatePst.setString(2, document.getName()+CodeUtils.toCamelCase(field.getName()));
 				updatePst.execute();
 			}
 		}
@@ -105,7 +105,7 @@ public class SpanishDefaultGenerator {
 		for (Field field : fields) {
 			if (field.getSpanishName()!=null){
 				updatePst.setString(1, field.getSpanishName());
-				updatePst.setString(2, table.getName()+CodeUtil.toCamelCase(field.getName()));
+				updatePst.setString(2, table.getName()+CodeUtils.toCamelCase(field.getName()));
 				updatePst.execute();
 			}
 		}

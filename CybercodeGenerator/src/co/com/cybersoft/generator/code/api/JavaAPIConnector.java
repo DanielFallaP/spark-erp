@@ -6,7 +6,7 @@ import org.antlr.stringtemplate.StringTemplate;
 
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class JavaAPIConnector {
 
@@ -17,7 +17,7 @@ public class JavaAPIConnector {
 			if (field.getOnLoad()!=null){
 				StringTemplate stringTemplate = new StringTemplate("$tableName$Info.set$fieldName$($defaultValue$);\n");
 				stringTemplate.setAttribute("tableName", document.getName());
-				stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				stringTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 				stringTemplate.setAttribute("defaultValue", field.getOnLoad().getName()+"."+field.getOnLoad().getMethodName()+"()");
 				defaults+=stringTemplate.toString();
 			}
@@ -32,7 +32,7 @@ public class JavaAPIConnector {
 			if (field.getOnLoad()!=null){
 				StringTemplate stringTemplate = new StringTemplate("$tableName$BodyInfo.set$fieldName$($defaultValue$);\n");
 				stringTemplate.setAttribute("tableName", document.getName());
-				stringTemplate.setAttribute("fieldName", CodeUtil.toCamelCase(field.getName()));
+				stringTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 				stringTemplate.setAttribute("defaultValue", field.getOnLoad().getName()+"."+field.getOnLoad().getMethodName()+"()");
 				defaults+=stringTemplate.toString();
 			}

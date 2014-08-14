@@ -3,7 +3,7 @@ package co.com.cybersoft.generator.code.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class Document {
 
@@ -128,7 +128,7 @@ public class Document {
 			if (field.getKeyCompound()&&!field.getCompoundReference())
 				compoundIndex.add(field);
 			if (field.getKeyCompound()&&field.getCompoundReference())
-				compoundIndex.addAll(CodeUtil.getCompoundKey(cybertables, field.getRefType()));
+				compoundIndex.addAll(CodeUtils.getCompoundKey(cybertables, field.getRefType()));
 		}
 		return compoundIndex;
 	}

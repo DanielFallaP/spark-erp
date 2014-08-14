@@ -10,7 +10,7 @@ import java.util.List;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 /**
  * Generates the message labels for the view associated with 
@@ -72,7 +72,7 @@ public class TableResourceGenerator {
 			List<Field> fields = table.getFields();
 			for (Field field : fields) {
 				if (!field.isReference())
-					messages.add(table.getName()+CodeUtil.toCamelCase(field.getName()));
+					messages.add(table.getName()+CodeUtils.toCamelCase(field.getName()));
 			}
 			messages.add(table.getName()+"Title");
 			messages.add(table.getName()+"Info");

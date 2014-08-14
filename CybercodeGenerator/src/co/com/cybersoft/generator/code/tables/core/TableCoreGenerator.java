@@ -9,7 +9,7 @@ import org.antlr.stringtemplate.StringTemplateGroup;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class TableCoreGenerator {
 	
@@ -31,17 +31,17 @@ public class TableCoreGenerator {
 	private void generateCoreServiceInterface(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreServiceInterface");
-		String className=CodeUtil.toCamelCase(table.getName())+"Service";
+		String className=CodeUtils.toCamelCase(table.getName())+"Service";
 		template.setAttribute("entityName", table.getName());
-		template.setAttribute("createEvent", "Create"+CodeUtil.toCamelCase(table.getName())+"Event");
-		template.setAttribute("singleResponseEvent", CodeUtil.toCamelCase(table.getName())+"DetailsEvent");
-		template.setAttribute("allResponseEvent", CodeUtil.toCamelCase(table.getName())+"PageEvent");
-		template.setAttribute("modifyEvent", CodeUtil.toCamelCase(table.getName())+"ModificationEvent");
-		template.setAttribute("singleRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"DetailsEvent");
-		template.setAttribute("allRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent");
+		template.setAttribute("createEvent", "Create"+CodeUtils.toCamelCase(table.getName())+"Event");
+		template.setAttribute("singleResponseEvent", CodeUtils.toCamelCase(table.getName())+"DetailsEvent");
+		template.setAttribute("allResponseEvent", CodeUtils.toCamelCase(table.getName())+"PageEvent");
+		template.setAttribute("modifyEvent", CodeUtils.toCamelCase(table.getName())+"ModificationEvent");
+		template.setAttribute("singleRequestEvent", "Request"+CodeUtils.toCamelCase(table.getName())+"DetailsEvent");
+		template.setAttribute("allRequestEvent", "Request"+CodeUtils.toCamelCase(table.getName())+"PageEvent");
 		template.setAttribute("className", className);
-		template.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
-		template.setAttribute("upperEntityName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("entityUppercaseName", CodeUtils.toCamelCase(table.getName()));
+		template.setAttribute("upperEntityName", CodeUtils.toCamelCase(table.getName()));
 		
 		//Generate all reference methods for all fields that can be referenced by other tables
 		List<Field> fields = table.getFields();
@@ -52,17 +52,17 @@ public class TableCoreGenerator {
 		int i=0;
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
-				if (CodeUtil.generateQueryForReferences(field)){
+				if (CodeUtils.generateQueryForReferences(field)){
 					StringTemplate stringTemplate = new StringTemplate("$entityUppercaseName$PageEvent requestAllBy$referencedField$(EmbeddedField... fields) throws Exception;\n");
-					stringTemplate.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("referencedField", CodeUtil.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("entityUppercaseName", CodeUtils.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("referencedField", CodeUtils.toCamelCase(field.getName()));
 					requestDeclarations+=stringTemplate.toString();
 				}
 				
-				if (CodeUtil.generateAutoComplete(field)){
+				if (CodeUtils.generateAutoComplete(field)){
 					StringTemplate stringTemplate = new StringTemplate("$entityUppercaseName$PageEvent requestByContaining$upperFieldName$(String $fieldName$) throws Exception;");
-					stringTemplate.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("entityUppercaseName", CodeUtils.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 					stringTemplate.setAttribute("fieldName", field.getName());
 					
 					autocompleteRequests+=stringTemplate.toString();
@@ -72,8 +72,8 @@ public class TableCoreGenerator {
 					Field keyCompound = fields.get(i+1);
 					if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getDisplayField()));
 						stringTemplate.setAttribute("fieldName", field.getDisplayField());
 						requestDeclarations+=stringTemplate.toString();
 						
@@ -82,20 +82,20 @@ public class TableCoreGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = new StringTemplate("$entityName$PageEvent requestAllBy$upperFieldName$Name(String $fieldName$) throws Exception;\n");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 						stringTemplate.setAttribute("fieldName", compoundField.getName());
 						requestDeclarations+=stringTemplate.toString();
 					}
 					
 					StringTemplate stringTemplate = new StringTemplate("$entityUppercaseName$PageEvent requestByContaining$upperFieldName$(String $fieldName$) throws Exception;");
-					stringTemplate.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					stringTemplate.setAttribute("entityUppercaseName", CodeUtils.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					stringTemplate.setAttribute("fieldName", compoundField.getName());
 					
 					autocompleteRequests+=stringTemplate.toString()+"\n";					
@@ -106,23 +106,23 @@ public class TableCoreGenerator {
 		template.setAttribute("requestAll", requestDeclarations);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/services/"+table.getName(), className+".java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/services/"+table.getName(), className+".java");
 	}
 	
 	private void generateCoreServiceImplementation(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreServiceImpl");
-		String className=CodeUtil.toCamelCase(table.getName())+"Service";
+		String className=CodeUtils.toCamelCase(table.getName())+"Service";
 		template.setAttribute("entityName", table.getName());
-		template.setAttribute("createdEvent", CodeUtil.toCamelCase(table.getName())+"CreatedEvent");
-		template.setAttribute("createEvent", "Create"+CodeUtil.toCamelCase(table.getName())+"Event");
-		template.setAttribute("singleResponseEvent", CodeUtil.toCamelCase(table.getName())+"DetailsEvent");
-		template.setAttribute("allResponseEvent", CodeUtil.toCamelCase(table.getName())+"PageEvent");
-		template.setAttribute("modifyEvent", CodeUtil.toCamelCase(table.getName())+"ModificationEvent");
-		template.setAttribute("singleRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"DetailsEvent");
-		template.setAttribute("allRequestEvent", "Request"+CodeUtil.toCamelCase(table.getName())+"PageEvent");
-		template.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
-		template.setAttribute("upperEntityName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("createdEvent", CodeUtils.toCamelCase(table.getName())+"CreatedEvent");
+		template.setAttribute("createEvent", "Create"+CodeUtils.toCamelCase(table.getName())+"Event");
+		template.setAttribute("singleResponseEvent", CodeUtils.toCamelCase(table.getName())+"DetailsEvent");
+		template.setAttribute("allResponseEvent", CodeUtils.toCamelCase(table.getName())+"PageEvent");
+		template.setAttribute("modifyEvent", CodeUtils.toCamelCase(table.getName())+"ModificationEvent");
+		template.setAttribute("singleRequestEvent", "Request"+CodeUtils.toCamelCase(table.getName())+"DetailsEvent");
+		template.setAttribute("allRequestEvent", "Request"+CodeUtils.toCamelCase(table.getName())+"PageEvent");
+		template.setAttribute("entityUppercaseName", CodeUtils.toCamelCase(table.getName()));
+		template.setAttribute("upperEntityName", CodeUtils.toCamelCase(table.getName()));
 		
 		//Generate all reference methods for all fields that can be referenced by other tables
 		HashSet<String> references = new HashSet<String>();
@@ -132,20 +132,20 @@ public class TableCoreGenerator {
 		int i=0;
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
-				if (CodeUtil.generateQueryForReferences(field)){
+				if (CodeUtils.generateQueryForReferences(field)){
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("requestAll");
-					stringTemplate.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("entityUppercaseName", CodeUtils.toCamelCase(table.getName()));
 					stringTemplate.setAttribute("entityName", table.getName());
-					stringTemplate.setAttribute("referencedField", CodeUtil.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("referencedField", CodeUtils.toCamelCase(field.getName()));
 					requestImpl+=stringTemplate.toString();
 				}
 				
-				if (CodeUtil.generateAutoComplete(field)){
+				if (CodeUtils.generateAutoComplete(field)){
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("autocompleteRequest");
-					stringTemplate.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("entityUppercaseName", CodeUtils.toCamelCase(table.getName()));
 					stringTemplate.setAttribute("entityName", table.getName());
 					stringTemplate.setAttribute("fieldName", field.getName());
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 					autocompleteRequest+=stringTemplate.toString();
 				}
 				
@@ -153,8 +153,8 @@ public class TableCoreGenerator {
 					Field keyCompound = fields.get(i+1);
 					if (field.isReference()&&!references.contains(field.getRefType()+field.getDisplayField()) && keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompound");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getDisplayField()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getDisplayField()));
 						stringTemplate.setAttribute("fieldName", field.getDisplayField());
 						stringTemplate.setAttribute("tableName", table.getName());
 						requestImpl+=stringTemplate.toString();
@@ -164,23 +164,23 @@ public class TableCoreGenerator {
 				}
 			}
 			else{
-				List<Field> compoundKey = CodeUtil.getCompoundKey(cybertables, field.getRefType());
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				Field keyCompound = fields.get(i+1);
 				for (Field compoundField : compoundKey) {
 					if (compoundField.getTableName().equals(field.getRefType())&&keyCompound.getKeyCompound()){
 						StringTemplate stringTemplate = templateGroup.getInstanceOf("requestCompound");
-						stringTemplate.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
-						stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+						stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 						stringTemplate.setAttribute("fieldName", compoundField.getName());
 						stringTemplate.setAttribute("tableName", table.getName());
 						requestImpl+=stringTemplate.toString();
 					}
 					
 					StringTemplate stringTemplate = templateGroup.getInstanceOf("autocompleteRequest");
-					stringTemplate.setAttribute("entityUppercaseName", CodeUtil.toCamelCase(table.getName()));
+					stringTemplate.setAttribute("entityUppercaseName", CodeUtils.toCamelCase(table.getName()));
 					stringTemplate.setAttribute("entityName", table.getName());
 					stringTemplate.setAttribute("fieldName", compoundField.getName());
-					stringTemplate.setAttribute("upperFieldName", CodeUtil.toCamelCase(compoundField.getName()));
+					stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					autocompleteRequest+=stringTemplate.toString();
 					
 				}
@@ -193,16 +193,16 @@ public class TableCoreGenerator {
 		template.setAttribute("requestAll", requestImpl);
 		template.setAttribute("autocompleteRequest", autocompleteRequest);
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/services/"+table.getName(), className+"Impl.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/services/"+table.getName(), className+"Impl.java");
 	}
 	
 	private void generateCoreDomainClass(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreDomain");
-		template.setAttribute("fieldDeclaration", CodeUtil.getFieldDeclarations(cybertables,table));
-		template.setAttribute("gettersAndSetters", CodeUtil.getGettersAndSetters(cybertables,table));
-		template.setAttribute("coreDomainClass", CodeUtil.toCamelCase(table.getName())+"Details");
-		template.setAttribute("entityName", CodeUtil.toCamelCase(table.getName()));
+		template.setAttribute("fieldDeclaration", CodeUtils.getFieldDeclarations(cybertables,table));
+		template.setAttribute("gettersAndSetters", CodeUtils.getGettersAndSetters(cybertables,table));
+		template.setAttribute("coreDomainClass", CodeUtils.toCamelCase(table.getName())+"Details");
+		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		
 		//Write embedded references transformations
 		List<Field> fields = table.getFields();
@@ -212,12 +212,12 @@ public class TableCoreGenerator {
 						+ "$fieldName$Details = new $refType$Details();\n"+
 								"BeanUtils.copyProperties(entity.get$upperFieldName$Entity(), $fieldName$Details);}\n");
 				subTemp.setAttribute("fieldName", field.getName());
-				subTemp.setAttribute("upperFieldName", CodeUtil.toCamelCase(field.getName()));
-				subTemp.setAttribute("refType", CodeUtil.toCamelCase(field.getRefType()));
+				subTemp.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+				subTemp.setAttribute("refType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("embeddedReferences", subTemp.toString());
 			}
 		}
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/domain", CodeUtil.toCamelCase(table.getName())+"Details.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/domain", CodeUtils.toCamelCase(table.getName())+"Details.java");
 	}
 }

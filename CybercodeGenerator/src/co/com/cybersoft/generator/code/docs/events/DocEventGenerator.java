@@ -8,7 +8,7 @@ import org.antlr.stringtemplate.StringTemplateGroup;
 import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class DocEventGenerator {
 	
@@ -38,45 +38,45 @@ public class DocEventGenerator {
 	private void generateSaveDocumentEvent(Document document) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.documentCodePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("saveEvent");
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), "Save"+CodeUtil.toCamelCase(document.getName())+"Event.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), "Save"+CodeUtils.toCamelCase(document.getName())+"Event.java");
 	}
 
 	private void generateResponseDocumentEvent(Document document) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.documentCodePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("responseDocumentEvent");
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"Event.java");		
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"Event.java");		
 	}
 
 	private void generateRequestDocumentEvent(Document document) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.documentCodePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("requestDocumentEvent");
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), "Request"+CodeUtil.toCamelCase(document.getName())+"Event.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), "Request"+CodeUtils.toCamelCase(document.getName())+"Event.java");
 	}
 
 	private void generateResponsePageEvent(Document document) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.documentCodePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("responsePageEvent");
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), CodeUtil.toCamelCase(document.getName())+"PageEvent.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"PageEvent.java");
 	}
 
 	private void generateRequestPageEvent(Document document) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("events",Cybertables.documentCodePath+"events");
 		StringTemplate template = templateGroup.getInstanceOf("requestPageEvent");
-		template.setAttribute("upperDocName", CodeUtil.toCamelCase(document.getName()));
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
 		
-		CodeUtil.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), "Request"+CodeUtil.toCamelCase(document.getName())+"PageEvent.java");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), "Request"+CodeUtils.toCamelCase(document.getName())+"PageEvent.java");
 	}
 }

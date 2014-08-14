@@ -2,7 +2,7 @@ package co.com.cybersoft.generator.code.model;
 
 import java.util.List;
 
-import co.com.cybersoft.generator.code.util.CodeUtil;
+import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class JavaAPI {
 	protected String className;
@@ -18,7 +18,7 @@ public class JavaAPI {
 	protected String coordinates;
 	
 	public String getName(){
-		return CodeUtil.toLowerCamelCase(className.substring(className.lastIndexOf('.')+1));
+		return CodeUtils.toLowerCamelCase(className.substring(className.lastIndexOf('.')+1));
 	}
 	
 	public String getReturnVar() {
