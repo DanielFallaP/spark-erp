@@ -370,9 +370,10 @@ public class DocWebGenerator {
 		if (referenceField!=null){
 				List<Field> referenceBodyFields = CodeUtils.getDocReferenceBodyFields(document,cyberdocs);
 				for (Field field : referenceBodyFields) {
-					StringTemplate fieldTemplate = new StringTemplate("@NotEmpty\nprivate $referenceType$ $name$;\n\n");
+					StringTemplate fieldTemplate = new StringTemplate("@$validation$\nprivate $referenceType$ $name$;\n\n");
 					fieldTemplate.setAttribute("name", field.getName());
 					fieldTemplate.setAttribute("referenceType", field.getType());
+					fieldTemplate.setAttribute("validation", field.getType().equals(Cyberconstants.stringType)?"NotEmpty":"NotNull");
 					fields+=fieldTemplate.toString();
 					fields+="\n";
 					
@@ -441,16 +442,7 @@ public class DocWebGenerator {
 				break;
 			}
 		}
-		
-			for (Field field : fields) {
-				if (!field.isReference()&&field.getDocRefType()==null){
-					if(field.getRequired() && field.getVisible() && (field.getType().equals(Cybertables.integerType) || 
-							field.getType().equals(Cybertables.longType) || field.getType().equals(Cybertables.doubleType))){
-						imports+="import javax.validation.constraints.NotNull;\n";
-						break;
-					}
-				}
-			}
+		imports+="import javax.validation.constraints.NotNull;\n";
 		
 		for (Field field : fields) {
 			if (field.getLength()!=null && (field.getType().equals(Cybertables.integerType)

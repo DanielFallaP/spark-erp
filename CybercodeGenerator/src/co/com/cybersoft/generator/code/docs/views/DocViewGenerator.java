@@ -492,16 +492,30 @@ public class DocViewGenerator {
 		if (referenceField!=null){
 			List<String> bodyFields = referenceField.getBodyFields();
 			for (String field : bodyFields) {
-				StringTemplate template;
-				template = stringTemplateGroup.getInstanceOf("docReferenceRow");
-				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
-				template.setAttribute("fieldName", field);
-				template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field);
-				template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field);
-				template.setAttribute("modificationPrefix", "_");
-				template.setAttribute("optionalReference", "<option value=\"\"></option>");
-				text+=template.toString()+"\n";
+				if (!document.getAddition()&&!document.getDeletion()){
+					StringTemplate template;
+					template = stringTemplateGroup.getInstanceOf("docReferenceReadOnlyRow");
+					template.setAttribute("docName", document.getName());
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
+					template.setAttribute("fieldName", field);
+					template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field);
+					template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field);
+					template.setAttribute("modificationPrefix", "_");
+					template.setAttribute("optionalReference", "<option value=\"\"></option>");
+					text+=template.toString()+"\n";
+				}
+				else{
+					StringTemplate template;
+					template = stringTemplateGroup.getInstanceOf("docReferenceRow");
+					template.setAttribute("docName", document.getName());
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
+					template.setAttribute("fieldName", field);
+					template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field);
+					template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field);
+					template.setAttribute("modificationPrefix", "_");
+					template.setAttribute("optionalReference", "<option value=\"\"></option>");
+					text+=template.toString()+"\n";
+				}
 			}
 		}
 		
