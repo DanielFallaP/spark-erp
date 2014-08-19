@@ -37,9 +37,10 @@
 		 },
 		{  
 			"name":"requisitionDistribution",		
-			"spanishName":"Requisición distribución",		
+			"spanishName":"Requisición distribución",
+			"onHeaderPreSave":{"className":"co.com.cybersoft.man.services.item.ItemManService", "methodName":"checkDistributionCompletion","parameters":["requisitionDistributionInfo"]},			
 			"header":[
-						{"name":"requisitionNumber", "spanishName":"No.Requisición", "docRefType":"requisition"},
+						{"name":"requisitionNumber", "spanishName":"No.Requisición", "docRefType":"requisition","searchDisplayable":"true"},
 						{"name":"ready", "spanishName":"Lista",  "type":"Boolean", "defaultValue":"false","searchDisplayable":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
                      ],
@@ -78,8 +79,7 @@
 		{  
 			"name":"supplierAssignment",		
 			"spanishName":"Asigna proveedor",
-			"addition":"false",
-			"deletion":"false",		
+			"originalDeletion":"false",
 			"header":[
 						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"populatedPlace", "autocomplete":"true"},						
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "defaultValue":"today"},

@@ -25,6 +25,14 @@ public class Document {
 	
 	private Boolean addition=Boolean.TRUE;
 	
+	public Boolean hasReadyField(){
+		for (Field field:header){
+			if (field.getName().equals(Cyberconstants.readyFieldName))
+				return true;
+		}
+		return false;
+	}
+	
 	public Boolean getDeletion() {
 		return deletion;
 	}

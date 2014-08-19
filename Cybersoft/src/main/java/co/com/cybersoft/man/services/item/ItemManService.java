@@ -1,6 +1,7 @@
 package co.com.cybersoft.man.services.item;
 
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
+import co.com.cybersoft.docs.web.domain.requisitionDistribution.RequisitionDistributionInfo;
 import co.com.cybersoft.tables.web.domain.itemPurchaseHistory.ItemPurchaseHistoryInfo;
 
 
@@ -9,4 +10,5 @@ public interface ItemManService {
 	ItemPurchaseHistoryInfo getItemLastPurchasePriceByItemCode(String item) throws Exception;
 	void checkAndSendVerificationMessage(String requestingUser, RequisitionInfo requisition) throws Exception;
 	RequisitionInfo checkRequisition(RequisitionInfo requisitionInfo) throws Exception;
+	void checkDistributionCompletion(RequisitionDistributionInfo requisitionDistributionInfo) throws Exception;
 }

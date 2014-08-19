@@ -238,7 +238,7 @@
 		        		$additionFormFields$
 		        		<tr>
 		        			<td>
-		        				<input type="button" th:value="#{label.save}" onclick="submitCreation();"/>
+		        				<input $readyCondition$ type="button" th:value="#{label.save}" onclick="submitCreation();"/>
 		        			</td>
 		        		</tr>
 		        	</table>
@@ -260,7 +260,7 @@
 		        		</tr>
 		        		<tr>
 		        			<td>
-		        				<input type="button" th:value="#{label.save}" onclick="submitModification();"/>
+		        				<input $readyCondition$ type="button" th:value="#{label.save}" onclick="submitModification();"/>
 		        			</td>
 		        		</tr>
 		        	</table>

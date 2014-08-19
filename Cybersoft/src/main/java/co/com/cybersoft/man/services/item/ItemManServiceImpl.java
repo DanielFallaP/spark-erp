@@ -11,6 +11,8 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionBodyInfo;
 import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
+import co.com.cybersoft.docs.web.domain.requisitionDistribution.RequisitionDistributionBodyInfo;
+import co.com.cybersoft.docs.web.domain.requisitionDistribution.RequisitionDistributionInfo;
 import co.com.cybersoft.tables.core.domain.ItemPurchaseHistoryDetails;
 import co.com.cybersoft.tables.persistence.domain.BusinessRules;
 import co.com.cybersoft.tables.persistence.domain.Item;
@@ -117,5 +119,20 @@ public class ItemManServiceImpl implements ItemManService{
 		return requisitionInfo;
 	}
 
+	@Override
+	public void checkDistributionCompletion(
+			RequisitionDistributionInfo requisitionDistributionInfo)throws Exception {
+		if (requisitionDistributionInfo.getReady()){
+			List<RequisitionDistributionBodyInfo> bodyList = requisitionDistributionInfo.getRequisitionDistributionBodyList();
+			Double percentage=0D;			
+			for (RequisitionDistributionBodyInfo requisitionDistributionBodyInfo : bodyList) {
+				if (requisitionDistributionBodyInfo.getDistributionPercentage()==null)
+					throw new Exception("label.requisitionDistributionInvalidPercentage");
+				percentage+=requisitionDistributionBodyInfo.getDistributionPercentage();
+			}
+			if (percentage!=100)
+				throw new Exception("label.requisitionDistributionInvalidPercentage");
+		}
+	}
 
 }

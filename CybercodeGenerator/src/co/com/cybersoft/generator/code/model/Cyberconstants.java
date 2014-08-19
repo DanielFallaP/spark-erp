@@ -51,4 +51,6 @@ public interface Cyberconstants {
 	public static final int headerColumnsPerRow=3;
 
 	public static final String numericIdName = "numericId";
+
+	public static final Object readyFieldName = "ready";
 }

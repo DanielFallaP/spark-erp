@@ -51,6 +51,7 @@ public class DocViewGenerator {
 		template.setAttribute("changeDocReferenceFunctions", generateChangeDocReferencesFunctions(document));
 		template.setAttribute("additionButton", generateAdditionButton(document));
 		template.setAttribute("deletionButton", generateDeletionButton(document));
+		template.setAttribute("readyCondition", generateReadyCondition(document));
 
 		template.setAttribute("firstBodyField", document.getBody().get(0).getName());
 
@@ -69,13 +70,24 @@ public class DocViewGenerator {
 
 	
 
+	private Object generateReadyCondition(Document document) {
+		String ready="";
+		if (document.hasReadyField()){
+			StringTemplate template = new StringTemplate("th:if='!\\${$docName$Info.ready}'");
+			template.setAttribute("docName", document.getName());
+			return template.toString();
+		}
+		
+		return ready;
+	}
+
 	private Object enableReferenceFields(Document document) {
 		String enable="";
 		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
 			List<String> bodyFields = referenceField.getBodyFields();
 			for (String bodyField : bodyFields) {
-				StringTemplate template = new StringTemplate("\\$( \"#$docName$BodyModificationInfo\\.$fieldName$\" ).prop( \"disabled\", false );");
+				StringTemplate template = new StringTemplate("\\$( \"#$docName$BodyModificationInfo\\\\\\.$fieldName$\" ).prop( \"disabled\", false );");
 				template.setAttribute("docName", document.getName());
 				template.setAttribute("fieldName", bodyField);
 				enable+=template.toString()+"\n";
@@ -107,12 +119,23 @@ public class DocViewGenerator {
 		if (document.getAddition() && document.getOriginalDeletion()==null){
 			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 			StringTemplate template = templateGroup.getInstanceOf("additionButton");
+			if (document.hasReadyField()){
+				StringTemplate stringTemplate = new StringTemplate("and !\\${$docName$Info.ready}");
+				stringTemplate.setAttribute("docName", document.getName());
+				template.setAttribute("readyCondition", stringTemplate.toString());
+			}
+				
 			template.setAttribute("docName", document.getName());
 			addition=template.toString();
 		}
 		else if (document.getOriginalDeletion()!=null && !document.getOriginalDeletion()){
 			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 			StringTemplate template = templateGroup.getInstanceOf("additionButton");
+			if (document.hasReadyField()){
+				StringTemplate stringTemplate = new StringTemplate("and !\\${$docName$Info.ready}");
+				stringTemplate.setAttribute("docName", document.getName());
+				template.setAttribute("readyCondition", stringTemplate.toString());
+			}
 			template.setAttribute("docName", document.getName());
 			addition=template.toString();
 		}
@@ -124,12 +147,22 @@ public class DocViewGenerator {
 		if (document.getDeletion() && document.getOriginalDeletion()==null){
 			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 			StringTemplate template = templateGroup.getInstanceOf("deletionButton");
+			if (document.hasReadyField()){
+				StringTemplate stringTemplate = new StringTemplate("and !\\${$docName$Info.ready}");
+				stringTemplate.setAttribute("docName", document.getName());
+				template.setAttribute("readyCondition", stringTemplate.toString());
+			}
 			template.setAttribute("docName", document.getName());
 			deletion=template.toString();
 		}
 		else if (document.getOriginalDeletion()!=null && !document.getOriginalDeletion()){
 			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 			StringTemplate template = templateGroup.getInstanceOf("deletionButton");
+			if (document.hasReadyField()){
+				StringTemplate stringTemplate = new StringTemplate("and !\\${$docName$Info.ready}");
+				stringTemplate.setAttribute("docName", document.getName());
+				template.setAttribute("readyCondition", stringTemplate.toString());
+			}
 			template.setAttribute("docName", document.getName());
 			deletion=template.toString();
 		}
@@ -140,34 +173,42 @@ public class DocViewGenerator {
 		String functions="";
 		Field referenceField = document.getDocReferenceField();
 		if (referenceField!=null && referenceField.getBodyFields().size()>1){
-			List<String> bodyFields = referenceField.getBodyFields();
+			List<Field> bodyFields = CodeUtils.getDocReferenceBodyFields(document, cyberdocs);
 			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 			//Addition fields functions
-			for (String bodyField : bodyFields) {
-				StringTemplate template = templateGroup.getInstanceOf("changeDocReference");
-				String changeSelection="";
-				for (String field : bodyFields) {
-					StringTemplate changeSelectionTemplate = new StringTemplate("\\$('#$fieldName$ :nth-child('+(\\$(this)[0].selectedIndex+1)+')').prop('selected', true);");
-					changeSelectionTemplate.setAttribute("fieldName", field);
-					changeSelection+=changeSelectionTemplate.toString()+"\n";
+			for (Field bodyField : bodyFields) {
+				if (bodyField.getType().equals(Cyberconstants.stringType)){
+					StringTemplate template = templateGroup.getInstanceOf("changeDocReference");
+					String changeSelection="";
+					for (Field field : bodyFields) {
+						if (field.getType().equals(Cyberconstants.stringType)){
+							StringTemplate changeSelectionTemplate = new StringTemplate("\\$('#$fieldName$ :nth-child('+(\\$(this)[0].selectedIndex+1)+')').prop('selected', true);");
+							changeSelectionTemplate.setAttribute("fieldName", field.getName());
+							changeSelection+=changeSelectionTemplate.toString()+"\n";
+						}
+					}
+					template.setAttribute("fieldName", bodyField.getName());
+					template.setAttribute("references", changeSelection);
+					functions+=template.toString()+"\n";
 				}
-				template.setAttribute("fieldName", bodyField);
-				template.setAttribute("references", changeSelection);
-				functions+=template.toString()+"\n";
 			}
 			
 			//Modification fields functions
-			for (String bodyField : bodyFields) {
-				StringTemplate template = templateGroup.getInstanceOf("changeDocReference");
-				String changeSelection="";
-				for (String field : bodyFields) {
-					StringTemplate changeSelectionTemplate = new StringTemplate("\\$('#$fieldName$ :nth-child('+(\\$(this)[0].selectedIndex+1)+')').prop('selected', true);");
-					changeSelectionTemplate.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+field);
-					changeSelection+=changeSelectionTemplate.toString()+"\n";
+			for (Field bodyField : bodyFields) {
+				if (bodyField.getType().equals(Cyberconstants.stringType)){
+					StringTemplate template = templateGroup.getInstanceOf("changeDocReference");
+					String changeSelection="";
+					for (Field field : bodyFields) {
+						if (field.getType().equals(Cyberconstants.stringType)){
+							StringTemplate changeSelectionTemplate = new StringTemplate("\\$('#$fieldName$ :nth-child('+(\\$(this)[0].selectedIndex+1)+')').prop('selected', true);");
+							changeSelectionTemplate.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+field.getName());
+							changeSelection+=changeSelectionTemplate.toString()+"\n";
+						}
+					}
+					template.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+bodyField.getName());
+					template.setAttribute("references", changeSelection);
+					functions+=template.toString()+"\n";
 				}
-				template.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+bodyField);
-				template.setAttribute("references", changeSelection);
-				functions+=template.toString()+"\n";
 			}
 		}
 		return functions;
@@ -507,31 +548,87 @@ public class DocViewGenerator {
 		
 		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
-			List<String> bodyFields = referenceField.getBodyFields();
-			for (String field : bodyFields) {
+			List<Field> bodyFields = CodeUtils.getDocReferenceBodyFields(document, cyberdocs);
+			for (Field field : bodyFields) {
 				if (!document.getAddition()&&!document.getDeletion()){
-					StringTemplate template;
-					template = stringTemplateGroup.getInstanceOf("docReferenceReadOnlyRow");
-					template.setAttribute("docName", document.getName());
-					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
-					template.setAttribute("fieldName", field);
-					template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field);
-					template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field);
-					template.setAttribute("modificationPrefix", "_");
-					template.setAttribute("optionalReference", "<option value=\"\"></option>");
-					text+=template.toString()+"\n";
+					
+					if (field.getType().equals(Cyberconstants.booleanType)){
+						StringTemplate template = stringTemplateGroup.getInstanceOf("editableCheck");
+						template.setAttribute("docName", document.getName());
+						template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+						template.setAttribute("fieldName", field.getName());
+						template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("modificationPrefix", "_");
+						template.setAttribute("optionalReference", "<option value=\"\"></option>");
+						text+=template.toString()+"\n";
+
+					}
+					else if (field.getType().equals(Cyberconstants.stringType)){
+						StringTemplate template;
+						template = stringTemplateGroup.getInstanceOf("docReferenceReadOnlyRow");
+						template.setAttribute("docName", document.getName());
+						template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+						template.setAttribute("fieldName", field.getName());
+						template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("modificationPrefix", "_");
+						template.setAttribute("optionalReference", "<option value=\"\"></option>");
+						
+						text+=template.toString()+"\n";
+					}
+					else{
+						StringTemplate template = stringTemplateGroup.getInstanceOf("editableTableRow");
+						template.setAttribute("docName", document.getName());
+						template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+						template.setAttribute("fieldName", field.getName());
+						template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("modificationPrefix", "_");
+						template.setAttribute("optionalReference", "<option value=\"\"></option>");
+						text+=template.toString()+"\n";
+
+					}
 				}
 				else{
-					StringTemplate template;
-					template = stringTemplateGroup.getInstanceOf("docReferenceRow");
-					template.setAttribute("docName", document.getName());
-					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
-					template.setAttribute("fieldName", field);
-					template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field);
-					template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field);
-					template.setAttribute("modificationPrefix", "_");
-					template.setAttribute("optionalReference", "<option value=\"\"></option>");
-					text+=template.toString()+"\n";
+					
+					if (field.getType().equals(Cyberconstants.booleanType)){
+						StringTemplate template = stringTemplateGroup.getInstanceOf("editableCheck");
+						template.setAttribute("docName", document.getName());
+						template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+						template.setAttribute("fieldName", field.getName());
+						template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("modificationPrefix", "_");
+						template.setAttribute("optionalReference", "<option value=\"\"></option>");
+						text+=template.toString()+"\n";
+
+					}
+					else if (field.getType().equals(Cyberconstants.stringType)){
+						StringTemplate template;
+						template = stringTemplateGroup.getInstanceOf("docReferenceRow");
+						template.setAttribute("docName", document.getName());
+						template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+						template.setAttribute("fieldName", field.getName());
+						template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("modificationPrefix", "_");
+						template.setAttribute("optionalReference", "<option value=\"\"></option>");
+						
+						text+=template.toString()+"\n";
+					}
+					else{
+						StringTemplate template = stringTemplateGroup.getInstanceOf("editableTableRow");
+						template.setAttribute("docName", document.getName());
+						template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+						template.setAttribute("fieldName", field.getName());
+						template.setAttribute("fieldNameId", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field.getName());
+						template.setAttribute("modificationPrefix", "_");
+						template.setAttribute("optionalReference", "<option value=\"\"></option>");
+						text+=template.toString()+"\n";
+
+					}
 				}
 			}
 		}
@@ -606,19 +703,43 @@ public class DocViewGenerator {
 		
 		Field referenceField = document.getBodyDocReferenceField();
 		if (referenceField!=null){
-			List<String> bodyFields = referenceField.getBodyFields();
-			for (String field : bodyFields) {
-				StringTemplate template;
-				template = stringTemplateGroup.getInstanceOf("docReferenceRow");
-				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
-				template.setAttribute("fieldName", field);
-				template.setAttribute("fieldNameId", field);
-				template.setAttribute("fieldNamePath", field);
-				template.setAttribute("modificationPrefix", "");
-				template.setAttribute("optionalReference", "<option value=\"\"></option>");
+			List<Field> bodyFields = CodeUtils.getDocReferenceBodyFields(document, cyberdocs);
+			for (Field field : bodyFields) {
+				if (field.getType().equals(Cyberconstants.booleanType)){
+					StringTemplate template = stringTemplateGroup.getInstanceOf("editableCheck");
+					template.setAttribute("docName", document.getName());
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("fieldNameId", field.getName());
+					template.setAttribute("fieldNamePath", field.getName());
+					template.setAttribute("modificationPrefix", "");
+					text+=template.toString()+"\n";
 
-				text+=template.toString()+"\n";
+				}
+				else if (field.getType().equals(Cyberconstants.stringType)){
+					StringTemplate template;
+					template = stringTemplateGroup.getInstanceOf("docReferenceRow");
+					template.setAttribute("docName", document.getName());
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("fieldNameId", field.getName());
+					template.setAttribute("fieldNamePath", field.getName());
+					template.setAttribute("modificationPrefix", "");
+					template.setAttribute("optionalReference", "<option value=\"\"></option>");
+					
+					text+=template.toString()+"\n";
+				}
+				else{
+					StringTemplate template = stringTemplateGroup.getInstanceOf("editableTableRow");
+					template.setAttribute("docName", document.getName());
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("fieldNameId", field.getName());
+					template.setAttribute("fieldNamePath", field.getName());
+					template.setAttribute("modificationPrefix", "");
+					text+=template.toString()+"\n";
+
+				}
 			}
 		}
 		for (Field field : fields) {
