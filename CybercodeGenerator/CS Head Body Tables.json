@@ -57,6 +57,7 @@
 						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"populatedPlace", "autocomplete":"true", "searchDisplayable":"true"},
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "defaultValue":"today", "readOnly":"true", "searchDisplayable":"true"},
 						{"name":"requisitionNumber", "spanishName":"No.Requisición", "docRefType":"requisition", "searchDisplayable":"true", "headerFields":["requisitionNumber","receivingWarehouse"], "bodyFields":["item","itemDescription","unit","priority"]},
+						{"name":"imported", "spanishName":"Importado", "type":"Boolean", "defaultValue":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					],
 		 	"body":[
@@ -69,7 +70,7 @@
 						{"name":"localCurrencyUnitValue", "spanishName":"Valor unitario en moneda local", "type":"Double"},
 						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double", "value":{"leftOperand":"quantity","operation":"*","rightOperand":"localCurrencyUnitValue"}},
 						{"name":"foreignCurrencyUnitValue", "spanishName":"Valor unitario en moneda extranjera", "type":"Double"},
-						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double", "value":{"leftOperand":"quantity","operation":"*","rightOperand":"localCurrencyUnitValue"}},
+						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double", "value":{"leftOperand":"quantity","operation":"*","rightOperand":"foreignCurrencyUnitValue"}},
 						{"name":"proposalDate", "spanishName":"Fecha de propuesta", "type":"Date", "defaultValue":"today", "readOnly":"true", "displayable":"false"},
 						{"name":"remarks", "spanishName":"Observaciones",  "type":"String", "largeText":"true", "displayable":"false"},
 						{"name":"accepted", "spanishName":"Aceptado", "type":"Boolean", "defaultValue":"false"}
@@ -89,7 +90,6 @@
 		 				{"name":"contract", "spanishName":"Contrato de asociación", "refType":"contract", "displayField":"contract"},
 						{"name":"deliveryType", "spanishName":"Tipo de entrega", "type":"String", "defaultValue":"Immediately"},
 						{"name":"priority", "spanishName":"prioridad", "refType":"priority", "displayField":"priority"},
-						{"name":"imported", "spanishName":"Importado", "type":"Boolean", "defaultValue":"false"},
 						{"name":"quotationNumber", "spanishName":"No.Cotización", "docRefType":"quotation", "headerFields":["requisitionNumber","receivingWarehouse"], "bodyFields":["item","itemDescription","unit","priority"]},
 						{"name":"internalControlNumber", "spanishName":"Numero de control interno", "type":"String"},
 						{"name":"printCounter", "spanishName":"Número de impresiones", "type":"Integer", "readOnly":"true", "length":"3"},
