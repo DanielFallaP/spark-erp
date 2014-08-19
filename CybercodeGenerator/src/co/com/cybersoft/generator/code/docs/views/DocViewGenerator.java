@@ -57,6 +57,7 @@ public class DocViewGenerator {
 		template.setAttribute("autoCompleteFunctions", generateAutocompleteReferenceFunctions(document));
 		template.setAttribute("checkHeader", generateCheckHeader(document));
 		template.setAttribute("checkColumn", generateCheckColumn(document));
+		template.setAttribute("enableReferenceFields", enableReferenceFields(document));
 		
 		List<Field> fields = document.getHeader();
 		if (!fields.isEmpty()){
@@ -67,6 +68,22 @@ public class DocViewGenerator {
 	}
 
 	
+
+	private Object enableReferenceFields(Document document) {
+		String enable="";
+		Field referenceField = document.getBodyDocReferenceField();
+		if (referenceField!=null){
+			List<String> bodyFields = referenceField.getBodyFields();
+			for (String bodyField : bodyFields) {
+				StringTemplate template = new StringTemplate("\\$( \"#$docName$BodyModificationInfo\\.$fieldName$\" ).prop( \"disabled\", false );");
+				template.setAttribute("docName", document.getName());
+				template.setAttribute("fieldName", bodyField);
+				enable+=template.toString()+"\n";
+			}
+		}
+		
+		return enable;
+	}
 
 	private Object generateCheckHeader(Document document) {
 		String column="";
@@ -686,7 +703,7 @@ public class DocViewGenerator {
 					template2.setAttribute("i", i);
 				else
 					template2.setAttribute("i", i-1);
-				template2.setAttribute("varAssignment", "$(field).val($(this).html());");
+				template2.setAttribute("varAssignment", "$(field).val($(this).html());$(field).prop( \"disabled\", disable );");
 				template2.setAttribute("fieldName", document.getName()+"BodyModificationInfo\\\\."+field);
 				fieldValues+=template2.toString();
 				i++;

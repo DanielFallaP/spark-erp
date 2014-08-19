@@ -100,6 +100,7 @@
 		function submitModification(){
 			var form=document.forms['$docName$-body-modification-form'];
 			form.elements["_modificationSubmit"].value="modification";
+			$enableReferenceFields$
 			form.submit();
 		}
 		   
