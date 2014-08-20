@@ -13,6 +13,10 @@ import co.com.cybersoft.man.services.exchangeRate.ExchangeRateManService;
 import co.com.cybersoft.man.services.exchangeRate.ExchangeRateManServiceImpl;
 import co.com.cybersoft.man.services.item.ItemManService;
 import co.com.cybersoft.man.services.item.ItemManServiceImpl;
+import co.com.cybersoft.man.services.quotation.QuotationManService;
+import co.com.cybersoft.man.services.quotation.QuotationManServiceImpl;
+import co.com.cybersoft.man.services.requisition.RequisitionManService;
+import co.com.cybersoft.man.services.requisition.RequisitionManServiceImpl;
 import co.com.cybersoft.man.services.sequence.SequenceService;
 import co.com.cybersoft.man.services.startup.SparkStartupService;
 import co.com.cybersoft.man.services.startup.SparkStartupServiceImpl;
@@ -62,6 +66,16 @@ public class ManCoreConfig {
 	@Bean
 	public ExchangeRateManService exchangeRateManService() throws Exception{
 		return new ExchangeRateManServiceImpl();
+	}
+	
+	@Bean
+	public RequisitionManService requisitionManService() throws Exception{
+		return new RequisitionManServiceImpl();
+	}
+	
+	@Bean
+	public QuotationManService quotationManService() throws Exception{
+		return new QuotationManServiceImpl();
 	}
 	
 	@Bean

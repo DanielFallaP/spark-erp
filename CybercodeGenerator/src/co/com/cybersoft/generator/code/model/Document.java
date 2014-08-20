@@ -19,6 +19,10 @@ public class Document {
 	
 	private JavaAPI onHeaderPreSave;
 	
+	private JavaAPI onBodySave;
+	
+	private JavaAPI onBodyPreSave;
+	
 	private Boolean originalDeletion;
 	
 	private Boolean deletion=Boolean.TRUE;
@@ -27,12 +31,36 @@ public class Document {
 	
 	public Boolean hasReadyField(){
 		for (Field field:header){
-			if (field.getName().equals(Cyberconstants.readyFieldName))
+			if (field.getName().equals(Cyberconstants.readyFieldName)&&field.getType().equals(Cyberconstants.booleanType))
 				return true;
 		}
 		return false;
 	}
 	
+	public JavaAPI getOnBodySave() {
+		return onBodySave;
+	}
+
+
+
+	public void setOnBodySave(JavaAPI onBodySave) {
+		this.onBodySave = onBodySave;
+	}
+
+
+
+	public JavaAPI getOnBodyPreSave() {
+		return onBodyPreSave;
+	}
+
+
+
+	public void setOnBodyPreSave(JavaAPI onBodyPreSave) {
+		this.onBodyPreSave = onBodyPreSave;
+	}
+
+
+
 	public Boolean getDeletion() {
 		return deletion;
 	}

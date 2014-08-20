@@ -142,6 +142,7 @@ public class $upperDocName$Controller {
 	
 	@ExceptionHandler(Exception.class)
 	public ModelAndView constraintError(HttpServletRequest req, Exception exception){
+		exception.printStackTrace();
 		ModelAndView modelAndView = new ModelAndView();
 		$upperDocName$Info $docName$Info=($upperDocName$Info) req.getSession().getAttribute("$docName$Info");
 		if (exception instanceof BindException){

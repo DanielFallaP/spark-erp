@@ -424,25 +424,9 @@ public class DocWebGenerator {
 				
 		}
 		
-		for (Field field : fields) {
-			if (field.getName().equals("quotationNumber"))
-				System.out.println(field.getName());
-			if (!field.isReference() && field.getDocRefType()==null && field.getRequired() && field.getVisible() && field.getType().equals(Cybertables.stringType)){
-				imports+="import org.hibernate.validator.constraints.NotEmpty;\n";
-				break;
-			}
-			
-			if (field.getDocRefType()!=null && field.getRequired()){
-				imports+="import org.hibernate.validator.constraints.NotEmpty;\n";
-				break;
-			}
-			
-			if (field.isReference()&&field.getRequired()){
-				imports+="import org.hibernate.validator.constraints.NotEmpty;\n";
-				break;
-			}
-		}
 		imports+="import javax.validation.constraints.NotNull;\n";
+		imports+="import org.hibernate.validator.constraints.NotEmpty;\n";
+
 		
 		for (Field field : fields) {
 			if (field.getLength()!=null && (field.getType().equals(Cybertables.integerType)

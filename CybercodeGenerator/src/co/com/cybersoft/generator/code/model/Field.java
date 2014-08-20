@@ -34,11 +34,18 @@ public class Field {
 	private List<String> bodyFields=new ArrayList<String>();
 	private List<String> headerFields=new ArrayList<String>();
 	private Boolean searchDisplayable=Boolean.FALSE;
+	private JavaAPI onBodySave;
 	
 	private OnLoad onLoad;
 	
 	private JavaScriptAPI autoCompletePeerFunction;
 	
+	public JavaAPI getOnBodySave() {
+		return onBodySave;
+	}
+	public void setOnBodySave(JavaAPI onBodySave) {
+		this.onBodySave = onBodySave;
+	}
 	public Boolean getMobileDisplayable() {
 		return mobileDisplayable;
 	}
