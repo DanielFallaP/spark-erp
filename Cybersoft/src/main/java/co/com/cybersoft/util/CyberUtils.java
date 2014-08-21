@@ -69,6 +69,8 @@ public class CyberUtils {
 	
 	public final static String itemMessageTemplateDir="mail/item/";
 	
+	public final static String quotationMessageTemplateDir="mail/quotation/";
+	
 	public static String escapePCRECharacters(String string){
 		for (Character escapeCharacter : PCREEscapeCharacters) {
 			string=string.replace(escapeCharacter.toString(), stringLiteralEscape+escapeCharacter);

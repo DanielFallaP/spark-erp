@@ -3,7 +3,7 @@ package co.com.cybersoft.man.services.quotation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AcceptedSupplier {
+public class QuotationSupplier {
 
 	private String supplier;
 	private List<RequiredItem> items=new ArrayList<>();
@@ -25,8 +25,8 @@ public class AcceptedSupplier {
 	
 	@Override
 	public boolean equals(Object object){
-		if (object instanceof AcceptedSupplier){
-			if (((AcceptedSupplier) object).getSupplier().equals(supplier))
+		if (object instanceof QuotationSupplier){
+			if (((QuotationSupplier) object).getSupplier().equals(supplier))
 				return true;
 			else
 				return false;
