@@ -40,6 +40,7 @@ public class QuotationManServiceImpl implements QuotationManService{
 
 	@Override
 	public void generatePurchaseOrders(QuotationInfo quotationInfo) throws Exception{
+
 		if (quotationInfo.getReady()){
 			List<QuotationBodyInfo> bodyList = quotationInfo.getQuotationBodyList();
 			List<RequiredItem> acceptedItems = new ArrayList<>();
