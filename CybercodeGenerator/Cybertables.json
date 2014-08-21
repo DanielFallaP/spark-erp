@@ -744,7 +744,6 @@
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
-		 
 		 {	
 			"name":"person",
 			"spanishName":"Persona",
@@ -880,6 +879,41 @@
 		 				{"name":"role", "spanishName":"Rol", "type":"String", "unique":"true"},
 		 				{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 		 			]
+		 },
+		 {	
+			"name":"stockBalance",
+			"spanishName":"Saldo de inventario",
+			"fields":[
+						{"name":"item", "spanishName":"item", "refType":"item", "displayField":"code", "embeddedFields":["description"]},
+						{"name":"warehouse", "spanishName":"Código de bodega", "refType":"warehouse", "displayField":"code"},
+						{"name":"itemCondition", "spanishName":"Condición del ítem", "refType":"itemCondition", "displayField":"code"},
+						{"name":"location", "spanishName":"localización", "type":"String"},
+						{"name":"dueDate", "spanishName":"Fecha de vencimiento", "type":"Date", "defaultValue":"today", "displayable":"false", "required":"false"},
+						{"name":"existingQuantity", "spanishName":"Cantidad existente", "type":"Double", "readOnly":"true"},
+						{"name":"localCurrencyLastValue", "spanishName":"Ultimo valor en moneda local", "type":"Double", "readOnly":"true"},
+						{"name":"foreignCurrencyLastValue", "spanishName":"Ultimo valor en moneda foranea", "type":"Double", "readOnly":"true"},
+						{"name":"localCurrencyAvertageValue", "spanishName":"Valor promedio en moneda local", "type":"Double", "readOnly":"true"},
+						{"name":"foreignCurrencyAvertageValue", "spanishName":"Valor promedio en moneda foranea", "type":"Double", "readOnly":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
+			"name":"historyStockBalance",
+			"spanishName":"Historia Saldo de inventario",
+			"fields":[
+						{"name":"item", "spanishName":"item", "refType":"item", "displayField":"code", "embeddedFields":["description"]},
+						{"name":"warehouse", "spanishName":"Código de bodega", "refType":"warehouse", "displayField":"code"},
+						{"name":"itemCondition", "spanishName":"Condición del ítem", "refType":"itemCondition", "displayField":"code"},
+						{"name":"updateAs", "spanishName":"Datos a fecha", "type":"Date", "defaultValue":"today"},
+						{"name":"location", "spanishName":"localización", "type":"String"},
+						{"name":"dueDate", "spanishName":"Fecha de vencimiento", "type":"Date", "defaultValue":"today", "displayable":"false", "required":"false"},
+						{"name":"existingQuantity", "spanishName":"Cantidad existente", "type":"Double", "readOnly":"true"},
+						{"name":"localCurrencyLastValue", "spanishName":"Ultimo valor en moneda local", "type":"Double", "readOnly":"true"},
+						{"name":"foreignCurrencyLastValue", "spanishName":"Ultimo valor en moneda foranea", "type":"Double", "readOnly":"true"},
+						{"name":"localCurrencyAvertageValue", "spanishName":"Valor promedio en moneda local", "type":"Double", "readOnly":"true"},
+						{"name":"foreignCurrencyAvertageValue", "spanishName":"Valor promedio en moneda foranea", "type":"Double", "readOnly":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
 		 }
 	 ]
 }
