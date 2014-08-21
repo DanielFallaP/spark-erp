@@ -83,5 +83,48 @@ public class JavaAPIConnector {
 		}
 		return "";
 	}
-
+	
+	public static Object generateOnBodyPreModification(Document document){
+		String code="";
+		if (document.getOnBodyPreModification()!=null){
+			if (document.getOnBodyPreModification().getReturnVar()!=null){
+				code+=document.getOnBodyPreModification().getReturnVar()+"=";
+			}
+			List<String> parameters = document.getOnBodyPreModification().getParameters();
+			String par="";
+			int i=0;
+			for (String parameter : parameters) {
+				par+=parameter;
+				if (i!=parameters.size()-1){
+					par+=",";
+				}
+				i++;
+			}		
+			code+=document.getOnBodyPreModification().getName()+"."+document.getOnBodyPreModification().getMethodName()+"("+par+");";
+			return code;
+		}
+		return "";
+	}
+	
+	public static Object generateOnBodyPreAddition(Document document){
+		String code="";
+		if (document.getOnBodyPreAddition()!=null){
+			if (document.getOnBodyPreAddition().getReturnVar()!=null){
+				code+=document.getOnBodyPreAddition().getReturnVar()+"=";
+			}
+			List<String> parameters = document.getOnBodyPreAddition().getParameters();
+			String par="";
+			int i=0;
+			for (String parameter : parameters) {
+				par+=parameter;
+				if (i!=parameters.size()-1){
+					par+=",";
+				}
+				i++;
+			}		
+			code+=document.getOnBodyPreAddition().getName()+"."+document.getOnBodyPreAddition().getMethodName()+"("+par+");";
+			return code;
+		}
+		return "";
+	}
 }

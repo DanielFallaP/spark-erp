@@ -76,6 +76,8 @@ public class DocWebGenerator {
 		template.setAttribute("rowAdditionOperations", generateRowAdditonOperations(document));
 		template.setAttribute("onHeaderSave", JavaAPIConnector.generateOnHeaderSave(document));
 		template.setAttribute("onHeaderPreSave", JavaAPIConnector.generateOnHeaderPreSave(document));
+		template.setAttribute("onBodyPreAdd", JavaAPIConnector.generateOnBodyPreAddition(document));
+		template.setAttribute("onBodyPreMod", JavaAPIConnector.generateOnBodyPreModification(document));
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"Controller.java");
 	}
@@ -234,6 +236,25 @@ public class DocWebGenerator {
 			declarations+=template.toString()+"\n\n";
 			services.add(document.getOnHeaderPreSave().getName());
 		}
+		
+		if (document.getOnBodyPreModification()!=null&&!services.contains(document.getOnBodyPreModification().getName())){
+			StringTemplate template = new StringTemplate("@Autowired\n"
+					+ "	private $upperServiceName$ $serviceName$;");
+			template.setAttribute("upperServiceName", document.getOnBodyPreModification().getClassName());
+			template.setAttribute("serviceName", document.getOnBodyPreModification().getName());
+			declarations+=template.toString()+"\n\n";
+			services.add(document.getOnBodyPreModification().getName());
+		}
+		
+		if (document.getOnBodyPreAddition()!=null&&!services.contains(document.getOnBodyPreAddition().getName())){
+			StringTemplate template = new StringTemplate("@Autowired\n"
+					+ "	private $upperServiceName$ $serviceName$;");
+			template.setAttribute("upperServiceName", document.getOnBodyPreAddition().getClassName());
+			template.setAttribute("serviceName", document.getOnBodyPreAddition().getName());
+			declarations+=template.toString()+"\n\n";
+			services.add(document.getOnBodyPreAddition().getName());
+		}
+		
 		return declarations;
 	}
 	

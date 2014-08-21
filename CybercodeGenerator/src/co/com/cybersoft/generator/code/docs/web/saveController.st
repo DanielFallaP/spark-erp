@@ -56,16 +56,20 @@ public class $upperDocName$Controller {
 		if (modified.get$upperDocName$BodyModificationInfo().getSubmit().equals("modification")){
 			modificationManualValidation(modified.get$upperDocName$BodyModificationInfo(), "$docName$BodyModificationInfo", CyberUtils.modificationForm, $docName$Info);
 			
-			$rowModificationOperations$
 			$docName$Info.set$upperDocName$BodyModificationInfo(modified.get$upperDocName$BodyModificationInfo());
+			$onBodyPreMod$
+			$rowModificationOperations$
 			$docName$Event = $docName$Service.update$upperDocName$Body(new Save$upperDocName$Event($docName$Info));
+			$onBodyMod$
 		}
 		else if (modified.get$upperDocName$BodyModificationInfo().getSubmit().equals("creation")){
 			manualValidation(current, "$docName$BodyInfo", CyberUtils.additionForm, $docName$Info);
 			
-			$rowAdditionOperations$			
 			$docName$Info.setCurrent$upperDocName$BodyInfo(current);
+			$onBodyPreAdd$
+			$rowAdditionOperations$			
 			$docName$Event = $docName$Service.create$upperDocName$BodyRecord(new Save$upperDocName$Event($docName$Info));
+			$onBodyAdd$
 			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(request);
 			model.addAttribute("$docName$BodyInfo", $docName$BodyInfo);
 		}

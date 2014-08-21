@@ -19,9 +19,13 @@ public class Document {
 	
 	private JavaAPI onHeaderPreSave;
 	
-	private JavaAPI onBodySave;
+	private JavaAPI onBodyModification;
 	
-	private JavaAPI onBodyPreSave;
+	private JavaAPI onBodyPreModification;
+	
+	private JavaAPI onBodyAddition;
+	
+	private JavaAPI onBodyPreAddition;
 	
 	private Boolean originalDeletion;
 	
@@ -37,26 +41,42 @@ public class Document {
 		return false;
 	}
 	
-	public JavaAPI getOnBodySave() {
-		return onBodySave;
+	public JavaAPI getOnBodyModification() {
+		return onBodyModification;
+	}
+
+	public void setOnBodyModification(JavaAPI onBodyModification) {
+		this.onBodyModification = onBodyModification;
+	}
+
+	public JavaAPI getOnBodyPreModification() {
+		return onBodyPreModification;
+	}
+
+	public void setOnBodyPreModification(JavaAPI onBodyPreModification) {
+		this.onBodyPreModification = onBodyPreModification;
+	}
+
+	public JavaAPI getOnBodyAddition() {
+		return onBodyAddition;
 	}
 
 
 
-	public void setOnBodySave(JavaAPI onBodySave) {
-		this.onBodySave = onBodySave;
+	public void setOnBodyAddition(JavaAPI onBodyAddition) {
+		this.onBodyAddition = onBodyAddition;
 	}
 
 
 
-	public JavaAPI getOnBodyPreSave() {
-		return onBodyPreSave;
+	public JavaAPI getOnBodyPreAddition() {
+		return onBodyPreAddition;
 	}
 
 
 
-	public void setOnBodyPreSave(JavaAPI onBodyPreSave) {
-		this.onBodyPreSave = onBodyPreSave;
+	public void setOnBodyPreAddition(JavaAPI onBodyPreAddition) {
+		this.onBodyPreAddition = onBodyPreAddition;
 	}
 
 
