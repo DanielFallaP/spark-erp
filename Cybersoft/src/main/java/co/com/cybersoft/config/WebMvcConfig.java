@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.format.datetime.DateFormatterRegistrar;
+import org.springframework.format.number.NumberFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -15,11 +16,18 @@ public class WebMvcConfig extends WebMvcConfigurationSupport{
 	@Override
 	public FormattingConversionService mvcConversionService() {
 		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService(false);
-
-        DateFormatterRegistrar registrar = new DateFormatterRegistrar();
-        registrar.setFormatter(new DateFormatter("dd/MM/yyyy"));
-        registrar.registerFormatters(conversionService);
+		
+        DateFormatterRegistrar dateRegistrar = new DateFormatterRegistrar();
+        
+        dateRegistrar.setFormatter(new DateFormatter("dd/MM/yyyy"));
+        dateRegistrar.registerFormatters(conversionService);
+        NumberFormatter numberFormatter = new NumberFormatter();
+        numberFormatter.setPattern("###,###,###.##");
+        numberFormatter.setLenient(true);
+        conversionService.addFormatter(numberFormatter);
+        
         addFormatters(conversionService);
+        
         return conversionService;
 	}
 }

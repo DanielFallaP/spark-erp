@@ -9,6 +9,7 @@ public class RequiredItem {
 	private String itemCode;
 	private String itemDescription;
 	private String unit;
+	private Double unitPriceLocalCurrency;
 	private Double acceptedQuantity;
 	private Double requiredQuantity;
 	private List<QuotationBodyInfo> providers=new ArrayList<>();
@@ -17,16 +18,25 @@ public class RequiredItem {
 		
 	}
 	
-	public RequiredItem(String itemCode, String itemDescription, String unit, Double acceptedQuantity, Double requiredQuantity){
+	public RequiredItem(String itemCode, String itemDescription, String unit, Double acceptedQuantity, Double requiredQuantity, Double unitPriceLocalCurrency){
 		this.itemCode=itemCode;
 		this.itemDescription=itemDescription;
 		this.unit=unit;
 		this.acceptedQuantity=acceptedQuantity;
 		this.requiredQuantity=requiredQuantity;
+		this.unitPriceLocalCurrency=unitPriceLocalCurrency;
 	}
 	
 	
 	
+	public Double getUnitPriceLocalCurrency() {
+		return unitPriceLocalCurrency;
+	}
+
+	public void setUnitPriceLocalCurrency(Double unitPriceLocalCurrency) {
+		this.unitPriceLocalCurrency = unitPriceLocalCurrency;
+	}
+
 	public List<QuotationBodyInfo> getProviders() {
 		return providers;
 	}

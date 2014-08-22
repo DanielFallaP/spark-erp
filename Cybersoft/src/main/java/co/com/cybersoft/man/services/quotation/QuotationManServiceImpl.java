@@ -60,7 +60,7 @@ public class QuotationManServiceImpl implements QuotationManService{
 			List<RequiredItem> acceptedItems = new ArrayList<>();
 			List<QuotationSupplier> acceptedSuppliers = new ArrayList<>();
 			for (QuotationBodyInfo quotationBodyInfo : bodyList) {
-				RequiredItem requiredItem = new RequiredItem(quotationBodyInfo.getItem(), quotationBodyInfo.getItemDescription(), quotationBodyInfo.getUnit(), quotationBodyInfo.getQuotedQuantity(), quotationBodyInfo.getQuantity());
+				RequiredItem requiredItem = new RequiredItem(quotationBodyInfo.getItem(), quotationBodyInfo.getItemDescription(), quotationBodyInfo.getUnit(), quotationBodyInfo.getQuotedQuantity(), quotationBodyInfo.getQuantity(), quotationBodyInfo.getLocalCurrencyUnitValue());
 				RequiredItem acceptedItem = new RequiredItem();
 				BeanUtils.copyProperties(requiredItem, acceptedItem);
 				
@@ -113,7 +113,6 @@ public class QuotationManServiceImpl implements QuotationManService{
 						purchaseOrderInfo.setDate(quotationInfo.getDate());
 						purchaseOrderInfo.setExchangeRate(todaysRate);
 						purchaseOrderInfo.setDateOfCreation(new Date());
-//					purchaseOrderInfo.setId(UUID.randomUUID().toString().replace("-", "").substring(8));
 						
 						ArrayList<PurchaseOrderBodyInfo> purchaseOrderBodyList = new ArrayList<>();
 						List<RequiredItem> items = acceptedSupplier.getItems();
@@ -123,6 +122,11 @@ public class QuotationManServiceImpl implements QuotationManService{
 							bodyInfo.setItem(requiredItem.getItemCode());
 							bodyInfo.setItemDescription(requiredItem.getItemDescription());
 							bodyInfo.setUnit(requiredItem.getUnit());
+							bodyInfo.setOrderedQuantity(requiredItem.getAcceptedQuantity());
+							bodyInfo.setLocalCurrencyUnitValue(requiredItem.getUnitPriceLocalCurrency());
+							bodyInfo.setForeignCurrencyUnitValue(requiredItem.getUnitPriceLocalCurrency()/todaysRate);
+							bodyInfo.setLocalCurrencyTotalValue(requiredItem.getAcceptedQuantity()*requiredItem.getUnitPriceLocalCurrency());
+							bodyInfo.setForeignCurrencyTotalValue(requiredItem.getUnitPriceLocalCurrency()*requiredItem.getAcceptedQuantity()/todaysRate);
 							purchaseOrderBodyList.add(bodyInfo);						
 						}
 						purchaseOrderInfo.setPurchaseOrderBodyList(purchaseOrderBodyList);
@@ -153,7 +157,7 @@ public class QuotationManServiceImpl implements QuotationManService{
 			List<RequiredItem> quotationItems = new ArrayList<>();
 			List<QuotationSupplier> biddingSuppliers = new ArrayList<>();
 			for (QuotationBodyInfo quotationBodyInfo : bodyList) {
-				RequiredItem requiredItem = new RequiredItem(quotationBodyInfo.getItem(), quotationBodyInfo.getItemDescription(), quotationBodyInfo.getUnit(), quotationBodyInfo.getQuotedQuantity(), quotationBodyInfo.getQuantity());
+				RequiredItem requiredItem = new RequiredItem(quotationBodyInfo.getItem(), quotationBodyInfo.getItemDescription(), quotationBodyInfo.getUnit(), quotationBodyInfo.getQuotedQuantity(), quotationBodyInfo.getQuantity(), quotationBodyInfo.getLocalCurrencyUnitValue());
 				RequiredItem quotationItem = new RequiredItem();
 				BeanUtils.copyProperties(requiredItem, quotationItem);
 				

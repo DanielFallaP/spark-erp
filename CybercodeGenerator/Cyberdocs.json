@@ -98,7 +98,7 @@
 		 				{"name":"contract", "spanishName":"Contrato de asociación", "refType":"contract", "displayField":"contract"},
 						{"name":"deliveryType", "spanishName":"Tipo de entrega", "type":"String", "defaultValue":"Immediately"},
 						{"name":"priority", "spanishName":"prioridad", "refType":"priority", "displayField":"priority"},
-						{"name":"quotationNumber", "spanishName":"No.Cotización", "docRefType":"quotation", "headerFields":["requisitionNumber","receivingWarehouse"], "bodyFields":["item","itemDescription","unit"]},
+						{"name":"quotationNumber", "spanishName":"No.Cotización", "docRefType":"quotation", "headerFields":["requisitionNumber","receivingWarehouse"]},
 						{"name":"internalControlNumber", "spanishName":"Numero de control interno", "type":"String"},
 						{"name":"printCounter", "spanishName":"Número de impresiones", "type":"Integer", "readOnly":"true", "length":"3"},
 						{"name":"status", "spanishName":"Estado", "type":"String", "defaultValue":"Not received"},
@@ -107,12 +107,16 @@
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					],
 			"body":[
-						{"name":"orderedQuantity", "spanishName":"Cantidad ordenada", "type":"Double"},
-						{"name":"localCurrencyUnitValue", "spanishName":"Valor unitario en moneda local", "type":"Double"},
-						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double"},
-						{"name":"foreignCurrencyUnitValue", "spanishName":"Valor unitario en moneda extranjera", "type":"Double"},
-						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double"},
-						{"name":"receivedQuantity", "spanishName":"Cantidad recibida", "type":"Double", "readOnly":"true"}					]
+						{"name":"item", "spanishName":"Artículo", "type":"String", "readOnly":"true"},
+						{"name":"itemDescription", "spanishName":"Descripción del artículo", "type":"String", "readOnly":"true"},
+						{"name":"unit", "spanishName":"Unidad", "type":"String", "readOnly":"true"},
+						{"name":"orderedQuantity", "spanishName":"Cantidad ordenada", "type":"Double", "readOnly":"true"},
+						{"name":"localCurrencyUnitValue", "spanishName":"Valor unitario en moneda local", "type":"Double", "readOnly":"true"},
+						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double", "readOnly":"true"},
+						{"name":"foreignCurrencyUnitValue", "spanishName":"Valor unitario en moneda extranjera", "type":"Double", "readOnly":"true"},
+						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double", "readOnly":"true"},
+						{"name":"receivedQuantity", "spanishName":"Cantidad recibida", "type":"Double", "readOnly":"true"}					
+					]
 		 },
 		{ 
 			"name":"purchaseOrderOtherValue",		
@@ -146,10 +150,10 @@
 					],
 			"body":[
 						{"name":"receivedQuantity", "spanishName":"Cantidad recibida", "type":"Double"},
-						{"name":"localCurrencyUnitValue", "spanishName":"Valor unitario en moneda local", "type":"Double"},
-						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "type":"Double"},
-						{"name":"foreignCurrencyUnitValue", "spanishName":"Valor unitario en moneda extranjera", "type":"Double"},
-						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "type":"Double"}
+						{"name":"localCurrencyUnitValue", "spanishName":"Valor unitario en moneda local", "append":"customerTenancy.localCurrency", "type":"Double"},
+						{"name":"localCurrencyTotalValue", "spanishName":"Valor total en moneda local", "append":"customerTenancy.localCurrency", "type":"Double"},
+						{"name":"foreignCurrencyUnitValue", "spanishName":"Valor unitario en moneda extranjera", "append":"customerTenancy.foreignCurrency", "type":"Double"},
+						{"name":"foreignCurrencyTotalValue", "spanishName":"Valor total en moneda extranjera", "append":"customerTenancy.foreignCurrency","type":"Double"}
 					]
 		 },
 		{  

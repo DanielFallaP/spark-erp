@@ -21,6 +21,7 @@ public class Field {
 	private Boolean displayable=Boolean.TRUE;
 	private Boolean mobileDisplayable=Boolean.TRUE;
 	private ArithmeticExpression value;
+	private String append;
 	
 	//For references only
 	private String refType;
@@ -65,6 +66,12 @@ public class Field {
 		this.value = value;
 	}
 	
+	public String getAppend() {
+		return append;
+	}
+	public void setAppend(String append) {
+		this.append = append;
+	}
 	public Boolean getSearchDisplayable() {
 		return searchDisplayable;
 	}

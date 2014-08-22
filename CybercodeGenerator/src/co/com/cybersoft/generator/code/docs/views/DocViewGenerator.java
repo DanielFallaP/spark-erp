@@ -530,6 +530,7 @@ public class DocViewGenerator {
 		}
 		
 		for (Field field : body) {
+			
 			StringTemplate template = templateGroup.getInstanceOf("headerBodyColumn");
 			template.setAttribute("docName", document.getName());
 			template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
