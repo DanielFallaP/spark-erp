@@ -17,6 +17,7 @@ import co.com.cybersoft.docs.web.domain.quotation.QuotationInfo;
 import co.com.cybersoft.man.services.exchangeRate.ExchangeRateManService;
 import co.com.cybersoft.tables.persistence.domain.ThirdParty;
 import co.com.cybersoft.tables.persistence.domain.User;
+import co.com.cybersoft.tables.persistence.repository.thirdParty.ThirdPartyRepository;
 import co.com.cybersoft.tables.persistence.repository.user.UserRepository;
 import co.com.cybersoft.util.CyberUtils;
 
@@ -30,6 +31,9 @@ public class QuotationManServiceImpl implements QuotationManService{
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private ThirdPartyRepository thirdPartyRepo;
 	
 	
 	@Override
@@ -49,8 +53,7 @@ public class QuotationManServiceImpl implements QuotationManService{
 		
 	}
 
-	@Override
-	public void generatePurchaseOrders(QuotationInfo quotationInfo) throws Exception{
+	private void generatePurchaseOrders(QuotationInfo quotationInfo) throws Exception{
 
 		if (quotationInfo.getReady()){
 			List<QuotationBodyInfo> bodyList = quotationInfo.getQuotationBodyList();
@@ -144,8 +147,7 @@ public class QuotationManServiceImpl implements QuotationManService{
 		sendNotificationsToThirdParties(requestingUser, quotationInfo);
 	}
 
-	@Override
-	public void sendNotificationsToThirdParties(String requestingUser, QuotationInfo quotationInfo)throws Exception {
+	private void sendNotificationsToThirdParties(String requestingUser, QuotationInfo quotationInfo)throws Exception {
 		if (quotationInfo.getSendNotifications()){
 			List<QuotationBodyInfo> bodyList = quotationInfo.getQuotationBodyList();
 			List<RequiredItem> quotationItems = new ArrayList<>();
@@ -181,8 +183,11 @@ public class QuotationManServiceImpl implements QuotationManService{
 			}
 			for (QuotationSupplier quotationSupplier : biddingSuppliers) {
 				User reqUser = userRepo.findByUser(requestingUser);
+				ThirdParty thirdParty = thirdPartyRepo.findByThirdParty(quotationSupplier.getSupplier());
+				quotationSupplier.setSupplierEmail(thirdParty.getEmail());
 				new Thread(new QuotationRequestSender(reqUser, quotationSupplier)).start();
 			}
+			quotationInfo.setSendNotifications(Boolean.FALSE);
 		}
 	}
 

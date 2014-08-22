@@ -7,10 +7,6 @@ public interface QuotationManService {
 	
 	void checkQuotationBody(QuotationBodyInfo quotationInfo) throws Exception;
 	
-	void generatePurchaseOrders(QuotationInfo quotationInfo) throws Exception;
-	
 	void processQuotation(String requestingUser, QuotationInfo quotationInfo) throws Exception;
-	
-	void sendNotificationsToThirdParties(String requestingUser, QuotationInfo quotationInfo) throws Exception;
 
 }

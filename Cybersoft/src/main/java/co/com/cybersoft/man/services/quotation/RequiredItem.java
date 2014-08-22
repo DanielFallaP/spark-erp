@@ -20,7 +20,7 @@ public class RequiredItem {
 	public RequiredItem(String itemCode, String itemDescription, String unit, Double acceptedQuantity, Double requiredQuantity){
 		this.itemCode=itemCode;
 		this.itemDescription=itemDescription;
-		this.unit=itemDescription;
+		this.unit=unit;
 		this.acceptedQuantity=acceptedQuantity;
 		this.requiredQuantity=requiredQuantity;
 	}

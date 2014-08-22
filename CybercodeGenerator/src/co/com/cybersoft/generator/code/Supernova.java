@@ -3,7 +3,7 @@ package co.com.cybersoft.generator.code;
 import java.util.Date;
 
 /**
- * BIG BANG
+ * LET THERE BE CODE
  * @author Daniel Falla, Cybersystems
  *
  */
@@ -14,7 +14,7 @@ public class Supernova {
 		DocCodeGenerator docCodeGenerator = new DocCodeGenerator();
 		ConfigCodeGenerator configCodeGenerator = new ConfigCodeGenerator();
 		try {
-//			tableCodeGenerator.generate();
+			tableCodeGenerator.generate();
 			configCodeGenerator.generate();
 			docCodeGenerator.generate();
 		} catch (Exception e) {

@@ -56,7 +56,7 @@
 			"originalDeletion":"false",
 			"onBodyPreModification":{"className":"co.com.cybersoft.man.services.quotation.QuotationManService", "methodName":"checkQuotationBody","parameters":["modified.getQuotationBodyModificationInfo()"]},
 			"onBodyPreAddition":{"className":"co.com.cybersoft.man.services.quotation.QuotationManService", "methodName":"checkQuotationBody","parameters":["current"]},
-			"onHeaderPreSave":{"className":"co.com.cybersoft.man.services.quotation.QuotationManService", "methodName":"processQuotation","parameters":["quotationInfo"]},
+			"onHeaderPreSave":{"className":"co.com.cybersoft.man.services.quotation.QuotationManService", "methodName":"processQuotation","parameters":["SecurityContextHolder.getContext().getAuthentication().getName()","quotationInfo"]},
 			"header":[
 						{"name":"city", "spanishName":"Ciudad", "refType":"docSite", "displayField":"populatedPlace", "autocomplete":"true", "searchDisplayable":"true"},
 						{"name":"date", "spanishName":"Fecha", "type":"Date", "defaultValue":"today", "readOnly":"true", "searchDisplayable":"true"},

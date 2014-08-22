@@ -1,6 +1,9 @@
 package co.com.cybersoft.man.services.quotation;
 
 import java.io.InputStream;
+import java.util.List;
+
+import javax.mail.Transport;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.slf4j.Logger;
@@ -31,7 +34,6 @@ public class QuotationRequestSender implements Runnable{
 	@Override
 	public void run() {
 		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(CyberUtils.quotationMessageTemplateDir+"quotationRequestMessage_es.st");
-//		CyberUtils.getTextFileContent(in)
 		
 		try {
 			String fileContent = CyberUtils.getTextFileContent(inputStream);
@@ -39,7 +41,13 @@ public class QuotationRequestSender implements Runnable{
 			template.setAttribute("thirdParty", thirdParty.getSupplier());
 			template.setAttribute("user", user.getFirstNames()+" "+user.getLastName());
 			String itemList="";
+			List<RequiredItem> items = thirdParty.getItems();
+			for (RequiredItem requiredItem : items) {
+				itemList+="		Artículo: "+requiredItem.getItemDescription()+", Cantidad:"+requiredItem.getRequiredQuantity()+" "+requiredItem.getUnit()+"\n";
+			}
+			template.setAttribute("items", itemList);
 			
+			Transport.send(new CyberUtils().getSimpleMessage(user.getEmail(), thirdParty.getSupplierEmail(), "Cotización de artículos", template.toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

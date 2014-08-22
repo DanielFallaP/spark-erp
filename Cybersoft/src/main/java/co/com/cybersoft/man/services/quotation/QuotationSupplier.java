@@ -6,8 +6,15 @@ import java.util.List;
 public class QuotationSupplier {
 
 	private String supplier;
+	private String supplierEmail;
 	private List<RequiredItem> items=new ArrayList<>();
 	
+	public String getSupplierEmail() {
+		return supplierEmail;
+	}
+	public void setSupplierEmail(String supplierEmail) {
+		this.supplierEmail = supplierEmail;
+	}
 	public String getSupplier() {
 		return supplier;
 	}
