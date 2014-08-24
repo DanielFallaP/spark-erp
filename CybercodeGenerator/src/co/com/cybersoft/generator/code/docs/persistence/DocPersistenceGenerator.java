@@ -3,6 +3,7 @@ package co.com.cybersoft.generator.code.docs.persistence;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
@@ -68,6 +69,7 @@ public class DocPersistenceGenerator {
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("referenceFields", generateReferenceDomainFieldsAndGS(document));
 		
+		
 		if (document.hasCompoundIndex()){
 			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");
 			List<Field> compoundIndex = document.getCompoundIndex(cybertables);
@@ -87,6 +89,7 @@ public class DocPersistenceGenerator {
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/domain", CodeUtils.toCamelCase(document.getName())+"Body.java");
 	}
+
 
 	private Object generateReferenceDomainFieldsAndGS(Document document) {
 		String fields="";

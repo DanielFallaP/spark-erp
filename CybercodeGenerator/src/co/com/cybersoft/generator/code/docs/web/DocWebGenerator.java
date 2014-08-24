@@ -3,6 +3,7 @@ package co.com.cybersoft.generator.code.docs.web;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
@@ -153,7 +154,48 @@ public class DocWebGenerator {
 				defaults+=stringTemplate.toString();
 			}
 		}
+		defaults+=generateBodyAppendValues(document);
 		return defaults;
+	}
+
+	private String generateBodyAppendValues(Document document) {
+		String append="";
+		List<Field> body = document.getBody();
+		Set<String> services = new HashSet<>();
+		for (Field field : body) {
+			if (field.getAppend()!=null){
+				services.add(field.getAppend().substring(0,field.getAppend().indexOf(".")));
+			}
+		}
+		
+		if (!services.isEmpty()){
+			StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.documentCodePath+"web");
+			StringTemplate template = templateGroup.getInstanceOf("setAppendValues");
+			
+			String details="";
+			String values="";
+			for (String service : services) {
+				StringTemplate detailsTemplate = new StringTemplate("$entityName$Details $tableName$Details = $tableName$Service.requestOnlyRecord().get$entityName$Details();\n");
+				detailsTemplate.setAttribute("entityName", CodeUtils.toCamelCase(service));
+				detailsTemplate.setAttribute("tableName", service);
+				details+=detailsTemplate.toString();
+			}
+			
+			for (Field field : body) {
+				if (field.getAppend()!=null ){
+					StringTemplate valueTemplate = new StringTemplate("$docName$BodyInfo.set$upperAppendField$($appendMethod$);\n");
+					valueTemplate.setAttribute("docName", document.getName());
+					valueTemplate.setAttribute("upperAppendField", "_append_"+field.getAppend().substring(field.getAppend().indexOf(".")+1));
+					valueTemplate.setAttribute("appendMethod", field.getAppend().substring(0,field.getAppend().indexOf("."))+"Details.get"+CodeUtils.toCamelCase(field.getAppend().substring(field.getAppend().indexOf(".")+1))+"()");
+					values+=valueTemplate.toString();
+				}
+			}
+			
+			template.setAttribute("details", details);
+			template.setAttribute("values", values);
+			return template.toString();
+		}
+		return append;
 	}
 
 	private Object generateDefaults(Document document) {
@@ -255,6 +297,17 @@ public class DocWebGenerator {
 			services.add(document.getOnBodyPreAddition().getName());
 		}
 		
+		for (Field field : allFields) {
+			if (field.getAppend()!=null && !services.contains(field.getAppend().substring(0,field.getAppend().indexOf(".")))){
+				StringTemplate template = new StringTemplate("@Autowired\n"
+						+ "	private $upperServiceName$Service $serviceName$Service;");
+				template.setAttribute("upperServiceName", CodeUtils.toCamelCase(field.getAppend().substring(0,field.getAppend().indexOf("."))));
+				template.setAttribute("serviceName", field.getAppend().substring(0,field.getAppend().indexOf(".")));
+				declarations+=template.toString()+"\n\n";
+				services.add(field.getAppend().substring(0,field.getAppend().indexOf(".")));
+			}
+		}
+		
 		return declarations;
 	}
 	
@@ -317,7 +370,7 @@ public class DocWebGenerator {
 		fields.addAll(document.getBody());
 		
 		String  imports="";
-		HashSet<String> referenceImports = new HashSet<String>();
+		Set<String> referenceImports = new HashSet<String>();
 		for (Field field : fields) {
 			if (field.isReference() && !referenceImports.contains(field.getRefType())){
 				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
@@ -344,6 +397,24 @@ public class DocWebGenerator {
 			}
 		}
 		
+		for (Field field : fields) {
+			if (field.getAppend()!=null&& !referenceImports.contains(field.getAppend().substring(0,field.getAppend().indexOf(".")))){
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
+						+ "import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;\n"
+						+ "import co.com.cybersoft.tables.core.domain.$entityName$Details;\n");
+				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getAppend().substring(0,field.getAppend().indexOf("."))));
+				template.setAttribute("tableName", field.getAppend().substring(0,field.getAppend().indexOf(".")));
+				imports+=template.toString();
+				referenceImports.add(field.getAppend().substring(0,field.getAppend().indexOf(".")));
+			}else if (field.getAppend()!=null&& referenceImports.contains(field.getAppend().substring(0,field.getAppend().indexOf(".")))){
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.domain.$entityName$Details;\n");
+				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getAppend().substring(0,field.getAppend().indexOf("."))));
+				template.setAttribute("tableName", field.getAppend().substring(0,field.getAppend().indexOf(".")));
+				imports+=template.toString();
+				referenceImports.add(field.getAppend().substring(0,field.getAppend().indexOf(".")));
+			}
+		}
+		
 		return imports;
 	}
 	
@@ -356,8 +427,32 @@ public class DocWebGenerator {
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("imports", generateDomainClassImports(document.getBody()));
 		template.setAttribute("overrideEquals", generateEqualsOverride(document));
+		template.setAttribute("appendFields", generateAppendFieldsAndGS(document));
 
 		CodeUtils.writeClass(template.toString(),Cybertables.targetDocumentClassPath+"/web/domain/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"BodyInfo.java");
+	}
+	
+
+	private Object generateAppendFieldsAndGS(Document document) {
+		String appendFields="";
+		List<Field> body = document.getBody();
+		Set<String> appendF = new HashSet<>();
+		for (Field field : body) {
+			if (field.getAppend()!=null){
+				appendF.add(field.getAppend());
+			}
+		}
+		for (String string : appendF) {
+			appendFields+="private String _append_"+string.substring(string.indexOf('.')+1)+";\n";
+			StringTemplateGroup templateGroup = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
+			StringTemplate gettersSettersTemplate = templateGroup.getInstanceOf("getterSetter");
+			gettersSettersTemplate.setAttribute("type", Cyberconstants.stringType);
+			gettersSettersTemplate.setAttribute("name", "_append_"+string.substring(string.indexOf('.')+1));
+			gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase("_append_"+string.substring(string.indexOf('.')+1)));
+			appendFields+=gettersSettersTemplate.toString()+"\n\n";
+		}
+		
+		return appendFields;
 	}
 	
 	private Object generateEqualsOverride(Document document) {

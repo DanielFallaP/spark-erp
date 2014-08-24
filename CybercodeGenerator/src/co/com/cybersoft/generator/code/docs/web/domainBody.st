@@ -32,8 +32,8 @@ public class $upperDocName$BodyInfo implements Serializable{
 	private Boolean _enableDeletion=Boolean.FALSE;
 	
 	$fields$
-	
 	$referenceFields$
+	$appendFields$
 	
 	public Boolean get_enableDeletion() {
 		return _enableDeletion;

@@ -274,6 +274,7 @@ public class $upperDocName$Controller {
 			$docName$BodyInfo.set_enableDeletion(Boolean.TRUE);
 			$docName$BodyInfo.setId(null);
 			$setBodyDefaults$
+			
 			$setOnLoadBodyValues$
 
 			request.getSession().setAttribute("$docName$BodyInfo", $docName$BodyInfo);

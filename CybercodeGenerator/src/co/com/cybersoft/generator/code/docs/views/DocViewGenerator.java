@@ -530,12 +530,17 @@ public class DocViewGenerator {
 		}
 		
 		for (Field field : body) {
-			
 			StringTemplate template = templateGroup.getInstanceOf("headerBodyColumn");
 			template.setAttribute("docName", document.getName());
 			template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 			if (!field.getDisplayable())
 				template.setAttribute("hide", "class=\"hideANDseek\"" );
+			if (field.getAppend()!=null){
+				StringTemplate stringTemplate = new StringTemplate("+' ('+\\${$documentName$BodyInfo.$appendField$}+')'");
+				stringTemplate.setAttribute("documentName", document.getName());
+				stringTemplate.setAttribute("appendField", "_append_"+field.getAppend().substring(field.getAppend().indexOf('.')+1));
+				template.setAttribute("append", stringTemplate.toString());
+			}
 			headers+=template.toString();
 		}
 		
@@ -562,6 +567,7 @@ public class DocViewGenerator {
 						template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field.getName());
 						template.setAttribute("modificationPrefix", "_");
 						template.setAttribute("optionalReference", "<option value=\"\"></option>");
+						
 						text+=template.toString()+"\n";
 
 					}
@@ -653,6 +659,13 @@ public class DocViewGenerator {
 					template.setAttribute("disabled", "readonly=\"readonly\"");
 				if (field.getType().equals(Cybertables.dateType))
 					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
+				if (field.getAppend()!=null){
+					StringTemplate stringTemplate = new StringTemplate("+' ('+\\${$documentName$BodyInfo.$appendField$}+')'");
+					stringTemplate.setAttribute("documentName", document.getName());
+					stringTemplate.setAttribute("appendField", "_append_"+field.getAppend().substring(field.getAppend().indexOf('.')+1));
+					template.setAttribute("append", stringTemplate.toString());
+				}
+				
 				text+=template.toString()+"\n";
 			}
 			
@@ -678,6 +691,12 @@ public class DocViewGenerator {
 				template.setAttribute("displayName", field.getDisplayField());
 				template.setAttribute("fieldNameId", field.getName()+"Modification");
 				template.setAttribute("fieldNamePath", document.getName()+"BodyModificationInfo."+field.getName());
+				if (field.getAppend()!=null){
+					StringTemplate stringTemplate = new StringTemplate("+' ('+\\${$documentName$BodyInfo.$appendField$}+')'");
+					stringTemplate.setAttribute("documentName", document.getName());
+					stringTemplate.setAttribute("appendField", "_append_"+field.getAppend().substring(field.getAppend().indexOf('.')+1));
+					template.setAttribute("append", stringTemplate.toString());
+				}
 
 				text+=template.toString()+"\n";
 			}
@@ -762,6 +781,13 @@ public class DocViewGenerator {
 					template.setAttribute("disabled", "readonly=\"readonly\"");
 				if (field.getType().equals(Cybertables.dateType))
 					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
+				if (field.getAppend()!=null){
+					StringTemplate stringTemplate = new StringTemplate("+' ('+\\${$documentName$BodyInfo.$appendField$}+')'");
+					stringTemplate.setAttribute("documentName", document.getName());
+					stringTemplate.setAttribute("appendField", "_append_"+field.getAppend().substring(field.getAppend().indexOf('.')+1));
+					template.setAttribute("append", stringTemplate.toString());
+				}
+				
 				text+=template.toString()+"\n";
 			}
 			
@@ -787,6 +813,12 @@ public class DocViewGenerator {
 				template.setAttribute("displayName", field.getDisplayField());
 				template.setAttribute("fieldNamePath", field.getName());
 				template.setAttribute("fieldNameId", field.getName());
+				if (field.getAppend()!=null){
+					StringTemplate stringTemplate = new StringTemplate("+' ('+\\${$documentName$BodyInfo.$appendField$}+')'");
+					stringTemplate.setAttribute("documentName", document.getName());
+					stringTemplate.setAttribute("appendField", "_append_"+field.getAppend().substring(field.getAppend().indexOf('.')+1));
+					template.setAttribute("append", stringTemplate.toString());
+				}
 				
 				text+=template.toString()+"\n";
 			}
