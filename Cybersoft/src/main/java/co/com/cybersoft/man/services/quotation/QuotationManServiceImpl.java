@@ -70,6 +70,19 @@ public class QuotationManServiceImpl implements QuotationManService{
 							accepted.setAcceptedQuantity(accepted.getAcceptedQuantity()+requiredItem.getAcceptedQuantity());
 						}
 					}
+					QuotationSupplier acceptedSupplier = new QuotationSupplier();
+					acceptedSupplier.setSupplier(quotationBodyInfo.getThirdParty());
+					if (acceptedSuppliers.contains(acceptedSupplier)){
+						for (QuotationSupplier accepted : acceptedSuppliers) {
+							if (accepted.equals(acceptedSupplier)){
+								accepted.getItems().add(acceptedItem);
+							}
+						}
+					}
+					else{
+						acceptedSuppliers.add(acceptedSupplier);
+						acceptedSupplier.getItems().add(acceptedItem);
+					}
 				}
 				else if (quotationBodyInfo.getAccepted()){
 					acceptedItems.add(requiredItem);
@@ -166,6 +179,19 @@ public class QuotationManServiceImpl implements QuotationManService{
 						if (accepted.equals(requiredItem)){
 							accepted.setAcceptedQuantity(accepted.getAcceptedQuantity()+requiredItem.getAcceptedQuantity());
 						}
+					}
+					QuotationSupplier biddingSupplier = new QuotationSupplier();
+					biddingSupplier.setSupplier(quotationBodyInfo.getThirdParty());
+					if (biddingSuppliers.contains(biddingSupplier)){
+						for (QuotationSupplier accepted : biddingSuppliers) {
+							if (accepted.equals(biddingSupplier)){
+								accepted.getItems().add(quotationItem);
+							}
+						}
+					}
+					else{
+						biddingSuppliers.add(biddingSupplier);
+						biddingSupplier.getItems().add(quotationItem);
 					}
 				}
 				else {
