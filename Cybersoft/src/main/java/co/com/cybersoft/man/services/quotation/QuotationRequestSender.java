@@ -43,7 +43,7 @@ public class QuotationRequestSender implements Runnable{
 			String itemList="";
 			List<RequiredItem> items = thirdParty.getItems();
 			for (RequiredItem requiredItem : items) {
-				itemList+="		Artículo: "+requiredItem.getItemDescription()+", Cantidad:"+requiredItem.getRequiredQuantity()+" "+requiredItem.getUnit()+"\n";
+				itemList+="		-Artículo: "+requiredItem.getItemDescription()+", Cantidad:"+requiredItem.getRequiredQuantity()+" "+requiredItem.getUnit()+"\n";
 			}
 			template.setAttribute("items", itemList);
 			
