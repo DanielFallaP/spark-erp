@@ -315,7 +315,7 @@
 			"fields":[
 						{"name":"partner", "spanishName":"Socio", "refType":"thirdParty", "displayField":"thirdParty", "embeddedFields":["identification"]},
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},  
-						{"name":"oparator", "spanishName":"Operador", "type":"Boolean", "defaultValue":"false"},  
+						{"name":"operator", "spanishName":"Operador", "type":"Boolean", "defaultValue":"false"},  
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -908,7 +908,7 @@
 						{"name":"location", "spanishName":"localización", "type":"String"},
 						{"name":"dueDate", "spanishName":"Fecha de vencimiento", "type":"Date", "defaultValue":"today", "displayable":"false", "required":"false"},
 						{"name":"existingQuantity", "spanishName":"Cantidad existente", "type":"Double", "readOnly":"true"},
-						{"name":"localCurrencyLastValue", "spanishName":"Ultimo valor en moneda local", "type":"Double", "readOnly":"true"},
+						{"name":"localCurrencyLastValue", "spanishName":"Ultimo valor en moneda local", "append":"customerTenancy.foreignCurrency", "type":"Double", "readOnly":"true"},
 						{"name":"foreignCurrencyLastValue", "spanishName":"Ultimo valor en moneda foranea", "type":"Double", "readOnly":"true"},
 						{"name":"localCurrencyAvertageValue", "spanishName":"Valor promedio en moneda local", "type":"Double", "readOnly":"true"},
 						{"name":"foreignCurrencyAvertageValue", "spanishName":"Valor promedio en moneda foranea", "type":"Double", "readOnly":"true"},

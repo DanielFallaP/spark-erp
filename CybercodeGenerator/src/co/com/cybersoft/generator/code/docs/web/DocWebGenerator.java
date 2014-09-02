@@ -37,7 +37,17 @@ public class DocWebGenerator {
 			generateSearchByIdController(document);
 			generateDomainHeader(document);
 			generateDomainBody(document);
+			generateExcelController(document);
 		}
+	}
+
+	private void generateExcelController(Document document) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.documentCodePath+"web");
+		StringTemplate template = templateGroup.getInstanceOf("excelController");
+		template.setAttribute("docName", document.getName());
+		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
+		
+		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"ExcelController.java");
 	}
 
 	private void generateSearchByIdController(Document document) {

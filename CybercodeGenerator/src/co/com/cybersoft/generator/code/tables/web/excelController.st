@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import co.com.cybersoft.man.services.excel.ReportingService;
 import co.com.cybersoft.tables.persistence.domain.$entityName$;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/configuration/$tableName$/export")

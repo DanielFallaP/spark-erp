@@ -195,12 +195,18 @@
 		        	<input th:if='\${$docName$Info.created}' hidden="" value="true" th:field="*{created}"></input>
 		        	<div ><a id="back" th:text="#{label.back}" th:href="@{/docs/search$upperDocName$}"></a></div>
 		        	
-		        	<h3 th:if='\${$docName$Info.numericId==null}' th:text="#{label.$docName$Info}"></h3>
-		        	<h3 th:if='\${$docName$Info.numericId!=null}' th:text="#{label.$docName$Info}+' '+\${$docName$Info.numericId}"></h3>
 		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
 		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{$docName$BodyModificationInfo.submit}"></input>
 		        	<input id="_trueValue" th:value="#{label.true}" type="hidden" />
 		        	
+		        	<table width="100%">
+						<tr>
+							<td width="33%"><h3 th:if='\${$docName$Info.numericId==null}' th:text="#{label.$docName$Info}"></h3>
+		        			<h3 th:if='\${$docName$Info.numericId!=null}' th:text="#{label.$docName$Info}+' '+\${$docName$Info.numericId}"></h3></td>
+							<td width="33%"></td>
+							<td width="34%"><div align="right"><a th:href="@{/docs/$docName$/export?id=}+\${$docName$Info.numericId}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
+						</tr>
+					</table>
 		        	<table>
 		        		$headerFields$
 		        	</table>

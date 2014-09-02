@@ -30,9 +30,8 @@ public class $upperDocName$Body {
 		this._enableDeletion = _enableDeletion;
 	}
 	
-	$fields$
-	
 	$referenceFields$
+	$fields$
 	
 	$gettersSetters$
 }

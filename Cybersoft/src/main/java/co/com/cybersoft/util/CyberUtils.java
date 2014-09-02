@@ -21,9 +21,19 @@ public class CyberUtils {
 	
 	public final static String decisionTableFalseValue="label.false";
 	
-	public final static String idField ="id";
+	public final static String tableIdField ="id";
 	
-	public final static String excelFilePath="../webapps/Spark/resources/excel";
+	public final static String docIdField="id";
+	
+	public final static String docStringIdField="stringId";
+	
+	public final static String docNumericId="numericId";
+	
+	public final static String bodyEntityListSuffix="BodyEntityList";
+	
+	public final static String docEnableDeletionField="_enableDeletion";
+	
+	public final static String excelFilePath="webapps/Spark/resources/excel";
 	
 	public final static String excelURLPath="/resources/excel";
 	
@@ -70,6 +80,8 @@ public class CyberUtils {
 	public final static String itemMessageTemplateDir="mail/item/";
 	
 	public final static String quotationMessageTemplateDir="mail/quotation/";
+
+	public static final int headerColumnsPerRow = 3;
 	
 	public static String escapePCRECharacters(String string){
 		for (Character escapeCharacter : PCREEscapeCharacters) {
