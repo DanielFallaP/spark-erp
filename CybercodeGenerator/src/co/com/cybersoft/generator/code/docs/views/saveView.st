@@ -280,6 +280,6 @@
             <div th:if='\${$docName$ValidationException}' class="alert alert-error" th:text="#{label.validationError}">
             </div>
 	    </div>
-		<div th:include="normal/layout :: footer"></div>
+		<div class="container-fluid" th:include="normal/layout :: footer"></div>
     </body>
 </html>

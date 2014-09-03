@@ -14,7 +14,8 @@
 	
 	        .sidebar-nav {
 	            padding: 9px 0;
-	        }
+	        }.inheritBackground{background-color:inherit;}
+	        
 	    </style>
 	 <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
 	 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
@@ -30,20 +31,19 @@
 				});
 			} );
 			
-			function setFocus(){
-		   		document.getElementById("language").focus();
-		   }  
 	  	/* ]]> */
 	  </script>
 </head>
 <body onload="setFocus()">
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
-			<div class="hero-unit span9">
-				<div><a id="language" th:href="@{/configuration/language}" th:text="#{label.languageConfiguration}"></a> </div>
-				$links$
+			<div class="hero-unit">
+				<table class="inheritBackground" align="center">
+						<!-- div><a id="language" th:href="@{/configuration/language}" th:text="#{label.languageConfiguration}"></a> </div -->
+					$links$
+				</table>
 			</div>
 	</div>
-	<div th:include="normal/layout :: footer"></div>
+	<div class="container-fluid" th:include="normal/layout :: footer"></div>
 </body>
 </html>

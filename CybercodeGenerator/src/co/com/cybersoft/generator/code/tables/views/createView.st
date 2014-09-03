@@ -69,7 +69,9 @@
 			<div class="row-fluid">
 		        <form th:object="\${$tableName$Info}" method="post" onchange="hideAlert();">
 		        	<div id="back"><a th:if="\${$tableName$Info.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/configuration/$tableName$/search$entityName$}"></a></div>
+		        	<div align="center">
 		        	<h3 th:text="#{label.$tableName$CreationTitle}"></h3>
+		        	<br/>
 		        	<table>		        			        			
 		        		$rows$
 		        		<tr>
@@ -78,6 +80,7 @@
 		        			</td>
 		        		</tr>
 		        	</table>
+		        	</div>
 		        </form>
 		    </div>
 		    <div id="_savedAlert" th:if='\${$tableName$Info.created}' class="alert alert-info" th:text="#{label.created}">
@@ -87,6 +90,6 @@
             <div th:if='\${$tableName$ValidationException}' class="alert alert-error" th:text="#{label.validationError}">
             </div>
 	    </div>
-		<div th:include="normal/layout :: footer"></div>    
+		<div class="container-fluid" th:include="normal/layout :: footer"></div>    
     </body>
 </html>

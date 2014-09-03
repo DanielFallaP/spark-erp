@@ -1,10 +1,12 @@
 package co.com.cybersoft.generator.code.tables.views;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
+import co.com.cybersoft.generator.code.model.Cyberconstants;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Table;
@@ -58,27 +60,19 @@ public class TableViewGenerator {
 	private void generateSettingsView(Cybertables cybersoft2) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.tableCodePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("settings");
-		
-		List<Table> tables = cybertables.getTables();
-		String links="";
-		int i=0;
-		for (Table table : tables) {
-			if (table.getLabelTable() || table.getSingletonTable()){
-				StringTemplate linkTemplate = templateGroup.getInstanceOf("configurationLink");
-				if (i==0){
-					template.setAttribute("firstOption", table.getName());
-				}
-				linkTemplate.setAttribute("option", table.getLabelTable()?"search":"set");
-				linkTemplate.setAttribute("tableName",table.getName());
-				linkTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
-				links+=linkTemplate.toString()+"\n";
-				i++;
-			}
-		}
-		
-		template.setAttribute("links", links);
-		
+				
+		template.setAttribute("links", generateSettingsLinks());
+				
 		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"normal", "settings.html");
+	}
+
+	private void generateLinksView(Cybertables cybertables){
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.tableCodePath+"views");
+		StringTemplate template = templateGroup.getInstanceOf("viewConfiguration");
+		template.setAttribute("firstOption", cybertables.getTables().get(0).getName());
+		template.setAttribute("links", generateDataConfigLinks());
+		
+		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"normal", "configuration.html");
 	}
 
 	private void generateCreateView(Table table){
@@ -424,29 +418,88 @@ public class TableViewGenerator {
 		return text;
 	}
 	
-	private void generateLinksView(Cybertables cybersoft){
-		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.tableCodePath+"views");
-		StringTemplate template = templateGroup.getInstanceOf("viewConfiguration");
-		
-		List<Table> tables = cybersoft.getTables();
+
+	private String generateDataConfigLinks() {
 		String links="";
+		List<Table> tables = cybertables.getTables();
+		List<Table> configurationRow = new ArrayList<Table>();
 		int i=0;
-		for (Table table : tables) {
+		int j=0;
+		if (!tables.get(0).getLabelTable() && !tables.get(0).getSingletonTable()){
+			configurationRow.add(tables.get(0));
+			i++;
+			j++;
+		}
+		for (; i<tables.size(); i++){
+			Table table = tables.get(i);
 			if (!table.getLabelTable() && !table.getSingletonTable()){
-				StringTemplate linkTemplate = templateGroup.getInstanceOf("configurationLink");
-				if (i==0){
-					template.setAttribute("firstOption", table.getName());
+				if (j%Cyberconstants.configPageColumns!=0){
+					configurationRow.add(table);
 				}
-				linkTemplate.setAttribute("option", "search");
-				linkTemplate.setAttribute("tableName",table.getName());
-				linkTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
-				links+=linkTemplate.toString()+"\n";
-				i++;
+				else{
+					links+=generateConfigurationRow(configurationRow);
+					configurationRow.clear();
+					configurationRow.add(table);
+				}
+				j++;
 			}
 		}
 		
-		template.setAttribute("links", links);
+		if (!configurationRow.isEmpty()){
+			links+=generateConfigurationRow(configurationRow);					
+		}
 		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"normal", "configuration.html");
+		return links;
+	}
+	
+	private String generateSettingsLinks() {
+		String links="";
+		List<Table> tables = cybertables.getTables();
+		List<Table> configurationRow = new ArrayList<Table>();
+		int i=0;
+		int j=0;
+		if (tables.get(0).getLabelTable() || tables.get(0).getSingletonTable()){
+			configurationRow.add(tables.get(0));
+			i++;
+			j++;
+		}
+		for (; i<tables.size(); i++){
+			Table table = tables.get(i);
+			if (table.getLabelTable() || table.getSingletonTable()){
+				if (j%Cyberconstants.configPageColumns!=0){
+					configurationRow.add(table);
+				}
+				else{
+					links+=generateConfigurationRow(configurationRow);
+					configurationRow.clear();
+					configurationRow.add(table);
+				}
+				j++;
+			}
+		}
+		
+		if (!configurationRow.isEmpty()){
+			links+=generateConfigurationRow(configurationRow);					
+		}
+		
+		return links;
+	}
+
+	private String generateConfigurationRow(List<Table> tables) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views", Cybertables.tableCodePath+"views");
+		StringTemplate confRowTemp = templateGroup.getInstanceOf("configurationRow");
+		
+		String links="";
+		for (Table table : tables) {
+				StringTemplate linkTemplate = templateGroup.getInstanceOf("configurationLink");
+				
+				linkTemplate.setAttribute("option", table.getSingletonTable()?"set":"search");
+				linkTemplate.setAttribute("tableName",table.getName());
+				linkTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+				links+=linkTemplate.toString()+"\n";
+		}	
+		
+		confRowTemp.setAttribute("links", links);
+		return confRowTemp.toString();
 	}
 }

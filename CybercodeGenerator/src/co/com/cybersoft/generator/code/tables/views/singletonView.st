@@ -73,7 +73,9 @@
 			<div class="row-fluid">
 		        <form th:object="\${$tableName$Info}" method="post">
 		        	<div id="back"><a th:text="#{label.back}" th:href="@{/settings}"></a></div>
+		        	<div align="center">
 		        	<h3 th:text="#{label.$tableName$}"></h3>
+		        	<br/>
 		        	<table>
 		        		$rows$
 		        		<tr>
@@ -82,6 +84,7 @@
 		        			</td>
 		        		</tr>
 		        	</table>
+		        	</div>
 		        </form>
 		    </div>
 		    <div th:if='\${$tableName$ModificationException}' class="alert alert-error" th:text="#{label.$tableName$ModificationError}">
@@ -89,6 +92,6 @@
             <div th:if='\${$tableName$ValidationException}' class="alert alert-error" th:text="#{label.$tableName$ValidationError}">
             </div>
 	    </div>
-		<div th:include="normal/layout :: footer"></div>    
+		<div class="container-fluid" th:include="normal/layout :: footer"></div>    
     </body>
 </html>

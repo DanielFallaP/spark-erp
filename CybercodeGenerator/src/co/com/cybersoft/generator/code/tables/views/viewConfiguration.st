@@ -15,6 +15,8 @@
 	        .sidebar-nav {
 	            padding: 9px 0;
 	        }
+	        
+	         .inheritBackground{background-color:inherit;}
 	    </style>
 	 <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
 	 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
@@ -40,10 +42,12 @@
 <body onload="setFocus()">
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
-			<div class="hero-unit span9">
-				$links$
+			<div class="hero-unit">
+				<table class="inheritBackground" align="center">
+					$links$
+				</table>
 			</div>
 	</div>
-	<div th:include="normal/layout :: footer"></div>
+	<div class="container-fluid" th:include="normal/layout :: footer"></div>
 </body>
 </html>
