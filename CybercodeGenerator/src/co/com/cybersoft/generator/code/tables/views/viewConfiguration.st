@@ -13,8 +13,7 @@
 	        }	
 	        .sidebar-nav {
 	            padding: 9px 0;
-	        }
-	        
+	        }	        
 	         .inheritBackground{background-color:inherit;}
 	    </style>
 	 <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
