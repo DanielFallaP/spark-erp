@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
@@ -204,7 +205,7 @@
 							<td width="33%"><h3 th:if='\${$docName$Info.numericId==null}' th:text="#{label.$docName$Info}"></h3>
 		        			<h3 th:if='\${$docName$Info.numericId!=null}' th:text="#{label.$docName$Info}+' '+\${$docName$Info.numericId}"></h3></td>
 							<td width="33%"></td>
-							<td width="34%"><div align="right"><a th:href="@{/docs/$docName$/export?id=}+\${$docName$Info.numericId}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
+							<td width="34%"><div align="right"><a th:if='\${$docName$Info.showBody}' th:href="@{/docs/$docName$/export?id=}+\${$docName$Info.numericId}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
 						</tr>
 					</table>
 		        	<table>

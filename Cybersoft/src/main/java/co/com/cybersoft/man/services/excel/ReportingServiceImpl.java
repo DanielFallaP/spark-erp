@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -199,7 +200,10 @@ public class ReportingServiceImpl implements ReportingService {
 		//Write the file
 		UUID uuid = UUID.randomUUID();
 		String fileName=_class.getSimpleName()+"-"+uuid.toString()+".xls";
-		File directory = new File(CyberUtils.excelFilePath);
+
+		URL url = getClass().getClassLoader().getResource("db.json");
+		File directory=new File(new File(url.getPath()).getParentFile().getParentFile().getParentFile().getPath()+CyberUtils.excelFilePath);
+		
 		File excel = new File(directory,fileName);
 		FileOutputStream outputStream = new FileOutputStream(excel);
 		wb.write(outputStream);
@@ -362,7 +366,9 @@ public class ReportingServiceImpl implements ReportingService {
 		//Write the file
 		UUID uuid = UUID.randomUUID();
 		String fileName=_class.getSimpleName()+"-"+uuid.toString()+".xls";
-		File directory = new File(CyberUtils.excelFilePath);
+		URL url = getClass().getClassLoader().getResource("db.json");
+		File directory=new File(new File(url.getPath()).getParentFile().getParentFile().getParentFile().getPath()+CyberUtils.excelFilePath);
+		
 		File excel = new File(directory,fileName);
 		FileOutputStream outputStream = new FileOutputStream(excel);
 		wb.write(outputStream);

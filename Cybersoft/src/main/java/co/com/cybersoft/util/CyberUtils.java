@@ -33,7 +33,7 @@ public class CyberUtils {
 	
 	public final static String docEnableDeletionField="_enableDeletion";
 	
-	public final static String excelFilePath="webapps/Spark/resources/excel";
+	public final static String excelFilePath="/resources/excel";
 	
 	public final static String excelURLPath="/resources/excel";
 	
