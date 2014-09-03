@@ -14,7 +14,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import co.com.cybersoft.man.security.SparkAuthenticationSuccessHandler;
 import co.com.cybersoft.man.services.security.MongoUserDetailsService;
 import co.com.cybersoft.util.CyberUtils;
 
@@ -24,8 +26,10 @@ import com.mongodb.Mongo;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
-		
+	
 	@Autowired
+	
+	
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
 		auth.userDetailsService(new MongoUserDetailsService(new MongoTemplate(new Mongo(getDBAddress()),CyberUtils.dataBaseName)));
 	}
@@ -42,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .and()
        .formLogin()
             .loginPage("/login").permitAll().and().logout().permitAll()
-            .and()
+            .and().formLogin().successHandler(authenticationSuccessHandler()).and()
        .sessionManagement()
             .maximumSessions(1)
             .expiredUrl("/login");
@@ -56,6 +60,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception{
 		return super.authenticationManagerBean();
+	}
+	
+	@Bean
+	public AuthenticationSuccessHandler authenticationSuccessHandler() throws Exception{
+		return new SparkAuthenticationSuccessHandler();
 	}
 	
 
