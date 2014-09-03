@@ -10,8 +10,7 @@
 	        body {
 	            padding-top: 60px;
 	            padding-bottom: 40px;
-	        }	
-	        .sidebar-nav {
+	        }.sidebar-nav {
 	            padding: 9px 0;
 	        }	        
 	         .inheritBackground{background-color:inherit;}
