@@ -155,6 +155,13 @@ public class LabelGenerator implements DBConstants{
 	private void updateDefaultEnglishFields(Document table) throws SQLException {
 		List<Field> fields = table.getAllFields();
 		for (Field field : fields) {
+			if (field.getName().contains("localCurrency")){
+				field.setName(field.getName().replace("localCurrency", ""));
+			}
+			if (field.getName().contains("foreignCurrency")){
+				field.setName(field.getName().replace("foreignCurrency", ""));
+			}
+			
 			englishUpdatePst.setString(1, CodeUtils.getDefaultName(field.getName()));
 			englishUpdatePst.setString(2, table.getName()+CodeUtils.toCamelCase(field.getName()));
 			englishUpdatePst.execute();

@@ -30,6 +30,7 @@
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/purchaseOrderOtherValue}" th:text="#{label.purchaseOrderOtherValueOption}"></a></li>
 			                        <li sec:authorize-url="/configuration"><a th:href="@{/configuration}" th:text="#{label.navbarConfiguration}"></a></li>
 			                        <li sec:authorize-url="/configuration"><a th:href="@{/settings}" th:text="#{label.settingsOption}"></a></li>
+			                        <li sec:authorize-url="/preferences"><a th:href="@{/preferences}" th:text="#{label.languageOption}"></a></li>
 			                        <li><a id="about-ajax-popup" class="about-ajax-popup" th:href="@{/about}" th:text="#{label.aboutOption}"></a></li>
 			                        <li><a href=""><img onclick="var url=$('#logoutURL').val();$.ajax({type: 'POST',url: url});" th:src="@{/resources/img/logout.png}"/></a></li>
 			                    </ul>
