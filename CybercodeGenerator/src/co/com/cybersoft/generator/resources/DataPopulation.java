@@ -39,7 +39,7 @@ public class DataPopulation implements DBConstants{
 			ObjectMapper mapper = new ObjectMapper();
 			Cybertables cybersystems=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybertables.class);
 
-			MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("localhost",27017)));
+			MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("54.164.192.119",27017)));
 			DB db = mongoClient.getDB(mongoDBName);
 			DataPopulation dataPopulation = new DataPopulation(db, cybersystems);
 			dataPopulation.populate();

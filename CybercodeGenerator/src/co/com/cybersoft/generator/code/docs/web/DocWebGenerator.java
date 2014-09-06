@@ -113,7 +113,8 @@ public class DocWebGenerator {
 						set.add(fieldFromExp);
 					}
 				}
-				StringTemplate template = new StringTemplate("current.set$upperFieldName$($arithmeticExpression$);\n");
+				StringTemplate template = new StringTemplate("if($nonNullCondition$)current.set$upperFieldName$($arithmeticExpression$);\n");
+				template.setAttribute("nonNullCondition", JavaArithmeticExpression.getNonNullCondition(field.getValue()));
 				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("arithmeticExpression", JavaArithmeticExpression.getJavaArithmeticExpression(field.getValue()));
 				operations+=template.toString();
@@ -142,7 +143,8 @@ public class DocWebGenerator {
 						set.add(fieldFromExp);
 					}
 				}
-				StringTemplate template = new StringTemplate("modified.get$upperDocName$BodyModificationInfo().set$upperFieldName$($arithmeticExpression$);\n");
+				StringTemplate template = new StringTemplate("if($nonNullCondition$)modified.get$upperDocName$BodyModificationInfo().set$upperFieldName$($arithmeticExpression$);\n");
+				template.setAttribute("nonNullCondition", JavaArithmeticExpression.getNonNullCondition(field.getValue()));
 				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("arithmeticExpression", JavaArithmeticExpression.getJavaArithmeticExpression(field.getValue()));

@@ -14,7 +14,7 @@ public class Supernova {
 		DocCodeGenerator docCodeGenerator = new DocCodeGenerator();
 		ConfigCodeGenerator configCodeGenerator = new ConfigCodeGenerator();
 		try {
-			tableCodeGenerator.generate();
+//			tableCodeGenerator.generate();
 			configCodeGenerator.generate();
 			docCodeGenerator.generate();
 			System.out.println("");

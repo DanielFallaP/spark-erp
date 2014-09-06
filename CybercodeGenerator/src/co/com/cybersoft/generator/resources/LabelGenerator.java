@@ -33,7 +33,7 @@ import com.mongodb.ServerAddress;
 
 public class LabelGenerator implements DBConstants{
 
-	public static final String viewsAbsolutePath="C:\\Users\\Raul\\git3\\Cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views";
+	public static final String viewsAbsolutePath="C:\\Users\\Daniel\\git\\co.com.cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views";
 	
 	public final PreparedStatement insertionPst;
 	
@@ -61,7 +61,7 @@ public class LabelGenerator implements DBConstants{
 			PreparedStatement spanishUpdatePst = con.prepareStatement("update cybersoft.dictionary set spanish=?, generated=1 where message=? and spanish is null");
 			//Mongo setup. For replica set configurations, it is necessary to supply
 			//the seed members to auto-discover the primary instance
-			MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("localhost",27017)));
+			MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("54.165.34.202",27017)));
 			DB db = mongoClient.getDB(mongoDBName);
 			
 			ObjectMapper mapper = new ObjectMapper();
@@ -74,10 +74,10 @@ public class LabelGenerator implements DBConstants{
 			LabelGenerator labelGenerator = new LabelGenerator(cybersoft, cyberdocs, insertionPst, englishUpdatePst, spanishUpdatePst, db);
 
 			//Inserts all labels found in the views directory
-			labelGenerator.insertLabels(rootDirectory);
+//			labelGenerator.insertLabels(rootDirectory);
 			
 			//Inserts all labels found in label tables
-			labelGenerator.insertLabelTablesContent();
+//			labelGenerator.insertLabelTablesContent();
 			
 			//Updates English default messages for empty messages in the DB
 			labelGenerator.updateDefaultEnglishMessages();
@@ -155,14 +155,15 @@ public class LabelGenerator implements DBConstants{
 	private void updateDefaultEnglishFields(Document table) throws SQLException {
 		List<Field> fields = table.getAllFields();
 		for (Field field : fields) {
+			String name=field.getName();
 			if (field.getName().contains("localCurrency")){
-				field.setName(field.getName().replace("localCurrency", ""));
+				name=field.getName().replace("localCurrency", "");
 			}
 			if (field.getName().contains("foreignCurrency")){
-				field.setName(field.getName().replace("foreignCurrency", ""));
+				name=field.getName().replace("foreignCurrency", "");
 			}
 			
-			englishUpdatePst.setString(1, CodeUtils.getDefaultName(field.getName()));
+			englishUpdatePst.setString(1, CodeUtils.getDefaultName(name));
 			englishUpdatePst.setString(2, table.getName()+CodeUtils.toCamelCase(field.getName()));
 			englishUpdatePst.execute();
 		}
