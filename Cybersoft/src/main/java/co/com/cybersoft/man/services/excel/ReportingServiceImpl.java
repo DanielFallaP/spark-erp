@@ -60,6 +60,17 @@ public class ReportingServiceImpl implements ReportingService {
 		DBCollection collection = mongo.getCollection(toLowerCamelCase(header.getSimpleName()));
 		BasicDBObject basicObject = new BasicDBObject();
 		basicObject.append("_numericId", id);
+		File docExcel = generateDocExcel(collection.find(basicObject), header, body, locale, id);
+		return "redirect:"+CyberUtils.excelURLPath+"/"+docExcel.getName();
+	}
+	
+	@Override
+	public File docToExcelFile(String className, String bodyClassName, Locale locale, Long id) throws Exception {
+		Class<?> header = Class.forName(className);
+		Class<?> body = Class.forName(bodyClassName);
+		DBCollection collection = mongo.getCollection(toLowerCamelCase(header.getSimpleName()));
+		BasicDBObject basicObject = new BasicDBObject();
+		basicObject.append("_numericId", id);
 		return generateDocExcel(collection.find(basicObject), header, body, locale, id);
 	}
 
@@ -73,7 +84,7 @@ public class ReportingServiceImpl implements ReportingService {
 		return character.toString().toUpperCase()+name.substring(1);
 	}
 	
-	private String generateDocExcel(DBCursor cursor, Class<?> _class, Class<?> bodyClass, Locale locale, Long id) throws IOException{
+	private File generateDocExcel(DBCursor cursor, Class<?> _class, Class<?> bodyClass, Locale locale, Long id) throws IOException{
 		DBObject dbObject = cursor.next();
 		List<BasicDBObject> body = (List<BasicDBObject>) dbObject.get(toLowerCamelCase(_class.getSimpleName())+"BodyEntityList");
 		
@@ -208,8 +219,7 @@ public class ReportingServiceImpl implements ReportingService {
 		FileOutputStream outputStream = new FileOutputStream(excel);
 		wb.write(outputStream);
 		outputStream.close();
-		
-		return "redirect:"+CyberUtils.excelURLPath+"/"+fileName;
+		return excel;
 	}
 	
 	private void generateHeaderRow(List<Field> headRow, List<Object> values, Sheet sheet, int headerRowNumber, Map<String, CellStyle> styles, Class<?> _class, Locale locale) {
