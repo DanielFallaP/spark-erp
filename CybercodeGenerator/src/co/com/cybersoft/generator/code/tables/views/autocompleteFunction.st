@@ -19,10 +19,10 @@
 	    	    		\$(this).val(b.item.value);
 	    	    		var path=window.location.pathname.split("/");
 	    	    		var prefix="";
-	    	    		if (path[1].localeCompare("commmon")!=0){
+	    	    		if (path[1].localeCompare("configuration")!=0){
 	    	    			prefix="/"+path[1];	
 	    	    		}
-	    	    		window.open(prefix+"/common/$tableName$/create$entityName$/fromList?field=$fieldName$&value="+encodeURIComponent(b.item.value),"_self");
+	    	    		window.open(prefix+"/configuration/$tableName$/create$entityName$/fromList?field=$fieldName$&value="+encodeURIComponent(b.item.value),"_self");
 	    	    	}
 		    	});
 		    	 

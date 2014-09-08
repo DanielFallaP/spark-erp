@@ -275,7 +275,7 @@
 		    </div>
 		    <div id="_savedAlert" th:if='\${$docName$Info._toSave}' class="alert alert-info" th:text="#{label.saved}">
             </div>
-            <div th:if='\${$docName$CreateException}' class="alert alert-error" th:text="#{label.$docName$CreationError}">
+            <div th:if='\${$docName$CreateException}' class="alert alert-error" th:text="#{label.docCreationError}">
             </div>
             <div th:if='\${$docName$ValidationException}' class="alert alert-error" th:text="#{label.validationError}">
             </div>
