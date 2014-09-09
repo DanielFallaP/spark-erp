@@ -1,7 +1,7 @@
 function peerCompletion(field, peerField, method, table, fieldName, otherFields, modificationPrefix){
 							var prefix="";
 				    	    		var path=window.location.pathname.split("/");
-				    	    		if (path[1].localeCompare("configuration")!=0){
+				    	    		if (path[1].localeCompare("docs")!=0){
 				    	    			prefix="/"+path[1];	
 				    	    		}
 			    	    		$.get(prefix+"/common/"+table+"/"+method+"?"+fieldName+"="+field.item.value, {}, function (data) {

@@ -3,7 +3,7 @@
 		    	    source: function (request, response) {
 		    	    		var path=window.location.pathname.split("/");
 		    	    		var prefix="";
-		    	    		if (path[1].localeCompare("common")!=0){
+		    	    		if (path[1].localeCompare("configuration")!=0){
 		    	    			prefix="/"+path[1];	
 		    	    		}
 							\$.get(prefix+"/common/$tableName$/getListBy$upperFieldName$Return$upperFieldName$?$fieldName$="+request.term, {}, function (data) {

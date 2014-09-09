@@ -302,7 +302,7 @@ public class ReportingServiceImpl implements ReportingService {
 		int j=0;
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
-			if (!field.getName().equals(CyberUtils.tableIdField)){
+			if (!field.getName().equals(CyberUtils.tableIdField) && !field.getName().endsWith("Entity")){
 				headerCell = headerRow.createCell(j);
 				String fieldName="";
 				
@@ -331,7 +331,7 @@ public class ReportingServiceImpl implements ReportingService {
 			int k=0;
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];
-				if (!field.getName().equals(CyberUtils.tableIdField)){
+				if (!field.getName().equals(CyberUtils.tableIdField) && !field.getName().endsWith("Entity")){
 					Cell cell = row.createCell(k);
 					Object object = next.get(toLowerCamelCase(fields[i].getName()));
 					if (object!=null){
@@ -359,7 +359,7 @@ public class ReportingServiceImpl implements ReportingService {
 							cell.setCellValue(bool.toString());
 							cell.setCellStyle(styles.get("cell"));
 						}
-						else{
+						else if (object instanceof Date){
 							cell.setCellValue(((Date) object));
 							cell.setCellStyle(styles.get("dateCell"));
 						}
