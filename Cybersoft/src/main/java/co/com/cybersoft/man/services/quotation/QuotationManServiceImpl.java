@@ -45,17 +45,17 @@ public class QuotationManServiceImpl implements QuotationManService{
 	public void checkQuotationBody(QuotationBodyInfo quotationBodyInfo) throws Exception{
 		Double todaysRate = exchangeRateService.getTodayLocalToForeignExchangeRate();
 		
-		if (quotationBodyInfo.getForeignCurrencyUnitValue()!=null){
+		if (quotationBodyInfo.getForeignCurrencyUnitValue()!=null && quotationBodyInfo.getLocalCurrencyUnitValue()==null){
 			quotationBodyInfo.setForeignCurrencyTotalValue(quotationBodyInfo.getForeignCurrencyUnitValue()*quotationBodyInfo.getQuantity());
 			quotationBodyInfo.setLocalCurrencyTotalValue(quotationBodyInfo.getForeignCurrencyUnitValue()*quotationBodyInfo.getQuantity()*todaysRate);
 			quotationBodyInfo.setLocalCurrencyUnitValue(quotationBodyInfo.getForeignCurrencyUnitValue()*todaysRate);
 		}
-		else if (quotationBodyInfo.getLocalCurrencyUnitValue()!=null){
+		else if (quotationBodyInfo.getLocalCurrencyUnitValue()!=null && quotationBodyInfo.getForeignCurrencyUnitValue()==null){
 			quotationBodyInfo.setForeignCurrencyTotalValue(quotationBodyInfo.getLocalCurrencyUnitValue()*quotationBodyInfo.getQuantity()/todaysRate);
 			quotationBodyInfo.setLocalCurrencyTotalValue(quotationBodyInfo.getLocalCurrencyUnitValue()*quotationBodyInfo.getQuantity());
 			quotationBodyInfo.setForeignCurrencyUnitValue(quotationBodyInfo.getLocalCurrencyUnitValue()/todaysRate);
 		}
-		
+				
 	}
 
 	private void generatePurchaseOrders(QuotationInfo quotationInfo) throws Exception{

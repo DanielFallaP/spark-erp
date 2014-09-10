@@ -53,7 +53,8 @@ public class DocViewGenerator {
 		template.setAttribute("deletionButton", generateDeletionButton(document));
 		template.setAttribute("readyCondition", generateReadyCondition(document));
 
-		template.setAttribute("firstBodyField", document.getBody().get(0).getName());
+		if (!document.getBody().isEmpty())
+			template.setAttribute("firstBodyField", document.getBody().get(0).getName());
 
 		template.setAttribute("autoCompleteFunctions", generateAutocompleteReferenceFunctions(document));
 		template.setAttribute("checkHeader", generateCheckHeader(document));
