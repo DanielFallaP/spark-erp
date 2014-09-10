@@ -61,7 +61,7 @@ public class LabelGenerator implements DBConstants{
 			PreparedStatement spanishUpdatePst = con.prepareStatement("update cybersoft.dictionary set spanish=?, generated=1 where message=? and spanish is null");
 			//Mongo setup. For replica set configurations, it is necessary to supply
 			//the seed members to auto-discover the primary instance
-			MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("54.165.34.202",27017)));
+			MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("54.165.160.198",27017)));
 			DB db = mongoClient.getDB(mongoDBName);
 			
 			ObjectMapper mapper = new ObjectMapper();

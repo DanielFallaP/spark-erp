@@ -177,11 +177,11 @@ public class DocViewGenerator {
 			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
 			//Addition fields functions
 			for (Field bodyField : bodyFields) {
-				if (bodyField.getType().equals(Cyberconstants.stringType)){
+				if (bodyField.getType().equals(Cyberconstants.stringType)||bodyField.getType().equals(Cyberconstants.doubleType)){
 					StringTemplate template = templateGroup.getInstanceOf("changeDocReference");
 					String changeSelection="";
 					for (Field field : bodyFields) {
-						if (field.getType().equals(Cyberconstants.stringType)){
+						if (field.getType().equals(Cyberconstants.stringType)||field.getType().equals(Cyberconstants.doubleType)){
 							StringTemplate changeSelectionTemplate = new StringTemplate("\\$('#$fieldName$ :nth-child('+(\\$(this)[0].selectedIndex+1)+')').prop('selected', true);");
 							changeSelectionTemplate.setAttribute("fieldName", field.getName());
 							changeSelection+=changeSelectionTemplate.toString()+"\n";
@@ -736,7 +736,7 @@ public class DocViewGenerator {
 					text+=template.toString()+"\n";
 
 				}
-				else if (field.getType().equals(Cyberconstants.stringType)){
+				else if (field.getType().equals(Cyberconstants.stringType)||field.getType().equals(Cyberconstants.doubleType)){
 					StringTemplate template;
 					template = stringTemplateGroup.getInstanceOf("docReferenceRow");
 					template.setAttribute("docName", document.getName());

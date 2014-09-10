@@ -9,6 +9,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import co.com.cybersoft.docs.events.purchaseOrder.SavePurchaseOrderEvent;
+import co.com.cybersoft.docs.persistence.domain.Requisition;
+import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionRepository;
 import co.com.cybersoft.docs.persistence.services.purchaseOrder.PurchaseOrderPersistenceService;
 import co.com.cybersoft.docs.web.domain.purchaseOrder.PurchaseOrderBodyInfo;
 import co.com.cybersoft.docs.web.domain.purchaseOrder.PurchaseOrderInfo;
@@ -34,6 +36,9 @@ public class QuotationManServiceImpl implements QuotationManService{
 	
 	@Autowired
 	private ThirdPartyRepository thirdPartyRepo;
+	
+	@Autowired
+	private RequisitionRepository requisitionRepo;
 	
 	
 	@Override
@@ -111,7 +116,7 @@ public class QuotationManServiceImpl implements QuotationManService{
 			}
 			if (complete){
 				try {
-					
+					Requisition requisition = requisitionRepo.findByNumericId(Long.parseLong(quotationInfo.getRequisitionNumber()));
 					Double todaysRate = exchangeRateService.getTodayLocalToForeignExchangeRate();
 					
 					for (QuotationSupplier acceptedSupplier : acceptedSuppliers) {
@@ -126,6 +131,8 @@ public class QuotationManServiceImpl implements QuotationManService{
 						purchaseOrderInfo.setDate(quotationInfo.getDate());
 						purchaseOrderInfo.setExchangeRate(todaysRate);
 						purchaseOrderInfo.setDateOfCreation(new Date());
+						purchaseOrderInfo.setPriority(requisition.getPriority());
+						purchaseOrderInfo.setDeliveryType("Immediately");
 						
 						ArrayList<PurchaseOrderBodyInfo> purchaseOrderBodyList = new ArrayList<>();
 						List<RequiredItem> items = acceptedSupplier.getItems();
