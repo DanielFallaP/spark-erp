@@ -230,7 +230,7 @@ public class DocPersistenceGenerator {
 		String getFields="";
 		Field referenceField = document.getBodyDocReferenceField();
 		if(referenceField!=null){
-			List<String> bodyFields = referenceField.getBodyFields();
+			List<Field> bodyFields = CodeUtils.getDocReferenceBodyFields(document, cyberdocs);
 			StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.documentCodePath+"persistence");
 			StringTemplate stringTemplate = templateGroup.getInstanceOf("bodyReference");
 			stringTemplate.setAttribute("upperDocRef", CodeUtils.toCamelCase(referenceField.getDocRefType()));
@@ -239,13 +239,24 @@ public class DocPersistenceGenerator {
 			stringTemplate.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 			
 			String fields="";
-			for (String field : bodyFields) {
+			for (Field field : bodyFields) {
 				
 				StringTemplate template = new StringTemplate("$docName$Body.set$upperFieldName$($docRef$Body.get$upperFieldName$());\n");
 				template.setAttribute("docRef", referenceField.getDocRefType());
 				template.setAttribute("docName", document.getName());
-				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field));
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				fields+=template.toString();
+			}
+			
+			List<Field> body = document.getBody();
+			for (Field field : body) {
+				if (field.getDefaultValue()!=null&&field.getType().equals(Cyberconstants.booleanType)){
+					StringTemplate stringTemp = new StringTemplate("$tableName$Body.set$fieldName$($defaultValue$);\n");
+					stringTemp.setAttribute("tableName", document.getName());
+					stringTemp.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+					stringTemp.setAttribute("defaultValue", CodeUtils.getDefaultValue(field));
+					fields+=stringTemp.toString();
+				}
 			}
 			
 			stringTemplate.setAttribute("fields", fields);

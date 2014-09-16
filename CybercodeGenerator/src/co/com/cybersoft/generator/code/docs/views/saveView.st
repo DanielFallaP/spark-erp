@@ -5,7 +5,7 @@
       xmlns:spring="http://www.springframework.org/tags" >
     <head>
     	<meta charset="UTF-8" />
-        <title th:text="#{label.$docName$CreationTitle}"></title>
+        <title th:text="#{label.$docName$Info}"></title>
         
         <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
 		<style type="text/css">
