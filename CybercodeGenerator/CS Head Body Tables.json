@@ -35,6 +35,7 @@
 						{"name":"remarks", "spanishName":"Observaciones",  "type":"String", "largeText":"true", "displayable":"false"}
 						]
 		 },
+		 
 		{  
 			"name":"requisitionDistribution",		
 			"spanishName":"Requisición distribución",
