@@ -51,7 +51,8 @@ public class $upperDocName$SearchController {
 		}
 		PageRequest pageRequest=null;
 		if (field==null && request.getSession().getAttribute("$docName$Field")==null){
-			info = $docName$Service.request$upperDocName$Page(new Request$upperDocName$PageEvent(pageable));
+			pageRequest = new PageRequest(pageable.getPageNumber(),pageable.getPageSize(), Direction.DESC, "_id");
+			info = $docName$Service.request$upperDocName$Page(new Request$upperDocName$PageEvent(pageRequest));
 		}
 		else{
 			boolean direction;

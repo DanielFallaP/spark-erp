@@ -146,32 +146,38 @@ public class $upperDocName$Controller {
 	
 	@ExceptionHandler(Exception.class)
 	public ModelAndView constraintError(HttpServletRequest req, Exception exception){
-		exception.printStackTrace();
 		ModelAndView modelAndView = new ModelAndView();
+		try {
+		exception.printStackTrace();
 		$upperDocName$Info $docName$Info=($upperDocName$Info) req.getSession().getAttribute("$docName$Info");
+		$upperDocName$BodyInfo $docName$BodyInfo;
+		$upperDocName$BodyInfo $docName$BodyModificationInfo;
 		if (exception instanceof BindException){
+			$docName$BodyInfo = get$upperDocName$BodyInfo(req);
+			$docName$BodyModificationInfo = get$upperDocName$BodyModificationInfo(req);
 			modelAndView.addObject("$docName$Info", $docName$Info);
 			modelAndView.addObject("$docName$ValidationException",true);
 			modelAndView = setErrors(modelAndView, ((BindException) exception).getAllErrors(), $docName$Info, "", "");
 			modelAndView.setViewName("/docs/$docName$/save$upperDocName$");
 		}
 		else if (exception instanceof SparkBindingException){
+			$docName$BodyInfo = ((SparkBindingException) exception).getModifiedId().equals("")?$docName$Info.getCurrent$upperDocName$BodyInfo():get$upperDocName$BodyInfo(req);
+			$docName$BodyModificationInfo = ((SparkBindingException) exception).getModifiedId().equals("")?get$upperDocName$BodyModificationInfo(req):$docName$Info.get$upperDocName$BodyModificationInfo();
 			modelAndView.addObject("$docName$Info", $docName$Info);
 			modelAndView.addObject("$docName$ValidationException",true);
 			modelAndView = setErrors(modelAndView, ((SparkBindingException) exception).getErrors(), $docName$Info, ((SparkBindingException) exception).getOrigin(), ((SparkBindingException) exception).getModifiedId());
 			modelAndView.setViewName("/docs/$docName$/save$upperDocName$");
 		}
 		else {
+			$docName$BodyInfo = get$upperDocName$BodyInfo(req);
+			$docName$BodyModificationInfo = get$upperDocName$BodyModificationInfo(req);
 			modelAndView.addObject("$docName$Info", $docName$Info);
 			modelAndView.addObject("$docName$CreateException",true);
 			modelAndView.setViewName("/docs/$docName$/save$upperDocName$");
 		}
 		
-		try {
 			$docName$Info.set_toSave(false);
-			$upperDocName$BodyInfo $docName$BodyInfo = get$upperDocName$BodyInfo(req);	
 			$docName$Info.setCurrent$upperDocName$BodyInfo($docName$BodyInfo);
-			$upperDocName$BodyInfo $docName$BodyModificationInfo = get$upperDocName$BodyModificationInfo(req);
 			$docName$Info.set$upperDocName$BodyModificationInfo($docName$BodyModificationInfo);
 			$docName$BodyInfo.setSubmit("");
 			$docName$BodyInfo.set$upperDocName$BodyModificationInfo(new $upperDocName$BodyInfo());

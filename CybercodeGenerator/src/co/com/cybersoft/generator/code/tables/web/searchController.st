@@ -49,12 +49,13 @@ public class $searchControllerName$ {
 		}
 		PageRequest pageRequest=null;
 		if (field==null && request.getSession().getAttribute("$entityName$Field")==null){
-			details = $entityName$Service.request$entityUpperCaseName$Page(new $requestEvent$(pageable));
+			pageRequest = new PageRequest(pageable.getPageNumber(),pageable.getPageSize(), Direction.DESC, "_id");
+			details = $entityName$Service.request$entityUpperCaseName$Page(new $requestEvent$(pageRequest));
 		}
 		else{
 			boolean direction;
 			if (request.getSession().getAttribute("$entityName$Ascending")!=null){
-				
+								
 				direction=(boolean) request.getSession().getAttribute("$entityName$Ascending");
 				pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("$entityName$Field"):field));
 			}
