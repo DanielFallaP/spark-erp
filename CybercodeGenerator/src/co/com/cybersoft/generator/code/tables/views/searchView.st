@@ -16,6 +16,7 @@
 	        .sidebar-nav {
 	            padding: 9px 0;
 	        }
+	        .page-selection{background-color:#fff!important;border:1px #fff!important;box-shadow:inset 0 1px 1px transparent!important;transition:border linear .2s,box-shadow linear .2s!important;display:inline-block!important;height:12px!important;padding:4px 6px!important;margin:-4px -11px -3px!important;font-size:14px!important;line-height:0!important;color:#555!important;vertical-align:middle!important;border-radius:0!important;width:23px!important;text-align:right}
 	    </style>
 	     <link th:href="@{/resources/css/cybersystems.css}" rel="stylesheet" />
 	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
@@ -25,6 +26,32 @@
 	     <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
 	     <script type="text/javascript">
 	     	/* <![CDATA[ */
+	     	
+	     function resetPageValue(){
+	    	 document.getElementById("_page").value=document.getElementById("_currentPage").value;
+	     }
+	     
+	     \$(document).keyup(function(e) {
+	    	  if(e.which == 13 && document.getElementById("_page") === document.activeElement) {
+	    		if (	document.getElementById("_page").value== null
+	    			  	|| document.getElementById("_page").value == ""
+	    				|| isNaN(document.getElementById("_page").value) 
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_page").value <= 0)
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_totalPages").value < document.getElementById("_page").value)
+	    			){
+					alert('Invalid page number');
+					resetPageValue();
+	    		}
+	    		else{
+		    		var path=window.location.pathname.split("/");
+	 	    		var prefix="";
+	 	    		if (path[1].localeCompare("configuration")!=0){
+	 	    			prefix="/"+path[1];	
+	 	    		}
+		     		window.open(prefix+"/configuration/$tableName$/search$entityName$?page.page="+document.getElementById("_page").value,"_self");
+	    		}
+	    	  }
+	    	});
 	     	
 	     \$(document).on("click", "a", function(event){
 	     	if (event.target.id!="about-ajax-popup"){
@@ -51,7 +78,7 @@
 	    	
 	     
 	     \$(document).keyup(function(e) {
-	    	  if(e.which == 13 || e.which == 107) {
+	    	  if(e.which == 107) {
 	     		  \$('#new a').trigger('click');
 	    	  }
 	    	});

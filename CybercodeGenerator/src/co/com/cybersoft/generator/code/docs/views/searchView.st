@@ -16,6 +16,7 @@
 	        .sidebar-nav {
 	            padding: 9px 0;
 	        }
+	        .page-selection{background-color:#fff!important;border:1px #fff!important;box-shadow:inset 0 1px 1px transparent!important;transition:border linear .2s,box-shadow linear .2s!important;display:inline-block!important;height:12px!important;padding:4px 6px!important;margin:-4px -11px -3px!important;font-size:14px!important;line-height:0!important;color:#555!important;vertical-align:middle!important;border-radius:0!important;width:23px!important;text-align:right}
 	    </style>
 	     <link th:href="@{/resources/css/cybersystems.css}" rel="stylesheet" />
 	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
@@ -44,10 +45,37 @@
 	    	});
 	     
 	     \$(document).keyup(function(e) {
-	    	  if(e.which == 13 || e.which == 107) {
+	    	  if(e.which == 107) {
 	     		  \$('#new a').trigger('click');
 	    	  }
 	    	});
+	    	
+	     function resetPageValue(){
+	    	 document.getElementById("_page").value=document.getElementById("_currentPage").value;
+	     }
+	     
+	     \$(document).keyup(function(e) {
+	    	  if(e.which == 13 && document.getElementById("_page") === document.activeElement) {
+	    		if (	document.getElementById("_page").value== null
+	    			  	|| document.getElementById("_page").value == ""
+	    				|| isNaN(document.getElementById("_page").value) 
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_page").value <= 0)
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_totalPages").value < document.getElementById("_page").value)
+	    			){
+					alert('Invalid page number');
+					resetPageValue();
+	    		}
+	    		else{
+		    		var path=window.location.pathname.split("/");
+	 	    		var prefix="";
+	 	    		if (path[1].localeCompare("docs")!=0){
+	 	    			prefix="/"+path[1];	
+	 	    		}
+		     		window.open(prefix+"/docs/search$upperDocName$?page.page="+document.getElementById("_page").value,"_self");
+	    		}
+	    	  }
+	    	});	  
+	    	
 	    	
 	       \$(document).keyup(function(e) {
 	    	  if(e.which == 39 || e.which == 34) {
@@ -117,12 +145,32 @@
 			<table class="table table-striped" >
 				<thead>
 					<tr>
-						<th ><a th:href="@{\${page.url}+'?field=_numericId'}" th:text="#{label.numericId}"></a></th>
+						<th >
+							<a th:if="\${_field} == '_numericId' and \${_direction}" th:href="@{\${page.url}+'?field=_numericId'}" th:text="'&uarr;'+#{label.numericId}"></a>
+							<a th:if="\${_field} == '_numericId' and !\${_direction}" th:href="@{\${page.url}+'?field=_numericId'}" th:text="'&darr;'+#{label.numericId}"></a>
+							<a th:if="\${_field} != '_numericId'" th:href="@{\${page.url}+'?field=_numericId'}" th:text="#{label.numericId}"></a>
+						</th>
 						$searchFieldsHeaders$
-						<th ><a th:href="@{\${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a></th>
-						<th ><a th:href="@{\${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a></th>
-						<th ><a th:href="@{\${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a></th>
-						<th ><a th:href="@{\${page.url}+'?field=createdBy'}" th:text="#{label.createdBy}"></a></th>
+						<th >
+							<a th:if="\${_field} == 'dateOfModification' and \${_direction}" th:href="@{\${page.url}+'?field=dateOfModification'}" th:text="'&uarr;'+#{label.dateOfModification}"></a>
+							<a th:if="\${_field} == 'dateOfModification' and !\${_direction}" th:href="@{\${page.url}+'?field=dateOfModification'}" th:text="'&darr;'+#{label.dateOfModification}"></a>
+							<a th:if="\${_field} != 'dateOfModification'" th:href="@{\${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a>
+						</th>
+						<th >
+							<a th:if="\${_field} == 'userName' and \${_direction}" th:href="@{\${page.url}+'?field=userName'}" th:text="'&uarr;'+#{label.userOfModification}"></a>
+							<a th:if="\${_field} == 'userName' and !\${_direction}" th:href="@{\${page.url}+'?field=userName'}" th:text="'&darr;'+#{label.userOfModification}"></a>
+							<a th:if="\${_field} != 'userName'" th:href="@{\${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a>
+						</th>
+						<th >
+							<a th:if="\${_field} == 'dateOfCreation' and \${_direction}" th:href="@{\${page.url}+'?field=dateOfCreation'}" th:text="'&uarr;'+#{label.dateOfCreation}"></a>
+							<a th:if="\${_field} == 'dateOfCreation' and !\${_direction}" th:href="@{\${page.url}+'?field=dateOfCreation'}" th:text="'&darr;'+#{label.dateOfCreation}"></a>
+							<a th:if="\${_field} != 'dateOfCreation'" th:href="@{\${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a>
+						</th>
+						<th >
+							<a th:if="\${_field} == 'createdBy' and \${_direction}" th:href="@{\${page.url}+'?field=createdBy'}" th:text="&uarr;'+#{label.createdBy}"></a>
+							<a th:if="\${_field} == 'createdBy' and !\${_direction}" th:href="@{\${page.url}+'?field=createdBy'}" th:text="&darr;'+#{label.createdBy}"></a>
+							<a th:if="\${_field} != 'createdBy'" th:href="@{\${page.url}+'?field=createdBy'}" th:text="#{label.createdBy}"></a>
+						</th>
 
 					</tr>
 				</thead>

@@ -39,9 +39,10 @@ public class $upperDocName$SearchController {
 	public String search(Model model, Pageable pageable, String field, HttpServletRequest request) throws Exception{
 		LOG.debug("Retrieving  $docName$ ");
 		$upperDocName$PageEvent info;
+		Boolean direction = null;
 		if (field!=null){
 			request.getSession().setAttribute("$docName$Field", field);
-			Boolean direction=(Boolean) request.getSession().getAttribute("$docName$Ascending");
+			direction=(Boolean) request.getSession().getAttribute("$docName$Ascending");
 			if (request.getSession().getAttribute("$docName$Ascending")!=null){
 				direction=!direction;
 				request.getSession().setAttribute("$docName$Ascending", direction);
@@ -55,7 +56,6 @@ public class $upperDocName$SearchController {
 			info = $docName$Service.request$upperDocName$Page(new Request$upperDocName$PageEvent(pageRequest));
 		}
 		else{
-			boolean direction;
 			if (request.getSession().getAttribute("$docName$Ascending")!=null){
 				
 				direction=(boolean) request.getSession().getAttribute("$docName$Ascending");
@@ -67,6 +67,8 @@ public class $upperDocName$SearchController {
 		PageWrapper<$upperDocName$> page=new PageWrapper<$upperDocName$>(info.get$upperDocName$Page(),"/docs/search$upperDocName$");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
+		model.addAttribute("_field", field);
+		model.addAttribute("_direction", direction);
 		return "/docs/$docName$/search$upperDocName$";
 	}
 }

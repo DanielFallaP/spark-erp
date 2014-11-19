@@ -37,9 +37,10 @@ public class $searchControllerName$ {
 	public String search(Model model, Pageable pageable, String field, HttpServletRequest request) throws Exception{
 		LOG.debug("Retrieving  $entityName$ ");
 		$responseEvent$ details;
+		Boolean direction=null;
 		if (field!=null){
 			request.getSession().setAttribute("$entityName$Field", field);
-			Boolean direction=(Boolean) request.getSession().getAttribute("$entityName$Ascending");
+			direction=(Boolean) request.getSession().getAttribute("$entityName$Ascending");
 			if (request.getSession().getAttribute("$entityName$Ascending")!=null){
 				direction=!direction;
 				request.getSession().setAttribute("$entityName$Ascending", direction);
@@ -53,7 +54,6 @@ public class $searchControllerName$ {
 			details = $entityName$Service.request$entityUpperCaseName$Page(new $requestEvent$(pageRequest));
 		}
 		else{
-			boolean direction;
 			if (request.getSession().getAttribute("$entityName$Ascending")!=null){
 								
 				direction=(boolean) request.getSession().getAttribute("$entityName$Ascending");
@@ -65,6 +65,8 @@ public class $searchControllerName$ {
 		PageWrapper<$entityUpperCaseName$> page=new PageWrapper<$entityUpperCaseName$>(details.$getListMethod$(),"$url$");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
+		model.addAttribute("_field", field);
+		model.addAttribute("_direction", direction);
 		return "$viewURL$";
 	}
 }
