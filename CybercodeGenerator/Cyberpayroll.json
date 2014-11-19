@@ -50,6 +50,28 @@
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
+		
+		 {  
+			"name":"payrollRulesByYear",		
+			"spanishName":"Reglas de nómina por año",
+			"fields":[
+						{"name":"year", "spanishName":"Año", "type":"integer", "lenght":"4"},
+						{"name":"minimumFullWages", "spanishName":"Salario mínimo integral", "type":"double", "defaultValue":"8008000"},
+						{"name":"prestacionalPercentageOfFullWages", "spanishName":"Porcentaje prestacional de salario integral", "type":"double", "defaultValue":"30"},
+						{"name":"minimumSalary", "spanishName":"Salario mínimo", "type":"double", "defaultValue":"616000"},
+						{"name":"numberOfMinimumSalaryForMinimumFullWages", "spanishName":"Número de Salarios mínimos para el mínimo salario integral", "type":"double", "defaultValue":"13"},
+						{"name":"transportationAidPerMonth", "spanishName":"Auxilio de transporte por mes", "type":"double", "defaultValue":"72000"},
+						{"name":"severancePortage", "spanishName":"Porcentaje de cesantias", "type":"double", "defaultValue":"12"},
+						{"name":"workingDaysLegalBonus", "spanishName":"Días pagos de prima legal", "type":"integer", "defaultValue":"15", "mobileDisplayable":"false"},
+						{"name":"workingDaysVacationBonus", "spanishName":"Días pagos de prima de vacación", "0type":"integer", "defaultValue":"15", "mobileDisplayable":"false"},
+						{"name":"workingDaysChristmasBonus", "spanishName":"Días pagos de prima de navidad", "type":"integer", "defaultValue":"15"},
+						{"name":"sourceWithholdingExemptPercent", "spanishName":"Porcentaje de retención exento", "type":"double", "defaultValue":"25"},
+						{"name":"sourceWithholdinfTopValue", "spanishName":"Valor tope de retención en la fuente", "type":"double", "defaultValue":"7999999"},
+						{"name":"sourceWithholdinfBaseValueForSalaryreaterTop", "spanishName":"Valor base de retención para salario mayor al tope", "type":"double", "defaultValue":"1822000"},
+						{"name":"sourceWithholdingPercentForSalaryBeyoundTop", "spanishName":"Porcentaje de retención para salario mayor al tope", "type":"double", "defaultValue":"35"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
 		 {  
 			"name":"employee",
 			"spanishName":"Empleado",		
@@ -69,7 +91,7 @@
 						{"name":"pensioner", "spanishName":"Pensionado", "type":"Boolean", "defaultValue":"false", "mobileDisplayable":"false"},
 						{"name":"pensionerDate", "spanishName":"Fecha de pensionado", "type":"Date", "required":"false", "mobileDisplayable":"false"},
 						{"name":"retired", "spanishName":"Retirado", "type":"Boolean", "defaultValue":"false", "mobileDisplayable":"false"},
-						{"name":"retirerDate", "spanishName":"Fecha de retiro", "type":"Date", "required":"false", "mobileDisplayable":"false"},
+						{"name":"retiredDate", "spanishName":"Fecha de retiro", "type":"Date", "required":"false", "mobileDisplayable":"false"},
 						{"name":"withholdingWay", "spanishName":"Modo de retención", "refType":"withholdingWay", "displayField":"withholdingWay", "embeddedFields":["code", "withholdingWay"]},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
@@ -80,6 +102,13 @@
 			"singletonTable":"true",
 			"fields":[
 						{"name":"payrollRules", "spanishName":"Reglas de nómina", "type":"String", "unique":"true"},
+						{"name":"monthWorkingHours", "spanishName":"Horas de trabajo por mes", "type":"integer", "lenght":"3", "defaultValue":"240"},
+						{"name":"WeekWorkingHours", "spanishName":"Horas de trabajo por semana", "type":"integer", "lenght":"3", "defaultValue":"45"},
+						{"name":"yearWorkingDays", "spanishName":"Días de trabajo por año", "type":"integer", "lenght":"3", "defaultValue":"360"},
+						{"name":"calculatePureSalaryFactorOfFullWages", "spanishName":"Calcula puro el factor salarial integral", "type":"Boolean", "defaultValue":"true"},
+						{"name":"payLegalBonus", "spanishName":"Paga prima legal", "type":"Boolean", "defaultValue":"true"},
+						{"name":"payVacaionBonus", "spanishName":"Paga prima de vacación", "type":"Boolean", "defaultValue":"true"},
+						{"name":"payChristmasBonus", "spanishName":"Paga prima de navidad", "type":"Boolean", "defaultValue":"true"},
 						{"name":"standardTax", "spanishName":"Impuesto de ventas estandar", "refType":"tax", "displayField":"tax"},
 						{"name":"standardTransportation", "spanishName":"Transporte estandar", "refType":"transportationType", "displayField":"transportationType"},
 						{"name":"standardPriority", "spanishName":"Prioridad estandar", "refType":"priority", "displayField":"priority"},
@@ -119,21 +148,6 @@
 						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "displayField":"code", "embeddedFields":["currency"]},
 						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "displayField":"code", "embeddedFields":["currency"]},
 						{"name":"chiefAdminUser", "spanishName":"Usuario administrador encargado", "refType":"user", "displayField":"user"},
-						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
-					]
-		 },
-		 {  
-			"name":"payrollRulesByYear",		
-			"spanishName":"Reglas de nómina por año",
-			"singletonTable":"true",
-			"fields":[
-						{"name":"payrollRulesByYear", "spanishName":"Reglas de nómina por año", "type":"String", "unique":"true"},
-						{"name":"year", "spanishName":"Año", "type":"integer", "lenght":"4"},
-						{"name":"minimumFullWages", "spanishName":"Salario mínimo integral", "type":"double", "defaultValue":"8008000"},
-						{"name":"PrestacionalPercentageOfFullWages", "spanishName":"Porcentaje prestacional de salario integral", "type":"double", "defaultValue":"30"},
-						{"name":"minimumSalary", "spanishName":"Salario mínimo", "type":"double", "defaultValue":"616000"},
-						{"name":"NumberOfMinimumSalaryForMinimumFullWages", "spanishName":"Número de Salarios mínimos para el mínimo salario integral", "type":"double", "defaultValue":"13"},
-						{"name":"transportationAidPerMonth", "spanishName":"Auxilio de transporte por mes", "type":"double", "defaultValue":"72000"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },

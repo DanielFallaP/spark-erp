@@ -1,6 +1,7 @@
 { 
 	"tables":[
 		 {  
+		 
 			"labelTable":"true",		 	
 			"name":"currency",		
 			"spanishName":"Moneda",		
