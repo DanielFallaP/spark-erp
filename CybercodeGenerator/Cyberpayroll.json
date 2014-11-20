@@ -1,13 +1,153 @@
 { 
 	"tables":[
-		 {  
-		 
+		 {	
 			"labelTable":"true",		 	
-			"name":"currency",		
-			"spanishName":"Moneda",		
+			"name":"idType",
+			"spanishName":"Tipo de identificación",
 			"fields":[
-						{"name":"code", "spanishName":"Código", "refType":"currencyCode", "displayField":"currency"},
-						{"name":"currency", "spanishName":"Nombre", "type":"String", "unique":"true", "length":"40", "autocomplete":"true", "labelField":"true"},
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"idType", "spanishName":"Tipo de identificación", "type":"String", "unique":"true", "labelField":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
+			"labelTable":"true",		 	
+			"name":"sex",
+			"spanishName":"Sexo",
+			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"sex", "spanishName":"Sexo", "type":"String", "unique":"true", "labelField":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
+			"labelTable":"true",		 	
+			"name":"maritalStatus",
+			"spanishName":"Estado civil",
+			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"maritalStatus", "spanishName":"Sexo", "type":"String", "unique":"true", "labelField":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
+			"labelTable":"true",		 	
+			"name":"jobTitle",
+			"spanishName":"Cargo",
+			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"2"},
+						{"name":"jobTitle", "spanishName":"Cargo", "type":"String", "unique":"true", "labelField":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
+			"labelTable":"true",		 	
+			"name":"withholdingWay",
+			"spanishName":"Modo de retención",
+			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"withholdingWay", "spanishName":"Modo de retención", "type":"String", "unique":"true", "labelField":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		
+		 {  
+			"name":"payrollRulesByYear",		
+			"spanishName":"Reglas de nómina por año",
+			"fields":[
+						{"name":"year", "spanishName":"Año", "type":"integer", "lenght":"4"},
+						{"name":"minimumFullWages", "spanishName":"Salario mínimo integral", "type":"double", "defaultValue":"8008000"},
+						{"name":"prestacionalPercentageOfFullWages", "spanishName":"Porcentaje prestacional de salario integral", "type":"double", "defaultValue":"30"},
+						{"name":"minimumSalary", "spanishName":"Salario mínimo", "type":"double", "defaultValue":"616000"},
+						{"name":"numberOfMinimumSalaryForMinimumFullWages", "spanishName":"Número de Salarios mínimos para el mínimo salario integral", "type":"double", "defaultValue":"13"},
+						{"name":"transportationAidPerMonth", "spanishName":"Auxilio de transporte por mes", "type":"double", "defaultValue":"72000"},
+						{"name":"severancePortage", "spanishName":"Porcentaje de cesantias", "type":"double", "defaultValue":"12"},
+						{"name":"workingDaysLegalBonus", "spanishName":"Días pagos de prima legal", "type":"integer", "defaultValue":"15", "mobileDisplayable":"false"},
+						{"name":"workingDaysVacationBonus", "spanishName":"Días pagos de prima de vacación", "0type":"integer", "defaultValue":"15", "mobileDisplayable":"false"},
+						{"name":"workingDaysChristmasBonus", "spanishName":"Días pagos de prima de navidad", "type":"integer", "defaultValue":"15"},
+						{"name":"sourceWithholdingExemptPercent", "spanishName":"Porcentaje de retención exento", "type":"double", "defaultValue":"25"},
+						{"name":"sourceWithholdinfTopValue", "spanishName":"Valor tope de retención en la fuente", "type":"double", "defaultValue":"7999999"},
+						{"name":"sourceWithholdinfBaseValueForSalaryreaterTop", "spanishName":"Valor base de retención para salario mayor al tope", "type":"double", "defaultValue":"1822000"},
+						{"name":"sourceWithholdingPercentForSalaryBeyoundTop", "spanishName":"Porcentaje de retención para salario mayor al tope", "type":"double", "defaultValue":"35"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {  
+			"name":"employee",
+			"spanishName":"Empleado",		
+			"fields":[
+						{"name":"code", "spanishName":"Código", "refType":"thirdPartyType", "displayField":"thirdPartyType", "embeddedFields":["code", "name", "identification"]},
+						{"name":"idType", "spanishName":"Tipo de identificación", "refType":"idType", "displayField":"idType", "mobileDisplayable":"false", "embeddedFields":["code", "idType"]},
+						{"name":"idNumber", "spanishName":"Número de identificación", "type":"string", "required":"true", "mobileDisplayable":"false"},
+						{"name":"IdPlace", "spanishName":"Lugar de expedición", "refType":"populatedPlace", "compoundReference":"true", "keyCompound":"true"},
+						{"name":"jobTitle", "spanishName":"Cargo", "refType":"jobTitle", "displayField":"jobTitle", "mobileDisplayable":"false", "embeddedFields":["code", "jobTitle"]},
+						{"name":"section", "spanishName":"Sección", "refType":"section", "compoundReference":"true", "keyCompound":"true"},
+						{"name":"sex", "spanishName":"Sexo", "refType":"sex", "displayField":"sex", "embeddedFields":["code", "sex"]},
+						{"name":"admissionDate", "spanishName":"Fecha de ingreso", "type":"Date", "defaultValue":"today", "mobileDisplayable":"false"},
+						{"name":"birthDate", "spanishName":"Fecha de nacimiento", "type":"Date", "mobileDisplayable":"false"},
+						{"name":"bithPlace", "spanishName":"Ciudad de nacimiento", "refType":"populatedPlace", "compoundReference":"true"},
+						{"name":"maritalStatus", "spanishName":"Estado civil", "refType":"maritalStatus", "displayField":"maritalStatus", "mobileDisplayable":"false", "embeddedFields":["code", "maritalStatus"]},
+						{"name":"dependents", "spanishName":"dependientes", "type":"Integer", "length":"2", "required":"false", "mobileDisplayable":"false"},
+						{"name":"pensioner", "spanishName":"Pensionado", "type":"Boolean", "defaultValue":"false", "mobileDisplayable":"false"},
+						{"name":"pensionerDate", "spanishName":"Fecha de pensionado", "type":"Date", "required":"false", "mobileDisplayable":"false"},
+						{"name":"retired", "spanishName":"Retirado", "type":"Boolean", "defaultValue":"false", "mobileDisplayable":"false"},
+						{"name":"retiredDate", "spanishName":"Fecha de retiro", "type":"Date", "required":"false", "mobileDisplayable":"false"},
+						{"name":"withholdingWay", "spanishName":"Modo de retención", "refType":"withholdingWay", "displayField":"withholdingWay", "embeddedFields":["code", "withholdingWay"]},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {  
+			"name":"payrollRules",		
+			"spanishName":"Reglas de nómina",
+			"singletonTable":"true",
+			"fields":[
+						{"name":"payrollRules", "spanishName":"Reglas de nómina", "type":"String", "unique":"true"},
+						{"name":"monthWorkingHours", "spanishName":"Horas de trabajo por mes", "type":"integer", "lenght":"3", "defaultValue":"240"},
+						{"name":"WeekWorkingHours", "spanishName":"Horas de trabajo por semana", "type":"integer", "lenght":"3", "defaultValue":"45"},
+						{"name":"yearWorkingDays", "spanishName":"Días de trabajo por año", "type":"integer", "lenght":"3", "defaultValue":"360"},
+						{"name":"calculatePureSalaryFactorOfFullWages", "spanishName":"Calcula puro el factor salarial integral", "type":"Boolean", "defaultValue":"true"},
+						{"name":"payLegalBonus", "spanishName":"Paga prima legal", "type":"Boolean", "defaultValue":"true"},
+						{"name":"payVacaionBonus", "spanishName":"Paga prima de vacación", "type":"Boolean", "defaultValue":"true"},
+						{"name":"payChristmasBonus", "spanishName":"Paga prima de navidad", "type":"Boolean", "defaultValue":"true"},
+						{"name":"standardTax", "spanishName":"Impuesto de ventas estandar", "refType":"tax", "displayField":"tax"},
+						{"name":"standardTransportation", "spanishName":"Transporte estandar", "refType":"transportationType", "displayField":"transportationType"},
+						{"name":"standardPriority", "spanishName":"Prioridad estandar", "refType":"priority", "displayField":"priority"},
+						{"name":"standardSectionThatIssuesRequisition", "spanishName":"Sección que requiere estandar", "refType":"section", "displayField":"section", "embeddedFields":["code"]},
+						{"name":"standardSectionThatIssuesPurchaseOrder", "spanishName":"Sección que ordena compras estandar", "refType":"section", "displayField":"section", "embeddedFields":["code"]},
+						{"name":"standardSectionThatIssuesItemReceipt", "spanishName":"Sección que recibe items estandar", "refType":"section", "displayField":"section", "embeddedFields":["code"]},
+						{"name":"standardTitleOfPersonSigningRequisition", "spanishName":"Cargo para firma de requisiciones", "refType":"section", "displayField":"section", "embeddedFields":["code"]},
+						{"name":"standardTitleOfPersonSigningPurchaseOrder", "spanishName":"Cargo para firma de ordenes de compra", "refType":"section", "displayField":"section", "embeddedFields":["code"]},
+						{"name":"standardTitleOfPersonSigningItemReceipt", "spanishName":"Cargo para firma de recibo de items", "refType":"section", "displayField":"section", "embeddedFields":["code"]},
+						{"name":"acceptsRequisitionDate", "spanishName":"Acepta fecha de requisición", "type":"Boolean", "defaultValue":"false"},
+						{"name":"acceptsPurchaseOrderDate", "spanishName":"Acepta fecha de orden de compra", "type":"Boolean", "defaultValue":"false"},
+						{"name":"acceptsItemReceiptDate", "spanishName":"Acepta fecha de recepción de ítems", "type":"Boolean", "defaultValue":"false"},
+						{"name":"usePriorityByItem", "spanishName":"Usa prioridad por ítem", "type":"Boolean", "defaultValue":"false"},
+						{"name":"useRequiredDateByItem", "spanishName":"Usa fecha requerida por íem", "type":"Boolean", "defaultValue":"false"},
+						{"name":"useCostDiscriminationByItem", "spanishName":"Usa distribución de costos por ítem", "type":"Boolean", "defaultValue":"false"},
+						{"name":"useMiniMaxByItem", "spanishName":"Usa minimax por ítem", "type":"Boolean", "defaultValue":"false"},
+						{"name":"usePurchaseOrderBudget", "spanishName":"Usa presupuesto de ordenes de compra", "type":"Boolean", "defaultValue":"true"},
+						{"name":"percentageThatWarnsThatTheBudgetIsRunningOut", "spanishName":"Porcentaje que informa final del presupuesto", "type":"Double", "unique":"true"},
+						{"name":"useNewItemControlCondition", "spanishName":"Usa control de condición ítem nuevo", "type":"Boolean", "defaultValue":"true"},
+						{"name":"newItemCondition", "spanishName":"Control de condición nueva", "refType":"itemCondition", "displayField":"itemCondition", "embeddedFields":["code"]},
+						{"name":"purchaseOrderImportationPercentage", "spanishName":"Porcentaje de importación en ordenes", "type":"Double"},
+						{"name":"transitWarehouse", "spanishName":"Código de bodega en tránsito", "refType":"warehouse", "displayField":"warehouse", "embeddedFields":["code"]},
+						{"name":"transitInputTransaction", "spanishName":"Transacción entrada a tránsito", "refType":"stockTransaction", "displayField":"stockTransaction", "embeddedFields":["code"]},
+						{"name":"transitOutputTransaction", "spanishName":"Transacción para salir de tránsito", "refType":"stockTransaction", "displayField":"stockTransaction", "embeddedFields":["code"]},
+						{"name":"inputStockTransaction", "spanishName":"Transacción de inventario para entrar compras", "refType":"stockTransaction", "displayField":"stockTransaction", "embeddedFields":["code"]},
+						{"name":"outputStockTransaction", "spanishName":"Transacción de inventario para salidas", "refType":"stockTransaction", "displayField":"stockTransaction", "embeddedFields":["code"]},
+						{"name":"inputBorrowTransaction", "spanishName":"Transacción para entradas de préstamo", "refType":"stockTransaction", "displayField":"stockTransaction", "embeddedFields":["code"]},
+						{"name":"outputBorrowTransaction", "spanishName":"Transacción para salidas de préstamo", "refType":"stockTransaction", "displayField":"stockTransaction", "embeddedFields":["code"]},
+						{"name":"inputBorrowReturnTransaction", "spanishName":"Transacción para entradas de devolución préstamo", "refType":"stockTransaction", "displayField":"stockTransaction", "embeddedFields":["code"]},
+						{"name":"outputBorrowReturnTransaction", "spanishName":"Transacción para salidas de devolución préstamo", "refType":"stockTransaction", "displayField":"stockTransaction", "embeddedFields":["code"]},
+						{"name":"inputTransferenceTransaction", "spanishName":"Transacción para entradas de transferencia", "refType":"stockTransaction", "displayField":"stockTransaction", "embeddedFields":["code"]},
+						{"name":"outputTransferenceTransaction", "spanishName":"Transacción para salidas de transferencia", "refType":"stockTransaction", "displayField":"stockTransaction", "embeddedFields":["code"]},
+						{"name":"yearEndInventoryCutoffDate", "spanishName":"Fecha de corte anual de inventario", "type":"Date", "unique":"true"},
+						{"name":"percentOfLargerQuantityIssuingItemReception", "spanishName":"Porcentaje de mayor cantidad al recibir items", "type":"Double", "unique":"true"},
+						{"name":"createExchangeRate", "spanishName":"Crea tasa de cambio", "type":"Boolean", "defaultValue":"false"},
+						{"name":"inventoryGroupForConsumptionItems", "spanishName":"Grupo de inventario para ítems de consumo", "refType":"stockGroup", "displayField":"stockGroup", "embeddedFields":["code"]},
+						{"name":"localCurrency", "spanishName":"Moneda local", "refType":"currency", "displayField":"code", "embeddedFields":["currency"]},
+						{"name":"foreignCurrency", "spanishName":"Moneda foranea", "refType":"currency", "displayField":"code", "embeddedFields":["currency"]},
+						{"name":"chiefAdminUser", "spanishName":"Usuario administrador encargado", "refType":"user", "displayField":"user"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
@@ -268,8 +408,7 @@
 						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "compoundReference":"true"},
 						{"name":"pob", "spanishName":"Zona postal", "type":"String", "required":"false", "displayable":"false"},
 						{"name":"email", "spanishName":"email", "type":"String", "displayable":"false", "mobileDisplayable":"false"},
-						{"name":"phone1Number", "spanishName":"Teléfono 1 No.", "type":"String", "required":"false", "displayable":"false"},
-						{"name":"phone2Number", "spanishName":"Teléfono 2 No.", "type":"String", "required":"false", "displayable":"false"},
+						{"name":"phoneNumber", "spanishName":"Teléfono No.", "type":"String", "required":"false", "displayable":"false"},
 						{"name":"cellularNumber", "spanishName":"Celular No.", "type":"String"},
 						{"name":"localSupplier", "spanishName":"Tercero local", "type":"Boolean", "defaultValue":"true", "displayable":"false"},
 						{"name":"legalPerson", "spanishName":"Persona jurídica", "type":"Boolean", "defaultValue":"true", "displayable":"false"},
@@ -740,8 +879,7 @@
 						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "compoundReference":"true"},
 						{"name":"pob", "spanishName":"Zona postal", "type":"String", "required":"false", "displayable":"false"},
 						{"name":"email", "spanishName":"email", "type":"String", "required":"false", "displayable":"false"},
-						{"name":"phone1Number", "spanishName":"Teléfono 1 Número", "type":"String", "required":"false", "displayable":"false"},
-						{"name":"phone2Number", "spanishName":"Teléfono 2 Número", "type":"String", "required":"false", "displayable":"false"},
+						{"name":"phoneNumber", "spanishName":"Número de teléfono", "type":"String", "required":"false", "displayable":"false"},
 						{"name":"cellularNumber", "spanishName":"Número de celular", "type":"String", "required":"false"},
 						{"name":"contactPerson", "spanishName":"Persona contacto", "type":"String", "required":"false", "displayable":"false"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
@@ -757,10 +895,7 @@
 						{"name":"section", "spanishName":"Sección", "refType":"section", "displayField":"section", "embeddedFields":["code"]},
 						{"name":"address", "spanishName":"Dirección", "type":"String", "required":"false", "autocomplete":"true"},
 						{"name":"populatedPlace", "spanishName":"Ciudad", "refType":"populatedPlace", "compoundReference":"true", "required":"false"},
-						{"name":"email", "spanishName":"email", "type":"String", "required":"false", "displayable":"false"},
-						{"name":"phone1Number", "spanishName":"Teléfono 1 Número", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"phone2Number", "spanishName":"Teléfono 2 Número", "type":"String", "unique":"true", "autocomplete":"true"},
-						{"name":"cellularNumber", "spanishName":"Número de celular", "type":"String", "required":"false"},
+						{"name":"phoneNumber", "spanishName":"Número de teléfono", "type":"String", "unique":"true", "autocomplete":"true"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },

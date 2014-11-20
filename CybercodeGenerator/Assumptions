@@ -19,3 +19,6 @@ Assumptions:
 	- Purchase order: "imported = false" for the item Quotation accepted implied local purchase
 	- Requisition, purchase order and item receipt: stock = false implies comsumption
 	
+	
+	Payroll:
+	- Payroll rules: calculatePureSalaryFactorOfFullWages [= true ==> salary factor = (100 - employee benefits %)/100], [= false ==> salary factor = (100 / (100 + employee benefits %))] 
