@@ -41,14 +41,15 @@ public class $upperDocName$SearchController {
 		$upperDocName$PageEvent info;
 		Boolean direction = null;
 		if (field!=null){
-			request.getSession().setAttribute("$docName$Field", field);
 			direction=(Boolean) request.getSession().getAttribute("$docName$Ascending");
-			if (request.getSession().getAttribute("$docName$Ascending")!=null){
+			String oldField = (String)request.getSession().getAttribute("$docName$Field");
+			if (oldField!=null && request.getSession().getAttribute("$docName$Ascending")!=null){
 				direction=!direction;
 				request.getSession().setAttribute("$docName$Ascending", direction);
 			}
 			else
 				request.getSession().setAttribute("$docName$Ascending", true);
+			request.getSession().setAttribute("$docName$Field", field);
 		}
 		PageRequest pageRequest=null;
 		if (field==null && request.getSession().getAttribute("$docName$Field")==null){
@@ -67,7 +68,7 @@ public class $upperDocName$SearchController {
 		PageWrapper<$upperDocName$> page=new PageWrapper<$upperDocName$>(info.get$upperDocName$Page(),"/docs/search$upperDocName$");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
-		model.addAttribute("_field", field);
+		model.addAttribute("_field", request.getSession().getAttribute("$docName$Field"));
 		model.addAttribute("_direction", direction);
 		return "/docs/$docName$/search$upperDocName$";
 	}

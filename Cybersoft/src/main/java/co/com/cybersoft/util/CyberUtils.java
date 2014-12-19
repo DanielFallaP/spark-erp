@@ -113,7 +113,7 @@ public class CyberUtils {
 	    Session session = Session.getDefaultInstance(props,  
 	    new javax.mail.Authenticator() {
 	       protected PasswordAuthentication getPasswordAuthentication() {  
-	       return new PasswordAuthentication("danielfap16@gmail.com","987daniel");  
+	       return new PasswordAuthentication("danielfap16@gmail.com","petroNube2014");  
 	   }  
 	   });
 	    
@@ -151,7 +151,7 @@ public class CyberUtils {
 	    Session session = Session.getDefaultInstance(props,  
 	    new javax.mail.Authenticator() {
 	       protected PasswordAuthentication getPasswordAuthentication() {  
-	       return new PasswordAuthentication("danielfap16@gmail.com","987daniel");  
+	       return new PasswordAuthentication("danielfap16@gmail.com","petroNube2014");  
 	   }  
 	   });
 	    

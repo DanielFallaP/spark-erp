@@ -39,14 +39,15 @@ public class $searchControllerName$ {
 		$responseEvent$ details;
 		Boolean direction=null;
 		if (field!=null){
-			request.getSession().setAttribute("$entityName$Field", field);
 			direction=(Boolean) request.getSession().getAttribute("$entityName$Ascending");
-			if (request.getSession().getAttribute("$entityName$Ascending")!=null){
+			String oldField=(String)request.getSession().getAttribute("$entityName$Field");
+			if (oldField!=null && request.getSession().getAttribute("$entityName$Ascending")!=null){
 				direction=!direction;
 				request.getSession().setAttribute("$entityName$Ascending", direction);
 			}
 			else
 				request.getSession().setAttribute("$entityName$Ascending", true);
+			request.getSession().setAttribute("$entityName$Field", field);
 		}
 		PageRequest pageRequest=null;
 		if (field==null && request.getSession().getAttribute("$entityName$Field")==null){
@@ -65,7 +66,7 @@ public class $searchControllerName$ {
 		PageWrapper<$entityUpperCaseName$> page=new PageWrapper<$entityUpperCaseName$>(details.$getListMethod$(),"$url$");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
-		model.addAttribute("_field", field);
+		model.addAttribute("_field", request.getSession().getAttribute("$entityName$Field"));
 		model.addAttribute("_direction", direction);
 		return "$viewURL$";
 	}
