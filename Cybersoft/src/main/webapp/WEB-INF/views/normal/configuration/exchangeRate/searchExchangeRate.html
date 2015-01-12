@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags">
+ <head>
+<meta charset="UTF-8"/>
+<title th:text="#{label.exchangeRateInfo}"></title>
+
+<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	        .page-selection{background-color:#fff!important;border:1px #fff!important;box-shadow:inset 0 1px 1px transparent!important;transition:border linear .2s,box-shadow linear .2s!important;display:inline-block!important;height:12px!important;padding:4px 6px!important;margin:-4px -11px -3px!important;font-size:14px!important;line-height:0!important;color:#555!important;vertical-align:middle!important;border-radius:0!important;width:23px!important;text-align:right}
+	    </style>
+	     <link th:href="@{/resources/css/cybersystems.css}" rel="stylesheet" />
+	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+		 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		 <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	     <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	     <script type="text/javascript">
+	     	/* <![CDATA[ */
+	     	
+	     function resetPageValue(){
+	    	 document.getElementById("_page").value=document.getElementById("_currentPage").value;
+	     }
+	     	
+	     function submitFilter(){
+    	 	var form=document.forms['filter-form'];
+			form.submit();
+	     }
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 13 && document.getElementById("_page") === document.activeElement) {
+	    		if (	document.getElementById("_page").value== null
+	    			  	|| document.getElementById("_page").value == ""
+	    				|| isNaN(document.getElementById("_page").value) 
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_page").value <= 0)
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_totalPages").value < document.getElementById("_page").value)
+	    			){
+					alert('Invalid page number');
+					resetPageValue();
+	    		}
+	    		else{
+		    		var path=window.location.pathname.split("/");
+	 	    		var prefix="";
+	 	    		if (path[1].localeCompare("configuration")!=0){
+	 	    			prefix="/"+path[1];	
+	 	    		}
+		     		window.open(prefix+"/configuration/exchangeRate/searchExchangeRate?page.page="+document.getElementById("_page").value,"_self");
+	    		}
+	    	  }else if (e.which == 13 && document.getElementById("localCurrency") === document.activeElement){
+	    		  submitFilter();
+	    	  }
+	    	});
+	     	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+		       }
+	    	});
+	    	
+	    $(document).keyup(function(e) {
+	    	  if(e.which == 27 ) {
+	  			$('#back a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 107) {
+	     		  $('#new a').trigger('click');
+	    	  }
+	    	});
+	    	
+	       $(document).keyup(function(e) {
+	    	  if(e.which == 39 || e.which == 34) {
+	     		  $('#_nextPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 37 || e.which == 33) {
+	     		  $('#_previousPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 35) {
+	     		  $('#_lastPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 36) {
+	     		  $('#_firstPage a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	    $(window).load(function(){
+		$('#search tr').hover(function() {
+		    $(this).addClass('hover');
+		}, function() {
+		    $(this).removeClass('hover');
+		});
+		});
+
+	    function buildURL(id){
+	    	var path=window.location.pathname.split("/");
+  	    	var prefix="";
+  	    	if (path[1].localeCompare("configuration")!=0){
+  	    		prefix="/"+path[1];	
+  	    	}
+	    	var url=prefix+"/configuration/exchangeRate/modifyExchangeRate/"+id;
+	    	document.location=url;
+	    }
+	    
+	    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );   	
+	    	
+ 		       /* ]]> */
+	     </script>
+	    
+</head>
+<body>
+	<div th:include="normal/layout :: header" ></div>
+	<div class="container-fluid">	
+		<div class="row-fluid">
+		<form id="filter-form" th:object="${exchangeRateFilterInfo}" method="post" >
+			<div id="back"><a th:text="#{label.back}" th:href="@{/configuration}"></a></div>
+			<h3 th:text="#{label.exchangeRateInfo}"> </h3>
+			<table width="100%">
+				<tr>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/configuration/exchangeRate/createExchangeRate/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
+					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
+					<td width="34%"><div align="right"><a th:href="@{/configuration/exchangeRate/export}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
+				</tr>
+			</table>
+			<table class="table table-striped" >
+				<thead>
+					<tr>
+						<th >
+							<div><input id="localCurrency" name="localCurrency" type="text" th:value="*{{localCurrency}}" /></div>
+							<div>
+								<a th:if="${_field} == 'localCurrency' and ${_direction}" th:href="@{${page.url}+'?field=localCurrency'}" th:text="'&uarr;'+#{label.exchangeRateLocalCurrency}"></a>
+								<a th:if="${_field} == 'localCurrency' and !${_direction}" th:href="@{${page.url}+'?field=localCurrency'}" th:text="'&darr;'+#{label.exchangeRateLocalCurrency}"></a>
+								<a th:if="${_field} != 'localCurrency'" th:href="@{${page.url}+'?field=localCurrency'}" th:text="#{label.exchangeRateLocalCurrency}"></a>
+							</div>
+						</th>
+						<th >
+							<a th:if="${_field} == 'foreignCurrency' and ${_direction}" th:href="@{${page.url}+'?field=foreignCurrency'}" th:text="'&uarr;'+#{label.exchangeRateForeignCurrency}"></a>
+							<a th:if="${_field} == 'foreignCurrency' and !${_direction}" th:href="@{${page.url}+'?field=foreignCurrency'}" th:text="'&darr;'+#{label.exchangeRateForeignCurrency}"></a>
+							<a th:if="${_field} != 'foreignCurrency'" th:href="@{${page.url}+'?field=foreignCurrency'}" th:text="#{label.exchangeRateForeignCurrency}"></a>
+						</th>
+						<th >
+							<a th:if="${_field} == 'date' and ${_direction}" th:href="@{${page.url}+'?field=date'}" th:text="'&uarr;'+#{label.exchangeRateDate}"></a>
+							<a th:if="${_field} == 'date' and !${_direction}" th:href="@{${page.url}+'?field=date'}" th:text="'&darr;'+#{label.exchangeRateDate}"></a>
+							<a th:if="${_field} != 'date'" th:href="@{${page.url}+'?field=date'}" th:text="#{label.exchangeRateDate}"></a>
+						</th>
+						<th >
+							<a th:if="${_field} == 'exchangeRate' and ${_direction}" th:href="@{${page.url}+'?field=exchangeRate'}" th:text="'&uarr;'+#{label.exchangeRateExchangeRate}"></a>
+							<a th:if="${_field} == 'exchangeRate' and !${_direction}" th:href="@{${page.url}+'?field=exchangeRate'}" th:text="'&darr;'+#{label.exchangeRateExchangeRate}"></a>
+							<a th:if="${_field} != 'exchangeRate'" th:href="@{${page.url}+'?field=exchangeRate'}" th:text="#{label.exchangeRateExchangeRate}"></a>
+						</th>
+						<th >
+							<a th:if="${_field} == 'variation' and ${_direction}" th:href="@{${page.url}+'?field=variation'}" th:text="'&uarr;'+#{label.exchangeRateVariation}"></a>
+							<a th:if="${_field} == 'variation' and !${_direction}" th:href="@{${page.url}+'?field=variation'}" th:text="'&darr;'+#{label.exchangeRateVariation}"></a>
+							<a th:if="${_field} != 'variation'" th:href="@{${page.url}+'?field=variation'}" th:text="#{label.exchangeRateVariation}"></a>
+						</th>
+						<th >
+							<a th:if="${_field} == 'active' and ${_direction}" th:href="@{${page.url}+'?field=active'}" th:text="'&uarr;'+#{label.exchangeRateActive}"></a>
+							<a th:if="${_field} == 'active' and !${_direction}" th:href="@{${page.url}+'?field=active'}" th:text="'&darr;'+#{label.exchangeRateActive}"></a>
+							<a th:if="${_field} != 'active'" th:href="@{${page.url}+'?field=active'}" th:text="#{label.exchangeRateActive}"></a>
+						</th>
+						<th >
+							<a th:if="${_field} == 'dateOfModification' and ${_direction}" th:href="@{${page.url}+'?field=dateOfModification'}" th:text="'&uarr;'+#{label.dateOfModification}"></a>
+							<a th:if="${_field} == 'dateOfModification' and !${_direction}" th:href="@{${page.url}+'?field=dateOfModification'}" th:text="'&darr;'+#{label.dateOfModification}"></a>
+							<a th:if="${_field} != 'dateOfModification'" th:href="@{${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a>
+						</th>
+						<th >
+							<a th:if="${_field} == 'userName' and ${_direction}" th:href="@{${page.url}+'?field=userName'}" th:text="'&uarr;'+#{label.userOfModification}"></a>
+							<a th:if="${_field} == 'userName' and !${_direction}" th:href="@{${page.url}+'?field=userName'}" th:text="'&darr;'+#{label.userOfModification}"></a>
+							<a th:if="${_field} != 'userName'" th:href="@{${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a>
+						</th>
+						<th >
+							<a th:if="${_field} == 'dateOfCreation' and ${_direction}" th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="'&uarr;'+#{label.dateOfCreation}"></a>
+							<a th:if="${_field} == 'dateOfCreation' and !${_direction}" th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="'&darr;'+#{label.dateOfCreation}"></a>
+							<a th:if="${_field} != 'dateOfCreation'" th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a>
+						</th>
+						<th >
+							<a th:if="${_field} == 'createdBy' and ${_direction}" th:href="@{${page.url}+'?field=createdBy'}" th:text="'&uarr;'+#{label.createdBy}"></a>
+							<a th:if="${_field} == 'createdBy' and !${_direction}" th:href="@{${page.url}+'?field=createdBy'}" th:text="'&darr;'+#{label.createdBy}"></a>
+							<a th:if="${_field} != 'createdBy'" th:href="@{${page.url}+'?field=createdBy'}" th:text="#{label.createdBy}"></a>
+						</th>
+
+					</tr>
+				</thead>
+				<tbody id="search">
+					<tr th:each="object: ${list}" th:onClick="'buildURL(\''+${object.id}+'\')'">
+						<td th:text="${object.localCurrency}"></td>
+						<td th:text="${object.foreignCurrency}"></td>
+						<td th:text="${{object.date}}"></td>
+						<td th:text="${object.exchangeRate}"></td>
+						<td th:text="${object.variation}"></td>
+						<td th:text="#{${'label.'+object.active}}"></td>
+						<td th:text="${#calendars.format(object.dateOfModification,'dd/MM/yyyy HH:mm')}" ></td>
+						<td th:text="${object.userName}"></td>
+						<td th:text="${#calendars.format(object.dateOfCreation,'dd/MM/yyyy HH:mm')}" ></td>
+						<td th:text="${object.createdBy}"></td>
+
+					</tr>
+				</tbody>
+			</table>
+			<table width="100%">
+				<tr>
+					<td width="33%"></td>
+					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
+					<td width="34%"><div></div></td>
+				</tr>
+			</table>
+		</form>
+		</div>
+	</div>
+	<div class="container-fluid" th:include="normal/layout :: footer"></div>
+</body>
+</html>
