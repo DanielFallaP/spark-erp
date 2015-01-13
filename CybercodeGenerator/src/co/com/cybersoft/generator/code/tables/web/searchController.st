@@ -12,12 +12,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.ModelAndView;
 
 import co.com.cybersoft.tables.core.services.$entityName$.$coreService$;
 import co.com.cybersoft.util.PageWrapper;
 import co.com.cybersoft.tables.events.$entityName$.$responseEvent$;
 import co.com.cybersoft.tables.events.$entityName$.$requestEvent$;
 import co.com.cybersoft.tables.persistence.domain.$entityUpperCaseName$;
+import co.com.cybersoft.tables.web.domain.$entityName$.$entityUpperCaseName$FilterInfo;
 
 /**
  * Search controller class for $entityName$
@@ -70,4 +74,30 @@ public class $searchControllerName$ {
 		model.addAttribute("_direction", direction);
 		return "$viewURL$";
 	}
+	
+	@RequestMapping(method=RequestMethod.POST)
+	public String filter(Model model, Pageable pageable, @ModelAttribute("$entityName$FilterInfo")$entityUpperCaseName$FilterInfo filter, HttpServletRequest request) throws Exception{
+		PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Direction.ASC,"_id");
+		Request$entityUpperCaseName$PageEvent pageEvent = new Request$entityUpperCaseName$PageEvent(pageRequest,filter);
+		$entityUpperCaseName$PageEvent details = $entityName$Service.request$entityUpperCaseName$FilterPage(pageEvent);
+		PageWrapper<$entityUpperCaseName$> page=new PageWrapper<$entityUpperCaseName$>(details.get$entityUpperCaseName$Page(),"/configuration/$entityName$/search$entityUpperCaseName$");
+		model.addAttribute("page", page);
+		model.addAttribute("list",page.getContent());
+		model.addAttribute("_field", request.getSession().getAttribute("$entityName$Field"));
+		return "$viewURL$";
+	}
+	
+	@ModelAttribute("$entityName$FilterInfo")
+	private $entityUpperCaseName$FilterInfo get$entityUpperCaseName$FilterInfo(){
+		return new $entityUpperCaseName$FilterInfo();
+	}
+	
+	
+	@ExceptionHandler(Exception.class)
+	public ModelAndView constraintError(HttpServletRequest req, Exception exception){
+		exception.printStackTrace();
+		ModelAndView modelAndView = new ModelAndView();
+		return modelAndView;
+	}
+	
 }

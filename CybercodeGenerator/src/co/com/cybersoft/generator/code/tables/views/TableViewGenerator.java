@@ -214,12 +214,15 @@ public class TableViewGenerator {
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("backURL", table.getLabelTable()?Cybertables.settingsURL:Cybertables.tableNamespace);
 		template.setAttribute("columns", getOtherColumns(table));
+		template.setAttribute("filterColumnHeaders", getFilterHeaderColumns(table));
 		template.setAttribute("columnHeaders", getHeaderColumns(table));
+
 		template.setAttribute("excel", table.getLabelTable()?"<div></div>":generateExcelLink(table));
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/configuration/"+table.getName(), "search"+CodeUtils.toCamelCase(table.getName())+".html");
 	}
 	
+
 	private String generateExcelLink(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.tableCodePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("excel");
@@ -349,6 +352,70 @@ public class TableViewGenerator {
 
 		template = templateGroup.getInstanceOf("otherColumn");
 		template.setAttribute("fieldName", "createdBy");
+		text+=template.toString()+"\n";
+		
+		return text;
+	}
+	
+	private Object getFilterHeaderColumns(Table table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.tableCodePath+"views");
+		List<Field> fields = table.getFields();
+		
+		String text="";
+		for (Field field : fields) {
+			if (!field.getCompoundReference() && field.getDisplayable()){
+				if (!field.isReference() && field.getVisible() && !field.getLargeText()){
+					StringTemplate template = templateGroup.getInstanceOf("filterColumnHeader");
+					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+					text+=template.toString()+"\n";
+				}
+				
+				if (field.isReference()){
+					StringTemplate template = templateGroup.getInstanceOf("filterColumnHeader");
+					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+					text+=template.toString()+"\n";
+				}
+			}
+			else{
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					StringTemplate template = templateGroup.getInstanceOf("filterColumnHeader");
+					template.setAttribute("fieldName", compoundField.getName());
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
+					text+=template.toString()+"\n";
+				}
+			}
+		}
+		
+		//Generation of audit fields columns (date of last modification and user of last modification)
+		StringTemplate template = templateGroup.getInstanceOf("filterColumnHeader");
+		template.setAttribute("fieldName", "dateOfModification");
+		template.setAttribute("tableName", "");
+		template.setAttribute("upperFieldName", "dateOfModification");
+		text+=template.toString()+"\n";
+		
+		template = templateGroup.getInstanceOf("filterColumnHeader");
+		template.setAttribute("fieldName", "userName");
+		template.setAttribute("tableName", "");
+		template.setAttribute("upperFieldName", "userOfModification");
+		text+=template.toString()+"\n";
+		
+		//Generation of audit fields columns (date of creation and user of creation)
+		template = templateGroup.getInstanceOf("filterColumnHeader");
+		template.setAttribute("fieldName", "dateOfCreation");
+		template.setAttribute("tableName", "");
+		template.setAttribute("upperFieldName", "dateOfCreation");
+		text+=template.toString()+"\n";
+		
+		template = templateGroup.getInstanceOf("filterColumnHeader");
+		template.setAttribute("fieldName", "createdBy");
+		template.setAttribute("tableName", "");
+		template.setAttribute("upperFieldName", "createdBy");
 		text+=template.toString()+"\n";
 		
 		return text;

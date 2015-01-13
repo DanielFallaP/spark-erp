@@ -87,5 +87,10 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 	$requestAll$
 	
 	$autocompleteRequest$
-	
+
+	@Override
+	public $entityName$PageEvent request$entityName$FilterPage(Request$entityName$PageEvent event) throws Exception {
+		Page<$entityName$> page = $tableName$CustomRepo.findAll(event.getPageable(), event.getFilter());
+		return new $entityName$PageEvent(page);
+	}	
 }

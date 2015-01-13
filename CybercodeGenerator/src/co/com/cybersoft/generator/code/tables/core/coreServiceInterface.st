@@ -11,7 +11,7 @@ import co.com.cybersoft.util.EmbeddedField;
 
 /**
  * 
- * @author Cybersystems 2014. All rights reserved.
+ * @author Cybersystems 2015. All rights reserved.
  *
  */
 public interface $className$ {
@@ -29,5 +29,5 @@ public interface $className$ {
 	
 	$autocompleteRequest$
 	
-	
+	$entityUppercaseName$PageEvent request$entityUppercaseName$FilterPage(Request$entityUppercaseName$PageEvent event) throws Exception;
 }

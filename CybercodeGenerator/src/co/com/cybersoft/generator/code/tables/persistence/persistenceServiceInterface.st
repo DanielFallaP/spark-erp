@@ -10,7 +10,7 @@ import co.com.cybersoft.util.EmbeddedField;
 
 /**
  * 
- * @author Cybersystems 2014. All rights reserved.
+ * @author Cybersystems 2015. All rights reserved.
  *
  */
 public interface $entityName$PersistenceService {
@@ -22,6 +22,7 @@ public interface $entityName$PersistenceService {
 	$entityName$DetailsEvent request$entityName$Details(Request$entityName$DetailsEvent event) throws Exception;
 	
 	$entityName$DetailsEvent modify$entityName$($entityName$ModificationEvent event) throws Exception;
+	$entityName$PageEvent request$entityName$FilterPage(Request$entityName$PageEvent event) throws Exception;
 	
 	$requestAll$
 	

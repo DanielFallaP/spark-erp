@@ -37,6 +37,7 @@ public class TableWebGenerator {
 			}
 			generateCompoundReferenceControllers(table);
 
+			generateFilterFields(table);
 			generateDomain(table);
 			List<Field> fields = table.getFields();
 			for (Field field : fields) {
@@ -73,6 +74,52 @@ public class TableWebGenerator {
 					CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/web/controller/"+table.getName(), CodeUtils.toCamelCase(table.getName())+CodeUtils.toCamelCase(field.getName())+"Controller.java");
 			}
 		}
+	}
+	
+	private void generateFilterFields (Table table){
+		List<Field> fields = table.getFields();
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.tableCodePath+"web");
+		StringTemplate fieldTemplate = templateGroup.getInstanceOf("filterCriteria");
+		String filterFields="";
+		for (Field field : fields) {
+			if (!field.getCompoundReference()){
+				if (!field.isReference()){
+					StringTemplate template = new StringTemplate("private $type$ $name$;\n\n");
+					template.setAttribute("type", field.getType());
+					template.setAttribute("name", field.getName());
+					filterFields+=template.toString();
+					filterFields+="\n";
+					
+					StringTemplateGroup templateGroup2 = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
+					StringTemplate gettersSettersTemplate = templateGroup2.getInstanceOf("getterSetter");
+					gettersSettersTemplate.setAttribute("type", field.getType());
+					gettersSettersTemplate.setAttribute("name", field.getName());
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+					filterFields+=gettersSettersTemplate.toString()+"\n\n";
+				}
+				else{
+					StringTemplate template = new StringTemplate("private $type$ $name$;\n\n");
+					template.setAttribute("type", Cybertables.stringType);
+					template.setAttribute("name", field.getName());
+					filterFields+=template.toString();
+					filterFields+="\n";
+					
+					StringTemplateGroup templateGroup2 = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
+					StringTemplate gettersSettersTemplate = templateGroup2.getInstanceOf("getterSetter");
+					gettersSettersTemplate.setAttribute("type", Cybertables.stringType);
+					gettersSettersTemplate.setAttribute("name", field.getName());
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+					filterFields+=gettersSettersTemplate.toString()+"\n\n";
+				}
+				
+			}
+		}
+		
+		fieldTemplate.setAttribute("filterFields", filterFields);
+		fieldTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+		fieldTemplate.setAttribute("tableName", table.getName());
+		
+		CodeUtils.writeClass(fieldTemplate.toString(), Cybertables.targetTableClassPath+"/web/domain/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"FilterInfo.java");
 	}
 
 

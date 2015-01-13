@@ -51,6 +51,11 @@ public class $entityUppercaseName$ServiceImpl implements $entityUppercaseName$Se
 	public $upperEntityName$DetailsEvent requestOnlyRecord() throws Exception {
 		return $entityName$PersistenceService.getOnlyRecord();
 	}
+	
+	@Override
+	public $upperEntityName$PageEvent request$upperEntityName$FilterPage(Request$upperEntityName$PageEvent event) throws Exception {
+		return $entityName$PersistenceService.request$upperEntityName$FilterPage(event);
+	}
 
 	$requestAll$
 	

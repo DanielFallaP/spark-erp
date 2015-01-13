@@ -51,6 +51,9 @@
 		     		window.open(prefix+"/configuration/$tableName$/search$entityName$?page.page="+document.getElementById("_page").value,"_self");
 	    		}
 	    	  }
+	    		else if (e.which == 13 $focusCheck$){
+	    		  submitFilter();
+	    		}
 	    	});
 	     	
 	     \$(document).on("click", "a", function(event){
@@ -115,6 +118,11 @@
 		});
 		});
 
+		function submitFilter(){
+    	 	var form=document.forms['filter-form'];
+			form.submit();
+	    }
+
 	    function buildURL(id){
 	    	var path=window.location.pathname.split("/");
   	    	var prefix="";
@@ -140,6 +148,7 @@
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 		<div class="row-fluid">
+			<form id="filter-form" th:object="\${$tableName$FilterInfo}" method="post" >
 			<div id="back"><a th:text="#{label.back}" th:href="@{/$backURL$}"></a></div>
 			<h3 th:text="#{label.$tableName$Info}"> </h3>
 			<table width="100%">
@@ -151,6 +160,9 @@
 			</table>
 			<table class="table table-striped" >
 				<thead>
+					<tr>
+						$filterColumnHeaders$
+					</tr>
 					<tr>
 						$columnHeaders$
 					</tr>
@@ -168,6 +180,7 @@
 					<td width="34%"><div></div></td>
 				</tr>
 			</table>
+			</form>
 		</div>
 	</div>
 	<div class="container-fluid" th:include="normal/layout :: footer"></div>

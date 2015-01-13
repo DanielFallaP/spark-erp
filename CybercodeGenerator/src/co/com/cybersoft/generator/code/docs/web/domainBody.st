@@ -12,7 +12,7 @@ $imports$
 
 /**
  * Controller for $docName$Item
- * @author Cybersystems 2014. All rights reserved.
+ * @author Cybersystems 2015. All rights reserved.
  *
  */
 @Component

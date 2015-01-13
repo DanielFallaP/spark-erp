@@ -566,12 +566,26 @@ public class TablePersistenceGenerator {
 			}
 			i++;
 		}
-		
+		template.setAttribute("fieldCriteria", getFieldCriteria(table));
 		template.setAttribute("findAllActive", findAllActive);
 		template.setAttribute("byContainingFields", autocompleteQueries);
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"CustomRepoImpl.java");
 		
+	}
+
+	private Object getFieldCriteria(Table table) {
+		String fieldCriteria="";
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (!field.getCompoundReference()){
+				StringTemplate template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").is(filter.get$upperFieldName$()));");
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+				fieldCriteria+=template.toString()+"\n";
+			}
+		}
+		return fieldCriteria;
 	}
 
 }
