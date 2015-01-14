@@ -51,7 +51,8 @@
 		     		window.open(prefix+"/configuration/$tableName$/search$entityName$?page.page="+document.getElementById("_page").value,"_self");
 	    		}
 	    	  }
-	    		else if (e.which == 13 $focusCheck$){
+	    		else if (e.which == 13 && (document.getElementById("createdBy") === document.activeElement || document.getElementById("userName") === document.activeElement || 
+	    		document.getElementById("dateOfModification") === document.activeElement || document.getElementById("dateOfCreation") === document.activeElement $focusCheck$)){
 	    		  submitFilter();
 	    		}
 	    	});

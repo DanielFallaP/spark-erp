@@ -215,6 +215,7 @@ public class TableViewGenerator {
 		template.setAttribute("backURL", table.getLabelTable()?Cybertables.settingsURL:Cybertables.tableNamespace);
 		template.setAttribute("columns", getOtherColumns(table));
 		template.setAttribute("filterColumnHeaders", getFilterHeaderColumns(table));
+		template.setAttribute("focusCheck", getFocusCheck(table));
 		template.setAttribute("columnHeaders", getHeaderColumns(table));
 
 		template.setAttribute("excel", table.getLabelTable()?"<div></div>":generateExcelLink(table));
@@ -222,6 +223,27 @@ public class TableViewGenerator {
 		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/configuration/"+table.getName(), "search"+CodeUtils.toCamelCase(table.getName())+".html");
 	}
 	
+
+	private Object getFocusCheck(Table table) {
+		String focusCheck="";
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			StringTemplate template=new StringTemplate(" || document.getElementById(\"$fieldName$\") === document.activeElement");
+			if (!field.getCompoundReference()){
+				template.setAttribute("fieldName", field.getName());
+				focusCheck+=template.toString()+"\n";
+			}
+			else{
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					template=new StringTemplate(" || document.getElementById(\"$fieldName$\") === document.activeElement");
+					template.setAttribute("fieldName", compoundField.getName());
+					focusCheck+=template.toString()+"\n";
+				}
+			}
+		}
+		return focusCheck;
+	}
 
 	private String generateExcelLink(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.tableCodePath+"views");

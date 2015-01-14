@@ -112,6 +112,22 @@ public class TableWebGenerator {
 					filterFields+=gettersSettersTemplate.toString()+"\n\n";
 				}
 				
+			}else{
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					StringTemplate template = new StringTemplate("private $type$ $name$;\n\n");
+					template.setAttribute("type", Cybertables.stringType);
+					template.setAttribute("name", compoundField.getName());
+					filterFields+=template.toString();
+					filterFields+="\n";
+
+					StringTemplateGroup templateGroup2 = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
+					StringTemplate gettersSettersTemplate = templateGroup2.getInstanceOf("getterSetter");
+					gettersSettersTemplate.setAttribute("type", Cybertables.stringType);
+					gettersSettersTemplate.setAttribute("name", compoundField.getName());
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
+					filterFields+=gettersSettersTemplate.toString()+"\n\n";
+				}
 			}
 		}
 		

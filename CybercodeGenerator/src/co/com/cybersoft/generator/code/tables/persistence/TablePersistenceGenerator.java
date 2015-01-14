@@ -584,6 +584,15 @@ public class TablePersistenceGenerator {
 				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				fieldCriteria+=template.toString()+"\n";
 			}
+			else{
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					StringTemplate subTemplate=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").is(filter.get$upperFieldName$()));");
+					subTemplate.setAttribute("fieldName", compoundField.getName());
+					subTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
+					fieldCriteria+=subTemplate.toString()+"\n";
+				}
+			}
 		}
 		return fieldCriteria;
 	}
