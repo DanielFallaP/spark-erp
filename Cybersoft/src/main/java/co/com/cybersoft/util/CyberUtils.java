@@ -91,14 +91,14 @@ public class CyberUtils {
 
 	public static final int headerColumnsPerRow = 3;
 	
-	public static String escapePCRECharacters(String string){
+	public static synchronized String escapePCRECharacters(String string){
 		for (Character escapeCharacter : PCREEscapeCharacters) {
 			string=string.replace(escapeCharacter.toString(), stringLiteralEscape+escapeCharacter);
 		}
 		return string;
 	}
 	
-	public MimeMessage getMessageWithAttachment(String from, String to, String subject, String text, File attachment) throws Exception{
+	public synchronized MimeMessage getMessageWithAttachment(String from, String to, String subject, String text, File attachment) throws Exception{
 		Properties props = new Properties();
 		MimeMultipart multipart = new MimeMultipart();
 		
@@ -138,7 +138,7 @@ public class CyberUtils {
 		return message;		
 	}
 	
-	public MimeMessage getSimpleMessage(String from, String to, String subject, String text) throws Exception{
+	public synchronized MimeMessage getSimpleMessage(String from, String to, String subject, String text) throws Exception{
 		Properties props = new Properties();
 		props.setProperty("mail.transport.protocol", "smtp");     
 	    props.setProperty("mail.host", "smtp.gmail.com");  
@@ -165,7 +165,7 @@ public class CyberUtils {
 		return message;
 	}
 	
-	public static String getTextFileContent(InputStream input) throws Exception{
+	public static synchronized String getTextFileContent(InputStream input) throws Exception{
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         StringBuilder out = new StringBuilder();
         String line;

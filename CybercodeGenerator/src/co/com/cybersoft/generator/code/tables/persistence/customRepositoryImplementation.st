@@ -58,8 +58,8 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 		$fieldCriteria$
 		if (filter.getDateOfCreation()!=null)filterQuery.addCriteria(Criteria.where("dateOfCreation").is(filter.getDateOfCreation()));
 		if (filter.getDateOfModification()!=null)filterQuery.addCriteria(Criteria.where("dateOfModification").is(filter.getDateOfModification()));
-		if (filter.getUserName()!=null && !filter.getUserName().equals(""))filterQuery.addCriteria(Criteria.where("userName").is(filter.getUserName()));
-		if (filter.getCreatedBy()!=null && !filter.getCreatedBy().equals(""))filterQuery.addCriteria(Criteria.where("createdBy").is(filter.getCreatedBy()));
+		if (filter.getUserName()!=null && !filter.getUserName().equals(""))filterQuery.addCriteria(Criteria.where("userName").regex(translateWildcards(filter.getUserName())));
+		if (filter.getCreatedBy()!=null && !filter.getCreatedBy().equals(""))filterQuery.addCriteria(Criteria.where("createdBy").regex(translateWildcards(filter.getCreatedBy())));
 		
 		return filterQuery;
 	}
@@ -75,6 +75,24 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 	
 	private long count($entityName$FilterInfo filter){
 		return findAll(buildCriteria(filter)).size();
+	}
+	
+	private Pattern translateWildcards(String value){
+		if (value.indexOf('%')>=0 && value.indexOf('%')!=value.lastIndexOf('%')){
+			value=value.replaceAll("%", "");
+			return Pattern.compile("^(.)*"+value+"(.)*\$",Pattern.CASE_INSENSITIVE);
+		}
+		else if(value.indexOf('%')==0){
+			value=value.replaceAll("%", "");
+			return Pattern.compile("^.*("+value+")\$",Pattern.CASE_INSENSITIVE);
+		}
+		else if(value.indexOf('%')==value.length()-1){
+			value=value.replaceAll("%", "");
+			return Pattern.compile("^("+value+").*\$",Pattern.CASE_INSENSITIVE);
+		}
+		else{
+			return Pattern.compile("^"+value+"\$",Pattern.CASE_INSENSITIVE);
+		}
 	}
 }
 

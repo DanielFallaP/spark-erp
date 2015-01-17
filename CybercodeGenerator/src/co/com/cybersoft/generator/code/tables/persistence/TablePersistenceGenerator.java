@@ -6,6 +6,7 @@ import java.util.List;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
+import co.com.cybersoft.generator.code.model.Cyberconstants;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Table;
@@ -579,7 +580,14 @@ public class TablePersistenceGenerator {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
-				StringTemplate template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").is(filter.get$upperFieldName$()));");
+				StringTemplate template;
+				if (field.getType()==null || field.getType().equals(Cyberconstants.stringType)){
+					template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").regex(translateWildcards(filter.get$upperFieldName$())));");
+				}
+				else{
+					template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").is(filter.get$upperFieldName$()));");
+				}
+						
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				fieldCriteria+=template.toString()+"\n";
@@ -587,7 +595,7 @@ public class TablePersistenceGenerator {
 			else{
 				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
-					StringTemplate subTemplate=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").is(filter.get$upperFieldName$()));");
+					StringTemplate subTemplate=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").regex(translateWildcards(filter.get$upperFieldName$())));");
 					subTemplate.setAttribute("fieldName", compoundField.getName());
 					subTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					fieldCriteria+=subTemplate.toString()+"\n";
