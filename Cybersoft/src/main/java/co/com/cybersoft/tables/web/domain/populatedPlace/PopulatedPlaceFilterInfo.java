@@ -12,17 +12,31 @@ public class PopulatedPlaceFilterInfo {
 
 	private String dateOfCreation;
 	
-	private Date dateOfModification;
+	private String dateOfModification;
 	
 	private String createdBy;
 	private String country;
 
-	public String getDateOfCreation() {
-		return dateOfCreation;
+	private Integer selectedFilterPage;
+	
+	private String field;
+
+	
+	
+	public Integer getSelectedFilterPage() {
+		return selectedFilterPage;
 	}
 
-	public void setDateOfCreation(String dateOfCreation) {
-		this.dateOfCreation = dateOfCreation;
+	public void setSelectedFilterPage(Integer selectedFilterPage) {
+		this.selectedFilterPage = selectedFilterPage;
+	}
+
+	public String getField() {
+		return field;
+	}
+
+	public void setField(String field) {
+		this.field = field;
 	}
 
 	public String getCountry() {
@@ -57,15 +71,6 @@ public class PopulatedPlaceFilterInfo {
 
 	private String area;
 
-	private Double areaNat;
-	
-	public Double getAreaNat() {
-		return areaNat;
-	}
-
-	public void setAreaNat(Double areaNat) {
-		this.areaNat = areaNat;
-	}
 
 	public String getArea() {
 		return area;	
@@ -77,12 +82,13 @@ public class PopulatedPlaceFilterInfo {
 
 	private String population;
 
-	public String getPopulation() {
-		return population;
-	}
 
+	public String getPopulation() {
+		return population;	
+	}
+		
 	public void setPopulation(String population) {
-		this.population = population;
+		this.population = population;	
 	}
 
 	private String latitude;
@@ -107,14 +113,14 @@ public class PopulatedPlaceFilterInfo {
 		this.longitude = longitude;	
 	}
 
-	private Boolean active;
+	private String active;
 
 
-	public Boolean getActive() {
+	public String getActive() {
 		return active;	
 	}
 		
-	public void setActive(Boolean active) {
+	public void setActive(String active) {
 		this.active = active;	
 	}
 
@@ -127,11 +133,19 @@ public class PopulatedPlaceFilterInfo {
 		this.createdBy = createdBy;
 	}
 	
-	public Date getDateOfModification() {
+	public String getDateOfCreation() {
+		return dateOfCreation;
+	}
+	
+	public void setDateOfCreation(String dateOfCreation) {
+		this.dateOfCreation = dateOfCreation;
+	}
+	
+	public String getDateOfModification() {
 		return dateOfModification;
 	}
 	
-	public void setDateOfModification(Date dateOfModification) {
+	public void setDateOfModification(String dateOfModification) {
 		this.dateOfModification = dateOfModification;
 	}
 		

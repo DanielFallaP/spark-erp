@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags">
+ <head>
+<meta charset="UTF-8"/>
+<title ></title>
+
+<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	        .page-selection{background-color:#fff!important;border:1px #fff!important;box-shadow:inset 0 1px 1px transparent!important;transition:border linear .2s,box-shadow linear .2s!important;display:inline-block!important;height:12px!important;padding:4px 6px!important;margin:-4px -11px -3px!important;font-size:14px!important;line-height:0!important;color:#555!important;vertical-align:middle!important;border-radius:0!important;width:23px!important;text-align:right}
+	    </style>
+	     <link th:href="@{/resources/css/cybersystems.css}" rel="stylesheet" />
+	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+		 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		 <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	     <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	     <script type="text/javascript">
+	     	/* <![CDATA[ */
+	     	
+	     function resetPageValue(){
+	    	 document.getElementById("_page").value=document.getElementById("_currentPage").value;
+	     }
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 13 && document.getElementById("_page") === document.activeElement) {
+	    		if (	document.getElementById("_page").value== null
+	    			  	|| document.getElementById("_page").value == ""
+	    				|| isNaN(document.getElementById("_page").value) 
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_page").value <= 0)
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_totalPages").value < document.getElementById("_page").value)
+	    			){
+					alert('Invalid page number');
+					resetPageValue();
+	    		}
+	    		else{
+		    		var path=window.location.pathname.split("/");
+	 	    		var prefix="";
+	 	    		if (path[1].localeCompare("configuration")!=0){
+	 	    			prefix="/"+path[1];	
+	 	    		}
+					submitFilter();	 	    		
+	    		}
+	    	  }
+	    		else if (e.which == 13 && (document.getElementById("createdBy") === document.activeElement || document.getElementById("userName") === document.activeElement || 
+	    		document.getElementById("dateOfModification") === document.activeElement || document.getElementById("dateOfCreation") === document.activeElement  || document.getElementById("country") === document.activeElement
+ || document.getElementById("state") === document.activeElement
+ || document.getElementById("populatedPlace") === document.activeElement
+ || document.getElementById("area") === document.activeElement
+ || document.getElementById("population") === document.activeElement
+ || document.getElementById("latitude") === document.activeElement
+ || document.getElementById("longitude") === document.activeElement
+ || document.getElementById("active") === document.activeElement
+)){
+	    		  submitFilter();
+	    		}
+	    	});
+	     	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+		       }
+	    	});
+	    	
+	    $(document).keyup(function(e) {
+	    	  if(e.which == 27 ) {
+	  			$('#back a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 107) {
+	     		  $('#new a').trigger('click');
+	    	  }
+	    	});
+	    	
+	       $(document).keyup(function(e) {
+	    	  if(e.which == 39 || e.which == 34) {
+	     		  $('#_nextPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 37 || e.which == 33) {
+	     		  $('#_previousPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 35) {
+	     		  $('#_lastPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 36) {
+	     		  $('#_firstPage a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	    $(window).load(function(){
+		$('#search tr').hover(function() {
+		    $(this).addClass('hover');
+		}, function() {
+		    $(this).removeClass('hover');
+		});
+		});
+
+		function submitFilter(){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=document.getElementById("_page").value;
+			form.submit();
+	    }
+		
+		function submitFilterPage(page){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+			form.submit();
+	    }
+
+	    function buildURL(id){
+	    	var path=window.location.pathname.split("/");
+  	    	var prefix="";
+  	    	if (path[1].localeCompare("configuration")!=0){
+  	    		prefix="/"+path[1];	
+  	    	}
+	    	var url=prefix+"/configuration/populatedPlace/modifyPopulatedPlace/"+id;
+	    	document.location=url;
+	    }
+	    
+	    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );   	
+	    	
+ 		       /* ]]> */
+	     </script>
+	    
+</head>
+<body>
+	<form id="filter-form" th:object="${populatedPlaceFilterInfo}" method="post" >
+  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
+	<div th:include="normal/layout :: header" ></div>
+	<div class="container-fluid">	
+		<div class="row-fluid">
+			
+			<div id="back"><a th:text="#{label.back}" th:href="@{/configuration}"></a></div>
+			<h3 th:text="#{label.populatedPlaceInfo}"> </h3>
+			<table width="100%">
+				<tr>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/configuration/populatedPlace/createPopulatedPlace/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
+					<td width="34%"><div align="right"><a th:href="@{/configuration/populatedPlace/export}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
+				</tr>
+			</table>
+			<table class="table table-striped" >
+				<thead>
+					<tr>
+						<th >
+							<div><input style="width:100%;" id="country" name="country" type="text" th:value="*{{country}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="state" name="state" type="text" th:value="*{{state}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="populatedPlace" name="populatedPlace" type="text" th:value="*{{populatedPlace}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="population" name="population" type="text" th:value="*{{population}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="active" name="active" type="text" th:value="*{{active}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateOfModification" name="dateOfModification" type="text" th:value="*{{dateOfModification}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="userName" name="userName" type="text" th:value="*{{userName}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateOfCreation" name="dateOfCreation" type="text" th:value="*{{dateOfCreation}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="createdBy" name="createdBy" type="text" th:value="*{{createdBy}}" /></div>
+						</th>
+
+					</tr>
+					<tr>
+						<th >
+							<div>
+								<a th:if="${_field} == 'country' and ${_direction}" th:href="@{${page.url}+'?field=country'}" th:text="'&uarr;'+#{label.populatedPlaceCountry}"></a>
+								<a th:if="${_field} == 'country' and !${_direction}" th:href="@{${page.url}+'?field=country'}" th:text="'&darr;'+#{label.populatedPlaceCountry}"></a>
+								<a th:if="${_field} != 'country'" th:href="@{${page.url}+'?field=country'}" th:text="#{label.populatedPlaceCountry}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'state' and ${_direction}" th:href="@{${page.url}+'?field=state'}" th:text="'&uarr;'+#{label.populatedPlaceState}"></a>
+								<a th:if="${_field} == 'state' and !${_direction}" th:href="@{${page.url}+'?field=state'}" th:text="'&darr;'+#{label.populatedPlaceState}"></a>
+								<a th:if="${_field} != 'state'" th:href="@{${page.url}+'?field=state'}" th:text="#{label.populatedPlaceState}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'populatedPlace' and ${_direction}" th:href="@{${page.url}+'?field=populatedPlace'}" th:text="'&uarr;'+#{label.populatedPlacePopulatedPlace}"></a>
+								<a th:if="${_field} == 'populatedPlace' and !${_direction}" th:href="@{${page.url}+'?field=populatedPlace'}" th:text="'&darr;'+#{label.populatedPlacePopulatedPlace}"></a>
+								<a th:if="${_field} != 'populatedPlace'" th:href="@{${page.url}+'?field=populatedPlace'}" th:text="#{label.populatedPlacePopulatedPlace}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'population' and ${_direction}" th:href="@{${page.url}+'?field=population'}" th:text="'&uarr;'+#{label.populatedPlacePopulation}"></a>
+								<a th:if="${_field} == 'population' and !${_direction}" th:href="@{${page.url}+'?field=population'}" th:text="'&darr;'+#{label.populatedPlacePopulation}"></a>
+								<a th:if="${_field} != 'population'" th:href="@{${page.url}+'?field=population'}" th:text="#{label.populatedPlacePopulation}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'active' and ${_direction}" th:href="@{${page.url}+'?field=active'}" th:text="'&uarr;'+#{label.populatedPlaceActive}"></a>
+								<a th:if="${_field} == 'active' and !${_direction}" th:href="@{${page.url}+'?field=active'}" th:text="'&darr;'+#{label.populatedPlaceActive}"></a>
+								<a th:if="${_field} != 'active'" th:href="@{${page.url}+'?field=active'}" th:text="#{label.populatedPlaceActive}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateOfModification' and ${_direction}" th:href="@{${page.url}+'?field=dateOfModification'}" th:text="'&uarr;'+#{label.dateOfModification}"></a>
+								<a th:if="${_field} == 'dateOfModification' and !${_direction}" th:href="@{${page.url}+'?field=dateOfModification'}" th:text="'&darr;'+#{label.dateOfModification}"></a>
+								<a th:if="${_field} != 'dateOfModification'" th:href="@{${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'userName' and ${_direction}" th:href="@{${page.url}+'?field=userName'}" th:text="'&uarr;'+#{label.userOfModification}"></a>
+								<a th:if="${_field} == 'userName' and !${_direction}" th:href="@{${page.url}+'?field=userName'}" th:text="'&darr;'+#{label.userOfModification}"></a>
+								<a th:if="${_field} != 'userName'" th:href="@{${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateOfCreation' and ${_direction}" th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="'&uarr;'+#{label.dateOfCreation}"></a>
+								<a th:if="${_field} == 'dateOfCreation' and !${_direction}" th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="'&darr;'+#{label.dateOfCreation}"></a>
+								<a th:if="${_field} != 'dateOfCreation'" th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'createdBy' and ${_direction}" th:href="@{${page.url}+'?field=createdBy'}" th:text="'&uarr;'+#{label.createdBy}"></a>
+								<a th:if="${_field} == 'createdBy' and !${_direction}" th:href="@{${page.url}+'?field=createdBy'}" th:text="'&darr;'+#{label.createdBy}"></a>
+								<a th:if="${_field} != 'createdBy'" th:href="@{${page.url}+'?field=createdBy'}" th:text="#{label.createdBy}"></a>
+							</div>
+						</th>
+
+					</tr>
+				</thead>
+				<tbody id="search">
+					<tr th:each="object: ${list}" th:onClick="'buildURL(\''+${object.id}+'\')'">
+						<td th:text="${object.country}"></td>
+						<td th:text="${object.state}"></td>
+						<td th:text="${object.populatedPlace}"></td>
+						<td th:text="${object.population}"></td>
+						<td th:text="#{${'label.'+object.active}}"></td>
+						<td th:text="${#calendars.format(object.dateOfModification,'dd/MM/yyyy HH:mm')}" ></td>
+						<td th:text="${object.userName}"></td>
+						<td th:text="${#calendars.format(object.dateOfCreation,'dd/MM/yyyy HH:mm')}" ></td>
+						<td th:text="${object.createdBy}"></td>
+
+					</tr>
+				</tbody>
+			</table>
+			<table width="100%">
+				<tr>
+					<td width="33%"></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
+					<td width="34%"><div></div></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	</form>
+	<div class="container-fluid" th:include="normal/layout :: footer"></div>
+</body>
+</html>
