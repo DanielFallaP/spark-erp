@@ -91,7 +91,29 @@ public class CyberUtils {
 
 	public static final int headerColumnsPerRow = 3;
 	
-	public static synchronized String escapePCRECharacters(String string){
+	public static final String stringWilcard="%";
+	
+	public static final String greaterThanOp=">";
+	
+	public static final String lessThanOp="<";
+	
+	public static final String greaterEqualThanOp=">=";
+	
+	public static final String lessEqualThanOp="<=";
+	
+	public static final String notOp="<>";
+	
+	public static final String[] operators={notOp,greaterEqualThanOp,lessEqualThanOp,greaterThanOp,lessThanOp};
+	
+	public static String getOperator(String value){
+		for (int i = 0; i < operators.length; i++) {
+			if (value.indexOf(operators[i])>=0)
+				return operators[i];
+		}
+		return null;
+	}
+	
+	public static String escapePCRECharacters(String string){
 		for (Character escapeCharacter : PCREEscapeCharacters) {
 			string=string.replace(escapeCharacter.toString(), stringLiteralEscape+escapeCharacter);
 		}
