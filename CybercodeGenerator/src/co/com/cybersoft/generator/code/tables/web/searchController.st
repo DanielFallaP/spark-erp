@@ -76,14 +76,38 @@ public class $searchControllerName$ {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public String filter(Model model, Pageable pageable, @ModelAttribute("$entityName$FilterInfo")$entityUpperCaseName$FilterInfo filter, HttpServletRequest request) throws Exception{
-		PageRequest pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Direction.ASC,"_id");
-		Request$entityUpperCaseName$PageEvent pageEvent = new Request$entityUpperCaseName$PageEvent(pageRequest,filter);
+	public String filter(Model model, String field, Pageable pageable, @ModelAttribute("$entityName$FilterInfo")$entityUpperCaseName$FilterInfo filter, HttpServletRequest request) throws Exception{
+		Boolean direction=null;
+		if (field!=null){
+			direction=(Boolean) request.getSession().getAttribute("$entityName$Ascending");
+			String oldField=(String)request.getSession().getAttribute("$entityName$Field");
+			if (oldField!=null && request.getSession().getAttribute("$entityName$Ascending")!=null){
+				direction=!direction;
+				request.getSession().setAttribute("$entityName$Ascending", direction);
+			}
+			else
+				request.getSession().setAttribute("$entityName$Ascending", true);
+			request.getSession().setAttribute("$entityName$Field", field);
+		}
+		
+		Request$entityUpperCaseName$PageEvent pageEvent=null;
+		PageRequest pageRequest=null;
+		if (field==null && request.getSession().getAttribute("$entityName$Field")==null){
+			pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), Direction.DESC,"_id");
+			pageEvent = new Request$entityUpperCaseName$PageEvent(pageRequest,filter);
+		}
+		else {
+			if (request.getSession().getAttribute("$entityName$Ascending")!=null){
+				direction=(boolean) request.getSession().getAttribute("$entityName$Ascending");
+				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("$entityName$Field"):field));
+			}
+		}
 		$entityUpperCaseName$PageEvent details = $entityName$Service.request$entityUpperCaseName$FilterPage(pageEvent);
 		PageWrapper<$entityUpperCaseName$> page=new PageWrapper<$entityUpperCaseName$>(details.get$entityUpperCaseName$Page(),"/configuration/$entityName$/search$entityUpperCaseName$");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("$entityName$Field"));
+		model.addAttribute("_direction", direction);
 		return "$viewURL$";
 	}
 	

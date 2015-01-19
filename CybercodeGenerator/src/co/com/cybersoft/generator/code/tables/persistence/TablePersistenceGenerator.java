@@ -579,13 +579,14 @@ public class TablePersistenceGenerator {
 		String fieldCriteria="";
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
-			if (!field.getCompoundReference()){
+			if (!field.getCompoundReference() && (field.getType()==null || !field.getType().equals(Cyberconstants.booleanType))){
 				StringTemplate template;
 				if (field.getType()==null || field.getType().equals(Cyberconstants.stringType)){
 					template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").regex(translateWildcards(filter.get$upperFieldName$())));");
 				}
 				else{
-					template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").is(filter.get$upperFieldName$()));");
+					template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(translate$fieldType$Operators(filter.get$upperFieldName$(), \"$fieldName$\"));");
+					template.setAttribute("fieldType", field.getType());
 				}
 						
 				template.setAttribute("fieldName", field.getName());

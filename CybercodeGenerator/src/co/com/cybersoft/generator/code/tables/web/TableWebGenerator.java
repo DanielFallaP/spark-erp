@@ -85,14 +85,14 @@ public class TableWebGenerator {
 			if (!field.getCompoundReference()){
 				if (!field.isReference()){
 					StringTemplate template = new StringTemplate("private $type$ $name$;\n\n");
-					template.setAttribute("type", field.getType());
+					template.setAttribute("type", Cybertables.stringType);
 					template.setAttribute("name", field.getName());
 					filterFields+=template.toString();
 					filterFields+="\n";
 					
 					StringTemplateGroup templateGroup2 = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup2.getInstanceOf("getterSetter");
-					gettersSettersTemplate.setAttribute("type", field.getType());
+					gettersSettersTemplate.setAttribute("type", Cybertables.stringType);
 					gettersSettersTemplate.setAttribute("name", field.getName());
 					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 					filterFields+=gettersSettersTemplate.toString()+"\n\n";

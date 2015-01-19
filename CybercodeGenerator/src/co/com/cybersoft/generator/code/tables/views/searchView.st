@@ -48,12 +48,12 @@
 	 	    		if (path[1].localeCompare("configuration")!=0){
 	 	    			prefix="/"+path[1];	
 	 	    		}
-		     		window.open(prefix+"/configuration/$tableName$/search$entityName$?page.page="+document.getElementById("_page").value,"_self");
+					submitFilter(document.getElementById("_page").value);	 	    		
 	    		}
 	    	  }
 	    		else if (e.which == 13 && (document.getElementById("createdBy") === document.activeElement || document.getElementById("userName") === document.activeElement || 
 	    		document.getElementById("dateOfModification") === document.activeElement || document.getElementById("dateOfCreation") === document.activeElement $focusCheck$)){
-	    		  submitFilter();
+	    		  submitFilter(1);
 	    		}
 	    	});
 	     	
@@ -119,8 +119,15 @@
 		});
 		});
 
-		function submitFilter(){
+		function submitFilter(page){
     	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+			form.submit();
+	    }
+		
+		function submitFilterPage(page){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
 			form.submit();
 	    }
 
@@ -146,16 +153,18 @@
 	    
 </head>
 <body>
+
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 		<div class="row-fluid">
-			<form id="filter-form" th:object="\${$tableName$FilterInfo}" method="post" >
 			<div id="back"><a th:text="#{label.back}" th:href="@{/$backURL$}"></a></div>
 			<h3 th:text="#{label.$tableName$Info}"> </h3>
+			<form id="filter-form" th:object="\${$tableName$FilterInfo}" method="post" >
+		  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
 			<table width="100%">
 				<tr>
 					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/configuration/$tableName$/create$entityName$/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
-					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
 					<td width="34%">$excel$</td>
 				</tr>
 			</table>
@@ -174,14 +183,14 @@
 					</tr>
 				</tbody>
 			</table>
+			</form>
 			<table width="100%">
 				<tr>
 					<td width="33%"></td>
-					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
 					<td width="34%"><div></div></td>
 				</tr>
 			</table>
-			</form>
 		</div>
 	</div>
 	<div class="container-fluid" th:include="normal/layout :: footer"></div>

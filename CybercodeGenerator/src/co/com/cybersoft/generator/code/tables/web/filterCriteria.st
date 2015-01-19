@@ -10,12 +10,32 @@ import java.util.Date;
 public class $entityName$FilterInfo {
 	private String userName;
 
-	private Date dateOfCreation;
+	private String dateOfCreation;
 	
-	private Date dateOfModification;
+	private String dateOfModification;
 	
 	private String createdBy;
+	
+	private Integer selectedFilterPage;
+	
+	private String selectedFilterField;
 	$filterFields$
+	
+	public Integer getSelectedFilterPage() {
+		return selectedFilterPage;
+	}
+
+	public void setSelectedFilterPage(Integer selectedFilterPage) {
+		this.selectedFilterPage = selectedFilterPage;
+	}
+
+	public String getSelectedFilterField() {
+		return selectedFilterField;
+	}
+
+	public void setSelectedFilterField(String selectedFilterField) {
+		this.selectedFilterField = selectedFilterField;
+	}
 	
 	public String getCreatedBy() {
 		return createdBy;
@@ -24,19 +44,19 @@ public class $entityName$FilterInfo {
 		this.createdBy = createdBy;
 	}
 	
-	public Date getDateOfCreation() {
+	public String getDateOfCreation() {
 		return dateOfCreation;
 	}
 	
-	public void setDateOfCreation(Date dateOfCreation) {
+	public void setDateOfCreation(String dateOfCreation) {
 		this.dateOfCreation = dateOfCreation;
 	}
 	
-	public Date getDateOfModification() {
+	public String getDateOfModification() {
 		return dateOfModification;
 	}
 	
-	public void setDateOfModification(Date dateOfModification) {
+	public void setDateOfModification(String dateOfModification) {
 		this.dateOfModification = dateOfModification;
 	}
 		
