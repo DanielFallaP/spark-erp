@@ -78,29 +78,29 @@ public class $searchControllerName$ {
 	@RequestMapping(method=RequestMethod.POST)
 	public String filter(Model model, String field, Pageable pageable, @ModelAttribute("$entityName$FilterInfo")$entityUpperCaseName$FilterInfo filter, HttpServletRequest request) throws Exception{
 		Boolean direction=null;
-		if (field!=null){
+		if (filter.getSelectedFilterField()!=null && !filter.getSelectedFilterField().equals("")){
 			direction=(Boolean) request.getSession().getAttribute("$entityName$Ascending");
 			String oldField=(String)request.getSession().getAttribute("$entityName$Field");
-			if (oldField!=null && request.getSession().getAttribute("$entityName$Ascending")!=null){
+			if (oldField!=null && oldField.equals(filter.getSelectedFilterField()) && filter.getChangeSortingFieldDirection() && request.getSession().getAttribute("$entityName$Ascending")!=null){
 				direction=!direction;
 				request.getSession().setAttribute("$entityName$Ascending", direction);
 			}
-			else
+			else if (request.getSession().getAttribute("$entityName$Ascending")==null)
 				request.getSession().setAttribute("$entityName$Ascending", true);
-			request.getSession().setAttribute("$entityName$Field", field);
+			request.getSession().setAttribute("$entityName$Field", filter.getSelectedFilterField());
 		}
 		
 		Request$entityUpperCaseName$PageEvent pageEvent=null;
 		PageRequest pageRequest=null;
-		if (field==null && request.getSession().getAttribute("$entityName$Field")==null){
+		if ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))&& request.getSession().getAttribute("$entityName$Field")==null){
 			pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), Direction.DESC,"_id");
 			pageEvent = new Request$entityUpperCaseName$PageEvent(pageRequest,filter);
 		}
 		else {
 			if (request.getSession().getAttribute("$entityName$Ascending")!=null){
 				direction=(boolean) request.getSession().getAttribute("$entityName$Ascending");
-				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("$entityName$Field"):field));
-			}
+				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))?request.getSession().getAttribute("$entityName$Field"):filter.getSelectedFilterField()));
+				pageEvent = new Request$entityUpperCaseName$PageEvent(pageRequest,filter);			}
 		}
 		$entityUpperCaseName$PageEvent details = $entityName$Service.request$entityUpperCaseName$FilterPage(pageEvent);
 		PageWrapper<$entityUpperCaseName$> page=new PageWrapper<$entityUpperCaseName$>(details.get$entityUpperCaseName$Page(),"/configuration/$entityName$/search$entityUpperCaseName$");

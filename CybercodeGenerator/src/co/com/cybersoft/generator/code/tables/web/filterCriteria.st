@@ -19,7 +19,17 @@ public class $entityName$FilterInfo {
 	private Integer selectedFilterPage;
 	
 	private String selectedFilterField;
+	
+	private Boolean changeSortingFieldDirection;
+
 	$filterFields$
+	public Boolean getChangeSortingFieldDirection() {
+		return changeSortingFieldDirection;
+	}
+
+	public void setChangeSortingFieldDirection(Boolean changeSortingFieldDirection) {
+		this.changeSortingFieldDirection = changeSortingFieldDirection;
+	}
 	
 	public Integer getSelectedFilterPage() {
 		return selectedFilterPage;

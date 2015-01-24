@@ -88,13 +88,15 @@
 	    	});
 	    	
 	       \$(document).keyup(function(e) {
-	    	  if(e.which == 39 || e.which == 34) {
+	    	  if(e.which == 34) {
+	    	  //if(e.which == 39 || e.which == 34) {
 	     		  \$('#_nextPage a').trigger('click');
 	    	  }
 	    	});
 	     
 	     \$(document).keyup(function(e) {
-	    	  if(e.which == 37 || e.which == 33) {
+	    	  if(e.which == 33) {
+//	    	  if(e.which == 37 || e.which == 33) {
 	     		  \$('#_previousPage a').trigger('click');
 	    	  }
 	    	});
@@ -125,10 +127,13 @@
 			form.submit();
 	    }
 		
-		function submitFilterPage(page){
+		function submitFilterPage(page,field,changeDirection){
     	 	var form=document.forms['filter-form'];
     	 	form.elements["selectedFilterPage"].value=page;
-			form.submit();
+    	 	if (field!=null)
+    	 		form.elements["selectedFilterField"].value=field;
+   	 		form.elements["changeSortingFieldDirection"].value=changeDirection!=null?true:false;
+    	 	form.submit();
 	    }
 
 	    function buildURL(id){
@@ -161,6 +166,8 @@
 			<h3 th:text="#{label.$tableName$Info}"> </h3>
 			<form id="filter-form" th:object="\${$tableName$FilterInfo}" method="post" >
 		  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
+			<input id="selectedFilterField" type="hidden" th:field="*{selectedFilterField}"/>
+		  	<input id="changeSortingFieldDirection" type="hidden" th:field="*{changeSortingFieldDirection}"/>
 			<table width="100%">
 				<tr>
 					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/configuration/$tableName$/create$entityName$/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
