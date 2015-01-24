@@ -3,8 +3,8 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:spring="http://www.springframework.org/tags">
  <head>
-<meta charset="ISO-8859-1"/>
-<title th:text="#{label.itemTitle}"></title>
+<meta charset="UTF-8"/>
+<title th:text="#{label.itemInfo}"></title>
 
 <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
 		<style type="text/css">
@@ -16,58 +16,354 @@
 	        .sidebar-nav {
 	            padding: 9px 0;
 	        }
+	        .page-selection{background-color:#fff!important;border:1px #fff!important;box-shadow:inset 0 1px 1px transparent!important;transition:border linear .2s,box-shadow linear .2s!important;display:inline-block!important;height:12px!important;padding:4px 6px!important;margin:-4px -11px -3px!important;font-size:14px!important;line-height:0!important;color:#555!important;vertical-align:middle!important;border-radius:0!important;width:23px!important;text-align:right}
 	    </style>
+	     <link th:href="@{/resources/css/cybersystems.css}" rel="stylesheet" />
 	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+		 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		 <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	     <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	     <script type="text/javascript">
+	     	/* <![CDATA[ */
+	     	
+	     function resetPageValue(){
+	    	 document.getElementById("_page").value=document.getElementById("_currentPage").value;
+	     }
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 13 && document.getElementById("_page") === document.activeElement) {
+	    		if (	document.getElementById("_page").value== null
+	    			  	|| document.getElementById("_page").value == ""
+	    				|| isNaN(document.getElementById("_page").value) 
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_page").value <= 0)
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_totalPages").value < document.getElementById("_page").value)
+	    			){
+					alert('Invalid page number');
+					resetPageValue();
+	    		}
+	    		else{
+		    		var path=window.location.pathname.split("/");
+	 	    		var prefix="";
+	 	    		if (path[1].localeCompare("configuration")!=0){
+	 	    			prefix="/"+path[1];	
+	 	    		}
+					submitFilter(document.getElementById("_page").value);	 	    		
+	    		}
+	    	  }
+	    		else if (e.which == 13 && (document.getElementById("createdBy") === document.activeElement || document.getElementById("userName") === document.activeElement || 
+	    		document.getElementById("dateOfModification") === document.activeElement || document.getElementById("dateOfCreation") === document.activeElement  || document.getElementById("code") === document.activeElement
+ || document.getElementById("description") === document.activeElement
+ || document.getElementById("largeName") === document.activeElement
+ || document.getElementById("stockSubGroup") === document.activeElement
+ || document.getElementById("division") === document.activeElement
+ || document.getElementById("inputMeasurementUnit") === document.activeElement
+ || document.getElementById("packingUnits") === document.activeElement
+ || document.getElementById("conversionFactor") === document.activeElement
+ || document.getElementById("outputMeasurementUnit") === document.activeElement
+ || document.getElementById("useMiniMax") === document.activeElement
+ || document.getElementById("useMiniMaxByItem") === document.activeElement
+ || document.getElementById("tax") === document.activeElement
+ || document.getElementById("itemType") === document.activeElement
+ || document.getElementById("partNumber") === document.activeElement
+ || document.getElementById("commodity") === document.activeElement
+ || document.getElementById("lastItemUsedDate") === document.activeElement
+ || document.getElementById("oldItem") === document.activeElement
+ || document.getElementById("array") === document.activeElement
+ || document.getElementById("set") === document.activeElement
+ || document.getElementById("permitsLargerQuantityIssuingItemReception") === document.activeElement
+ || document.getElementById("blocked") === document.activeElement
+ || document.getElementById("active") === document.activeElement
+)){
+	    		  submitFilter(1);
+	    		}
+	    	});
+	     	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+		       }
+	    	});
+	    	
+	    $(document).keyup(function(e) {
+	    	  if(e.which == 27 ) {
+	  			$('#back a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 107) {
+	     		  $('#new a').trigger('click');
+	    	  }
+	    	});
+	    	
+	       $(document).keyup(function(e) {
+	    	  if(e.which == 39 || e.which == 34) {
+	     		  $('#_nextPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 37 || e.which == 33) {
+	     		  $('#_previousPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 35) {
+	     		  $('#_lastPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 36) {
+	     		  $('#_firstPage a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	    $(window).load(function(){
+		$('#search tr').hover(function() {
+		    $(this).addClass('hover');
+		}, function() {
+		    $(this).removeClass('hover');
+		});
+		});
+
+		function submitFilter(page){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+			form.submit();
+	    }
+		
+		function submitFilterPage(page,field,changeDirection){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+    	 	alert(form.elements["selectedFilterField"].value);
+    	 	if (field!=null)
+    	 		form.elements["selectedFilterField"].value=field;
+   	 		form.elements["changeSortingFieldDirection"].value=changeDirection!=null?true:false;
+    	 	form.submit();
+	    }
+
+	    function buildURL(id){
+	    	var path=window.location.pathname.split("/");
+  	    	var prefix="";
+  	    	if (path[1].localeCompare("configuration")!=0){
+  	    		prefix="/"+path[1];	
+  	    	}
+	    	var url=prefix+"/configuration/item/modifyItem/"+id;
+	    	document.location=url;
+	    }
+	    
+	    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );   	
+	    	
+ 		       /* ]]> */
+	     </script>
+	    
 </head>
 <body>
+
 	<div th:include="normal/layout :: header" ></div>
 	<div class="container-fluid">	
 		<div class="row-fluid">
+			<div id="back"><a th:text="#{label.back}" th:href="@{/configuration}"></a></div>
 			<h3 th:text="#{label.itemInfo}"> </h3>
+			<form id="filter-form" th:object="${itemFilterInfo}" method="post" >
+		  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
+		  	<input id="selectedFilterField" type="hidden" th:field="*{selectedFilterField}"/>
+		  	<input id="changeSortingFieldDirection" type="hidden" th:field="*{changeSortingFieldDirection}"/>
 			<table width="100%">
 				<tr>
-					<td width="33%"><div class='pagination pagination-left'><ul><li><a th:href="@{/configuration/item/createItem/fromList}" th:title='#{label.item}'>+</a></li></ul></div></td>
-					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
-					<td width="34%"><div></div></td>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/configuration/item/createItem/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
+					<td width="34%"><div align="right"><a th:href="@{/configuration/item/export}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
 				</tr>
 			</table>
 			<table class="table table-striped" >
 				<thead>
 					<tr>
-						<th ><a th:href="@{${page.url}+'?field=code'}" th:text="#{label.itemCode}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=name'}" th:text="#{label.itemName}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=measurementUnit'}" th:text="#{label.itemMeasurementUnit}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=active'}" th:text="#{label.itemActive}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a></th>
-						<th ><a th:href="@{${page.url}+'?field=createdBy'}" th:text="#{label.createdBy}"></a></th>
+						<th >
+							<div><input style="width:100%;" id="code" name="code" type="text" th:value="*{{code}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="description" name="description" type="text" th:value="*{{description}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="stockSubGroup" name="stockSubGroup" type="text" th:value="*{{stockSubGroup}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="division" name="division" type="text" th:value="*{{division}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="inputMeasurementUnit" name="inputMeasurementUnit" type="text" th:value="*{{inputMeasurementUnit}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="partNumber" name="partNumber" type="text" th:value="*{{partNumber}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="lastItemUsedDate" name="lastItemUsedDate" type="text" th:value="*{{lastItemUsedDate}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="blocked" name="blocked" type="text" th:value="*{{blocked}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="active" name="active" type="text" th:value="*{{active}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateOfModification" name="dateOfModification" type="text" th:value="*{{dateOfModification}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="userName" name="userName" type="text" th:value="*{{userName}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateOfCreation" name="dateOfCreation" type="text" th:value="*{{dateOfCreation}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="createdBy" name="createdBy" type="text" th:value="*{{createdBy}}" /></div>
+						</th>
+
+					</tr>
+					<tr>
+						<th >
+							<div>
+								<a th:if="${_field} == 'code' and ${_direction}" th:href="@{${page.url}+'?field=code'}" th:text="'&uarr;'+#{label.itemCode}"></a>
+								<a th:if="${_field} == 'code' and !${_direction}" th:href="@{${page.url}+'?field=code'}" th:text="'&darr;'+#{label.itemCode}"></a>
+								<a th:if="${_field} != 'code'" th:href="@{${page.url}+'?field=code'}" th:text="#{label.itemCode}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'description' and ${_direction}" th:href="@{${page.url}+'?field=description'}" th:text="'&uarr;'+#{label.itemDescription}"></a>
+								<a th:if="${_field} == 'description' and !${_direction}" th:href="@{${page.url}+'?field=description'}" th:text="'&darr;'+#{label.itemDescription}"></a>
+								<a th:if="${_field} != 'description'" th:href="@{${page.url}+'?field=description'}" th:text="#{label.itemDescription}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'stockSubGroup' and ${_direction}" th:href="@{${page.url}+'?field=stockSubGroup'}" th:text="'&uarr;'+#{label.itemStockSubGroup}"></a>
+								<a th:if="${_field} == 'stockSubGroup' and !${_direction}" th:href="@{${page.url}+'?field=stockSubGroup'}" th:text="'&darr;'+#{label.itemStockSubGroup}"></a>
+								<a th:if="${_field} != 'stockSubGroup'" th:href="@{${page.url}+'?field=stockSubGroup'}" th:text="#{label.itemStockSubGroup}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'division' and ${_direction}" th:href="@{${page.url}+'?field=division'}" th:text="'&uarr;'+#{label.itemDivision}"></a>
+								<a th:if="${_field} == 'division' and !${_direction}" th:href="@{${page.url}+'?field=division'}" th:text="'&darr;'+#{label.itemDivision}"></a>
+								<a th:if="${_field} != 'division'" th:href="@{${page.url}+'?field=division'}" th:text="#{label.itemDivision}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'inputMeasurementUnit' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'inputMeasurementUnit\',true)'" th:text="'&uarr;'+#{label.itemInputMeasurementUnit}"></a>
+								<a th:if="${_field} == 'inputMeasurementUnit' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'inputMeasurementUnit\',true)'" th:text="'&darr;'+#{label.itemInputMeasurementUnit}"></a>
+								<a th:if="${_field} != 'inputMeasurementUnit'" th:href="'javascript:submitFilterPage(1,\'inputMeasurementUnit\',true)'" th:text="#{label.itemInputMeasurementUnit}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'partNumber' and ${_direction}" th:href="@{${page.url}+'?field=partNumber'}" th:text="'&uarr;'+#{label.itemPartNumber}"></a>
+								<a th:if="${_field} == 'partNumber' and !${_direction}" th:href="@{${page.url}+'?field=partNumber'}" th:text="'&darr;'+#{label.itemPartNumber}"></a>
+								<a th:if="${_field} != 'partNumber'" th:href="@{${page.url}+'?field=partNumber'}" th:text="#{label.itemPartNumber}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'lastItemUsedDate' and ${_direction}" th:href="@{${page.url}+'?field=lastItemUsedDate'}" th:text="'&uarr;'+#{label.itemLastItemUsedDate}"></a>
+								<a th:if="${_field} == 'lastItemUsedDate' and !${_direction}" th:href="@{${page.url}+'?field=lastItemUsedDate'}" th:text="'&darr;'+#{label.itemLastItemUsedDate}"></a>
+								<a th:if="${_field} != 'lastItemUsedDate'" th:href="@{${page.url}+'?field=lastItemUsedDate'}" th:text="#{label.itemLastItemUsedDate}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'blocked' and ${_direction}" th:href="@{${page.url}+'?field=blocked'}" th:text="'&uarr;'+#{label.itemBlocked}"></a>
+								<a th:if="${_field} == 'blocked' and !${_direction}" th:href="@{${page.url}+'?field=blocked'}" th:text="'&darr;'+#{label.itemBlocked}"></a>
+								<a th:if="${_field} != 'blocked'" th:href="@{${page.url}+'?field=blocked'}" th:text="#{label.itemBlocked}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'active' and ${_direction}" th:href="@{${page.url}+'?field=active'}" th:text="'&uarr;'+#{label.itemActive}"></a>
+								<a th:if="${_field} == 'active' and !${_direction}" th:href="@{${page.url}+'?field=active'}" th:text="'&darr;'+#{label.itemActive}"></a>
+								<a th:if="${_field} != 'active'" th:href="@{${page.url}+'?field=active'}" th:text="#{label.itemActive}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateOfModification' and ${_direction}" th:href="@{${page.url}+'?field=dateOfModification'}" th:text="'&uarr;'+#{label.dateOfModification}"></a>
+								<a th:if="${_field} == 'dateOfModification' and !${_direction}" th:href="@{${page.url}+'?field=dateOfModification'}" th:text="'&darr;'+#{label.dateOfModification}"></a>
+								<a th:if="${_field} != 'dateOfModification'" th:href="@{${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'userName' and ${_direction}" th:href="@{${page.url}+'?field=userName'}" th:text="'&uarr;'+#{label.userOfModification}"></a>
+								<a th:if="${_field} == 'userName' and !${_direction}" th:href="@{${page.url}+'?field=userName'}" th:text="'&darr;'+#{label.userOfModification}"></a>
+								<a th:if="${_field} != 'userName'" th:href="@{${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateOfCreation' and ${_direction}" th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="'&uarr;'+#{label.dateOfCreation}"></a>
+								<a th:if="${_field} == 'dateOfCreation' and !${_direction}" th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="'&darr;'+#{label.dateOfCreation}"></a>
+								<a th:if="${_field} != 'dateOfCreation'" th:href="@{${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'createdBy' and ${_direction}" th:href="@{${page.url}+'?field=createdBy'}" th:text="'&uarr;'+#{label.createdBy}"></a>
+								<a th:if="${_field} == 'createdBy' and !${_direction}" th:href="@{${page.url}+'?field=createdBy'}" th:text="'&darr;'+#{label.createdBy}"></a>
+								<a th:if="${_field} != 'createdBy'" th:href="@{${page.url}+'?field=createdBy'}" th:text="#{label.createdBy}"></a>
+							</div>
+						</th>
 
 					</tr>
 				</thead>
-				<tbody>
-					<tr th:each="object: ${list}">
-						<td><a th:href="@{/configuration/item/modifyItem/}+${object.code}" th:text="${object.code}"></a></td>
-						<td th:text="${object.name}"></td>
-						<td th:text="${object.measurementUnit}"></td>
-						<td th:text="${object.active}"></td>
-						<td th:text="${object.dateOfModification}"></td>
+				<tbody id="search">
+					<tr th:each="object: ${list}" th:onClick="'buildURL(\''+${object.id}+'\')'">
+						<td th:text="${object.code}"></td>
+						<td th:text="${object.description}"></td>
+						<td th:text="${object.stockSubGroup}"></td>
+						<td th:text="${object.division}"></td>
+						<td th:text="${object.inputMeasurementUnit}"></td>
+						<td th:text="${object.partNumber}"></td>
+						<td th:text="${{object.lastItemUsedDate}}"></td>
+						<td th:text="#{${'label.'+object.blocked}}"></td>
+						<td th:text="#{${'label.'+object.active}}"></td>
+						<td th:text="${#calendars.format(object.dateOfModification,'dd/MM/yyyy HH:mm')}" ></td>
 						<td th:text="${object.userName}"></td>
-						<td th:text="${object.dateOfCreation}"></td>
+						<td th:text="${#calendars.format(object.dateOfCreation,'dd/MM/yyyy HH:mm')}" ></td>
 						<td th:text="${object.createdBy}"></td>
 
 					</tr>
 				</tbody>
 			</table>
+			</form>
 			<table width="100%">
 				<tr>
 					<td width="33%"></td>
-					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
 					<td width="34%"><div></div></td>
 				</tr>
 			</table>
 		</div>
 	</div>
-	<div th:include="normal/layout :: footer"></div>
+	<div class="container-fluid" th:include="normal/layout :: footer"></div>
 </body>
 </html>
