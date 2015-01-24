@@ -25,7 +25,7 @@ import co.com.cybersoft.tables.web.domain.$entityName$.$entityUpperCaseName$Filt
 
 /**
  * Search controller class for $entityName$
- * @author Cybersystems 2014. All rights reserved.
+ * @author Cybersystems 2015. All rights reserved.
  *
  */
 @Controller

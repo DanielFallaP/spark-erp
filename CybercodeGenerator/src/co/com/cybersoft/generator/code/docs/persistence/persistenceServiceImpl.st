@@ -164,5 +164,9 @@ public class $upperDocName$PersistenceServiceImpl implements $upperDocName$Persi
 		return new $upperDocName$PageEvent(list);
 	}
 	
-
+	@Override
+	public $upperDocName$PageEvent request$upperDocName$FilterPage(Request$upperDocName$PageEvent event) throws Exception {
+		Page<$upperDocName$> page = $docName$CustomRepo.findAll(event.getPageable(), event.getFilter());
+		return new $upperDocName$PageEvent(page);
+	}	
 }

@@ -922,10 +922,63 @@ public class DocViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("searchView");
 		template.setAttribute("docName", document.getName());
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
+		template.setAttribute("focusCheck", getFocusCheck(document));
 		template.setAttribute("searchFieldsHeaders", getHeaderColumns(document));
+		template.setAttribute("filterColumnHeaders", getFilterHeaderColumns(document));
+
 		template.setAttribute("searchFieldsColumns", getColumns(document));
 
 		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/docs/"+document.getName(), "search"+CodeUtils.toCamelCase(document.getName())+".html");
+	}
+
+	private Object getFilterHeaderColumns(Document table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.documentCodePath+"views");
+		List<Field> fields = table.getHeader();
+		
+		String text="";
+		for (Field field : fields) {
+			if (!field.getCompoundReference() && field.getSearchDisplayable()){
+				if (!field.isReference() && field.getVisible() && !field.getLargeText()){
+					StringTemplate template = templateGroup.getInstanceOf("filterColumnHeader");
+					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+					text+=template.toString()+"\n";
+				}
+				
+				if (field.isReference()){
+					StringTemplate template = templateGroup.getInstanceOf("filterColumnHeader");
+					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+					text+=template.toString()+"\n";
+				}
+			}
+			else{
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					StringTemplate template = templateGroup.getInstanceOf("filterColumnHeader");
+					template.setAttribute("fieldName", compoundField.getName());
+					template.setAttribute("tableName", table.getName());
+					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
+					text+=template.toString()+"\n";
+				}
+			}
+		}
+		return text;
+	}
+
+	private Object getFocusCheck(Document document) {
+		String focusCheck="";
+		List<Field> fields = document.getHeader();
+		for (Field field : fields) {
+			StringTemplate template=new StringTemplate(" || document.getElementById(\"$fieldName$\") === document.activeElement");
+			if (!field.getCompoundReference()){
+				template.setAttribute("fieldName", field.getName());
+				focusCheck+=template.toString()+"\n";
+			}
+		}
+		return focusCheck;
 	}
 
 	private Object getColumns(Document document) {

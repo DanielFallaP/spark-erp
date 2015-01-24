@@ -13,6 +13,7 @@ import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Field;
+import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class DocPersistenceGenerator {
@@ -46,6 +47,28 @@ public class DocPersistenceGenerator {
 		template.setAttribute("checkAndStart", generateSequences());
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/startup", "SequenceServiceImpl.java");
+	}
+	
+	private Object getFieldCriteria(Document document) {
+		String fieldCriteria="";
+		List<Field> fields = document.getHeader();
+		for (Field field : fields) {
+			if (!field.getCompoundReference() && (field.getType()==null || !field.getType().equals(Cyberconstants.booleanType))){
+				StringTemplate template;
+				if (field.getType()==null || field.getType().equals(Cyberconstants.stringType)){
+					template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").regex(translateWildcards(filter.get$upperFieldName$())));");
+				}
+				else{
+					template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(translate$fieldType$Operators(filter.get$upperFieldName$(), \"$fieldName$\"));");
+					template.setAttribute("fieldType", field.getType());
+				}
+						
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+				fieldCriteria+=template.toString()+"\n";
+			}
+		}
+		return fieldCriteria;
 	}
 
 	private String generateSequences() {
@@ -159,6 +182,7 @@ public class DocPersistenceGenerator {
 				template.setAttribute("upperDocName",CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("docName", document.getName());
 				template.setAttribute("rowsPerSearch", Cyberconstants.rowsPerSearch);
+				template.setAttribute("fieldCriteria", getFieldCriteria(document));
 				
 				CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/repository/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"CustomRepoImpl.java");
 	}

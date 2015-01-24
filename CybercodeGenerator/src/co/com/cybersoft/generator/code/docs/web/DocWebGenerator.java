@@ -38,7 +38,54 @@ public class DocWebGenerator {
 			generateDomainHeader(document);
 			generateDomainBody(document);
 			generateExcelController(document);
+			generateFilterFields(document);
 		}
+	}
+
+	private void generateFilterFields(Document document) {
+		List<Field> fields = document.getHeader();
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.documentCodePath+"web");
+		StringTemplate fieldTemplate = templateGroup.getInstanceOf("filterCriteria");
+		String filterFields="";
+		for (Field field : fields) {
+			if (!field.getCompoundReference()){
+				if (!field.isReference()){
+					StringTemplate template = new StringTemplate("private $type$ $name$;\n\n");
+					template.setAttribute("type", Cybertables.stringType);
+					template.setAttribute("name", field.getName());
+					filterFields+=template.toString();
+					filterFields+="\n";
+					
+					StringTemplateGroup templateGroup2 = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
+					StringTemplate gettersSettersTemplate = templateGroup2.getInstanceOf("getterSetter");
+					gettersSettersTemplate.setAttribute("type", Cybertables.stringType);
+					gettersSettersTemplate.setAttribute("name", field.getName());
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+					filterFields+=gettersSettersTemplate.toString()+"\n\n";
+				}
+				else{
+					StringTemplate template = new StringTemplate("private $type$ $name$;\n\n");
+					template.setAttribute("type", Cybertables.stringType);
+					template.setAttribute("name", field.getName());
+					filterFields+=template.toString();
+					filterFields+="\n";
+					
+					StringTemplateGroup templateGroup2 = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
+					StringTemplate gettersSettersTemplate = templateGroup2.getInstanceOf("getterSetter");
+					gettersSettersTemplate.setAttribute("type", Cybertables.stringType);
+					gettersSettersTemplate.setAttribute("name", field.getName());
+					gettersSettersTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+					filterFields+=gettersSettersTemplate.toString()+"\n\n";
+				}
+				
+			}
+		}
+		
+		fieldTemplate.setAttribute("filterFields", filterFields);
+		fieldTemplate.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
+		fieldTemplate.setAttribute("docName", document.getName());
+		
+		CodeUtils.writeClass(fieldTemplate.toString(), Cybertables.targetDocumentClassPath+"/web/domain/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"FilterInfo.java");
 	}
 
 	private void generateExcelController(Document document) {

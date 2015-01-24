@@ -24,6 +24,7 @@ public interface $upperDocName$PersistenceService {
 	$upperDocName$Event delete$upperDocName$BodyRecords(Save$upperDocName$Event event, List<String> toDelete) throws Exception;
 
 	$upperDocName$PageEvent request$upperDocName$Page(Request$upperDocName$PageEvent event) throws Exception;
+	$upperDocName$PageEvent request$upperDocName$FilterPage(Request$upperDocName$PageEvent event) throws Exception;
 
 	$upperDocName$Event request$upperDocName$Details(Request$upperDocName$Event event) throws Exception;
 	

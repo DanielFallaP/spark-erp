@@ -56,7 +56,7 @@
 	     
 	     \$(document).keyup(function(e) {
 	    	  if(e.which == 13 && document.getElementById("_page") === document.activeElement) {
-	    		if (	document.getElementById("_page").value== null
+	    		/*if (	document.getElementById("_page").value== null
 	    			  	|| document.getElementById("_page").value == ""
 	    				|| isNaN(document.getElementById("_page").value) 
 	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_page").value <= 0)
@@ -65,26 +65,32 @@
 					alert('Invalid page number');
 					resetPageValue();
 	    		}
-	    		else{
+	    		else{*/
 		    		var path=window.location.pathname.split("/");
 	 	    		var prefix="";
 	 	    		if (path[1].localeCompare("docs")!=0){
 	 	    			prefix="/"+path[1];	
 	 	    		}
-		     		window.open(prefix+"/docs/search$upperDocName$?page.page="+document.getElementById("_page").value,"_self");
-	    		}
+					submitFilterPage(document.getElementById("_page").value);	 	    		
+	    		//}
 	    	  }
+	    		else if (e.which == 13 && (document.getElementById("createdBy") === document.activeElement || document.getElementById("userName") === document.activeElement || 
+	    		document.getElementById("dateOfModification") === document.activeElement || document.getElementById("dateOfCreation") === document.activeElement $focusCheck$)){
+	    		  submitFilter(1);
+	    		}
 	    	});	  
 	    	
 	    	
 	       \$(document).keyup(function(e) {
-	    	  if(e.which == 39 || e.which == 34) {
+	    	  if(e.which == 34) {
+	    	  //if(e.which == 39 || e.which == 34) {
 	     		  \$('#_nextPage a').trigger('click');
 	    	  }
 	    	});
 	     
 	     \$(document).keyup(function(e) {
-	    	  if(e.which == 37 || e.which == 33) {
+	    	  if(e.which == 33) {
+//	    	  if(e.which == 37 || e.which == 33) {
 	     		  \$('#_previousPage a').trigger('click');
 	    	  }
 	    	});
@@ -108,6 +114,21 @@
 		    \$(this).removeClass('hover');
 		});
 		});
+
+		function submitFilter(page){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+			form.submit();
+	    }
+		
+		function submitFilterPage(page,field,changeDirection){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+    	 	if (field!=null)
+    	 		form.elements["selectedFilterField"].value=field;
+   	 		form.elements["changeSortingFieldDirection"].value=changeDirection!=null?true:false;
+    	 	form.submit();
+	    }
 
 	    function buildURL(id){
 	    	var path=window.location.pathname.split("/");
@@ -135,10 +156,14 @@
 	<div class="container-fluid">	
 		<div class="row-fluid">
 			<h3 th:text="#{label.$docName$Info}"> </h3>
+			<form id="filter-form" th:object="\${$docName$FilterInfo}" method="post" >
+		  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
+			<input id="selectedFilterField" type="hidden" th:field="*{selectedFilterField}"/>
+		  	<input id="changeSortingFieldDirection" type="hidden" th:field="*{changeSortingFieldDirection}"/>
 			<table width="100%">
 				<tr>
 					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/docs/$docName$}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
-					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
 					<td width="34%"></td>
 				</tr>
 			</table>
@@ -146,30 +171,48 @@
 				<thead>
 					<tr>
 						<th >
-							<a th:if="\${_field} == '_numericId' and \${_direction}" th:href="@{\${page.url}+'?field=_numericId'}" th:text="'&uarr;'+#{label.numericId}"></a>
-							<a th:if="\${_field} == '_numericId' and !\${_direction}" th:href="@{\${page.url}+'?field=_numericId'}" th:text="'&darr;'+#{label.numericId}"></a>
-							<a th:if="\${_field} != '_numericId'" th:href="@{\${page.url}+'?field=_numericId'}" th:text="#{label.numericId}"></a>
+							<input style="width:100%;" id="_numericId" name="_numericId" type="text" th:value="*{{_numericId}}" />
+						</th>
+						$filterColumnHeaders$
+						<th >
+							<input style="width:100%;" id="dateOfModification" name="dateOfModification" type="text" th:value="*{{dateOfModification}}" />
+						</th>
+						<th >
+							<input style="width:100%;" id="userName" name="userName" type="text" th:value="*{{userName}}" />
+						</th>
+						<th >
+							<input style="width:100%;" id="dateOfCreation" name="_numericId" type="text" th:value="*{{dateOfCreation}}" />
+						</th>
+						<th >
+							<input style="width:100%;" id="createdBy" name="_numericId" type="text" th:value="*{{createdBy}}" />
+						</th>
+					</tr>
+					<tr>
+						<th >
+							<a th:if="\${_field} == '_numericId' and \${_direction}" th:href="'javascript:submitFilterPage(1,\'_numericId\',true)'" th:text="'&uarr;'+#{label.numericId}"></a>
+							<a th:if="\${_field} == '_numericId' and !\${_direction}" th:href="'javascript:submitFilterPage(1,\'_numericId\',true)'" th:text="'&darr;'+#{label.numericId}"></a>
+							<a th:if="\${_field} != '_numericId'" th:href="'javascript:submitFilterPage(1,\'_numericId\',true)'" th:text="#{label.numericId}"></a>
 						</th>
 						$searchFieldsHeaders$
 						<th >
-							<a th:if="\${_field} == 'dateOfModification' and \${_direction}" th:href="@{\${page.url}+'?field=dateOfModification'}" th:text="'&uarr;'+#{label.dateOfModification}"></a>
-							<a th:if="\${_field} == 'dateOfModification' and !\${_direction}" th:href="@{\${page.url}+'?field=dateOfModification'}" th:text="'&darr;'+#{label.dateOfModification}"></a>
-							<a th:if="\${_field} != 'dateOfModification'" th:href="@{\${page.url}+'?field=dateOfModification'}" th:text="#{label.dateOfModification}"></a>
+							<a th:if="\${_field} == 'dateOfModification' and \${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="'&uarr;'+#{label.dateOfModification}"></a>
+							<a th:if="\${_field} == 'dateOfModification' and !\${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="'&darr;'+#{label.dateOfModification}"></a>
+							<a th:if="\${_field} != 'dateOfModification'" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="#{label.dateOfModification}"></a>
 						</th>
 						<th >
-							<a th:if="\${_field} == 'userName' and \${_direction}" th:href="@{\${page.url}+'?field=userName'}" th:text="'&uarr;'+#{label.userOfModification}"></a>
-							<a th:if="\${_field} == 'userName' and !\${_direction}" th:href="@{\${page.url}+'?field=userName'}" th:text="'&darr;'+#{label.userOfModification}"></a>
-							<a th:if="\${_field} != 'userName'" th:href="@{\${page.url}+'?field=userName'}" th:text="#{label.userOfModification}"></a>
+							<a th:if="\${_field} == 'userName' and \${_direction}" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="'&uarr;'+#{label.userOfModification}"></a>
+							<a th:if="\${_field} == 'userName' and !\${_direction}" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="'&darr;'+#{label.userOfModification}"></a>
+							<a th:if="\${_field} != 'userName'" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="#{label.userOfModification}"></a>
 						</th>
 						<th >
-							<a th:if="\${_field} == 'dateOfCreation' and \${_direction}" th:href="@{\${page.url}+'?field=dateOfCreation'}" th:text="'&uarr;'+#{label.dateOfCreation}"></a>
-							<a th:if="\${_field} == 'dateOfCreation' and !\${_direction}" th:href="@{\${page.url}+'?field=dateOfCreation'}" th:text="'&darr;'+#{label.dateOfCreation}"></a>
-							<a th:if="\${_field} != 'dateOfCreation'" th:href="@{\${page.url}+'?field=dateOfCreation'}" th:text="#{label.dateOfCreation}"></a>
+							<a th:if="\${_field} == 'dateOfCreation' and \${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="'&uarr;'+#{label.dateOfCreation}"></a>
+							<a th:if="\${_field} == 'dateOfCreation' and !\${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="'&darr;'+#{label.dateOfCreation}"></a>
+							<a th:if="\${_field} != 'dateOfCreation'" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="#{label.dateOfCreation}"></a>
 						</th>
 						<th >
-							<a th:if="\${_field} == 'createdBy' and \${_direction}" th:href="@{\${page.url}+'?field=createdBy'}" th:text="&uarr;'+#{label.createdBy}"></a>
-							<a th:if="\${_field} == 'createdBy' and !\${_direction}" th:href="@{\${page.url}+'?field=createdBy'}" th:text="&darr;'+#{label.createdBy}"></a>
-							<a th:if="\${_field} != 'createdBy'" th:href="@{\${page.url}+'?field=createdBy'}" th:text="#{label.createdBy}"></a>
+							<a th:if="\${_field} == 'createdBy' and \${_direction}" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="&uarr;'+#{label.createdBy}"></a>
+							<a th:if="\${_field} == 'createdBy' and !\${_direction}" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="&darr;'+#{label.createdBy}"></a>
+							<a th:if="\${_field} != 'createdBy'" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="#{label.createdBy}"></a>
 						</th>
 
 					</tr>
@@ -186,10 +229,11 @@
 					</tr>
 				</tbody>
 			</table>
+			</form>
 			<table width="100%">
 				<tr>
 					<td width="33%"></td>
-					<td width="33%"><div th:include="normal/dataTable :: paginationbar" ></div></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
 					<td width="34%"><div></div></td>
 				</tr>
 			</table>

@@ -33,7 +33,7 @@
 	     
 	     \$(document).keyup(function(e) {
 	    	  if(e.which == 13 && document.getElementById("_page") === document.activeElement) {
-	    		if (	document.getElementById("_page").value== null
+	    		/*if (	document.getElementById("_page").value== null
 	    			  	|| document.getElementById("_page").value == ""
 	    				|| isNaN(document.getElementById("_page").value) 
 	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_page").value <= 0)
@@ -42,14 +42,14 @@
 					alert('Invalid page number');
 					resetPageValue();
 	    		}
-	    		else{
+	    		else{*/
 		    		var path=window.location.pathname.split("/");
 	 	    		var prefix="";
 	 	    		if (path[1].localeCompare("configuration")!=0){
 	 	    			prefix="/"+path[1];	
 	 	    		}
-					submitFilter(document.getElementById("_page").value);	 	    		
-	    		}
+					submitFilterPage(document.getElementById("_page").value);	 	    		
+	    		//}
 	    	  }
 	    		else if (e.which == 13 && (document.getElementById("createdBy") === document.activeElement || document.getElementById("userName") === document.activeElement || 
 	    		document.getElementById("dateOfModification") === document.activeElement || document.getElementById("dateOfCreation") === document.activeElement $focusCheck$)){

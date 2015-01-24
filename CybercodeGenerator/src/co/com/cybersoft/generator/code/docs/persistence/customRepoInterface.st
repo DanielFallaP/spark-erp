@@ -2,6 +2,9 @@ package co.com.cybersoft.docs.persistence.repository.$docName$;
 
 import co.com.cybersoft.docs.persistence.domain.$upperDocName$;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$FilterInfo;
 
 /**
  * 
@@ -14,5 +17,5 @@ public interface $upperDocName$CustomRepo {
 	
 	List<$upperDocName$> findByContainingNumericId(String numericId) throws Exception;
 	
-
+	Page<$upperDocName$> findAll(Pageable pageable, $upperDocName$FilterInfo filter)throws Exception;
 }
