@@ -23,16 +23,16 @@ public class $upperDocName$FilterInfo {
 	
 	private Boolean changeSortingFieldDirection;
 	
-	private Long _numericId;
+	private String numericId;
 
 	$filterFields$
 	
-	public Long get_numericId() {
-		return _numericId;
+	public String getNumericId() {
+		return numericId;
 	}
 
-	public void set_numericId(Long _numericId) {
-		this._numericId = _numericId;
+	public void setNumericId(String numericId) {
+		this.numericId = numericId;
 	}
 	public Boolean getChangeSortingFieldDirection() {
 		return changeSortingFieldDirection;

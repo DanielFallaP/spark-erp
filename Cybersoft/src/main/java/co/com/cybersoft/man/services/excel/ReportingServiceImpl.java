@@ -59,7 +59,7 @@ public class ReportingServiceImpl implements ReportingService {
 		Class<?> body = Class.forName(bodyClassName);
 		DBCollection collection = mongo.getCollection(toLowerCamelCase(header.getSimpleName()));
 		BasicDBObject basicObject = new BasicDBObject();
-		basicObject.append("_numericId", id);
+		basicObject.append("numericId", id);
 		File docExcel = generateDocExcel(collection.find(basicObject), header, body, locale, id);
 		return "redirect:"+CyberUtils.excelURLPath+"/"+docExcel.getName();
 	}
@@ -70,7 +70,7 @@ public class ReportingServiceImpl implements ReportingService {
 		Class<?> body = Class.forName(bodyClassName);
 		DBCollection collection = mongo.getCollection(toLowerCamelCase(header.getSimpleName()));
 		BasicDBObject basicObject = new BasicDBObject();
-		basicObject.append("_numericId", id);
+		basicObject.append("numericId", id);
 		return generateDocExcel(collection.find(basicObject), header, body, locale, id);
 	}
 

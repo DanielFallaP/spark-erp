@@ -74,7 +74,7 @@
 					submitFilterPage(document.getElementById("_page").value);	 	    		
 	    		//}
 	    	  }
-	    		else if (e.which == 13 && (document.getElementById("createdBy") === document.activeElement || document.getElementById("userName") === document.activeElement || 
+	    		else if (e.which == 13 && (document.getElementById("numericId") === document.activeElement || document.getElementById("createdBy") === document.activeElement || document.getElementById("userName") === document.activeElement || 
 	    		document.getElementById("dateOfModification") === document.activeElement || document.getElementById("dateOfCreation") === document.activeElement $focusCheck$)){
 	    		  submitFilter(1);
 	    		}
@@ -171,7 +171,7 @@
 				<thead>
 					<tr>
 						<th >
-							<input style="width:100%;" id="_numericId" name="_numericId" type="text" th:value="*{{_numericId}}" />
+							<input style="width:100%;" id="numericId" name="numericId" type="text" th:value="*{{numericId}}" />
 						</th>
 						$filterColumnHeaders$
 						<th >
@@ -181,17 +181,17 @@
 							<input style="width:100%;" id="userName" name="userName" type="text" th:value="*{{userName}}" />
 						</th>
 						<th >
-							<input style="width:100%;" id="dateOfCreation" name="_numericId" type="text" th:value="*{{dateOfCreation}}" />
+							<input style="width:100%;" id="dateOfCreation" name="dateOfCreation" type="text" th:value="*{{dateOfCreation}}" />
 						</th>
 						<th >
-							<input style="width:100%;" id="createdBy" name="_numericId" type="text" th:value="*{{createdBy}}" />
+							<input style="width:100%;" id="createdBy" name="createdBy" type="text" th:value="*{{createdBy}}" />
 						</th>
 					</tr>
 					<tr>
 						<th >
-							<a th:if="\${_field} == '_numericId' and \${_direction}" th:href="'javascript:submitFilterPage(1,\'_numericId\',true)'" th:text="'&uarr;'+#{label.numericId}"></a>
-							<a th:if="\${_field} == '_numericId' and !\${_direction}" th:href="'javascript:submitFilterPage(1,\'_numericId\',true)'" th:text="'&darr;'+#{label.numericId}"></a>
-							<a th:if="\${_field} != '_numericId'" th:href="'javascript:submitFilterPage(1,\'_numericId\',true)'" th:text="#{label.numericId}"></a>
+							<a th:if="\${_field} == 'numericId' and \${_direction}" th:href="'javascript:submitFilterPage(1,\'numericId\',true)'" th:text="'&uarr;'+#{label.numericId}"></a>
+							<a th:if="\${_field} == 'numericId' and !\${_direction}" th:href="'javascript:submitFilterPage(1,\'numericId\',true)'" th:text="'&darr;'+#{label.numericId}"></a>
+							<a th:if="\${_field} != 'numericId'" th:href="'javascript:submitFilterPage(1,\'numericId\',true)'" th:text="#{label.numericId}"></a>
 						</th>
 						$searchFieldsHeaders$
 						<th >

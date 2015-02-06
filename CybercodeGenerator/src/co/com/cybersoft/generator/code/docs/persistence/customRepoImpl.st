@@ -56,7 +56,7 @@ public class $upperDocName$CustomRepoImpl implements $upperDocName$CustomRepo {
 			$docName$.setNumericId(numericID.longValue());
 			
 			BasicDBObject newDocument = new BasicDBObject();
-			newDocument.append("\$set", new BasicDBObject("_numericId", numericID.longValue()).append("stringId", new Long(numericID.longValue()).toString()));
+			newDocument.append("\$set", new BasicDBObject("numericId", numericID.longValue()).append("stringId", new Long(numericID.longValue()).toString()));
 			
 			BasicDBObject searchQuery = new BasicDBObject();
 			searchQuery.put("_id", new ObjectId($docName$2.getId()) );
@@ -84,6 +84,7 @@ public class $upperDocName$CustomRepoImpl implements $upperDocName$CustomRepo {
 	private Query buildCriteria($upperDocName$FilterInfo filter)throws Exception{
 		Query filterQuery=new Query();
 		$fieldCriteria$
+		if (filter.getNumericId()!=null)filterQuery.addCriteria(translateLongOperators(filter.getNumericId(),"numericId" ));
 		if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))filterQuery.addCriteria(translateDateOperators(filter.getDateOfCreation(),"dateOfCreation" ));
 		if (filter.getDateOfModification()!=null && !filter.getDateOfModification().equals(""))filterQuery.addCriteria(translateDateOperators(filter.getDateOfModification(),"dateOfModification" ));
 		if (filter.getUserName()!=null && !filter.getUserName().equals(""))filterQuery.addCriteria(Criteria.where("userName").regex(translateWildcards(filter.getUserName())));

@@ -25,7 +25,7 @@ public class $upperDocName$ {
 	@Id
 	private String id;
 	
-	@Field(value="_numericId")
+	@Field(value="numericId")
 	private Long numericId;
 
 	private List<$upperDocName$Body> $docName$BodyEntityList=new ArrayList<$upperDocName$Body>();
