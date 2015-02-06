@@ -954,16 +954,16 @@ public class DocViewGenerator {
 					text+=template.toString()+"\n";
 				}
 			}
-			else{
-				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
-				for (Field compoundField : compoundKey) {
-					StringTemplate template = templateGroup.getInstanceOf("filterColumnHeader");
-					template.setAttribute("fieldName", compoundField.getName());
-					template.setAttribute("tableName", table.getName());
-					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
-					text+=template.toString()+"\n";
-				}
-			}
+//			else{
+//				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
+//				for (Field compoundField : compoundKey) {
+//					StringTemplate template = templateGroup.getInstanceOf("filterColumnHeader");
+//					template.setAttribute("fieldName", compoundField.getName());
+//					template.setAttribute("tableName", table.getName());
+//					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
+//					text+=template.toString()+"\n";
+//				}
+//			}
 		}
 		return text;
 	}
