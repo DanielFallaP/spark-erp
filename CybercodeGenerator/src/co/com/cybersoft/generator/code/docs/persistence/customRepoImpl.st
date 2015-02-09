@@ -1,5 +1,6 @@
 package co.com.cybersoft.docs.persistence.repository.$docName$;
 
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -16,8 +17,11 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import co.com.cybersoft.docs.persistence.domain.$upperDocName$;
+import co.com.cybersoft.man.services.security.SessionAction;
+import co.com.cybersoft.man.services.security.SessionLogger;
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$FilterInfo;
 
@@ -44,6 +48,10 @@ public class $upperDocName$CustomRepoImpl implements $upperDocName$CustomRepo {
 	@Autowired
 	private DB mongoDB;
 	
+	public void updateLog(String userName, String action, Long id){
+		SessionAction sessionAction = new SessionAction(userName, CyberUtils.userSessions.get(userName), action, new Date(),"$docName$", id);
+		new Thread(new SessionLogger(sessionAction, mongo)).start();
+	}
 	
 	@Override
 	public $upperDocName$ save($upperDocName$ $docName$) throws Exception{
@@ -62,7 +70,9 @@ public class $upperDocName$CustomRepoImpl implements $upperDocName$CustomRepo {
 			searchQuery.put("_id", new ObjectId($docName$2.getId()) );
 			
 			$docName$Collection.update(searchQuery, newDocument);
+			
 		}
+		updateLog(SecurityContextHolder.getContext().getAuthentication().getName(), "save",$docName$2.getNumericId());
 		
 		return $docName$2;
 	}
