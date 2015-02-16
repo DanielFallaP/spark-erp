@@ -2,6 +2,8 @@ package co.com.cybersoft.tables.persistence.services.$tableName$;
 
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import co.com.cybersoft.tables.core.domain.$entityName$Details;
 import co.com.cybersoft.tables.events.$tableName$.Create$entityName$Event;
@@ -13,11 +15,16 @@ import co.com.cybersoft.tables.events.$tableName$.Request$entityName$PageEvent;
 import co.com.cybersoft.tables.persistence.domain.$entityName$;
 import co.com.cybersoft.tables.persistence.repository.$tableName$.$entityName$Repository;
 import co.com.cybersoft.tables.persistence.repository.$tableName$.$entityName$CustomRepo;
+import co.com.cybersoft.man.services.security.SessionAction;
+import co.com.cybersoft.man.services.security.SessionLogger;
+
 $imports$
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
 
 /**
@@ -31,6 +38,9 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 	
 	private final $entityName$CustomRepo $tableName$CustomRepo;
 	
+	@Autowired
+	private MongoOperations mongo;
+	
 	$autocompleteRepos$
 	
 	public $entityName$PersistenceServiceImpl(final $entityName$Repository $tableName$Repository, final $entityName$CustomRepo $tableName$CustomRepo) {
@@ -43,7 +53,13 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 		$checkReferences$
 		$entityName$ $tableName$ = new $entityName$().from$entityName$Details(event.get$entityName$Details());
 		$tableName$ = $tableName$Repository.save($tableName$);
+		updateLog(SecurityContextHolder.getContext().getAuthentication().getName(),"creation",$tableName$.getId());
 		return new $entityName$DetailsEvent(new $entityName$Details().to$entityName$Details($tableName$));
+	}
+	
+	public void updateLog(String userName, String action, String id){
+		SessionAction sessionAction = new SessionAction(userName, CyberUtils.userSessions.get(userName), action, new Date(),"$tableName$", id);
+		new Thread(new SessionLogger(sessionAction, mongo)).start();
 	}
 
 	@Override
@@ -70,6 +86,7 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 		$checkReferences$
 		$entityName$ $tableName$ = new $entityName$().from$entityName$Details(event.get$entityName$Details());
 		$tableName$ = $tableName$Repository.save($tableName$);
+		updateLog(SecurityContextHolder.getContext().getAuthentication().getName(),"modification",$tableName$.getId());
 		return new $entityName$DetailsEvent(new $entityName$Details().to$entityName$Details($tableName$));
 	}
 	

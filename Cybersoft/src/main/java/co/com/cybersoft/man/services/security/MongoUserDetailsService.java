@@ -34,7 +34,8 @@ public class MongoUserDetailsService implements UserDetailsService{
 				
 				//Session id creation for the user
 				CyberUtils.userSessions.put(userName, UUID.randomUUID().toString());
-				SessionAction logonAction = new SessionAction(userName,CyberUtils.userSessions.get(userName),"logon",new Date(),null,null);
+				SessionAction logonAction = new SessionAction(userName,CyberUtils.userSessions.get(userName),"logon",new Date(),null,new Long(1));
+				logonAction.setEntityId(null);
 				new Thread(new SessionLogger(logonAction,mongo)).start();
 				
 				return userDetail;

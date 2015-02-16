@@ -15,6 +15,7 @@ public class SessionAction {
 	private String action;
 	private Long entityId;
 	private Date actionDate;
+	private String id;
 	
 	public SessionAction(String user, String sessionId, String action, Date actionDate, String entity, Long entityId){
 		this.user=user;
@@ -23,6 +24,15 @@ public class SessionAction {
 		this.actionDate=actionDate;
 		this.entity=entity;
 		this.entityId=entityId;
+	}
+	
+	public SessionAction(String user, String sessionId, String action, Date actionDate, String entity, String Id){
+		this.user=user;
+		this.sessionId=sessionId;
+		this.action=action;
+		this.actionDate=actionDate;
+		this.entity=entity;
+		this.id=id;
 	}
 	
 	public String getEntity() {
@@ -35,7 +45,15 @@ public class SessionAction {
 		this.entity = entity;
 	}
 
+	
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public Long getEntityId() {
 		return entityId;
