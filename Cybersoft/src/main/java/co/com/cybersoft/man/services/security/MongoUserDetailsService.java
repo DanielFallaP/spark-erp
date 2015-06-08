@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import co.com.cybersoft.tables.persistence.domain.User;
+import co.com.cybersoft.purchase.tables.persistence.domain.User;
 import co.com.cybersoft.util.CyberUtils;
 
 public class MongoUserDetailsService implements UserDetailsService{

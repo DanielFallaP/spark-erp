@@ -142,7 +142,7 @@
   	    	if (path[1].localeCompare("configuration")!=0){
   	    		prefix="/"+path[1];	
   	    	}
-	    	var url=prefix+"/configuration/$tableName$/modify$entityName$/"+id;
+	    	var url=prefix+"/$module$/$tableName$/modify$entityName$/"+id;
 	    	document.location=url;
 	    }
 	    
@@ -159,7 +159,7 @@
 </head>
 <body>
 
-	<div th:include="normal/layout :: header" ></div>
+	<div th:include="normal/layout$module$ :: header" ></div>
 	<div class="container-fluid">	
 		<div class="row-fluid">
 			<div id="back"><a th:text="#{label.back}" th:href="@{/$backURL$}"></a></div>
@@ -170,7 +170,7 @@
 		  	<input id="changeSortingFieldDirection" type="hidden" th:field="*{changeSortingFieldDirection}"/>
 			<table width="100%">
 				<tr>
-					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/configuration/$tableName$/create$entityName$/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/$module$/$tableName$/create$entityName$/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
 					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
 					<td width="34%">$excel$</td>
 				</tr>
@@ -200,6 +200,6 @@
 			</table>
 		</div>
 	</div>
-	<div class="container-fluid" th:include="normal/layout :: footer"></div>
+	<div class="container-fluid" th:include="normal/layout$module$ :: footer"></div>
 </body>
 </html>

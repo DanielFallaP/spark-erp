@@ -26,7 +26,7 @@ import co.com.cybersoft.util.CyberUtils;
 
 
 @Configuration
-@EnableMongoRepositories(basePackages={"co.com.cybersoft.tables.persistence.repository","co.com.cybersoft.docs.persistence.repository"},
+@EnableMongoRepositories(basePackages={$packages$"co.com.cybersoft.$module$.docs.persistence.repository"},
 includeFilters=@ComponentScan.Filter(value={$repos$},type=FilterType.ASSIGNABLE_TYPE))
 public class PersistenceConfig {
 	

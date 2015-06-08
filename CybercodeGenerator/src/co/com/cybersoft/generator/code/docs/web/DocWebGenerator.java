@@ -84,7 +84,8 @@ public class DocWebGenerator {
 		fieldTemplate.setAttribute("filterFields", filterFields);
 		fieldTemplate.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		fieldTemplate.setAttribute("docName", document.getName());
-		
+		fieldTemplate.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(fieldTemplate.toString(), Cybertables.targetDocumentClassPath+"/web/domain/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"FilterInfo.java");
 	}
 
@@ -93,7 +94,8 @@ public class DocWebGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("excelController");
 		template.setAttribute("docName", document.getName());
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"ExcelController.java");
 	}
 
@@ -102,7 +104,8 @@ public class DocWebGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("searchControllerById");
 		template.setAttribute("docName", document.getName());
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"SearchByNumericIdController.java");
 	}
 
@@ -111,7 +114,8 @@ public class DocWebGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("searchController");
 		template.setAttribute("docName", document.getName());
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"SearchController.java");
 	}
 
@@ -136,7 +140,8 @@ public class DocWebGenerator {
 		template.setAttribute("onHeaderPreSave", JavaAPIConnector.generateOnHeaderPreSave(document));
 		template.setAttribute("onBodyPreAdd", JavaAPIConnector.generateOnBodyPreAddition(document));
 		template.setAttribute("onBodyPreMod", JavaAPIConnector.generateOnBodyPreModification(document));
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/web/controller/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"Controller.java");
 	}
 	
@@ -432,10 +437,11 @@ public class DocWebGenerator {
 		Set<String> referenceImports = new HashSet<String>();
 		for (Field field : fields) {
 			if (field.isReference() && !referenceImports.contains(field.getRefType())){
-				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
-						+ "import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;\n");
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.$module$.tables.core.services.$tableName$.$entityName$Service;\n"
+						+ "import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$PageEvent;\n");
 				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("tableName", field.getRefType());
+				template.setAttribute("module", "purchase");
 				imports+=template.toString();
 				referenceImports.add(field.getRefType());
 			}
@@ -446,10 +452,12 @@ public class DocWebGenerator {
 			List<Field> compoundReference = CodeUtils.getCompoundKey(cybertables, compositeField.getRefType());
 			for (Field field : compoundReference) {
 				if (!referenceImports.contains(field.getName())){
-					StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
-							+ "import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;\n");
+					StringTemplate template = new StringTemplate("import co.com.cybersoft.$module$.tables.core.services.$tableName$.$entityName$Service;\n"
+							+ "import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$PageEvent;\n");
 					template.setAttribute("entityName", CodeUtils.toCamelCase(field.getName()));
 					template.setAttribute("tableName", field.getName());
+					template.setAttribute("module", "purchase");
+
 					imports+=template.toString();
 					referenceImports.add(field.getName());
 				}
@@ -458,17 +466,21 @@ public class DocWebGenerator {
 		
 		for (Field field : fields) {
 			if (field.getAppend()!=null&& !referenceImports.contains(field.getAppend().substring(0,field.getAppend().indexOf(".")))){
-				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;\n"
-						+ "import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;\n"
-						+ "import co.com.cybersoft.tables.core.domain.$entityName$Details;\n");
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.$module$.tables.core.services.$tableName$.$entityName$Service;\n"
+						+ "import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$PageEvent;\n"
+						+ "import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;\n");
 				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getAppend().substring(0,field.getAppend().indexOf("."))));
 				template.setAttribute("tableName", field.getAppend().substring(0,field.getAppend().indexOf(".")));
+				template.setAttribute("module", "purchase");
+
 				imports+=template.toString();
 				referenceImports.add(field.getAppend().substring(0,field.getAppend().indexOf(".")));
 			}else if (field.getAppend()!=null&& referenceImports.contains(field.getAppend().substring(0,field.getAppend().indexOf(".")))){
-				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.domain.$entityName$Details;\n");
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;\n");
 				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getAppend().substring(0,field.getAppend().indexOf("."))));
 				template.setAttribute("tableName", field.getAppend().substring(0,field.getAppend().indexOf(".")));
+				template.setAttribute("module", "purchase");
+
 				imports+=template.toString();
 				referenceImports.add(field.getAppend().substring(0,field.getAppend().indexOf(".")));
 			}
@@ -487,7 +499,8 @@ public class DocWebGenerator {
 		template.setAttribute("imports", generateDomainClassImports(document.getBody()));
 		template.setAttribute("overrideEquals", generateEqualsOverride(document));
 		template.setAttribute("appendFields", generateAppendFieldsAndGS(document));
-
+		template.setAttribute("module", "purchase");
+		
 		CodeUtils.writeClass(template.toString(),Cybertables.targetDocumentClassPath+"/web/domain/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"BodyInfo.java");
 	}
 	
@@ -536,6 +549,7 @@ public class DocWebGenerator {
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("referenceFields", generateHeaderReferenceDomainFieldsAndGS(document));
 		template.setAttribute("imports", generateDomainClassImports(document.getHeader()));
+		template.setAttribute("module", "purchase");
 		CodeUtils.writeClass(template.toString(),Cybertables.targetDocumentClassPath+"/web/domain/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"Info.java");
 	}
 
@@ -613,8 +627,10 @@ public class DocWebGenerator {
 		for (Field field : fields) {
 			
 			if (field.isReference()){
-				StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.domain.$entityName$Details;\n");
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;\n");
 				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
+				template.setAttribute("module", "purchase");
+				
 				imports+=template.toString();
 			}
 		}
@@ -623,8 +639,10 @@ public class DocWebGenerator {
 			if (field.getCompoundReference()){
 				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
-					StringTemplate stringTemplate = new StringTemplate("import co.com.cybersoft.tables.core.domain.$fieldName$Details;\n");
+					StringTemplate stringTemplate = new StringTemplate("import co.com.cybersoft.$module$.tables.core.domain.$fieldName$Details;\n");
 					stringTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
+					stringTemplate.setAttribute("module", "purchase");
+
 					imports+=stringTemplate.toString();
 				}
 			}

@@ -1,4 +1,4 @@
-package co.com.cybersoft.tables.web.controller.$entityName$;
+package co.com.cybersoft.$module$.tables.web.controller.$entityName$;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
-import co.com.cybersoft.tables.core.services.$entityName$.$coreService$;
+import co.com.cybersoft.$module$.tables.core.services.$entityName$.$coreService$;
 import co.com.cybersoft.util.PageWrapper;
-import co.com.cybersoft.tables.events.$entityName$.$responseEvent$;
-import co.com.cybersoft.tables.events.$entityName$.$requestEvent$;
-import co.com.cybersoft.tables.persistence.domain.$entityUpperCaseName$;
-import co.com.cybersoft.tables.web.domain.$entityName$.$entityUpperCaseName$FilterInfo;
+import co.com.cybersoft.$module$.tables.events.$entityName$.$responseEvent$;
+import co.com.cybersoft.$module$.tables.events.$entityName$.$requestEvent$;
+import co.com.cybersoft.$module$.tables.persistence.domain.$entityUpperCaseName$;
+import co.com.cybersoft.$module$.tables.web.domain.$entityName$.$entityUpperCaseName$FilterInfo;
 
 /**
  * Search controller class for $entityName$
@@ -103,7 +103,7 @@ public class $searchControllerName$ {
 				pageEvent = new Request$entityUpperCaseName$PageEvent(pageRequest,filter);			}
 		}
 		$entityUpperCaseName$PageEvent details = $entityName$Service.request$entityUpperCaseName$FilterPage(pageEvent);
-		PageWrapper<$entityUpperCaseName$> page=new PageWrapper<$entityUpperCaseName$>(details.get$entityUpperCaseName$Page(),"/configuration/$entityName$/search$entityUpperCaseName$");
+		PageWrapper<$entityUpperCaseName$> page=new PageWrapper<$entityUpperCaseName$>(details.get$entityUpperCaseName$Page(),"/$module$/$entityName$/search$entityUpperCaseName$");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("$entityName$Field"));

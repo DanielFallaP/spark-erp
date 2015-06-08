@@ -48,8 +48,9 @@ public class TablePersistenceGenerator {
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("queriesByFields", byFields);
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"PersistenceFactory.java");
+		template.setAttribute("module", cybertables.getModuleName());
+
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/persistence/services/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"PersistenceFactory.java");
 	}
 
 	public void generateDomainClass(Table table){
@@ -92,8 +93,8 @@ public class TablePersistenceGenerator {
 			}
 		}
 		
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/domain", CodeUtils.toCamelCase(table.getName())+".java");
+		template.setAttribute("module", cybertables.getModuleName());
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/persistence/domain").replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+".java");
 	}
 	
 	private String generateDomainClassFieldDeclaration(Table table){
@@ -243,8 +244,9 @@ public class TablePersistenceGenerator {
 		}
 		template.setAttribute("requestAll", requestAll);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"PersistenceService.java");
+		template.setAttribute("module", cybertables.getModuleName());
+
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/persistence/services/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"PersistenceService.java");
 	
 	}
 	
@@ -332,8 +334,9 @@ public class TablePersistenceGenerator {
 		
 		template.setAttribute("requestAll", requestImpl);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/services/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"PersistenceServiceImpl.java");
+		template.setAttribute("module", cybertables.getModuleName());
+
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/persistence/services/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"PersistenceServiceImpl.java");
 		
 	}
 	
@@ -369,6 +372,7 @@ public class TablePersistenceGenerator {
 				StringTemplate template = templateGroup.getInstanceOf("referenceImport");
 				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("refType", field.getRefType());
+				template.setAttribute("module", cybertables.getModuleName());
 				imports+=template.toString()+"\n";
 			}
 		}
@@ -427,14 +431,15 @@ public class TablePersistenceGenerator {
 		}
 		
 		template.setAttribute("findByFields", methods);
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"Repository.java");
+		template.setAttribute("module", cybertables.getModuleName());
+
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"Repository.java");
 		
 		//Custom repository interface generation
 		template = templateGroup.getInstanceOf("customRepositoryInterface");
 		template.setAttribute("entityName",CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		
+		template.setAttribute("module", cybertables.getModuleName());
 		
 		String findAllActive="";
 		String autocompleteQueries="";
@@ -496,7 +501,7 @@ public class TablePersistenceGenerator {
 		template.setAttribute("findAllActive", findAllActive);
 		template.setAttribute("autocompleteQuery", autocompleteQueries);
 		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"CustomRepo.java");
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"CustomRepo.java");
 		
 		//Custom repository implementation generation
 		template = templateGroup.getInstanceOf("customRepositoryImplementation");
@@ -570,8 +575,9 @@ public class TablePersistenceGenerator {
 		template.setAttribute("fieldCriteria", getFieldCriteria(table));
 		template.setAttribute("findAllActive", findAllActive);
 		template.setAttribute("byContainingFields", autocompleteQueries);
+		template.setAttribute("module", cybertables.getModuleName());
 		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"CustomRepoImpl.java");
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/persistence/repository/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"CustomRepoImpl.java");
 		
 	}
 

@@ -1,4 +1,4 @@
-package co.com.cybersoft.docs.web.domain.$docName$;
+package co.com.cybersoft.$module$.docs.web.domain.$docName$;
 
 import java.io.Serializable;
 import java.util.Date;

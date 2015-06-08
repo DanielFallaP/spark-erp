@@ -1,4 +1,4 @@
-package co.com.cybersoft.docs.persistence.domain;
+package co.com.cybersoft.$module$.docs.persistence.domain;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,9 +10,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$BodyInfo;
-import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$Info;
-import co.com.cybersoft.tables.persistence.domain.*;
+import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$BodyInfo;
+import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$Info;
+import co.com.cybersoft.$module$.tables.persistence.domain.*;
 
 /**
  * 

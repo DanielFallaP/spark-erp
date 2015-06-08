@@ -7,15 +7,15 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import co.com.cybersoft.docs.web.domain.requisition.RequisitionBodyInfo;
-import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
-import co.com.cybersoft.docs.web.domain.requisitionDistribution.RequisitionDistributionBodyInfo;
-import co.com.cybersoft.docs.web.domain.requisitionDistribution.RequisitionDistributionInfo;
+import co.com.cybersoft.purchase.docs.web.domain.requisition.RequisitionBodyInfo;
+import co.com.cybersoft.purchase.docs.web.domain.requisition.RequisitionInfo;
+import co.com.cybersoft.purchase.docs.web.domain.requisitionDistribution.RequisitionDistributionBodyInfo;
+import co.com.cybersoft.purchase.docs.web.domain.requisitionDistribution.RequisitionDistributionInfo;
 import co.com.cybersoft.man.services.item.ItemVerificationSender;
-import co.com.cybersoft.tables.persistence.domain.BusinessRules;
-import co.com.cybersoft.tables.persistence.domain.User;
-import co.com.cybersoft.tables.persistence.repository.businessRules.BusinessRulesRepository;
-import co.com.cybersoft.tables.persistence.repository.user.UserRepository;
+import co.com.cybersoft.purchase.tables.persistence.domain.BusinessRules;
+import co.com.cybersoft.purchase.tables.persistence.domain.User;
+import co.com.cybersoft.purchase.tables.persistence.repository.businessRules.BusinessRulesRepository;
+import co.com.cybersoft.purchase.tables.persistence.repository.user.UserRepository;
 
 public class RequisitionManServiceImpl implements RequisitionManService{
 

@@ -1,20 +1,20 @@
-package co.com.cybersoft.tables.persistence.services.$tableName$;
+package co.com.cybersoft.$module$.tables.persistence.services.$tableName$;
 
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import co.com.cybersoft.tables.core.domain.$entityName$Details;
-import co.com.cybersoft.tables.events.$tableName$.Create$entityName$Event;
-import co.com.cybersoft.tables.events.$tableName$.$entityName$DetailsEvent;
-import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;
-import co.com.cybersoft.tables.events.$tableName$.$entityName$ModificationEvent;
-import co.com.cybersoft.tables.events.$tableName$.Request$entityName$DetailsEvent;
-import co.com.cybersoft.tables.events.$tableName$.Request$entityName$PageEvent;
-import co.com.cybersoft.tables.persistence.domain.$entityName$;
-import co.com.cybersoft.tables.persistence.repository.$tableName$.$entityName$Repository;
-import co.com.cybersoft.tables.persistence.repository.$tableName$.$entityName$CustomRepo;
+import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;
+import co.com.cybersoft.$module$.tables.events.$tableName$.Create$entityName$Event;
+import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$DetailsEvent;
+import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$PageEvent;
+import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$ModificationEvent;
+import co.com.cybersoft.$module$.tables.events.$tableName$.Request$entityName$DetailsEvent;
+import co.com.cybersoft.$module$.tables.events.$tableName$.Request$entityName$PageEvent;
+import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;
+import co.com.cybersoft.$module$.tables.persistence.repository.$tableName$.$entityName$Repository;
+import co.com.cybersoft.$module$.tables.persistence.repository.$tableName$.$entityName$CustomRepo;
 import co.com.cybersoft.man.services.security.SessionAction;
 import co.com.cybersoft.man.services.security.SessionLogger;
 

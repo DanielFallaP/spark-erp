@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 $imports$
 
 @Configuration
-public class CoreConfig {
+public class $upperModule$CoreConfig {
 	
 	$beanDeclarations$
 }

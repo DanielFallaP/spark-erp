@@ -152,7 +152,7 @@
 	    
 </head>
 <body>
-	<div th:include="normal/layout :: header" ></div>
+	<div th:include="normal/layout$module$ :: header" ></div>
 	<div class="container-fluid">	
 		<div class="row-fluid">
 			<h3 th:text="#{label.$docName$Info}"> </h3>
@@ -239,6 +239,6 @@
 			</table>
 		</div>
 	</div>
-	<div class="container-fluid" th:include="normal/layout :: footer"></div>
+	<div class="container-fluid" th:include="normal/layout$module$ :: footer"></div>
 </body>
 </html>

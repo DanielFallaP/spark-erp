@@ -8,19 +8,19 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import co.com.cybersoft.docs.events.purchaseOrder.SavePurchaseOrderEvent;
-import co.com.cybersoft.docs.persistence.domain.Requisition;
-import co.com.cybersoft.docs.persistence.repository.requisition.RequisitionRepository;
-import co.com.cybersoft.docs.persistence.services.purchaseOrder.PurchaseOrderPersistenceService;
-import co.com.cybersoft.docs.web.domain.purchaseOrder.PurchaseOrderBodyInfo;
-import co.com.cybersoft.docs.web.domain.purchaseOrder.PurchaseOrderInfo;
-import co.com.cybersoft.docs.web.domain.quotation.QuotationBodyInfo;
-import co.com.cybersoft.docs.web.domain.quotation.QuotationInfo;
+import co.com.cybersoft.purchase.docs.events.purchaseOrder.SavePurchaseOrderEvent;
+import co.com.cybersoft.purchase.docs.persistence.domain.Requisition;
+import co.com.cybersoft.purchase.docs.persistence.repository.requisition.RequisitionRepository;
+import co.com.cybersoft.purchase.docs.persistence.services.purchaseOrder.PurchaseOrderPersistenceService;
+import co.com.cybersoft.purchase.docs.web.domain.purchaseOrder.PurchaseOrderBodyInfo;
+import co.com.cybersoft.purchase.docs.web.domain.purchaseOrder.PurchaseOrderInfo;
+import co.com.cybersoft.purchase.docs.web.domain.quotation.QuotationBodyInfo;
+import co.com.cybersoft.purchase.docs.web.domain.quotation.QuotationInfo;
 import co.com.cybersoft.man.services.exchangeRate.ExchangeRateManService;
-import co.com.cybersoft.tables.persistence.domain.ThirdParty;
-import co.com.cybersoft.tables.persistence.domain.User;
-import co.com.cybersoft.tables.persistence.repository.thirdParty.ThirdPartyRepository;
-import co.com.cybersoft.tables.persistence.repository.user.UserRepository;
+import co.com.cybersoft.purchase.tables.persistence.domain.ThirdParty;
+import co.com.cybersoft.purchase.tables.persistence.domain.User;
+import co.com.cybersoft.purchase.tables.persistence.repository.thirdParty.ThirdPartyRepository;
+import co.com.cybersoft.purchase.tables.persistence.repository.user.UserRepository;
 import co.com.cybersoft.util.CyberUtils;
 
 public class QuotationManServiceImpl implements QuotationManService{

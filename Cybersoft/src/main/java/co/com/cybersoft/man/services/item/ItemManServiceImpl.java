@@ -8,10 +8,10 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import co.com.cybersoft.tables.core.domain.ItemPurchaseHistoryDetails;
-import co.com.cybersoft.tables.persistence.domain.Item;
-import co.com.cybersoft.tables.persistence.domain.ItemPurchaseHistory;
-import co.com.cybersoft.tables.web.domain.itemPurchaseHistory.ItemPurchaseHistoryInfo;
+import co.com.cybersoft.purchase.tables.core.domain.ItemPurchaseHistoryDetails;
+import co.com.cybersoft.purchase.tables.persistence.domain.Item;
+import co.com.cybersoft.purchase.tables.persistence.domain.ItemPurchaseHistory;
+import co.com.cybersoft.purchase.tables.web.domain.itemPurchaseHistory.ItemPurchaseHistoryInfo;
 
 /**
  * Custom services regarding items: get last purchase price of an item,

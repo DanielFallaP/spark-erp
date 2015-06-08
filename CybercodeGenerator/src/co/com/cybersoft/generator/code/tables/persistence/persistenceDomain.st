@@ -1,4 +1,4 @@
-package co.com.cybersoft.tables.persistence.domain;
+package co.com.cybersoft.$module$.tables.persistence.domain;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 $imports$
-import co.com.cybersoft.tables.core.domain.$coreDomainClass$;
+import co.com.cybersoft.$module$.tables.core.domain.$coreDomainClass$;
 
 /**
  * 

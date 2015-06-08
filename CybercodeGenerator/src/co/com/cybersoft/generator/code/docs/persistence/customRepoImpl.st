@@ -1,4 +1,4 @@
-package co.com.cybersoft.docs.persistence.repository.$docName$;
+package co.com.cybersoft.$module$.docs.persistence.repository.$docName$;
 
 import java.util.Date;
 import java.util.ArrayList;
@@ -19,11 +19,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import co.com.cybersoft.docs.persistence.domain.$upperDocName$;
+import co.com.cybersoft.$module$.docs.persistence.domain.$upperDocName$;
 import co.com.cybersoft.man.services.security.SessionAction;
 import co.com.cybersoft.man.services.security.SessionLogger;
 import co.com.cybersoft.util.CyberUtils;
-import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$FilterInfo;
+import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$FilterInfo;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;

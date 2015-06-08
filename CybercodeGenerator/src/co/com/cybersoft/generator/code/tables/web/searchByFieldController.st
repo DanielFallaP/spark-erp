@@ -1,4 +1,4 @@
-package co.com.cybersoft.tables.web.controller.$tableName$;
+package co.com.cybersoft.$module$.tables.web.controller.$tableName$;
 
 import java.io.PrintWriter;
 import java.util.List;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import co.com.cybersoft.tables.core.domain.$entityName$Details;
-import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;
-import co.com.cybersoft.tables.events.$tableName$.$entityName$PageEvent;
+import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;
+import co.com.cybersoft.$module$.tables.core.services.$tableName$.$entityName$Service;
+import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$PageEvent;
 import co.com.cybersoft.util.CyberUtils;
 
 @Controller

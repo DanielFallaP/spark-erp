@@ -1,8 +1,8 @@
-package co.com.cybersoft.tables.events.$tableName$;
+package co.com.cybersoft.$module$.tables.events.$tableName$;
 
 import org.springframework.data.domain.Page;
 
-import co.com.cybersoft.tables.persistence.domain.$entityName$;
+import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;
 $referencesImports$
 
 /**

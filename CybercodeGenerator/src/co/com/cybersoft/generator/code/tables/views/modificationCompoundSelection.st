@@ -18,5 +18,5 @@ function $fieldName$SelectedRefresh(){
 		   	  if (path[1].localeCompare("configuration")!=0){
 		   	  		prefix="/"+path[1];	
 		   	  }
-		   	  window.open(prefix+"/configuration/$tableName$/modify$entityName$/"+id,"_self");
+		   	  window.open(prefix+"/$module$/$tableName$/modify$entityName$/"+id,"_self");
 	   }

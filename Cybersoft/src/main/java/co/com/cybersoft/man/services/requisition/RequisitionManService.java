@@ -1,7 +1,7 @@
 package co.com.cybersoft.man.services.requisition;
 
-import co.com.cybersoft.docs.web.domain.requisition.RequisitionInfo;
-import co.com.cybersoft.docs.web.domain.requisitionDistribution.RequisitionDistributionInfo;
+import co.com.cybersoft.purchase.docs.web.domain.requisition.RequisitionInfo;
+import co.com.cybersoft.purchase.docs.web.domain.requisitionDistribution.RequisitionDistributionInfo;
 
 public interface RequisitionManService {
 	void checkAndSendVerificationMessage(String requestingUser, RequisitionInfo requisition) throws Exception;

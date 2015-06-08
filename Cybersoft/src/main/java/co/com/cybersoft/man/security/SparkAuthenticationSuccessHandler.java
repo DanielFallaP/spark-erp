@@ -55,7 +55,7 @@ public class SparkAuthenticationSuccessHandler implements AuthenticationSuccessH
 	        if (isUser) {
 	            return "/docs/requisition";
 	        } else if (isAdmin) {
-	            return "/configuration";
+	            return "/";
 	        } else {
 	            throw new IllegalStateException();
 	        }

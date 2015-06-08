@@ -1,4 +1,4 @@
-package co.com.cybersoft.docs.events.$docName$;
+package co.com.cybersoft.$module$.docs.events.$docName$;
 
 /**
  * Event class for $upperDocName$

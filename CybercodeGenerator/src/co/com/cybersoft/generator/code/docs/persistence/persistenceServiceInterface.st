@@ -1,12 +1,12 @@
-package co.com.cybersoft.docs.persistence.services.$docName$;
+package co.com.cybersoft.$module$.docs.persistence.services.$docName$;
 
 import java.util.List;
 
-import co.com.cybersoft.docs.events.$docName$.Request$upperDocName$Event;
-import co.com.cybersoft.docs.events.$docName$.Request$upperDocName$PageEvent;
-import co.com.cybersoft.docs.events.$docName$.$upperDocName$Event;
-import co.com.cybersoft.docs.events.$docName$.$upperDocName$PageEvent;
-import co.com.cybersoft.docs.events.$docName$.Save$upperDocName$Event;
+import co.com.cybersoft.$module$.docs.events.$docName$.Request$upperDocName$Event;
+import co.com.cybersoft.$module$.docs.events.$docName$.Request$upperDocName$PageEvent;
+import co.com.cybersoft.$module$.docs.events.$docName$.$upperDocName$Event;
+import co.com.cybersoft.$module$.docs.events.$docName$.$upperDocName$PageEvent;
+import co.com.cybersoft.$module$.docs.events.$docName$.Save$upperDocName$Event;
 
 /**
  * 

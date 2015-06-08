@@ -1,4 +1,4 @@
-package co.com.cybersoft.docs.web.controller.$docName$;
+package co.com.cybersoft.$module$.docs.web.controller.$docName$;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import co.com.cybersoft.docs.events.$docName$.Request$upperDocName$Event;
-import co.com.cybersoft.docs.events.$docName$.$upperDocName$Event;
-import co.com.cybersoft.docs.events.$docName$.Save$upperDocName$Event;
-import co.com.cybersoft.docs.persistence.services.$docName$.$upperDocName$PersistenceService;
-import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$Info;
-import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$BodyInfo;
+import co.com.cybersoft.$module$.docs.events.$docName$.Request$upperDocName$Event;
+import co.com.cybersoft.$module$.docs.events.$docName$.$upperDocName$Event;
+import co.com.cybersoft.$module$.docs.events.$docName$.Save$upperDocName$Event;
+import co.com.cybersoft.$module$.docs.persistence.services.$docName$.$upperDocName$PersistenceService;
+import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$Info;
+import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$BodyInfo;
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.SparkBindingException;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -19,10 +19,10 @@ import co.com.cybersoft.generator.code.util.CodeUtils;
  */
 public class TableViewGenerator {
 	
-	private final Cybertables cybertables;
+	private Cybertables cybertables;
 	
-	public TableViewGenerator(Cybertables cybersoft){
-		this.cybertables=cybersoft;
+	public TableViewGenerator(Cybertables cybertables){
+		this.cybertables=cybertables;
 	}
 
 	public void generate(){
@@ -40,8 +40,23 @@ public class TableViewGenerator {
 		
 		generateLinksView(cybertables);
 		generateSettingsView(cybertables);
+		generateLayout(cybertables);
+		generateLanguage(cybertables);
 	}
 	
+	private void generateLanguage(Cybertables cybertables2) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void generateLayout(Cybertables cybertables2) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.tableCodePath+"views");
+		StringTemplate template = templateGroup.getInstanceOf("layout");
+		template.setAttribute("module", cybertables.getModuleName());
+
+		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/", "layout"+cybertables.getModuleName()+".html");
+	}
+
 	private void generateSetView(Table table) {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.tableCodePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("singletonView");
@@ -53,8 +68,9 @@ public class TableViewGenerator {
 		if (!fields.isEmpty()){
 			template.setAttribute("firstField", fields.get(0).getName());
 		}
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/configuration/"+table.getName(), "set"+CodeUtils.toCamelCase(table.getName())+".html");
+		template.setAttribute("module", cybertables.getModuleName());
+
+		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/"+cybertables.getModuleName()+"/"+table.getName(), "set"+CodeUtils.toCamelCase(table.getName())+".html");
 	}
 
 	private void generateSettingsView(Cybertables cybersoft2) {
@@ -62,8 +78,10 @@ public class TableViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("settings");
 				
 		template.setAttribute("links", generateSettingsLinks());
-				
-		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"normal", "settings.html");
+		template.setAttribute("module", cybertables.getModuleName());
+	
+		
+		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"normal", cybertables.getModuleName()+"Settings.html");
 	}
 
 	private void generateLinksView(Cybertables cybertables){
@@ -71,8 +89,9 @@ public class TableViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("viewConfiguration");
 		template.setAttribute("firstOption", cybertables.getTables().get(0).getName());
 		template.setAttribute("links", generateDataConfigLinks());
+		template.setAttribute("module", cybertables.getModuleName());
 		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"normal", "configuration.html");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"normal", cybertables.getModuleName()+".html");
 	}
 
 	private void generateCreateView(Table table){
@@ -86,13 +105,15 @@ public class TableViewGenerator {
 		template.setAttribute("autocompleteFunctions", generateAutocompleteFunctions(table));
 		template.setAttribute("autocompleteReferenceFunctions", generateAutocompleteReferenceFunctions(table));
 		template.setAttribute("compoundSelectionFunctions", generateCompoundSelectionFunctions(table));
+		template.setAttribute("module", cybertables.getModuleName());
+		
 		
 		List<Field> fields = table.getFields();
 		if (!fields.isEmpty()){
 			template.setAttribute("firstField", fields.get(0).getName());
 		}
 		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/configuration/"+table.getName(), "create"+CodeUtils.toCamelCase(table.getName())+".html");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/"+cybertables.getModuleName()+"/"+table.getName(), "create"+CodeUtils.toCamelCase(table.getName())+".html");
 	}
 	
 
@@ -166,6 +187,7 @@ public class TableViewGenerator {
 				template.setAttribute("tableName", table.getName());
 				template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 				template.setAttribute("arraySeparator", Cybertables.arraySeparator);
+				template.setAttribute("module", cybertables.getModuleName());
 
 				functions+="\n"+template.toString();
 			}
@@ -198,13 +220,14 @@ public class TableViewGenerator {
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
 		template.setAttribute("autocompleteReferenceFunctions", generateAutocompleteReferenceFunctions(table));
 		template.setAttribute("modificationCompoundSelectionFunctions", generateCompoundSelectionFunctions(table));
-
+		template.setAttribute("module", cybertables.getModuleName());
+		
 		List<Field> fields = table.getFields();
 		if (!fields.isEmpty()){
 			template.setAttribute("firstField", fields.get(0).getName());
 		}
 		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/configuration/"+table.getName(), "modify"+CodeUtils.toCamelCase(table.getName())+".html");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/"+cybertables.getModuleName()+"/"+table.getName(), "modify"+CodeUtils.toCamelCase(table.getName())+".html");
 	}
 
 	private void generateSearchView(Table table){
@@ -212,15 +235,16 @@ public class TableViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("searchView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
-		template.setAttribute("backURL", table.getLabelTable()?Cybertables.settingsURL:Cybertables.tableNamespace);
+		template.setAttribute("backURL", table.getLabelTable()?cybertables.getModuleName()+"Settings":cybertables.getModuleName());
 		template.setAttribute("columns", getOtherColumns(table));
 		template.setAttribute("filterColumnHeaders", getFilterHeaderColumns(table));
 		template.setAttribute("focusCheck", getFocusCheck(table));
 		template.setAttribute("columnHeaders", getHeaderColumns(table));
+		template.setAttribute("module", cybertables.getModuleName());
 
 		template.setAttribute("excel", table.getLabelTable()?"<div></div>":generateExcelLink(table));
 		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/configuration/"+table.getName(), "search"+CodeUtils.toCamelCase(table.getName())+".html");
+		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/"+cybertables.getModuleName()+"/"+table.getName(), "search"+CodeUtils.toCamelCase(table.getName())+".html");
 	}
 	
 
@@ -249,6 +273,8 @@ public class TableViewGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.tableCodePath+"views");
 		StringTemplate template = templateGroup.getInstanceOf("excel");
 		template.setAttribute("tableName", table.getName());
+		template.setAttribute("module", cybertables.getModuleName());
+
 		return template.toString();
 	}
 	
@@ -585,6 +611,8 @@ public class TableViewGenerator {
 				linkTemplate.setAttribute("option", table.getSingletonTable()?"set":"search");
 				linkTemplate.setAttribute("tableName",table.getName());
 				linkTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+				linkTemplate.setAttribute("module", cybertables.getModuleName());
+				
 				links+=linkTemplate.toString()+"\n";
 		}	
 		

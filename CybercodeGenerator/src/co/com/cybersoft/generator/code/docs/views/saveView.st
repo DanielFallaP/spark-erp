@@ -187,7 +187,7 @@
 
     </head>
     <body onload="checkExceptions();setFocus();">
-    	<div th:include="normal/layout :: header" ></div>
+    	<div th:include="normal/layout$module$ :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
 		        <form id="header-form" th:object="\${$docName$Info}" method="post" >
@@ -280,6 +280,6 @@
             <div th:if='\${$docName$ValidationException}' class="alert alert-error" th:text="#{label.validationError}">
             </div>
 	    </div>
-		<div class="container-fluid" th:include="normal/layout :: footer"></div>
+		<div class="container-fluid" th:include="normal/layout$module$ :: footer"></div>
     </body>
 </html>

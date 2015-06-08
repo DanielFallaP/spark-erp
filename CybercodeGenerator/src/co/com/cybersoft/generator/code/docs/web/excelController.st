@@ -1,4 +1,4 @@
-package co.com.cybersoft.docs.web.controller.$docName$;
+package co.com.cybersoft.$module$.docs.web.controller.$docName$;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import co.com.cybersoft.docs.persistence.domain.$upperDocName$;
-import co.com.cybersoft.docs.persistence.domain.$upperDocName$Body;
+import co.com.cybersoft.$module$.docs.persistence.domain.$upperDocName$;
+import co.com.cybersoft.$module$.docs.persistence.domain.$upperDocName$Body;
 import co.com.cybersoft.man.services.excel.ReportingService;
-import co.com.cybersoft.tables.web.controller.exchangeRate.ExchangeRateModificationController;
+import co.com.cybersoft.$module$.tables.web.controller.exchangeRate.ExchangeRateModificationController;
 
 @Controller
 @RequestMapping("/docs/$docName$/export")

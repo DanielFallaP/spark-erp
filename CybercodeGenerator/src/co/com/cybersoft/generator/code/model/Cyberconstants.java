@@ -14,9 +14,9 @@ public interface Cyberconstants {
 	
 	public final static String utilCodePath="src/co/com/cybersoft/generator/code/util/";
 	
-	public final static String targetTableClassPath="build/java/co/com/cybersoft/tables";
+	public final static String targetTableClassPath="build/java/co/com/cybersoft/{{module}}/tables";
 	
-	public final static String targetDocumentClassPath="build/java/co/com/cybersoft/docs";
+	public final static String targetDocumentClassPath="build/java/co/com/cybersoft/purchase/docs";
 	
 	public final static String rootClassPath="build/java/co/com/cybersoft/";
 	
@@ -46,7 +46,6 @@ public interface Cyberconstants {
 	
 	public static final String docNamespace = "docs";
 
-	public static final String settingsURL = "settings";
 	
 	public static final int headerColumnsPerRow=3;
 	

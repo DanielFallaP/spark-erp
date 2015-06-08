@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import co.com.cybersoft.man.services.item.ItemManService;
-import co.com.cybersoft.tables.web.domain.itemPurchaseHistory.ItemPurchaseHistoryInfo;
+import co.com.cybersoft.purchase.tables.web.domain.itemPurchaseHistory.ItemPurchaseHistoryInfo;
 
 @Controller
 public class ItemCustomController {

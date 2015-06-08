@@ -35,15 +35,15 @@
 	  </script>
 </head>
 <body onload="setFocus()">
-	<div th:include="normal/layout :: header" ></div>
+	<div th:include="normal/layout$module$ :: header" ></div>
 	<div class="container-fluid">	
 			<div class="hero-unit">
 				<table class="inheritBackground" align="center">
-						<!-- div><a id="language" th:href="@{/configuration/language}" th:text="#{label.languageConfiguration}"></a> </div -->
+						<!-- div><a id="language" th:href="@{/$module$/language}" th:text="#{label.languageConfiguration}"></a> </div -->
 					$links$
 				</table>
 			</div>
 	</div>
-	<div class="container-fluid" th:include="normal/layout :: footer"></div>
+	<div class="container-fluid" th:include="normal/layout$module$ :: footer"></div>
 </body>
 </html>

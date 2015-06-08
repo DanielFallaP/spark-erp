@@ -1,4 +1,4 @@
-package co.com.cybersoft.tables.web.controller.$tableName$;
+package co.com.cybersoft.$module$.tables.web.controller.$tableName$;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import co.com.cybersoft.man.services.excel.ReportingService;
-import co.com.cybersoft.tables.persistence.domain.$entityName$;
+import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;
 
 @Controller
-@RequestMapping("/configuration/$tableName$/export")
+@RequestMapping("/$module$/$tableName$/export")
 public class $entityName$ExcelController {
 	private static final Logger LOG=LoggerFactory.getLogger($entityName$ModificationController.class);
 

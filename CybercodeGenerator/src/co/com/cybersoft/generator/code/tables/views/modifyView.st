@@ -74,11 +74,11 @@
     
     </head>
     <body onload="setFocus()">
-    	<div th:include="normal/layout :: header" ></div>
+    	<div th:include="normal/layout$module$ :: header" ></div>
     	<div class="container-fluid">	
 			<div class="row-fluid">
 		        <form th:object="\${$tableName$Info}" method="post">
-		        	<div id="back"><a th:text="#{label.back}" th:href="@{/configuration/$tableName$/search$entityName$}"></a></div>
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/$module$/$tableName$/search$entityName$}"></a></div>
 		        	<div align="center">
 		        	<h3 th:text="#{label.$tableName$ModificationTitle}"></h3>
 		        	<br/>
@@ -98,6 +98,6 @@
             <div th:if='\${$tableName$ValidationException}' class="alert alert-error" th:text="#{label.validationError}">
             </div>
 	    </div>
-		<div class="container-fluid" th:include="normal/layout :: footer"></div>    
+		<div class="container-fluid" th:include="normal/layout$module$ :: footer"></div>    
     </body>
 </html>

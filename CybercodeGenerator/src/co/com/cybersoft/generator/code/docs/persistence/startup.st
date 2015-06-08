@@ -1,4 +1,4 @@
-package co.com.cybersoft.docs.persistence.services.startup;
+package co.com.cybersoft.$module$.docs.persistence.services.startup;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;

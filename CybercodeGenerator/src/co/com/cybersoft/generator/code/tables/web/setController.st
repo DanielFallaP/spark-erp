@@ -1,4 +1,4 @@
-package co.com.cybersoft.tables.web.controller.$tableName$;
+package co.com.cybersoft.$module$.tables.web.controller.$tableName$;
 
 import java.util.Date;
 import java.util.List;
@@ -24,12 +24,12 @@ import org.springframework.validation.ObjectError;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
-import co.com.cybersoft.tables.core.domain.$entityName$Details;
-import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;
-import co.com.cybersoft.tables.events.$tableName$.$entityName$DetailsEvent;
-import co.com.cybersoft.tables.events.$tableName$.$entityName$ModificationEvent;
-import co.com.cybersoft.tables.events.$tableName$.Request$entityName$DetailsEvent;
-import co.com.cybersoft.tables.web.domain.$tableName$.$entityName$Info;
+import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;
+import co.com.cybersoft.$module$.tables.core.services.$tableName$.$entityName$Service;
+import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$DetailsEvent;
+import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$ModificationEvent;
+import co.com.cybersoft.$module$.tables.events.$tableName$.Request$entityName$DetailsEvent;
+import co.com.cybersoft.$module$.tables.web.domain.$tableName$.$entityName$Info;
 
 $referenceServicesImports$
 
@@ -39,7 +39,7 @@ $referenceServicesImports$
  *
  */
 @Controller
-@RequestMapping("/configuration/$tableName$/set$entityName$")
+@RequestMapping("/$module$/$tableName$/set$entityName$")
 public class Set$entityName$Controller {
 	private static final Logger LOG=LoggerFactory.getLogger(Set$entityName$Controller.class);
 	
@@ -51,7 +51,7 @@ public class Set$entityName$Controller {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String modification(){
-		return "/configuration/$tableName$/set$entityName$";
+		return "/$module$/$tableName$/set$entityName$";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -92,12 +92,12 @@ public class Set$entityName$Controller {
 			modelAndView.addObject("$tableName$Info", $tableName$Info);
 			modelAndView.addObject("$tableName$ValidationException",true);
 			modelAndView = setErrors(modelAndView, (BindException) exception, $tableName$Info);
-			modelAndView.setViewName("/configuration/$tableName$/set$entityName$");
+			modelAndView.setViewName("/$module$/$tableName$/set$entityName$");
 		}
 		else{
 			modelAndView.addObject("$tableName$Info", req.getSession().getAttribute("$tableName$Info"));
 			modelAndView.addObject("$tableName$ModificationException",true);
-			modelAndView.setViewName("/configuration/$tableName$/set$entityName$");
+			modelAndView.setViewName("/$module$/$tableName$/set$entityName$");
 		}
 		return modelAndView;
 	}

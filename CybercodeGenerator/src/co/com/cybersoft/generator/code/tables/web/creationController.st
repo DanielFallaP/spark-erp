@@ -1,4 +1,4 @@
-package co.com.cybersoft.tables.web.controller.$tableName$;
+package co.com.cybersoft.$module$.tables.web.controller.$tableName$;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -25,12 +25,12 @@ import org.springframework.validation.ObjectError;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
-import co.com.cybersoft.tables.core.domain.$entityName$Details;
-import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;
-import co.com.cybersoft.tables.events.$tableName$.Create$entityName$Event;
-import co.com.cybersoft.tables.web.domain.$tableName$.$entityName$Info;
-import co.com.cybersoft.tables.events.$tableName$.$entityName$DetailsEvent;
-import co.com.cybersoft.tables.events.$tableName$.Request$entityName$DetailsEvent;
+import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;
+import co.com.cybersoft.$module$.tables.core.services.$tableName$.$entityName$Service;
+import co.com.cybersoft.$module$.tables.events.$tableName$.Create$entityName$Event;
+import co.com.cybersoft.$module$.tables.web.domain.$tableName$.$entityName$Info;
+import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$DetailsEvent;
+import co.com.cybersoft.$module$.tables.events.$tableName$.Request$entityName$DetailsEvent;
 
 
 $referenceServicesImports$
@@ -41,7 +41,7 @@ $referenceServicesImports$
  *
  */
 @Controller
-@RequestMapping("/configuration/$tableName$/create$entityName$/{from}")
+@RequestMapping("/$module$/$tableName$/create$entityName$/{from}")
 public class $entityName$CreationController {
 
 	private static final Logger LOG = LoggerFactory.getLogger($entityName$CreationController.class);
@@ -53,7 +53,7 @@ public class $entityName$CreationController {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String $tableName$Creation() throws Exception {
-		return "/configuration/$tableName$/create$entityName$";
+		return "/$module$/$tableName$/create$entityName$";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -78,7 +78,7 @@ public class $entityName$CreationController {
 		$setDefaults$
 		
 		model.addAttribute("$tableName$Info", $tableName$Info);
-		return "/configuration/$tableName$/create$entityName$";
+		return "/$module$/$tableName$/create$entityName$";
 	}
 	
 	private $entityName$Details create$entityName$Details($entityName$Info $tableName$Info){
@@ -125,12 +125,12 @@ public class $entityName$CreationController {
 			modelAndView.addObject("$tableName$Info", $tableName$Info);
 			modelAndView.addObject("$tableName$ValidationException",true);
 			modelAndView = setErrors(modelAndView, (BindException) exception, $tableName$Info);
-			modelAndView.setViewName("/configuration/$tableName$/create$entityName$");
+			modelAndView.setViewName("/$module$/$tableName$/create$entityName$");
 		}
 		else{
 			modelAndView.addObject("$tableName$Info", req.getSession().getAttribute("$tableName$Info"));
 			modelAndView.addObject("$tableName$CreateException",true);
-			modelAndView.setViewName("/configuration/$tableName$/create$entityName$");
+			modelAndView.setViewName("/$module$/$tableName$/create$entityName$");
 		}
 		return modelAndView;
 	}

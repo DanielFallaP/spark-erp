@@ -3,7 +3,7 @@ package co.com.cybersoft.man.services.quotation;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.com.cybersoft.docs.web.domain.quotation.QuotationBodyInfo;
+import co.com.cybersoft.purchase.docs.web.domain.quotation.QuotationBodyInfo;
 
 public class RequiredItem {
 	private String itemCode;

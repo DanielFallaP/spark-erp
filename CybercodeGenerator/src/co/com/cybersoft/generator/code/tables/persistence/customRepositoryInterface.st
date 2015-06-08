@@ -1,12 +1,12 @@
-package co.com.cybersoft.tables.persistence.repository.$tableName$;
+package co.com.cybersoft.$module$.tables.persistence.repository.$tableName$;
 
 import java.util.List;
 
-import co.com.cybersoft.tables.persistence.domain.$entityName$;
+import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;
 import co.com.cybersoft.util.EmbeddedField;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import co.com.cybersoft.tables.web.domain.$tableName$.$entityName$FilterInfo;
+import co.com.cybersoft.$module$.tables.web.domain.$tableName$.$entityName$FilterInfo;
 
 
 /**

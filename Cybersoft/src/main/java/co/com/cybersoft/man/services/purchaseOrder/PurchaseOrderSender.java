@@ -6,15 +6,14 @@ import java.io.InputStream;
 import javax.mail.Transport;
 
 import org.antlr.stringtemplate.StringTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import co.com.cybersoft.docs.persistence.domain.PurchaseOrder;
-import co.com.cybersoft.docs.persistence.domain.PurchaseOrderBody;
-import co.com.cybersoft.docs.web.domain.purchaseOrder.PurchaseOrderInfo;
 import co.com.cybersoft.man.services.excel.ReportingService;
-import co.com.cybersoft.tables.persistence.domain.ThirdParty;
-import co.com.cybersoft.tables.persistence.domain.User;
+import co.com.cybersoft.purchase.docs.persistence.domain.PurchaseOrder;
+import co.com.cybersoft.purchase.docs.persistence.domain.PurchaseOrderBody;
+import co.com.cybersoft.purchase.docs.web.domain.purchaseOrder.PurchaseOrderInfo;
+import co.com.cybersoft.purchase.tables.persistence.domain.ThirdParty;
+import co.com.cybersoft.purchase.tables.persistence.domain.User;
 import co.com.cybersoft.util.CyberUtils;
 
 /**

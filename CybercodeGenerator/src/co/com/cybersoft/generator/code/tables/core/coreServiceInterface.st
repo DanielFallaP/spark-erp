@@ -1,11 +1,11 @@
-package co.com.cybersoft.tables.core.services.$entityName$;
+package co.com.cybersoft.$module$.tables.core.services.$entityName$;
 
-import co.com.cybersoft.tables.events.$entityName$.$createEvent$;
-import co.com.cybersoft.tables.events.$entityName$.$singleResponseEvent$;
-import co.com.cybersoft.tables.events.$entityName$.$allResponseEvent$;
-import co.com.cybersoft.tables.events.$entityName$.$modifyEvent$;
-import co.com.cybersoft.tables.events.$entityName$.$singleRequestEvent$;
-import co.com.cybersoft.tables.events.$entityName$.$allRequestEvent$;
+import co.com.cybersoft.$module$.tables.events.$entityName$.$createEvent$;
+import co.com.cybersoft.$module$.tables.events.$entityName$.$singleResponseEvent$;
+import co.com.cybersoft.$module$.tables.events.$entityName$.$allResponseEvent$;
+import co.com.cybersoft.$module$.tables.events.$entityName$.$modifyEvent$;
+import co.com.cybersoft.$module$.tables.events.$entityName$.$singleRequestEvent$;
+import co.com.cybersoft.$module$.tables.events.$entityName$.$allRequestEvent$;
 import co.com.cybersoft.util.EmbeddedField;
 
 

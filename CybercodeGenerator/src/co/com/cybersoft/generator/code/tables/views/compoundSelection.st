@@ -7,7 +7,7 @@
 	  	 		   	if (path[1].localeCompare("configuration")!=0){
 	  	 		   			prefix="/"+path[1];	
 	  	 		   	}
-	  	 		   	var url=prefix+"/configuration/$tableName$/retrieve$compoundReference$/retrieve?$field$="+$field$;
+	  	 		   	var url=prefix+"/$module$/$tableName$/retrieve$compoundReference$/retrieve?$field$="+$field$;
 	  	 		 \$.ajax({
 		  	 		  url: url,
 		  	 		  beforeSend: function(xhr) {

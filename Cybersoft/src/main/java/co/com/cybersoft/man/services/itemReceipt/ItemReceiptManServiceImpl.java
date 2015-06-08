@@ -8,13 +8,13 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import co.com.cybersoft.docs.persistence.domain.PurchaseOrder;
-import co.com.cybersoft.docs.persistence.domain.PurchaseOrderBody;
-import co.com.cybersoft.docs.persistence.repository.purchaseOrder.PurchaseOrderRepository;
-import co.com.cybersoft.docs.web.domain.itemReceipt.ItemReceiptBodyInfo;
-import co.com.cybersoft.docs.web.domain.itemReceipt.ItemReceiptInfo;
-import co.com.cybersoft.tables.persistence.domain.StockBalance;
-import co.com.cybersoft.tables.persistence.repository.stockBalance.StockBalanceRepository;
+import co.com.cybersoft.purchase.docs.persistence.domain.PurchaseOrder;
+import co.com.cybersoft.purchase.docs.persistence.domain.PurchaseOrderBody;
+import co.com.cybersoft.purchase.docs.persistence.repository.purchaseOrder.PurchaseOrderRepository;
+import co.com.cybersoft.purchase.docs.web.domain.itemReceipt.ItemReceiptBodyInfo;
+import co.com.cybersoft.purchase.docs.web.domain.itemReceipt.ItemReceiptInfo;
+import co.com.cybersoft.purchase.tables.persistence.domain.StockBalance;
+import co.com.cybersoft.purchase.tables.persistence.repository.stockBalance.StockBalanceRepository;
 
 public class ItemReceiptManServiceImpl implements ItemReceiptManService{
 	

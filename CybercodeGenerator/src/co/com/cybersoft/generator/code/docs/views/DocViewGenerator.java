@@ -65,7 +65,8 @@ public class DocViewGenerator {
 		if (!fields.isEmpty()){
 			template.setAttribute("firstField", fields.get(0).getName());
 		}
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/docs/"+document.getName(), "save"+CodeUtils.toCamelCase(document.getName())+".html");
 	}
 
@@ -127,6 +128,8 @@ public class DocViewGenerator {
 			}
 				
 			template.setAttribute("docName", document.getName());
+			template.setAttribute("module", "purchase");
+
 			addition=template.toString();
 		}
 		else if (document.getOriginalDeletion()!=null && !document.getOriginalDeletion()){

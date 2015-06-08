@@ -2,13 +2,13 @@ package co.com.cybersoft.man.services.purchaseOrder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import co.com.cybersoft.docs.persistence.repository.purchaseOrder.PurchaseOrderRepository;
-import co.com.cybersoft.docs.web.domain.purchaseOrder.PurchaseOrderInfo;
+import co.com.cybersoft.purchase.docs.persistence.repository.purchaseOrder.PurchaseOrderRepository;
+import co.com.cybersoft.purchase.docs.web.domain.purchaseOrder.PurchaseOrderInfo;
 import co.com.cybersoft.man.services.excel.ReportingService;
-import co.com.cybersoft.tables.persistence.domain.ThirdParty;
-import co.com.cybersoft.tables.persistence.domain.User;
-import co.com.cybersoft.tables.persistence.repository.thirdParty.ThirdPartyRepository;
-import co.com.cybersoft.tables.persistence.repository.user.UserRepository;
+import co.com.cybersoft.purchase.tables.persistence.domain.ThirdParty;
+import co.com.cybersoft.purchase.tables.persistence.domain.User;
+import co.com.cybersoft.purchase.tables.persistence.repository.thirdParty.ThirdPartyRepository;
+import co.com.cybersoft.purchase.tables.persistence.repository.user.UserRepository;
 
 public class PurchaseOrderManServiceImpl implements PurchaseOrderManService{
 

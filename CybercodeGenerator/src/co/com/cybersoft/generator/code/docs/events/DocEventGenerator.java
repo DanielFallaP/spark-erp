@@ -40,7 +40,8 @@ public class DocEventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("saveEvent");
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), "Save"+CodeUtils.toCamelCase(document.getName())+"Event.java");
 	}
 
@@ -49,7 +50,8 @@ public class DocEventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("responseDocumentEvent");
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"Event.java");		
 	}
 
@@ -58,7 +60,8 @@ public class DocEventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("requestDocumentEvent");
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), "Request"+CodeUtils.toCamelCase(document.getName())+"Event.java");
 	}
 
@@ -67,7 +70,8 @@ public class DocEventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("responsePageEvent");
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"PageEvent.java");
 	}
 
@@ -76,7 +80,8 @@ public class DocEventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("requestPageEvent");
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/events/"+document.getName(), "Request"+CodeUtils.toCamelCase(document.getName())+"PageEvent.java");
 	}
 }

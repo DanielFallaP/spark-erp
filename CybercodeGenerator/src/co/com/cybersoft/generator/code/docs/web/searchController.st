@@ -1,4 +1,4 @@
-package co.com.cybersoft.docs.web.controller.$docName$;
+package co.com.cybersoft.$module$.docs.web.controller.$docName$;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
-import co.com.cybersoft.docs.events.$docName$.Request$upperDocName$PageEvent;
-import co.com.cybersoft.docs.events.$docName$.$upperDocName$PageEvent;
-import co.com.cybersoft.docs.persistence.domain.$upperDocName$;
-import co.com.cybersoft.docs.persistence.services.$docName$.$upperDocName$PersistenceService;
-import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$FilterInfo;
+import co.com.cybersoft.$module$.docs.events.$docName$.Request$upperDocName$PageEvent;
+import co.com.cybersoft.$module$.docs.events.$docName$.$upperDocName$PageEvent;
+import co.com.cybersoft.$module$.docs.persistence.domain.$upperDocName$;
+import co.com.cybersoft.$module$.docs.persistence.services.$docName$.$upperDocName$PersistenceService;
+import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$FilterInfo;
 
 import co.com.cybersoft.util.PageWrapper;
 
@@ -106,7 +106,7 @@ public class $upperDocName$SearchController {
 				pageEvent = new Request$upperDocName$PageEvent(pageRequest,filter);			}
 		}
 		$upperDocName$PageEvent details = $docName$Service.request$upperDocName$FilterPage(pageEvent);
-		PageWrapper<$upperDocName$> page=new PageWrapper<$upperDocName$>(details.get$upperDocName$Page(),"/configuration/$docName$/search$upperDocName$");
+		PageWrapper<$upperDocName$> page=new PageWrapper<$upperDocName$>(details.get$upperDocName$Page(),"/$module$/$docName$/search$upperDocName$");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("$docName$Field"));

@@ -1,4 +1,4 @@
-package co.com.cybersoft.tables.web.domain.$tableName$;
+package co.com.cybersoft.$module$.tables.web.domain.$tableName$;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;

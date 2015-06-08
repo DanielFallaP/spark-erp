@@ -1,0 +1,33 @@
+{ 
+	"tables":[
+		 {	
+			"labelTable":"true",		 	
+			"name":"idType",
+			"spanishName":"Tipo de identificación",
+			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"idType", "spanishName":"Tipo de identificación", "type":"String", "unique":"true", "labelField":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
+			"labelTable":"true",		 	
+			"name":"sex",
+			"spanishName":"Sexo",
+			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"sex", "spanishName":"Sexo", "type":"String", "unique":"true", "labelField":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 },
+		 {	
+			"labelTable":"true",		 	
+			"name":"maritalStatus",
+			"spanishName":"Estado civil",
+			"fields":[
+						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
+						{"name":"maritalStatus", "spanishName":"Sexo", "type":"String", "unique":"true", "labelField":"true"},
+						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+					]
+		 }]
+}

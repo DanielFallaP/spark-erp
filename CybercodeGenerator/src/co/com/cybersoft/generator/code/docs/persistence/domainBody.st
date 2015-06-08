@@ -1,5 +1,5 @@
-package co.com.cybersoft.docs.persistence.domain;
-import co.com.cybersoft.tables.persistence.domain.*;
+package co.com.cybersoft.$module$.docs.persistence.domain;
+import co.com.cybersoft.$module$.tables.persistence.domain.*;
 
 import java.util.Date;
 

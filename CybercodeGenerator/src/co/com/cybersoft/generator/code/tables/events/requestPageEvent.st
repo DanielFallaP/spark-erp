@@ -1,7 +1,7 @@
-package co.com.cybersoft.tables.events.$tableName$;
+package co.com.cybersoft.$module$.tables.events.$tableName$;
 
 import org.springframework.data.domain.Pageable;
-import co.com.cybersoft.tables.web.domain.$tableName$.$entityName$FilterInfo;
+import co.com.cybersoft.$module$.tables.web.domain.$tableName$.$entityName$FilterInfo;
 
 /**
  * Event class for $entityName$

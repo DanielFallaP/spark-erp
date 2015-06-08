@@ -9,10 +9,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import co.com.cybersoft.tables.persistence.domain.CustomerTenancy;
-import co.com.cybersoft.tables.persistence.domain.ExchangeRate;
-import co.com.cybersoft.tables.persistence.repository.customerTenancy.CustomerTenancyRepository;
-import co.com.cybersoft.tables.persistence.repository.exchangeRate.ExchangeRateRepository;
+import co.com.cybersoft.purchase.tables.persistence.domain.CustomerTenancy;
+import co.com.cybersoft.purchase.tables.persistence.domain.ExchangeRate;
+import co.com.cybersoft.purchase.tables.persistence.repository.customerTenancy.CustomerTenancyRepository;
+import co.com.cybersoft.purchase.tables.persistence.repository.exchangeRate.ExchangeRateRepository;
 
 public class UpdateTodaysRate implements Runnable{
 

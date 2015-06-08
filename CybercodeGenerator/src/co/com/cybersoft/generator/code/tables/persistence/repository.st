@@ -1,8 +1,8 @@
-package co.com.cybersoft.tables.persistence.repository.$tableName$;
+package co.com.cybersoft.$module$.tables.persistence.repository.$tableName$;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import co.com.cybersoft.tables.persistence.domain.$entityName$;
+import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;
 import java.util.Date;
 
 /**

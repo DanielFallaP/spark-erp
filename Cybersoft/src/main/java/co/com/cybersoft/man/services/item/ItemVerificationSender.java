@@ -9,8 +9,8 @@ import org.antlr.stringtemplate.StringTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import co.com.cybersoft.docs.web.controller.requisition.RequisitionController;
-import co.com.cybersoft.tables.persistence.domain.User;
+import co.com.cybersoft.purchase.docs.web.controller.requisition.RequisitionController;
+import co.com.cybersoft.purchase.tables.persistence.domain.User;
 import co.com.cybersoft.util.CyberUtils;
 
 /**

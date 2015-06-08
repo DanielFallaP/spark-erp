@@ -10,11 +10,11 @@ import java.util.Date;
 public class Supernova {
 
 	public static void main(String[] args) {
-//		TableCodeGenerator tableCodeGenerator = new TableCodeGenerator();
+		TableCodeGenerator tableCodeGenerator = new TableCodeGenerator();
 		DocCodeGenerator docCodeGenerator = new DocCodeGenerator();
 		ConfigCodeGenerator configCodeGenerator = new ConfigCodeGenerator();
 		try {
-//			tableCodeGenerator.generate();
+			tableCodeGenerator.generate();
 			configCodeGenerator.generate();
 			docCodeGenerator.generate();
 			System.out.println("");

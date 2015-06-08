@@ -37,7 +37,7 @@
 	 </script>
 </head>
 <body onload="setFocus()">
-	<div th:include="normal/layout :: header" ></div>
+	<div th:include="normal/layout$module$ :: header" ></div>
 	<div class="container-fluid">	
 			<div class="hero-unit">
 				<table class="inheritBackground" align="center">
@@ -45,6 +45,6 @@
 				</table>
 			</div>
 	</div>
-	<div class="container-fluid" th:include="normal/layout :: footer"></div>
+	<div class="container-fluid" th:include="normal/layout$module$ :: footer"></div>
 </body>
 </html>

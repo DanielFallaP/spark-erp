@@ -1,6 +1,6 @@
 package co.com.cybersoft.man.services.item;
 
-import co.com.cybersoft.tables.web.domain.itemPurchaseHistory.ItemPurchaseHistoryInfo;
+import co.com.cybersoft.purchase.tables.web.domain.itemPurchaseHistory.ItemPurchaseHistoryInfo;
 
 
 public interface ItemManService {

@@ -1,0 +1,12 @@
+{
+	"modules":[
+		{
+			"name":"purchase",
+			"fileName":"Cybertables"
+		},
+		{
+			"name":"payroll",
+			"fileName":"Cyberpayroll2"
+		}
+	]
+}

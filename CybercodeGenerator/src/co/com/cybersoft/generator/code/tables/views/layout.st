@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	<meta charset="UTF-8" />
+	<body>
+		<div th:fragment="header">
+		    <div class="navbar navbar-inverse navbar-fixed-top">
+		        <div class="navbar-inner">
+		            <div class="container-fluid">
+					<form hidden="" id="navBar" th:action="@{/logout}" method="post">
+						<input id="logoutURL" type="hidden" th:value="@{/logout}"/>
+					</form>
+		                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                </a>
+		                <a class="brand" th:href="@{/}" ><img alt="" th:src="@{/resources/img/spark.png}" /></a>
+			                <div class="nav-collapse collapse">
+			                    <p class="navbar-text pull-right">
+			
+			                    </p>
+			                    <ul class="nav" id="navigationBar">
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisition}" th:text="#{label.requisitionsOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisitionDistribution}" th:text="#{label.requisitionDistributionOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchQuotation}" th:text="#{label.quotationOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.purchaseOrders}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchItemReceipt}" th:text="#{label.itemReceiptOrder}"></a></li>
+<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/purchaseOrderOtherValue}" th:text="#{label.purchaseOrderOtherValueOption}"></a></li> -->
+			                        <li sec:authorize-url="/$module$"><a th:href="@{/$module$}" th:text="#{label.navbarConfiguration}"></a></li>
+			                        <li sec:authorize-url="/$module$Settings"><a th:href="@{/$module$Settings}" th:text="#{label.settingsOption}"></a></li>
+			                        <li sec:authorize-url="/preferences"><a th:href="@{/preferences}" th:text="#{label.languageOption}"></a></li>
+			                        <li><a id="about-ajax-popup" class="about-ajax-popup" th:href="@{/about}" th:text="#{label.aboutOption}"></a></li>
+			                        <li><a href=""><img onclick="var url=\$('#logoutURL').val();\$.ajax({type: 'POST',url: url});" th:src="@{/resources/img/logout.png}"/></a></li>
+			                    </ul>
+			                </div> <!--/.nav-collapse -->
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		
+	<div th:fragment="footer">
+	    <footer>
+	        <p>&nbsp;&nbsp;&nbsp;Copyright &copy; Cybersystems 2015</p>
+	    </footer>
+	</div>
+	
+	<div th:fragment="about" id="small-dialog" class="zoom-anim-dialog mfp-hide">
+			<h1 align="center"><img alt="" th:src="@{/resources/img/cybersystems.jpg}"/></h1>
+			<p>Spark build: v1.0.0</p>
+			<p>Spark is a registered trademark of Cybersystems Inc. All Rights Reserved.</p>
+	</div>	
+	</body>
+</html>

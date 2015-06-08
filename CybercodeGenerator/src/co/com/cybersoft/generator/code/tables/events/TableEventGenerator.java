@@ -11,7 +11,10 @@ import co.com.cybersoft.generator.code.util.CodeUtils;
 
 public class TableEventGenerator {
 	
+	private Cybertables cybersoft;
+	
 	public void generate(Cybertables cybersoft){
+		this.cybersoft=cybersoft;
 		List<Table> tables = cybersoft.getTables();
 		for (Table table : tables) {
 			generateRequestCreateEvent(table);
@@ -25,9 +28,11 @@ public class TableEventGenerator {
 	
 	private String generateResponsePageImports(Table table){
 		String imports="";
-			StringTemplate template = new StringTemplate("import co.com.cybersoft.tables.core.domain.$entityName$Details;\n"+
-														 "import co.com.cybersoft.tables.persistence.domain.$entityName$;\n");
+			StringTemplate template = new StringTemplate("import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;\n"+
+														 "import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;\n");
 			template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+			template.setAttribute("module", cybersoft.getModuleName());
+
 			imports+=template.toString();
 			imports+="import java.util.List;";
 		return imports;
@@ -38,8 +43,9 @@ public class TableEventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("requestCreateEvent");
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/events/"+table.getName(), "Create"+CodeUtils.toCamelCase(table.getName())+"Event.java");
+		template.setAttribute("module", cybersoft.getModuleName());
+
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/events/"+table.getName()).replace("{{module}}", cybersoft.getModuleName()), "Create"+CodeUtils.toCamelCase(table.getName())+"Event.java");
 	}
 	
 	private void generateDetailsEvent(Table table){
@@ -47,7 +53,9 @@ public class TableEventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("requestDetailsEvent");
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/events/"+table.getName(), "Request"+CodeUtils.toCamelCase(table.getName())+"DetailsEvent.java");
+		template.setAttribute("module", cybersoft.getModuleName());
+		
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/events/"+table.getName()).replace("{{module}}", cybersoft.getModuleName()), "Request"+CodeUtils.toCamelCase(table.getName())+"DetailsEvent.java");
 	}
 	
 	private void generateResponseDetailsEvent(Table table){
@@ -55,8 +63,9 @@ public class TableEventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("responseDetailsEvent");
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/events/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"DetailsEvent.java");
+		template.setAttribute("module", cybersoft.getModuleName());
+
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/events/"+table.getName()).replace("{{module}}", cybersoft.getModuleName()), CodeUtils.toCamelCase(table.getName())+"DetailsEvent.java");
 	}
 	
 	private void generatePageEvent(Table table){
@@ -64,8 +73,9 @@ public class TableEventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("requestPageEvent");
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/events/"+table.getName(), "Request"+CodeUtils.toCamelCase(table.getName())+"PageEvent.java");
+		template.setAttribute("module", cybersoft.getModuleName());
+
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/events/"+table.getName()).replace("{{module}}", cybersoft.getModuleName()), "Request"+CodeUtils.toCamelCase(table.getName())+"PageEvent.java");
 	}
 	
 	private void generateResponsePageEvent(Table table){
@@ -77,8 +87,9 @@ public class TableEventGenerator {
 		template.setAttribute("referencesDeclarations", generateResponsePageReferencesDecl(table));
 		template.setAttribute("referencesConstructors", generateResponsePageReferencesConstructors(table));
 		template.setAttribute("referencesGettersSetters", generateResponsePageGetter(table));
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/events/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"PageEvent.java");
+		template.setAttribute("module", cybersoft.getModuleName());
+
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/events/"+table.getName()).replace("{{module}}", cybersoft.getModuleName()), CodeUtils.toCamelCase(table.getName())+"PageEvent.java");
 
 	}
 	
@@ -125,8 +136,9 @@ public class TableEventGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("requestModificationEvent");
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/events/"+table.getName(), CodeUtils.toCamelCase(table.getName())+"ModificationEvent.java");
+		template.setAttribute("module", cybersoft.getModuleName());
+
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/events/"+table.getName()).replace("{{module}}", cybersoft.getModuleName()), CodeUtils.toCamelCase(table.getName())+"ModificationEvent.java");
 
 	}
 }

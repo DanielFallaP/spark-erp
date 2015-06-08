@@ -45,7 +45,8 @@ public class DocPersistenceGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("persistence",Cybertables.documentCodePath+"persistence");
 		StringTemplate template = templateGroup.getInstanceOf("startup");
 		template.setAttribute("checkAndStart", generateSequences());
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/startup", "SequenceServiceImpl.java");
 	}
 	
@@ -109,7 +110,7 @@ public class DocPersistenceGenerator {
 			
 			template.setAttribute("compoundIndex", subTemplate.toString());
 		}
-		
+		template.setAttribute("module", "purchase");
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/domain", CodeUtils.toCamelCase(document.getName())+"Body.java");
 	}
 
@@ -166,7 +167,8 @@ public class DocPersistenceGenerator {
 				StringTemplate template = templateGroup.getInstanceOf("repository");
 				template.setAttribute("upperDocName",CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("docName", document.getName());
-				
+				template.setAttribute("module", "purchase");
+
 				CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/repository/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"Repository.java");
 				
 				//Custom repository interface generation
@@ -174,7 +176,8 @@ public class DocPersistenceGenerator {
 				template.setAttribute("upperDocName",CodeUtils.toCamelCase(document.getName()));
 				template.setAttribute("docName", document.getName());
 				
-				
+				template.setAttribute("module", "purchase");
+
 				CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/repository/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"CustomRepo.java");
 				
 				//Custom repository implementation generation
@@ -183,7 +186,8 @@ public class DocPersistenceGenerator {
 				template.setAttribute("docName", document.getName());
 				template.setAttribute("rowsPerSearch", Cyberconstants.rowsPerSearch);
 				template.setAttribute("fieldCriteria", getFieldCriteria(document));
-				
+				template.setAttribute("module", "purchase");
+
 				CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/repository/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"CustomRepoImpl.java");
 	}
 
@@ -201,6 +205,7 @@ public class DocPersistenceGenerator {
 		template.setAttribute("getDocReference", generateDocReferenceVariable(document));
 		template.setAttribute("docReferenceFields", generateDocReferenceFields(document));
 		template.setAttribute("headerReferences", generateHeaderReferences(document));
+		template.setAttribute("module", "purchase");
 
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"PersistenceServiceImpl.java");
@@ -299,6 +304,7 @@ public class DocPersistenceGenerator {
 			StringTemplate template=templateGroup.getInstanceOf("importDocReference");
 			template.setAttribute("upperRefType", CodeUtils.toCamelCase(referenceField.getDocRefType()));
 			template.setAttribute("refType", referenceField.getDocRefType());
+			template.setAttribute("module", "purchase");
 			imports+=template.toString()+"\n";
 			references.add(referenceField.getDocRefType());
 		}
@@ -309,6 +315,7 @@ public class DocPersistenceGenerator {
 				StringTemplate template = templateGroup.getInstanceOf("referenceImport");
 				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("refType", field.getRefType());
+				template.setAttribute("module", "purchase");
 				imports+=template.toString()+"\n";
 				references.add(field.getRefType());
 			}
@@ -422,7 +429,8 @@ public class DocPersistenceGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("persistenceServiceInterface");
 		template.setAttribute("upperDocName", CodeUtils.toCamelCase(document.getName()));
 		template.setAttribute("docName", document.getName());
-		
+		template.setAttribute("module", "purchase");
+
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/services/"+document.getName(), CodeUtils.toCamelCase(document.getName())+"PersistenceService.java");
 	}
 
@@ -451,7 +459,7 @@ public class DocPersistenceGenerator {
 			
 			template.setAttribute("compoundIndex", subTemplate.toString());
 		}
-		
+		template.setAttribute("module", "purchase");
 		CodeUtils.writeClass(template.toString(), Cybertables.targetDocumentClassPath+"/persistence/domain", CodeUtils.toCamelCase(document.getName())+".java");
 	}
 

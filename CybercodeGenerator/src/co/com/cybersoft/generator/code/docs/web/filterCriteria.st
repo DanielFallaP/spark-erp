@@ -1,6 +1,6 @@
-package co.com.cybersoft.docs.web.domain.$docName$;
+package co.com.cybersoft.$module$.docs.web.domain.$docName$;
 
-import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$FilterInfo;
+import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$FilterInfo;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;

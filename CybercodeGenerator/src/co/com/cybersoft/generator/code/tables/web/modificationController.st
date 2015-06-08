@@ -1,4 +1,4 @@
-package co.com.cybersoft.tables.web.controller.$tableName$;
+package co.com.cybersoft.$module$.tables.web.controller.$tableName$;
 
 import java.util.Date;
 import java.util.List;
@@ -24,12 +24,12 @@ import org.springframework.validation.ObjectError;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
-import co.com.cybersoft.tables.core.domain.$entityName$Details;
-import co.com.cybersoft.tables.core.services.$tableName$.$entityName$Service;
-import co.com.cybersoft.tables.events.$tableName$.$entityName$DetailsEvent;
-import co.com.cybersoft.tables.events.$tableName$.$entityName$ModificationEvent;
-import co.com.cybersoft.tables.events.$tableName$.Request$entityName$DetailsEvent;
-import co.com.cybersoft.tables.web.domain.$tableName$.$entityName$Info;
+import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;
+import co.com.cybersoft.$module$.tables.core.services.$tableName$.$entityName$Service;
+import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$DetailsEvent;
+import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$ModificationEvent;
+import co.com.cybersoft.$module$.tables.events.$tableName$.Request$entityName$DetailsEvent;
+import co.com.cybersoft.$module$.tables.web.domain.$tableName$.$entityName$Info;
 $referenceServicesImports$
 
 /**
@@ -38,7 +38,7 @@ $referenceServicesImports$
  *
  */
 @Controller
-@RequestMapping("/configuration/$tableName$/modify$entityName$/{id}")
+@RequestMapping("/$module$/$tableName$/modify$entityName$/{id}")
 public class $entityName$ModificationController {
 	private static final Logger LOG=LoggerFactory.getLogger($entityName$ModificationController.class);
 	
@@ -50,7 +50,7 @@ public class $entityName$ModificationController {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String modification(){
-		return "/configuration/$tableName$/modify$entityName$";
+		return "/$module$/$tableName$/modify$entityName$";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -63,7 +63,7 @@ public class $entityName$ModificationController {
 		
 		request.getSession().setAttribute("$tableName$Info", $tableName$Info);
 		$tableName$Service.modify$entityName$(new $entityName$ModificationEvent($tableName$Details));
-		return "redirect:/configuration/$tableName$/search$entityName$";
+		return "redirect:/$module$/$tableName$/search$entityName$";
 	}
 	
 	private $entityName$Details create$entityName$Details($entityName$Info $tableName$Info){
@@ -97,12 +97,12 @@ public class $entityName$ModificationController {
 			modelAndView.addObject("$tableName$Info", $tableName$Info);
 			modelAndView.addObject("$tableName$ValidationException",true);
 			modelAndView = setErrors(modelAndView, (BindException) exception, $tableName$Info);
-			modelAndView.setViewName("/configuration/$tableName$/modify$entityName$");
+			modelAndView.setViewName("/$module$/$tableName$/modify$entityName$");
 		}
 		else{
 			modelAndView.addObject("$tableName$Info", req.getSession().getAttribute("$tableName$Info"));
 			modelAndView.addObject("$tableName$ModificationException",true);
-			modelAndView.setViewName("/configuration/$tableName$/modify$entityName$");
+			modelAndView.setViewName("/$module$/$tableName$/modify$entityName$");
 		}
 		return modelAndView;
 	}

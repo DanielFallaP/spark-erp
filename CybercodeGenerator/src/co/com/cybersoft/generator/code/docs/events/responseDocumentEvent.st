@@ -1,6 +1,6 @@
-package co.com.cybersoft.docs.events.$docName$;
+package co.com.cybersoft.$module$.docs.events.$docName$;
 
-import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$Info;
+import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$Info;
 
 
 /**

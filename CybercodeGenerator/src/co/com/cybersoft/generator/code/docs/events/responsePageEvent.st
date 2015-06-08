@@ -1,9 +1,9 @@
-package co.com.cybersoft.docs.events.$docName$;
+package co.com.cybersoft.$module$.docs.events.$docName$;
 
 import org.springframework.data.domain.Page;
 
-import co.com.cybersoft.docs.persistence.domain.$upperDocName$;
-import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$Info;
+import co.com.cybersoft.$module$.docs.persistence.domain.$upperDocName$;
+import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$Info;
 
 import java.util.List;
 

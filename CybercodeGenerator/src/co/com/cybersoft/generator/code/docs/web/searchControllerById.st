@@ -1,4 +1,4 @@
-package co.com.cybersoft.docs.web.controller.$docName$;
+package co.com.cybersoft.$module$.docs.web.controller.$docName$;
 
 import java.io.PrintWriter;
 import java.util.List;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import co.com.cybersoft.docs.events.$docName$.$upperDocName$PageEvent;
-import co.com.cybersoft.docs.persistence.services.$docName$.$upperDocName$PersistenceService;
-import co.com.cybersoft.docs.web.domain.$docName$.$upperDocName$Info;
+import co.com.cybersoft.$module$.docs.events.$docName$.$upperDocName$PageEvent;
+import co.com.cybersoft.$module$.docs.persistence.services.$docName$.$upperDocName$PersistenceService;
+import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$Info;
 import co.com.cybersoft.util.CyberUtils;
 
 @Controller

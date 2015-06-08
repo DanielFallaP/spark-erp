@@ -1,4 +1,4 @@
-package co.com.cybersoft.tables.web.controller.$tableName$;
+package co.com.cybersoft.$module$.tables.web.controller.$tableName$;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.com.cybersoft.tables.web.domain.$tableName$.$entityName$Info;
+import co.com.cybersoft.$module$.tables.web.domain.$tableName$.$entityName$Info;
 
 $referenceServicesImports$
 
@@ -20,7 +20,7 @@ $referenceServicesImports$
  *
  */
 @Controller
-@RequestMapping("/configuration/$tableName$/retrieve$upperFieldName$")
+@RequestMapping("/$module$/$tableName$/retrieve$upperFieldName$")
 public class $entityName$$upperFieldName$Controller {
 
 	$referenceServicesDeclarations$

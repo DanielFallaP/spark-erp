@@ -105,8 +105,9 @@ public class TableCoreGenerator {
 		}
 		template.setAttribute("requestAll", requestDeclarations);
 		template.setAttribute("autocompleteRequest", autocompleteRequests);
-		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/services/"+table.getName(), className+".java");
+		template.setAttribute("module", cybertables.getModuleName());
+			
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/core/services/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), className+".java");
 	}
 	
 	private void generateCoreServiceImplementation(Table table){
@@ -192,8 +193,9 @@ public class TableCoreGenerator {
 		
 		template.setAttribute("requestAll", requestImpl);
 		template.setAttribute("autocompleteRequest", autocompleteRequest);
+		template.setAttribute("module", cybertables.getModuleName());
 		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/services/"+table.getName(), className+"Impl.java");
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/core/services/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), className+"Impl.java");
 	}
 	
 	private void generateCoreDomainClass(Table table){
@@ -217,7 +219,8 @@ public class TableCoreGenerator {
 				template.setAttribute("embeddedReferences", subTemp.toString());
 			}
 		}
+		template.setAttribute("module", cybertables.getModuleName());
 		
-		CodeUtils.writeClass(template.toString(), Cybertables.targetTableClassPath+"/core/domain", CodeUtils.toCamelCase(table.getName())+"Details.java");
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/core/domain").replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"Details.java");
 	}
 }

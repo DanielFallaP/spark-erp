@@ -21,7 +21,7 @@ public class TableDirectoryCleaner {
 																			   "src/main/java/co/com/cybersoft/tables/persistence/repository",
 																			   "src/main/java/co/com/cybersoft/tables/web/controller",
 																			   "src/main/java/co/com/cybersoft/tables/web/domain",
-																			   "src/main/webapp/WEB-INF/views/normal/configuration"));
+																			   "src/main/webapp/WEB-INF/views/normal/purchase"));
 	
 	private final List<String> fileDirectories=new ArrayList<String>(Arrays.asList("src/main/java/co/com/cybersoft/tables/core/domain",
 																			       "src/main/java/co/com/cybersoft/tables/persistence/domain"));
@@ -54,7 +54,7 @@ public class TableDirectoryCleaner {
 	}
 	
 	public void initialClean() throws IOException{
-		File buildDir = new File (Cybertables.targetTableClassPath.split("/")[0]);
+		File buildDir = new File (Cybertables.targetTableClassPath.replace("{{module}}", cybersoft.getModuleName()).split("/")[0]);
 		File[] files = buildDir.listFiles();
 		for (File file : files) {
 			FileUtils.deleteDirectory(file);

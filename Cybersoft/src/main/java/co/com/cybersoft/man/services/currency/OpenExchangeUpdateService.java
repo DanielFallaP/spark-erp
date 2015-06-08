@@ -8,8 +8,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import co.com.cybersoft.tables.persistence.repository.customerTenancy.CustomerTenancyRepository;
-import co.com.cybersoft.tables.persistence.repository.exchangeRate.ExchangeRateRepository;
+import co.com.cybersoft.purchase.tables.persistence.repository.customerTenancy.CustomerTenancyRepository;
+import co.com.cybersoft.purchase.tables.persistence.repository.exchangeRate.ExchangeRateRepository;
 
 public class OpenExchangeUpdateService implements CurrencyUpdateService{
 
