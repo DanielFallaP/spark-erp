@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.springframework.beans.BeanUtils;
 import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;
-
+$imports$
 
 /**
  * 

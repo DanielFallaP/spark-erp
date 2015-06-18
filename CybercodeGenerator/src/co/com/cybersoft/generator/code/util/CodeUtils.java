@@ -25,6 +25,15 @@ import co.com.cybersoft.generator.code.model.Table;
 
 public class CodeUtils {
 	
+	public static List<Table> allTables;
+	
+	public static String getTableModule(String tableName){
+		for (Table table : allTables) {
+			if (table.getName().equals(tableName))
+				return table.getModule();
+		}
+		return null;
+	}
 	
 	public static String toCamelCase(String name){
 		Character character= name.charAt(0);

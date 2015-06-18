@@ -71,6 +71,8 @@ public class ConfigGenerator {
 		List<Module> modules = cybermodules.getModules();
 		
 		String modulesString="";
+		String moduleControllers="";
+		
 		for (Module module : modules) {
 			Cybertables cybertables = mapper.readValue(new InputStreamReader(new FileInputStream(module.getFileName()+".json"), "UTF8"), Cybertables.class);
 			cybertables.setModuleName(module.getName());
@@ -78,9 +80,15 @@ public class ConfigGenerator {
 			StringTemplate modTemplate = new StringTemplate("registry.addViewController(\"/$module$\").setViewName(\"$module$\");registry.addViewController(\"/$module$Settings\").setViewName(\"$module$Settings\");");
 			modTemplate.setAttribute("module", module.getName());
 			modulesString+=modTemplate.toString();
+			
+			StringTemplate moduleControllersTemp = new StringTemplate("\"co.com.cybersoft.$module$.tables.web.controller\",\"co.com.cybersoft.$module$.tables.web.domain\",");
+			moduleControllersTemp.setAttribute("module", module.getName());
+			moduleControllers+=moduleControllersTemp.toString();
 		}
 		
 		template.setAttribute("modules", modulesString);
+		template.setAttribute("moduleControllers", moduleControllers);
+		
 		CodeUtils.writeClass(template.toString(), Cybertables.rootClassPath+"/config", "WebConfig.java");
 	}
 
@@ -121,7 +129,6 @@ public class ConfigGenerator {
 		
 		template.setAttribute("imports", imports);
 		template.setAttribute("beanDeclarations", beans);
-		template.setAttribute("module", "purchase");
 		
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.rootClassPath+"/config", "CoreConfig.java");

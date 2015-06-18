@@ -7,6 +7,10 @@
 		{
 			"name":"payroll",
 			"fileName":"Cyberpayroll2"
+		},
+		{
+			"name":"assets",
+			"fileName":"Cyberassets"
 		}
 	]
 }

@@ -20,7 +20,8 @@
 					<span><input class="page-selection" id="_page" type="text" th:value="${page.number}" onblur="resetPageValue()"></input></span>
 			      </li>
 			      <li>
-			        <span th:text="'/ '+${page.totalPages}">1</span>
+			        <span th:if="${page.totalPages} == 0" th:text="'/ '+1">1</span>
+			        <span th:if="${page.totalPages} != 0" th:text="'/ '+${page.totalPages}">1</span>
 			      </li>
 			      <li id="_nextPage" >
 			        <span th:if='${not page.hasNextPage}'>»</span>

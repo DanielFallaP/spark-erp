@@ -2,7 +2,7 @@
 	"tables":[
 		 {	
 			"labelTable":"true",		 	
-			"name":"idType",
+			"name":"idType2",
 			"spanishName":"Tipo de identificación",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
@@ -12,18 +12,17 @@
 		 },
 		 {	
 			"labelTable":"true",		 	
-			"name":"sex",
+			"name":"sex2",
 			"spanishName":"Sexo",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},
 						{"name":"sex", "spanishName":"Sexo", "type":"String", "unique":"true", "labelField":"true"},
-						{"name":"account", "spanishName":"Cuenta", "refType":"account", "displayField":"code"},
 						{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
 					]
 		 },
 		 {	
 			"labelTable":"true",		 	
-			"name":"maritalStatus",
+			"name":"maritalStatus2",
 			"spanishName":"Estado civil",
 			"fields":[
 						{"name":"code", "spanishName":"Código", "type":"String", "unique":"true", "length":"1"},

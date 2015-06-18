@@ -61,6 +61,7 @@ public class TablePersistenceGenerator {
 		template.setAttribute("coreDomainClass",CodeUtils.toCamelCase(table.getName())+"Details");
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("variableName", table.getName());
+		template.setAttribute("imports", generateDomainImports(table));
 		
 		if (table.hasCompoundIndex()){
 			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");
@@ -97,6 +98,24 @@ public class TablePersistenceGenerator {
 		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/persistence/domain").replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+".java");
 	}
 	
+	private Object generateDomainImports(Table table) {
+		List<Field> fields = table.getFields();
+		HashSet<String> referenceImports = new HashSet<String>();
+		String  imports="";
+		
+		for (Field field : fields) {
+			if (field.isReference() && !referenceImports.contains(field.getRefType())){
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;\n");
+				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
+				template.setAttribute("module", CodeUtils.getTableModule(field.getRefType()));
+
+				imports+=template.toString();
+				referenceImports.add(field.getRefType());
+			}
+		}
+		return imports;
+	}
+
 	private String generateDomainClassFieldDeclaration(Table table){
 		String body="";
 		

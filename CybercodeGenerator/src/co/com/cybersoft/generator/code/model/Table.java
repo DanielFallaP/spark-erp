@@ -11,7 +11,14 @@ public class Table {
 	private Boolean labelTable=Boolean.FALSE;
 	private String spanishName;
 	private Boolean singletonTable=Boolean.FALSE;
+	private String module;
 	
+	public String getModule() {
+		return module;
+	}
+	public void setModule(String module) {
+		this.module = module;
+	}
 	public Boolean getSingletonTable() {
 		return singletonTable;
 	}

@@ -539,7 +539,7 @@ public class TableWebGenerator {
 			if (field.isReference()){
 				StringTemplate template = new StringTemplate("import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;\n");
 				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
-				template.setAttribute("module", cybertables.getModuleName());
+				template.setAttribute("module", CodeUtils.getTableModule(field.getRefType()));
 
 				imports+=template.toString();
 			}
@@ -557,7 +557,7 @@ public class TableWebGenerator {
 				for (Field compoundField : compoundKey) {
 					StringTemplate stringTemplate = new StringTemplate("import co.com.cybersoft.$module$.tables.core.domain.$fieldName$Details;\n");
 					stringTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
-					stringTemplate.setAttribute("module", cybertables.getModuleName());
+					stringTemplate.setAttribute("module", CodeUtils.getTableModule(table.getName()));
 
 					imports+=stringTemplate.toString();
 				}
@@ -656,7 +656,7 @@ public class TableWebGenerator {
 						+ "import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$PageEvent;\n");
 				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
 				template.setAttribute("tableName", field.getRefType());
-				template.setAttribute("module", cybertables.getModuleName());
+				template.setAttribute("module", CodeUtils.getTableModule(field.getRefType()));
 
 				imports+=template.toString();
 				referenceImports.add(field.getRefType());
@@ -673,7 +673,7 @@ public class TableWebGenerator {
 							+ "import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$PageEvent;\n");
 					template.setAttribute("entityName", CodeUtils.toCamelCase(field.getName()));
 					template.setAttribute("tableName", field.getName());
-					template.setAttribute("module", cybertables.getModuleName());
+					template.setAttribute("module", CodeUtils.getTableModule(table.getName()));
 					
 					imports+=template.toString();
 					referenceImports.add(field.getName());

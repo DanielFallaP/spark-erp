@@ -205,6 +205,7 @@ public class TableCoreGenerator {
 		template.setAttribute("gettersAndSetters", CodeUtils.getGettersAndSetters(cybertables,table));
 		template.setAttribute("coreDomainClass", CodeUtils.toCamelCase(table.getName())+"Details");
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+		template.setAttribute("imports", generateDomainImports(table));
 		
 		//Write embedded references transformations
 		List<Field> fields = table.getFields();
@@ -222,5 +223,23 @@ public class TableCoreGenerator {
 		template.setAttribute("module", cybertables.getModuleName());
 		
 		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/core/domain").replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"Details.java");
+	}
+
+	private Object generateDomainImports(Table table) {
+		List<Field> fields = table.getFields();
+		HashSet<String> referenceImports = new HashSet<String>();
+		String  imports="";
+		
+		for (Field field : fields) {
+			if (field.isReference() && !referenceImports.contains(field.getRefType())){
+				StringTemplate template = new StringTemplate("import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;\n");
+				template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
+				template.setAttribute("module", CodeUtils.getTableModule(field.getRefType()));
+
+				imports+=template.toString();
+				referenceImports.add(field.getRefType());
+			}
+		}
+		return imports;
 	}
 }
