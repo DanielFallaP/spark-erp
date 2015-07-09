@@ -29,7 +29,7 @@ buildscript {
 //{!begin repos}
 repositories {
   mavenCentral()
-
+  flatDir(dir: 'lib', name: 'Local libs')
   maven { url 'http://repo.spring.io/milestone/'}
 }
 //{!end repos}
@@ -50,7 +50,7 @@ dependencies {
   compile 'org.springframework.data:spring-data-mongodb:1.4.1.RELEASE'
   compile 'cglib:cglib:2.2.2' 
 
-  compile 'org.springframework:spring-core:3.2.3.RELEASE'
+  compile 'org.springframework:spring-core:3.2.10.RELEASE'
   compile 'org.springframework:spring-webmvc:3.2.3.RELEASE'
 
   //{!begin deps}
@@ -94,7 +94,21 @@ dependencies {
   //String template
   compile 'org.antlr:stringtemplate:3.2'
   
-    
+  compile 'javax.persistence:persistence-api:1.0.2'
+  
+  
+  compile 'org.springframework.data:spring-data-commons:1.6.0.RELEASE'
+  //Spring JPA
+  compile 'org.springframework.data:spring-data-jpa:1.4.5.RELEASE'
+  
+  //Oracle JDBC connector
+  compile name: 'ojdbc6'
+  //Spring JDBC
+  compile 'org.springframework:spring-jdbc:3.2.8.RELEASE'
+  
+  //Hibernate entity manager
+  compile 'org.hibernate:hibernate-entitymanager:4.3.10.Final'  
+  
   testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
   testCompile 'junit:junit:4.11'
   testCompile "org.mockito:mockito-core:1.9.5"

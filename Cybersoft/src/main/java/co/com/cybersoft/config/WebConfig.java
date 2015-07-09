@@ -40,7 +40,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages={"co.com.cybersoft.payroll.tables.web.controller","co.com.cybersoft.payroll.tables.web.domain","co.com.cybersoft.purchase.tables.web.controller","co.com.cybersoft.purchase.tables.web.domain","co.com.cybersoft.purchase.docs.web.controller","co.com.cybersoft.purchase.docs.web.domain","co.com.cybersoft.man.controller"})
+@ComponentScan(basePackages={"co.com.cybersoft.purchase.tables.web.controller","co.com.cybersoft.purchase.tables.web.domain"})
 public class WebConfig extends WebMvcConfigurerAdapter{
 
 	@Override
@@ -125,10 +125,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		registry.addViewController("/home").setViewName("home");
 		registry.addViewController("/").setViewName("redirect:/home");
 		registry.addViewController("/settings").setViewName("settings");
-		registry.addViewController("/purchase").setViewName("purchase");
-		registry.addViewController("/purchaseSettings").setViewName("purchaseSettings");
-		registry.addViewController("/payroll").setViewName("payroll");
-		registry.addViewController("/payrollSettings").setViewName("payrollSettings");
+		registry.addViewController("/purchase").setViewName("purchase");registry.addViewController("/purchaseSettings").setViewName("purchaseSettings");registry.addViewController("/payroll").setViewName("payroll");registry.addViewController("/payrollSettings").setViewName("payrollSettings");registry.addViewController("/assets").setViewName("assets");registry.addViewController("/assetsSettings").setViewName("assetsSettings");
 		registry.addViewController("/preferences").setViewName("language");
 		registry.addViewController("/login").setViewName("man/login");
 		registry.addViewController("/about").setViewName("man/about");
