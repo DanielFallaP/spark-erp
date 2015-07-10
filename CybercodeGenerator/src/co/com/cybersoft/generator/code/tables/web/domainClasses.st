@@ -22,7 +22,7 @@ public class $domainClassName$ implements Serializable{
 	
 	private String calledFrom;
 	
-	private String id;
+	private Long id;
 	
 	private String userName;
 
@@ -55,11 +55,10 @@ public class $domainClassName$ implements Serializable{
 		this.userName = userName;
 	}
 	
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

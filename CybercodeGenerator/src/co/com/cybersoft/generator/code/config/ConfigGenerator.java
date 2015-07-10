@@ -24,6 +24,12 @@ public class ConfigGenerator {
 	private final Cyberdocs cyberdocs;
 
 	private ObjectMapper mapper=new ObjectMapper();
+	
+	private String repoImports;
+	
+	private String repoFields;
+	
+	private String repoBeans;
 
 	public ConfigGenerator(Cybermodules cybersoft, Cyberdocs cyberdocs){
 		this.cybermodules=cybersoft;
@@ -32,8 +38,8 @@ public class ConfigGenerator {
 
 	public void generate(){
 		try {
-			generateCoreConfig(cybermodules);
 			generatePersistenceConfig(cybermodules, cyberdocs);
+			generateCoreConfig(cybermodules);
 			generateWebConfig(cybermodules);
 			generateSecurityConfig(cybermodules);
 		} catch (Exception e) {
@@ -126,9 +132,11 @@ public class ConfigGenerator {
 			}
 		}
 		
-		
+		imports+=this.repoImports;
 		template.setAttribute("imports", imports);
 		template.setAttribute("beanDeclarations", beans);
+		template.setAttribute("repoFields", this.repoFields);
+		template.setAttribute("repoBeans", this.repoBeans);
 		
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.rootClassPath+"/config", "CoreConfig.java");
@@ -138,7 +146,6 @@ public class ConfigGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("config", Cybertables.configCodePath);
 		StringTemplate template = templateGroup.getInstanceOf("persistenceConfig");
 
-		List<Document> documents = cyberdocs.getDocuments();
 		String imports="";
 		String beans="";
 		String repoFields="";
@@ -159,14 +166,6 @@ public class ConfigGenerator {
 			
 			basePackages+=persistenceTemplate.toString();
 			if (cybertables.getModuleName().equals("purchase"))
-			for (Document document: documents){
-				StringTemplate stringTemplate = templateGroup.getInstanceOf("persistenceConfigImport");
-				stringTemplate.setAttribute("tableName", document.getName());
-				stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(document.getName()));
-				stringTemplate.setAttribute("nature", "docs");
-				stringTemplate.setAttribute("module", cybertables.getModuleName());
-				imports+=stringTemplate.toString()+"\n\n";
-			}
 			
 			for (Table table : tables) {
 				StringTemplate temp = templateGroup.getInstanceOf("persistenceConfigImport");
@@ -180,14 +179,6 @@ public class ConfigGenerator {
 			
 			//Beans
 			if (cybertables.getModuleName().equals("purchase"))
-			for (Document document : documents) {
-				StringTemplate temp = templateGroup.getInstanceOf("persistenceBeanDeclaration");
-				
-				temp.setAttribute("tableName",document.getName());
-				temp.setAttribute("entityName", CodeUtils.toCamelCase(document.getName()));
-				
-				beans+=temp.toString()+"\n\n";
-			}
 			
 			for (Table table : tables) {
 				StringTemplate temp = templateGroup.getInstanceOf("persistenceBeanDeclaration");
@@ -198,15 +189,6 @@ public class ConfigGenerator {
 				beans+=temp.toString()+"\n\n";
 			}
 			
-			//Repo fields
-			if (cybertables.getModuleName().equals("purchase"))
-			for(Document document:documents){
-				StringTemplate temp = templateGroup.getInstanceOf("persistenceRepoField");
-				temp.setAttribute("tableName",document.getName());
-				temp.setAttribute("entityName", CodeUtils.toCamelCase(document.getName()));
-				repoFields+=temp.toString()+"\n\n";
-			}
-			
 			for (Table table : tables) {
 				StringTemplate temp = templateGroup.getInstanceOf("persistenceRepoField");
 				
@@ -215,13 +197,6 @@ public class ConfigGenerator {
 				repoFields+=temp.toString()+"\n\n";
 			}
 			
-			//Repos
-			if (cybertables.getModuleName().equals("purchase"))
-			for(Document document:documents){
-				StringTemplate stringTemplate = new StringTemplate("$entityName$Repository.class");
-				stringTemplate.setAttribute("entityName", CodeUtils.toCamelCase(document.getName()));
-				repos+=stringTemplate.toString()+",";
-			}
 			
 			int i=1;
 			for (Table table : tables) {
@@ -235,11 +210,12 @@ public class ConfigGenerator {
 			k++;
 		}
 		template.setAttribute("imports", imports);
-		template.setAttribute("beans", beans);
-		template.setAttribute("repoFields", repoFields);
+		this.repoImports=imports;
+		this.repoFields=repoFields;
+		this.repoBeans=beans;
 		template.setAttribute("repos", repos);
 		template.setAttribute("module", "purchase");
-		template.setAttribute("packages", basePackages);
+		template.setAttribute("packages", basePackages.substring(0, basePackages.length()-1));
 
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.rootClassPath+"/config", "PersistenceConfig.java");

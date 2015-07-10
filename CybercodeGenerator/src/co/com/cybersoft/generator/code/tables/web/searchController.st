@@ -55,7 +55,7 @@ public class $searchControllerName$ {
 		}
 		PageRequest pageRequest=null;
 		if (field==null && request.getSession().getAttribute("$entityName$Field")==null){
-			pageRequest = new PageRequest(pageable.getPageNumber(),pageable.getPageSize(), Direction.DESC, "_id");
+			pageRequest = new PageRequest(pageable.getPageNumber(),pageable.getPageSize(), Direction.DESC, "id");
 			details = $entityName$Service.request$entityUpperCaseName$Page(new $requestEvent$(pageRequest));
 		}
 		else{
@@ -93,7 +93,7 @@ public class $searchControllerName$ {
 		Request$entityUpperCaseName$PageEvent pageEvent=null;
 		PageRequest pageRequest=null;
 		if ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))&& request.getSession().getAttribute("$entityName$Field")==null){
-			pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), Direction.DESC,"_id");
+			pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), Direction.DESC,"id");
 			pageEvent = new Request$entityUpperCaseName$PageEvent(pageRequest,filter);
 		}
 		else {

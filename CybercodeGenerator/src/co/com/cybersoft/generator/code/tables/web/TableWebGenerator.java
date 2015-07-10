@@ -767,10 +767,6 @@ public class TableWebGenerator {
 					}
 				}
 				
-				if (field.isReference()&&field.getRequired()){
-					body+="@NotEmpty\n";
-				}
-				
 				StringTemplate fieldTemplate;
 				
 				if (!field.isReference()){
@@ -781,6 +777,11 @@ public class TableWebGenerator {
 					body+="\n";			
 				}
 				else{
+					fieldTemplate = new StringTemplate("private Long $name$Id;\n\n");
+					fieldTemplate.setAttribute("name", field.getName());
+					body+=fieldTemplate.toString();
+					body+="\n";
+					
 					fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
 					fieldTemplate.setAttribute("type", Cybertables.stringType);
 					fieldTemplate.setAttribute("name", field.getName());
@@ -792,14 +793,6 @@ public class TableWebGenerator {
 					fieldTemplate.setAttribute("tableName", field.getName());
 					body+=fieldTemplate.toString();
 					body+="\n";				
-					
-					if (field.isEmbeddedReference()){
-						fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-						fieldTemplate.setAttribute("type", CodeUtils.toCamelCase(field.getRefType())+"Details");
-						fieldTemplate.setAttribute("name", field.getName()+"Details");
-						body+=fieldTemplate.toString();
-						body+="\n";				
-					}
 					
 				}
 			}
@@ -813,6 +806,12 @@ public class TableWebGenerator {
 					fieldTemplate.setAttribute("name", compoundField.getName());
 					body+=fieldTemplate.toString();
 					body+="\n";
+					
+					fieldTemplate = new StringTemplate("private Long $name$Id;\n\n");
+					fieldTemplate.setAttribute("name", compoundField.getName());
+					body+=fieldTemplate.toString();
+					body+="\n";
+
 					
 					fieldTemplate = new StringTemplate("private List<$entityName$Details> $tableName$List;");
 					fieldTemplate.setAttribute("entityName", CodeUtils.toCamelCase(compoundField.getTableName()));
@@ -843,32 +842,20 @@ public class TableWebGenerator {
 						gettersSettersTemplate.setAttribute("tableName", field.getName());
 						gettersSettersTemplate.setAttribute("refEntityName", CodeUtils.toCamelCase(field.getRefType()));
 						body+=gettersSettersTemplate.toString()+"\n\n";			
+				
 						
 						StringTemplate template = templateGroup.getInstanceOf("getterSetter");
 						template.setAttribute("type", Cybertables.stringType);
 						template.setAttribute("name", field.getName());
 						template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
-						
-						if (field.isEmbeddedReference()){
-							StringTemplate addOps = new StringTemplate("\nfor ($referenceType$Details $referenceField$Details : $referenceField$List) {\n"+
-									"if ($referenceField$Details.get$upperFieldName$().equals($referenceField$))\n"+
-									"this.$referenceField$Details=$referenceField$Details;}\n");
-							addOps.setAttribute("referenceType", CodeUtils.toCamelCase(field.getRefType()));
-							addOps.setAttribute("referenceField", field.getName());
-							addOps.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getDisplayField()));
-							addOps.setAttribute("upperDisplayName", CodeUtils.toCamelCase(field.getName()));
-							template.setAttribute("addOps", addOps.toString());
-						}
-						
 						body+=template.toString()+"\n\n";
 						
-						if (field.isEmbeddedReference()){
-							StringTemplate addGetterSetter=templateGroup.getInstanceOf("getterSetter");
-							addGetterSetter.setAttribute("type", CodeUtils.toCamelCase(field.getRefType())+"Details");
-							addGetterSetter.setAttribute("name", field.getName()+"Details");
-							addGetterSetter.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName())+"Details");
-							body+=addGetterSetter.toString()+"\n\n";
-						}
+						template = templateGroup.getInstanceOf("getterSetter");
+						template.setAttribute("type", Cybertables.longType);
+						template.setAttribute("name", field.getName()+"Id");
+						template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()+"Id"));
+
+						body+=template.toString()+"\n\n";
 				}
 			}
 			else{
@@ -887,6 +874,11 @@ public class TableWebGenerator {
 					template.setAttribute("type", Cybertables.stringType);
 					template.setAttribute("name", compoundField.getName());
 					template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
+					
+					template = templateGroup.getInstanceOf("getterSetter");
+					template.setAttribute("type", Cybertables.longType);
+					template.setAttribute("name", compoundField.getName()+"Id");
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()+"Id"));
 					
 					body+=template.toString()+"\n\n";
 				}

@@ -54,7 +54,7 @@ public class $entityName$ModificationController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public String modify$entityName$(@PathVariable("id") String id, @Valid @ModelAttribute("$tableName$Info") $entityName$Info $tableName$Info, HttpServletRequest request) throws Exception {
+	public String modify$entityName$(@PathVariable("id") Long id, @Valid @ModelAttribute("$tableName$Info") $entityName$Info $tableName$Info, HttpServletRequest request) throws Exception {
 		$compoundReferences$
 		
 		$entityName$Details $tableName$Details = create$entityName$Details($tableName$Info);
@@ -73,7 +73,7 @@ public class $entityName$ModificationController {
 	}
 
 	@ModelAttribute("$tableName$Info")
-	private $entityName$Info get$entityName$Info(@PathVariable("id") String id, HttpServletRequest request) throws Exception {
+	private $entityName$Info get$entityName$Info(@PathVariable("id") Long id, HttpServletRequest request) throws Exception {
 		LOG.debug("Retrieving the $tableName$ "+id);
 		
 		$entityName$Info $tableName$Info = new $entityName$Info();
