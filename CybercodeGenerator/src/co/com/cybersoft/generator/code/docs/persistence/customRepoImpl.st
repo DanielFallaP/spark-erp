@@ -1,36 +1,27 @@
 package co.com.cybersoft.$module$.docs.persistence.repository.$docName$;
 
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import org.bson.types.ObjectId;
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.BasicQuery;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import co.com.cybersoft.$module$.docs.persistence.domain.$upperDocName$;
-import co.com.cybersoft.man.services.security.SessionAction;
-import co.com.cybersoft.man.services.security.SessionLogger;
+//import co.com.cybersoft.man.services.security.SessionAction;
+//import co.com.cybersoft.man.services.security.SessionLogger;
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$FilterInfo;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-
-import java.util.List;
-
 
 /**
  * 
@@ -40,7 +31,7 @@ import java.util.List;
 public class $upperDocName$CustomRepoImpl implements $upperDocName$CustomRepo {
 
 	@Autowired
-	private MongoOperations mongo;
+	private LocalContainerEntityManagerFactoryBean emFactory;
 	
 	@Autowired
 	private $upperDocName$Repository repo;

@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +56,7 @@ public class $entityName$ModificationController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
+	@Transactional(readOnly=false)
 	public String modify$entityName$(@PathVariable("id") Long id, @Valid @ModelAttribute("$tableName$Info") $entityName$Info $tableName$Info, HttpServletRequest request) throws Exception {
 		$compoundReferences$
 		

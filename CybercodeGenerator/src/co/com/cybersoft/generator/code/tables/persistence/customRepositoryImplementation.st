@@ -6,21 +6,17 @@ import java.util.regex.Pattern;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.BasicQuery;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import javax.persistence.Query;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
+import org.springframework.data.domain.Sort.Order;
 import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
@@ -35,134 +31,46 @@ import co.com.cybersoft.$module$.tables.web.domain.$tableName$.$entityName$Filte
 public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 
 	@Autowired
-	private MongoOperations mongo;
-	
+	private LocalContainerEntityManagerFactoryBean emFactory;
+
 	$startupSingletonRecord$
 	
 	$byContainingFields$
 	
 	$findAllActive$
-	
-	private String toCamelCase(String name){
-		Character character= name.charAt(0);
-		return character.toString().toUpperCase()+name.substring(1);
-	}
 
 	@Override
 	public Page<$entityName$> findAll(Pageable pageable, $entityName$FilterInfo filter) throws Exception{
-		List<$entityName$> list = findAll(buildCriteria(filter).with(pageable));
-		return new PageImpl<$entityName$>(list, pageable, count(filter));
+		Query query = buildCriteriaQuery(filter, pageable);
+		Long count=(long) query.getResultList().size();
+		List<$entityName$> list = query.setFirstResult(pageable.getOffset()).setMaxResults(pageable.getPageSize()).getResultList();
+		return new PageImpl<$entityName$>(list, pageable, count);
 	}
-	
-	private Query buildCriteria($entityName$FilterInfo filter)throws Exception{
-		Query filterQuery=new Query();
+
+	private Query buildCriteriaQuery($entityName$FilterInfo filter, Pageable pageable)throws Exception{
+		String queryString="SELECT p FROM $entityName$ p WHERE 1=1";
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		$fieldCriteria$
-		if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))filterQuery.addCriteria(translateDateOperators(filter.getDateOfCreation(),"dateOfCreation" ));
-		if (filter.getDateOfModification()!=null && !filter.getDateOfModification().equals(""))filterQuery.addCriteria(translateDateOperators(filter.getDateOfModification(),"dateOfModification" ));
-		if (filter.getUserName()!=null && !filter.getUserName().equals(""))filterQuery.addCriteria(Criteria.where("userName").regex(translateWildcards(filter.getUserName())));
-		if (filter.getCreatedBy()!=null && !filter.getCreatedBy().equals(""))filterQuery.addCriteria(Criteria.where("createdBy").regex(translateWildcards(filter.getCreatedBy())));
+	
+		if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))queryString+=" AND p.dateOfCreation "+CyberUtils.getOperator(filter.getDateOfCreation())+" :dateOfCreation ";
+		if (filter.getDateOfModification()!=null && !filter.getDateOfModification().equals(""))queryString+=" AND p.dateOfModification "+CyberUtils.getOperator(filter.getDateOfModification())+" :dateOfModification";
+		if (filter.getUserName()!=null && !filter.getUserName().equals(""))queryString+=" AND LOWER(p.userName) LIKE LOWER('"+filter.getUserName()+"')";
+		if (filter.getCreatedBy()!=null && !filter.getCreatedBy().equals(""))queryString+=" AND LOWER(p.createdBy) LIKE LOWER('"+filter.getCreatedBy()+"')";
+	
+		while (pageable.getSort().iterator().hasNext()){
+			Order next = pageable.getSort().iterator().next();
+			$orderBy$
+			break;
+		}
 		
-		return filterQuery;
-	}
-	
-	private List<$entityName$> findAll(Query query) {
-
-		if (query == null) {
-			return Collections.emptyList();
-		}
-
-		return mongo.find(query, $entityName$.class, "$tableName$");
-	}
-	
-	private long count($entityName$FilterInfo filter)throws Exception{
-		return findAll(buildCriteria(filter)).size();
-	}
-	
-	private Pattern translateWildcards(String value){
-		if (value.indexOf(CyberUtils.stringWilcard)>=0 && value.indexOf(CyberUtils.stringWilcard)!=value.lastIndexOf(CyberUtils.stringWilcard)){
-			value=value.replaceAll(CyberUtils.stringWilcard, "");
-			return Pattern.compile("^(.)*"+value+"(.)*\$",Pattern.CASE_INSENSITIVE);
-		}
-		else if(value.indexOf(CyberUtils.stringWilcard)==0){
-			value=value.replaceAll(CyberUtils.stringWilcard, "");
-			return Pattern.compile("^.*("+value+")\$",Pattern.CASE_INSENSITIVE);
-		}
-		else if(value.indexOf(CyberUtils.stringWilcard)==value.length()-1){
-			value=value.replaceAll(CyberUtils.stringWilcard, "");
-			return Pattern.compile("^("+value+").*\$",Pattern.CASE_INSENSITIVE);
-		}
-		else{
-			return Pattern.compile("^"+value+"\$",Pattern.CASE_INSENSITIVE);
-		}
-	}
-	
-	private Criteria translateDoubleOperators(String value, String fieldName){
-		String op;
-		if ((op=CyberUtils.getOperator(value))!=null){
-			if (op.equals(CyberUtils.greaterThanOp))
-				return Criteria.where(fieldName).gt(Double.parseDouble(value.replace(op, "")));
-			if (op.equals(CyberUtils.greaterEqualThanOp))
-				return Criteria.where(fieldName).gte(Double.parseDouble(value.replace(op, "")));
-			if (op.equals(CyberUtils.lessThanOp))
-				return Criteria.where(fieldName).lt(Double.parseDouble(value.replace(op, "")));
-			if (op.equals(CyberUtils.lessEqualThanOp))
-				return Criteria.where(fieldName).lte(Double.parseDouble(value.replace(op, "")));
-			if (op.equals(CyberUtils.notOp))
-				return Criteria.where(fieldName).ne(Double.parseDouble(value.replace(op, "")));
-		}
-		return Criteria.where(fieldName).is(Double.parseDouble(value));
-	}
-	
-	private Criteria translateIntegerOperators(String value, String fieldName){
-		String op;
-		if ((op=CyberUtils.getOperator(value))!=null){
-			if (op.equals(CyberUtils.greaterThanOp))
-				return Criteria.where(fieldName).gt(Integer.parseInt(value.replace(op, "")));
-			if (op.equals(CyberUtils.greaterEqualThanOp))
-				return Criteria.where(fieldName).gte(Integer.parseInt(value.replace(op, "")));
-			if (op.equals(CyberUtils.lessThanOp))
-				return Criteria.where(fieldName).lt(Integer.parseInt(value.replace(op, "")));
-			if (op.equals(CyberUtils.lessEqualThanOp))
-				return Criteria.where(fieldName).lte(Integer.parseInt(value.replace(op, "")));
-			if (op.equals(CyberUtils.notOp))
-				return Criteria.where(fieldName).ne(Integer.parseInt(value.replace(op, "")));
-		}
-		return Criteria.where(fieldName).is(Integer.parseInt(value));
-	}
-	
-	private Criteria translateDateOperators(String value, String fieldName) throws Exception{
-		String op;
-		SimpleDateFormat dateParser=new SimpleDateFormat("dd/mm/yyyy");
-		if ((op=CyberUtils.getOperator(value))!=null){
-			if (op.equals(CyberUtils.greaterThanOp))
-				return Criteria.where(fieldName).gt(dateParser.parse(value.replace(op, "")));
-			if (op.equals(CyberUtils.greaterEqualThanOp))
-				return Criteria.where(fieldName).gte(dateParser.parse(value.replace(op, "")));
-			if (op.equals(CyberUtils.lessThanOp))
-				return Criteria.where(fieldName).lt(dateParser.parse(value.replace(op, "")));
-			if (op.equals(CyberUtils.lessEqualThanOp))
-				return Criteria.where(fieldName).lte(dateParser.parse(value.replace(op, "")));
-			if (op.equals(CyberUtils.notOp))
-				return Criteria.where(fieldName).ne(dateParser.parse(value.replace(op, "")));
-		}
-		return Criteria.where(fieldName).is(dateParser.parse(value));
-	}
-	
-	private Criteria translateLongOperators(String value, String fieldName){
-		String op;
-		if ((op=CyberUtils.getOperator(value))!=null){
-			if (op.equals(CyberUtils.greaterThanOp))
-				return Criteria.where(fieldName).gt(Long.parseLong(value.replace(op, "")));
-			if (op.equals(CyberUtils.greaterEqualThanOp))
-				return Criteria.where(fieldName).gte(Long.parseLong(value.replace(op, "")));
-			if (op.equals(CyberUtils.lessThanOp))
-				return Criteria.where(fieldName).lt(Long.parseLong(value.replace(op, "")));
-			if (op.equals(CyberUtils.lessEqualThanOp))
-				return Criteria.where(fieldName).lte(Long.parseLong(value.replace(op, "")));
-			if (op.equals(CyberUtils.notOp))
-				return Criteria.where(fieldName).ne(Long.parseLong(value.replace(op, "")));
-		}
-		return Criteria.where(fieldName).is(Long.parseLong(value));
-	}
+		Query query = emFactory.getObject().createEntityManager().createQuery(queryString);
+		if (filter.getDateOfModification()!=null && !filter.getDateOfModification().equals(""))
+			query.setParameter("dateOfModification", df.parse(filter.getDateOfModification().replace(CyberUtils.getOperator(filter.getDateOfModification()), "")));
+		if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))
+			query.setParameter("dateOfCreation", df.parse(filter.getDateOfCreation().replace(CyberUtils.getOperator(filter.getDateOfCreation()), "")));
+		$dateFieldCriteria$
+		
+		return query;
+	}	
 }
 

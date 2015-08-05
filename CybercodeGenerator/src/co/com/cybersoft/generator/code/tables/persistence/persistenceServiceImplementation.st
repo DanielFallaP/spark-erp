@@ -15,8 +15,8 @@ import co.com.cybersoft.$module$.tables.events.$tableName$.Request$entityName$Pa
 import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;
 import co.com.cybersoft.$module$.tables.persistence.repository.$tableName$.$entityName$Repository;
 import co.com.cybersoft.$module$.tables.persistence.repository.$tableName$.$entityName$CustomRepo;
-import co.com.cybersoft.man.services.security.SessionAction;
-import co.com.cybersoft.man.services.security.SessionLogger;
+//import co.com.cybersoft.man.services.security.SessionAction;
+//import co.com.cybersoft.man.services.security.SessionLogger;
 
 $imports$
 
@@ -38,9 +38,6 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 	
 	private final $entityName$CustomRepo $tableName$CustomRepo;
 	
-	@Autowired
-	private MongoOperations mongo;
-	
 	$autocompleteRepos$
 	
 	public $entityName$PersistenceServiceImpl(final $entityName$Repository $tableName$Repository, final $entityName$CustomRepo $tableName$CustomRepo) {
@@ -53,14 +50,16 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 		$checkReferences$
 		$entityName$ $tableName$ = new $entityName$().from$entityName$Details(event.get$entityName$Details());
 		$tableName$ = $tableName$Repository.save($tableName$);
-		updateLog(SecurityContextHolder.getContext().getAuthentication().getName(),"creation",$tableName$.getId());
+		$tableName$ = $tableName$Repository.findOne($tableName$.getId());
+		
+		//updateLog(SecurityContextHolder.getContext().getAuthentication().getName(),"creation",$tableName$.getId());
 		return new $entityName$DetailsEvent(new $entityName$Details().to$entityName$Details($tableName$));
 	}
 	
-	public void updateLog(String userName, String action, String id){
+	/*public void updateLog(String userName, String action, String id){
 		SessionAction sessionAction = new SessionAction(userName, CyberUtils.userSessions.get(userName), action, new Date(),"$tableName$", id);
 		new Thread(new SessionLogger(sessionAction, mongo)).start();
-	}
+	}*/
 
 	@Override
 	public $entityName$PageEvent request$entityName$Page(Request$entityName$PageEvent event) throws Exception {
@@ -86,13 +85,15 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 		$checkReferences$
 		$entityName$ $tableName$ = new $entityName$().from$entityName$Details(event.get$entityName$Details());
 		$tableName$ = $tableName$Repository.save($tableName$);
-		updateLog(SecurityContextHolder.getContext().getAuthentication().getName(),"modification",$tableName$.getId());
+		$tableName$ = $tableName$Repository.findOne($tableName$.getId());
+		
+	//	updateLog(SecurityContextHolder.getContext().getAuthentication().getName(),"modification",$tableName$.getId());
 		return new $entityName$DetailsEvent(new $entityName$Details().to$entityName$Details($tableName$));
 	}
 	
 	@Override
 		public $entityName$DetailsEvent getOnlyRecord() throws Exception {
-			List<$entityName$> all = $tableName$Repository.findAll();
+			Iterable<$entityName$> all = $tableName$Repository.findAll();
 			$entityName$Details single = new $entityName$Details();
 			for ($entityName$ $tableName$ : all) {
 				single=new $entityName$Details().to$entityName$Details($tableName$);

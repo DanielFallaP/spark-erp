@@ -54,7 +54,7 @@ public class Supernova {
 		try {
 			tableCodeGenerator.generate();
 			configCodeGenerator.generate();
-			docCodeGenerator.generate();
+//			docCodeGenerator.generate();
 			System.out.println("");
 			System.out.println("");
 			System.out.println("APPLICATION BUILT SUCCESSFULLY: "+new Date());

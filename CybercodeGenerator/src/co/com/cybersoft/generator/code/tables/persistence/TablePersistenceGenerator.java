@@ -3,6 +3,11 @@ package co.com.cybersoft.generator.code.tables.persistence;
 import java.util.HashSet;
 import java.util.List;
 
+
+
+
+
+
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
@@ -15,6 +20,7 @@ import co.com.cybersoft.generator.code.util.CodeUtils;
 public class TablePersistenceGenerator {
 	
 	private final Cybertables cybertables;
+	private String dateFieldCriteria;
 	
 	public TablePersistenceGenerator(Cybertables cybersoft){
 		this.cybertables=cybersoft;
@@ -62,22 +68,24 @@ public class TablePersistenceGenerator {
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("variableName", table.getName());
 		template.setAttribute("imports", generateDomainImports(table));
+		template.setAttribute("references", generateDomainReferences(table));
 		
 		if (table.hasCompoundIndex()){
-			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");
-			List<Field> compoundIndex = table.getCompoundIndex(cybertables);
-			String dec="";
-			int i=0;
-			for (Field field : compoundIndex) {
-				dec+="'"+field.getName()+"':1";
-				if (i!=compoundIndex.size()-1)
-					dec+=",";
-				i++;
-			}
-			subTemplate.setAttribute("tableName", table.getName());
-			subTemplate.setAttribute("fields", dec);
-			
-			template.setAttribute("compoundIndex", subTemplate.toString());
+			//TODO
+//			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");
+//			List<Field> compoundIndex = table.getCompoundIndex(cybertables);
+//			String dec="";
+//			int i=0;
+//			for (Field field : compoundIndex) {
+//				dec+="'"+field.getName()+"':1";
+//				if (i!=compoundIndex.size()-1)
+//					dec+=",";
+//				i++;
+//			}
+//			subTemplate.setAttribute("tableName", table.getName());
+//			subTemplate.setAttribute("fields", dec);
+//			
+//			template.setAttribute("compoundIndex", subTemplate.toString());
 		}
 		
 		//Write embedded references transformations
@@ -98,6 +106,26 @@ public class TablePersistenceGenerator {
 		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/persistence/domain").replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+".java");
 	}
 	
+	private Object generateDomainReferences(Table table) {
+		List<Field> fields = table.getFields();
+		String  references="";
+		int var=0;
+		for (Field field : fields) {
+			if (field.isReference()){
+				StringTemplate template = new StringTemplate("$upperRefType$ $refType$$var$=new $upperRefType$();$refType$$var$.setId(details.get$upperFieldName$Id());this.$fieldName$=$refType$$var$; \n");
+				template.setAttribute("upperRefType", CodeUtils.toCamelCase(field.getRefType()));
+				template.setAttribute("refType", field.getRefType());
+				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("var", var);
+
+				references+=template.toString();
+				var++;
+			}
+		}
+		return references;
+	}
+
 	private Object generateDomainImports(Table table) {
 		List<Field> fields = table.getFields();
 		HashSet<String> referenceImports = new HashSet<String>();
@@ -123,28 +151,44 @@ public class TablePersistenceGenerator {
 		
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
-				if (!field.isReference()&&field.getUnique()!=null && field.getUnique()){
-					body+="@Indexed(unique=true)\n";
+				if (!field.isReference()){
+					if (field.getUnique()!=null && field.getUnique()){
+						if (CodeUtils.reservedSQLWords.contains(field.getName())){
+							body+="@Column(unique=true,name=\"f_"+field.getName()+"\")\n";
+						}
+						else{
+							body+="@Column(unique=true)\n";
+						}
+					}
+					else{
+						if (CodeUtils.reservedSQLWords.contains(field.getName()))
+							body+="@Column(name=\"f_"+field.getName()+"\")\n";
+					}
+				}
+				
+				if (field.isReference()){
+					if (CodeUtils.reservedSQLWords.contains(field.getName()))
+						body+="@Column(name=\"f_"+field.getName()+"\")\n";
+					StringTemplate temp = new StringTemplate("@ManyToOne(fetch = FetchType.EAGER)\n@JoinColumn(name=\"$fieldName$_ID\" $nullable$)");
+					temp.setAttribute("refType", field.getRefType().toUpperCase());
+					temp.setAttribute("fieldName", field.getName().toUpperCase());
+						if (field.getRequired())
+						temp.setAttribute("nullable", ", nullable=false");
+					body+=temp.toString();
+					body+="\n";
 				}
 				StringTemplate template = new StringTemplate("private $type$ $name$;\n");
-				template.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
+				template.setAttribute("type", field.isReference()?CodeUtils.toCamelCase(field.getRefType()):field.getType());
 				template.setAttribute("name", field.getName());
 				body+=template.toString();
 				body+="\n";
 				
-				if (field.isEmbeddedReference()){
-					StringTemplate subTemp = new StringTemplate("private $type$ $name$;\n");
-					subTemp.setAttribute("type", CodeUtils.toCamelCase(field.getRefType()));
-					subTemp.setAttribute("name", field.getName()+"Entity");
-					body+=subTemp.toString();
-					body+="\n";
-				}
 			}
 			else{
 				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = new StringTemplate("private $type$ $name$;\n");
-					template.setAttribute("type", Cybertables.stringType);
+					template.setAttribute("type", CodeUtils.toCamelCase(compoundField.getRefType()));
 					template.setAttribute("name", compoundField.getName());
 					body+=template.toString();
 					body+="\n";
@@ -165,24 +209,16 @@ public class TablePersistenceGenerator {
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-				template.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
+				template.setAttribute("type", field.isReference()?CodeUtils.toCamelCase(field.getRefType()):field.getType());
 				template.setAttribute("name", field.getName());
 				template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 				text+=template.toString()+"\n";
-				
-				if (field.isEmbeddedReference()){
-					template = templateGroup.getInstanceOf("getterSetter");
-					template.setAttribute("type", CodeUtils.toCamelCase(field.getRefType()));
-					template.setAttribute("name", field.getName()+"Entity");
-					template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName())+"Entity");
-					text+=template.toString()+"\n";
-				}
 			}
 			else{
 				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-					template.setAttribute("type", Cybertables.stringType);
+					template.setAttribute("type", CodeUtils.toCamelCase(compoundField.getRefType()));
 					template.setAttribute("name", compoundField.getName());
 					template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					text+=template.toString()+"\n";
@@ -526,7 +562,8 @@ public class TablePersistenceGenerator {
 		template = templateGroup.getInstanceOf("customRepositoryImplementation");
 		template.setAttribute("entityName",CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("tableName", table.getName());
-
+		template.setAttribute("orderBy", generateOrderByClause(table));
+		
 		references = new HashSet<String>();
 		findAllActive="";
 		autocompleteQueries="";
@@ -592,6 +629,7 @@ public class TablePersistenceGenerator {
 			i++;
 		}
 		template.setAttribute("fieldCriteria", getFieldCriteria(table));
+		template.setAttribute("dateFieldCriteria", this.dateFieldCriteria);
 		template.setAttribute("findAllActive", findAllActive);
 		template.setAttribute("byContainingFields", autocompleteQueries);
 		template.setAttribute("module", cybertables.getModuleName());
@@ -600,34 +638,72 @@ public class TablePersistenceGenerator {
 		
 	}
 
+	private Object generateOrderByClause(Table table) {
+		String orderBy="if (1==0){}\n";
+		if (CodeUtils.containsReferences(table)){
+			List<Field> fields = table.getFields();
+			for (Field field : fields) {
+				if (!field.getCompoundReference()){
+					if (field.isReference()){
+						orderBy+="else if (next.getProperty().toLowerCase().equals(\""+field.getName().toLowerCase()+"\"))\n";
+						orderBy+=" 	queryString+= \" ORDER BY p"+CodeUtils.getReferenceChain(cybertables, table, field)+" \" +next.getDirection().toString();\n";
+					}
+				}
+			}
+			orderBy+="else\n queryString+= \" ORDER BY p.\"+next.getProperty() + \" \" +next.getDirection().toString();";
+		}
+		else{
+			orderBy="queryString+= \" ORDER BY p.\"+next.getProperty() + \" \" +next.getDirection().toString();";
+		}
+		return orderBy;
+	}
+
 	private Object getFieldCriteria(Table table) {
 		String fieldCriteria="";
+		String dateFieldCriteria="";
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
-			if (!field.getCompoundReference() && (field.getType()==null || !field.getType().equals(Cyberconstants.booleanType))){
-				StringTemplate template;
-				if (field.getType()==null || field.getType().equals(Cyberconstants.stringType)){
-					template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").regex(translateWildcards(filter.get$upperFieldName$())));");
-				}
-				else{
-					template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(translate$fieldType$Operators(filter.get$upperFieldName$(), \"$fieldName$\"));");
-					template.setAttribute("fieldType", field.getType());
-				}
+			if (!field.getCompoundReference() ){
+					if (!field.isReference()&&!field.getType().equals(Cyberconstants.booleanType)){
+						StringTemplate template;
+						if (field.getType()==null || field.getType().equals(Cyberconstants.stringType)){
+							template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))queryString+=\" AND LOWER(p.$fieldName$) LIKE LOWER('\"+filter.get$upperFieldName$()+\"')\";");
+						}
+						else if (field.getType().equals(Cyberconstants.dateType)){
+							template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))queryString+=\" AND p.$fieldName$ \"+CyberUtils.getOperator(filter.get$upperFieldName$())+\" :$fieldName$ \";");
+							StringTemplate dateParameterTemp=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))\n query.setParameter(\"$fieldName$\", df.parse(filter.get$upperFieldName$().replace(CyberUtils.getOperator(filter.get$upperFieldName$()), \"\")));");
+							dateParameterTemp.setAttribute("fieldName", field.getName());
+							dateParameterTemp.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+							dateFieldCriteria+=dateParameterTemp.toString()+"\n";
+							
+						}
+						else{
+							template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))queryString+=\" AND p.$fieldName$ \"+filter.get$upperFieldName$()+\";\";");
+						}
 						
-				template.setAttribute("fieldName", field.getName());
-				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
-				fieldCriteria+=template.toString()+"\n";
+						template.setAttribute("fieldName", field.getName());
+						template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+						fieldCriteria+=template.toString()+"\n";
+					} else if (field.isReference()){
+						StringTemplate template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))queryString+=\" AND LOWER(p$referenceChain$) LIKE LOWER('\"+filter.get$upperFieldName$()+\"')\";");
+						template.setAttribute("fieldName", field.getName());
+						template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+						template.setAttribute("displayField", field.getDisplayField());
+						template.setAttribute("referenceChain", CodeUtils.getReferenceChain(cybertables, table, field));
+						fieldCriteria+=template.toString()+"\n";
+					}
 			}
 			else{
 				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
-					StringTemplate subTemplate=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))filterQuery.addCriteria(Criteria.where(\"$fieldName$\").regex(translateWildcards(filter.get$upperFieldName$())));");
+					StringTemplate subTemplate=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))queryString+=\" AND LOWER(p.$fieldName$) LIKE LOWER('\"+filter.get$upperFieldName$()+\"')\";");
 					subTemplate.setAttribute("fieldName", compoundField.getName());
 					subTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					fieldCriteria+=subTemplate.toString()+"\n";
 				}
 			}
 		}
+		this.dateFieldCriteria=dateFieldCriteria;
 		return fieldCriteria;
 	}
 

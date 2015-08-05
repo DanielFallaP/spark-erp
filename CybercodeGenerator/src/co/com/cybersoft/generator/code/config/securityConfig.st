@@ -17,7 +17,6 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import co.com.cybersoft.man.security.SparkAuthenticationSuccessHandler;
-import co.com.cybersoft.man.services.security.MongoUserDetailsService;
 import co.com.cybersoft.util.CyberUtils;
 
 import com.mongodb.Mongo;
@@ -26,12 +25,10 @@ import com.mongodb.Mongo;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
-	
-	@Autowired
-	
-	
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-		auth.userDetailsService(new MongoUserDetailsService(new MongoTemplate(new Mongo(getDBAddress()),CyberUtils.dataBaseName)));
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
 	}
 	
 	@Override

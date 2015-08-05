@@ -27,6 +27,58 @@ public class CodeUtils {
 	
 	public static List<Table> allTables;
 	
+	public static String getReferenceChain(Cybertables cybertables, Table table, Field field){
+		List<Table> tables = cybertables.getTables();
+		String chain="";
+		StringTemplate stringTemplate = new StringTemplate(".$reference$");
+		stringTemplate.setAttribute("reference", field.getName());
+		chain=stringTemplate.toString();
+		for (Table tab : tables) {
+			if (tab.getName().equals(field.getRefType())){
+				List<Field> fields = tab.getFields();
+				for (Field field2 : fields) {
+					if (field2.getName().equals(field.getDisplayField())){
+						if (field2.isReference())
+							return chain+getReferenceChain(cybertables, tab, field2);
+						else{
+							stringTemplate = new StringTemplate(".$reference$");
+							stringTemplate.setAttribute("reference", field2.getName());
+							return chain+stringTemplate.toString();
+						}
+					}
+				}
+			}
+		}
+		return "";
+	}
+	
+	public static String getGetChain(Cybertables cybertables, Table table, Field field){
+		List<Table> tables = cybertables.getTables();
+			String chain="";
+			StringTemplate stringTemplate = new StringTemplate(".get$upperReference$()");
+			stringTemplate.setAttribute("upperReference", CodeUtils.toCamelCase(field.getName()));
+			chain=stringTemplate.toString();
+			for (Table tab : tables) {
+				if (tab.getName().equals(field.getRefType())){
+					List<Field> fields = tab.getFields();
+					for (Field field2 : fields) {
+						if (field2.getName().equals(field.getDisplayField())){
+							if (field2.isReference())
+								return chain+getGetChain(cybertables, tab, field2);
+							else{
+								stringTemplate = new StringTemplate(".get$upperFieldName$()");
+								stringTemplate.setAttribute("upperFieldName", CodeUtils.toCamelCase(field2.getName()));
+								return chain+stringTemplate.toString();
+							}
+						}
+					}
+				}
+			}
+			return "";
+	}
+
+	public final static List<String> reservedSQLWords=Arrays.asList("date");
+
 	public static String getTableModule(String tableName){
 		for (Table table : allTables) {
 			if (table.getName().equals(tableName))
@@ -96,18 +148,27 @@ public class CodeUtils {
 		String text="";
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
-				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-				template.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
-				template.setAttribute("name", field.getName());
-				template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
-				text+=template.toString()+"\n";
 				
-				if (field.isEmbeddedReference()){
-					StringTemplate temp = templateGroup.getInstanceOf("getterSetter");
-					temp.setAttribute("type", CodeUtils.toCamelCase(field.getRefType())+"Details");
-					temp.setAttribute("name", field.getName()+"Details");
-					temp.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName())+"Details");
-					text+=temp.toString()+"\n";
+				if (!field.isReference()){
+					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
+					template.setAttribute("type", field.getType());
+					template.setAttribute("name", field.getName());
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+					text+=template.toString()+"\n";
+				}
+				else{
+					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
+
+					template.setAttribute("type", Cybertables.longType);
+					template.setAttribute("name", field.getName()+"Id");
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()+"Id"));
+					text+=template.toString()+"\n";
+					
+					template=templateGroup.getInstanceOf("getterSetter");
+					template.setAttribute("type", Cybertables.stringType);
+					template.setAttribute("name", field.getName());
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+					text+=template.toString()+"\n";
 				}
 			}
 			else{
@@ -118,6 +179,13 @@ public class CodeUtils {
 					template.setAttribute("name", compoundField.getName());
 					template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					text+=template.toString()+"\n";
+					
+					template = templateGroup.getInstanceOf("getterSetter");
+					template.setAttribute("type", Cybertables.longType);
+					template.setAttribute("name", compoundField.getName()+"Id");
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()+"Id"));
+					text+=template.toString()+"\n";
+
 				}
 			}
 		}
@@ -135,16 +203,21 @@ public class CodeUtils {
 		
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
-				StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-				fieldTemplate.setAttribute("type", field.isReference()?Cybertables.stringType:field.getType());
-				fieldTemplate.setAttribute("name", field.getName());
-				text+=fieldTemplate.toString();
-				text+="\n";
-				
-				if (field.isEmbeddedReference()){
-					fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
-					fieldTemplate.setAttribute("type", CodeUtils.toCamelCase(field.getRefType())+"Details");
-					fieldTemplate.setAttribute("name", field.getName()+"Details");
+				if (!field.isReference()){
+					StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+					fieldTemplate.setAttribute("type", field.getType());
+					fieldTemplate.setAttribute("name", field.getName());
+					text+=fieldTemplate.toString();
+					text+="\n";
+				}
+				else{
+					StringTemplate fieldTemplate = new StringTemplate("private Long $name$Id;\n\n");
+					fieldTemplate.setAttribute("name", field.getName());
+					text+=fieldTemplate.toString();
+					text+="\n";
+					
+					fieldTemplate = new StringTemplate("private String $name$;\n\n");
+					fieldTemplate.setAttribute("name", field.getName());
 					text+=fieldTemplate.toString();
 					text+="\n";
 				}
@@ -152,7 +225,13 @@ public class CodeUtils {
 			else{
 				List<Field> compoundKey = CodeUtils.getCompoundKey(spark, field.getRefType());
 				for (Field compoundField : compoundKey) {
-					StringTemplate fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
+					StringTemplate fieldTemplate = new StringTemplate("private Long $name$Id;\n\n");
+					fieldTemplate.setAttribute("type", Cybertables.longType);
+					fieldTemplate.setAttribute("name", compoundField.getName());
+					text+=fieldTemplate.toString();
+					text+="\n";
+					
+					fieldTemplate = new StringTemplate("private $type$ $name$;\n\n");
 					fieldTemplate.setAttribute("type", Cybertables.stringType);
 					fieldTemplate.setAttribute("name", compoundField.getName());
 					text+=fieldTemplate.toString();

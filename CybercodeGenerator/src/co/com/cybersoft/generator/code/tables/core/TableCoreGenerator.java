@@ -206,23 +206,67 @@ public class TableCoreGenerator {
 		template.setAttribute("coreDomainClass", CodeUtils.toCamelCase(table.getName())+"Details");
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("imports", generateDomainImports(table));
+		template.setAttribute("references", generateReferences(table));
 		
 		//Write embedded references transformations
-		List<Field> fields = table.getFields();
-		for (Field field : fields) {
-			if (field.isEmbeddedReference()){
-				StringTemplate subTemp = new StringTemplate("if (entity.get$upperFieldName$Entity()!=null){\n"
-						+ "$fieldName$Details = new $refType$Details();\n"+
-								"BeanUtils.copyProperties(entity.get$upperFieldName$Entity(), $fieldName$Details);}\n");
-				subTemp.setAttribute("fieldName", field.getName());
-				subTemp.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
-				subTemp.setAttribute("refType", CodeUtils.toCamelCase(field.getRefType()));
-				template.setAttribute("embeddedReferences", subTemp.toString());
-			}
-		}
+//		List<Field> fields = table.getFields();
+//		for (Field field : fields) {
+//			if (field.isEmbeddedReference()){
+//				StringTemplate subTemp = new StringTemplate("if (entity.get$upperFieldName$Entity()!=null){\n"
+//						+ "$fieldName$Details = new $refType$Details();\n"+
+//								"BeanUtils.copyProperties(entity.get$upperFieldName$Entity(), $fieldName$Details);}\n");
+//				subTemp.setAttribute("fieldName", field.getName());
+//				subTemp.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
+//				subTemp.setAttribute("refType", CodeUtils.toCamelCase(field.getRefType()));
+//				template.setAttribute("embeddedReferences", subTemp.toString());
+//			}
+//		}
 		template.setAttribute("module", cybertables.getModuleName());
 		
 		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/core/domain").replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"Details.java");
+	}
+
+	private Object generateReferences(Table table) {
+		String references="";
+		List<Field> fields = table.getFields();
+		int i=0;
+		for (Field field : fields) {
+			if (!field.getCompoundReference()){
+				if (field.isReference()){
+					StringTemplate stringTemplate = new StringTemplate("this.$reference$=entity$getChain$;\n");
+					stringTemplate.setAttribute("reference", field.getName());
+					stringTemplate.setAttribute("upperReference", CodeUtils.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("getChain", CodeUtils.getGetChain(cybertables, table, field));
+					references+=stringTemplate.toString();
+					
+					stringTemplate = new StringTemplate("this.$reference$Id=entity.get$upperReference$().getId();\n");
+					stringTemplate.setAttribute("reference", field.getName());
+					stringTemplate.setAttribute("upperReference", CodeUtils.toCamelCase(field.getName()));
+					stringTemplate.setAttribute("upperDisplayField", CodeUtils.toCamelCase(field.getDisplayField()));
+					references+=stringTemplate.toString();
+				}
+			}
+			else{
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
+				Field keyCompound = fields.get(i+1);
+				for (Field compoundField : compoundKey) {
+					StringTemplate stringTemplate = new StringTemplate("this.$reference$=entity.get$upperReference$().get$upperDisplayField$();\n");
+					stringTemplate.setAttribute("reference", compoundField.getName());
+					stringTemplate.setAttribute("upperReference", CodeUtils.toCamelCase(compoundField.getRefType()));
+					stringTemplate.setAttribute("upperDisplayField", CodeUtils.toCamelCase(compoundField.getName()));
+					references+=stringTemplate.toString();
+					
+					stringTemplate = new StringTemplate("this.$reference$Id=entity.get$upperReference$().getId();\n");
+					stringTemplate.setAttribute("reference", compoundField.getName());
+					stringTemplate.setAttribute("upperReference", CodeUtils.toCamelCase(compoundField.getRefType()));
+					stringTemplate.setAttribute("upperDisplayField", CodeUtils.toCamelCase(compoundField.getName()));
+					references+=stringTemplate.toString();
+				
+				}
+			}
+		}
+		
+		return references;
 	}
 
 	private Object generateDomainImports(Table table) {

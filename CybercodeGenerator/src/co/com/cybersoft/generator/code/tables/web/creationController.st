@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
@@ -57,6 +58,7 @@ public class $entityName$CreationController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
+	@Transactional(readOnly=false)
 	public String create$entityName$(@Valid @ModelAttribute("$tableName$Info") $entityName$Info $tableName$Info, Model model, HttpServletRequest request) throws Exception{
 		$compoundReferences$
 		$tableName$Info.setCreated(false);

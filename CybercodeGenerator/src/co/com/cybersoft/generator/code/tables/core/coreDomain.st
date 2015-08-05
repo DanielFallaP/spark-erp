@@ -16,7 +16,7 @@ public class $coreDomainClass$ {
 	$fieldDeclaration$		
 	private Date dateOfModification;
 	
-	private String id;
+	private Long id;
 	
 	private String userName;
 	
@@ -24,11 +24,11 @@ public class $coreDomainClass$ {
 	
 	private String createdBy;
 	
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -65,6 +65,7 @@ public class $coreDomainClass$ {
 	
 	public $entityName$Details to$entityName$Details($entityName$ entity){
 		BeanUtils.copyProperties(entity, this);
+		$references$
 		$embeddedReferences$
 		return this;
 	}

@@ -369,7 +369,7 @@ public class TableViewGenerator {
 						template = templateGroup.getInstanceOf("otherColumn");
 					}
 					
-					template.setAttribute("fieldName", field.getName());
+					template.setAttribute("fieldName", CodeUtils.getReferenceChain(cybertables, table, field).substring(1));
 					text+=template.toString()+"\n";
 				}
 			}
@@ -377,7 +377,7 @@ public class TableViewGenerator {
 				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
-					template.setAttribute("fieldName", compoundField.getName());
+					template.setAttribute("fieldName", CodeUtils.getReferenceChain(cybertables, table, compoundField).substring(1));
 					text+=template.toString()+"\n";
 				}
 			}

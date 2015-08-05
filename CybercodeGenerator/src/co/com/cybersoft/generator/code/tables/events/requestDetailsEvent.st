@@ -7,20 +7,20 @@ package co.com.cybersoft.$module$.tables.events.$tableName$;
  */
 public class Request$entityName$DetailsEvent {
 
-	private String id;
+	private Long id;
 	
 	private String field;
 	
 	private String value;
 	
-	public Request$entityName$DetailsEvent(String id){
+	public Request$entityName$DetailsEvent(Long id){
 		this.id=id;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	
+
 	public String getField() {
 		return field;
 	}

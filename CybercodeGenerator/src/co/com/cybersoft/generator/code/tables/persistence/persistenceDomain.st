@@ -2,12 +2,17 @@ package co.com.cybersoft.$module$.tables.persistence.domain;
 
 import java.util.Date;
 
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+
 
 $imports$
 import co.com.cybersoft.$module$.tables.core.domain.$coreDomainClass$;
@@ -17,12 +22,12 @@ import co.com.cybersoft.$module$.tables.core.domain.$coreDomainClass$;
  * @author Cybersystems 2014. All rights reserved.
  *
  */
-@Document(collection="$variableName$")
-$compoundIndex$
+@Entity
 public class $entityName$ {
 
 	@Id
-	private String id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
 	
 	$fieldDeclaration$
 	private Date dateOfModification;
@@ -47,10 +52,10 @@ public class $entityName$ {
 		this.dateOfCreation = dateOfCreation;
 	}
 	
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -72,8 +77,8 @@ public class $entityName$ {
 	
 	public $entityName$ from$coreDomainClass$($coreDomainClass$ details){
 		BeanUtils.copyProperties(details, this);
-		$embeddedReferences$
-		
+
+		$references$		
 		return this;
 	}
 

@@ -1,8 +1,7 @@
 @Override
 	public List<$entityName$> findByContaining$upperReferenceField$(
 			String $fieldName$Substring) {
-			$fieldName$Substring = CyberUtils.escapePCRECharacters($fieldName$Substring);
-			BasicQuery query = new BasicQuery("{\"$fieldName$\": {\$regex : '" + $fieldName$Substring + "',\$options:'i'}, \"active\":true }");
-			query.limit(10);
-			return	 mongo.find(query, $entityName$.class);
+			Query query = emFactory.getObject().createEntityManager().createQuery("SELECT p FROM $entityName$ p WHERE LOWER(p.$fieldName$) LIKE CONCAT(CONCAT('%',LOWER(:substring)),'%')");
+			query.setParameter("substring", $fieldName$Substring);
+			return query.setMaxResults(10).getResultList();
 	}
