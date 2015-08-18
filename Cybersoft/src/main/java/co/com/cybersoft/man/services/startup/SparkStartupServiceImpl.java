@@ -29,41 +29,41 @@ public class SparkStartupServiceImpl implements SparkStartupService{
 	@Autowired
 	TimerService timerService;
 
-	@Autowired
-	private TenantConfigurationService tenantConfigService;
+//	@Autowired
+//	private TenantConfigurationService tenantConfigService;
 	
-	@Autowired
-	private SequenceService sequenceStartupService; 
-	
-	@Autowired
-	private ReportingService reportingService;
+//	@Autowired
+//	private SequenceService sequenceStartupService; 
+//	
+//	@Autowired
+//	private ReportingService reportingService;
 
 	@PostConstruct
 	@Override
 	public void SPARK() throws Exception {
-		bootTenantConfig();
+//		bootTenantConfig();
 		bootCurrencyConfig();
-		bootExcelDirectoryCleanupConfig();
-		bootSequences();
+//		bootExcelDirectoryCleanupConfig();
+//		bootSequences();
 	}
 
-	private void bootExcelDirectoryCleanupConfig() throws Exception{
-		// Clean up the directory for generated excel files
-		reportingService.cleanupExcelDirectory();
-		
-		//Schedule daily jobs for continuous cleansing
-		Map<String,ReportingService> map = new HashMap<String, ReportingService>();
-		map.put("reportingService", reportingService);
-		JobDetail job = JobBuilder.newJob(CleanupDirectoryJob.class)
-				.withIdentity("cleanupExcelDir").usingJobData(new JobDataMap(map))
-				.build();
-
-		timerService.scheduleFirstThingDailyJob(job);		
-	}
-
-	private void bootSequences() throws Exception{
-		sequenceStartupService.startupSequences();
-	}
+//	private void bootExcelDirectoryCleanupConfig() throws Exception{
+//		// Clean up the directory for generated excel files
+//		reportingService.cleanupExcelDirectory();
+//		
+//		//Schedule daily jobs for continuous cleansing
+//		Map<String,ReportingService> map = new HashMap<String, ReportingService>();
+//		map.put("reportingService", reportingService);
+//		JobDetail job = JobBuilder.newJob(CleanupDirectoryJob.class)
+//				.withIdentity("cleanupExcelDir").usingJobData(new JobDataMap(map))
+//				.build();
+//
+//		timerService.scheduleFirstThingDailyJob(job);		
+//	}
+//
+//	private void bootSequences() throws Exception{
+//		sequenceStartupService.startupSequences();
+//	}
 
 	private void bootCurrencyConfig() throws Exception{
 	
@@ -86,9 +86,9 @@ public class SparkStartupServiceImpl implements SparkStartupService{
 		timerService.scheduleFirstThingDailyJob(job);
 	}
 	
-	private void bootTenantConfig() throws Exception {
-		tenantConfigService.updateTenantConfig();
-	}
+//	private void bootTenantConfig() throws Exception {
+//		tenantConfigService.updateTenantConfig();
+//	}
 	
 
 }

@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 
 import co.com.cybersoft.purchase.tables.persistence.domain.CustomerTenancy;
@@ -38,8 +39,8 @@ public class UpdateTodaysRate implements Runnable{
 		try {
 			Calendar cal = new GregorianCalendar();
 			cal.setTime(date);
-			List<CustomerTenancy> tenancyList = tenancyRepo.findAll();
-			if (!tenancyList.isEmpty()){
+			Iterable<CustomerTenancy> tenancyList = tenancyRepo.findAll();
+			if (tenancyList.iterator().hasNext()){
 				//Check if the rate for today already exists
 				cal.set(Calendar.HOUR_OF_DAY, 0);
 				cal.set(Calendar.MINUTE, 0);
@@ -52,9 +53,9 @@ public class UpdateTodaysRate implements Runnable{
 					//Get yesterday rate if there is one
 					ExchangeRate yesterdayRate = exchangeRateRepo.findByDate(cal.getTime());
 					
-					CustomerTenancy tenancy = tenancyList.get(0);
-					String baseCurrency=tenancy.getForeignCurrencyEntity().getCode();
-					String localCurrency=tenancy.getLocalCurrencyEntity().getCode();
+					CustomerTenancy tenancy = tenancyList.iterator().next();
+					String baseCurrency=tenancy.getForeignCurrency().getCode().getCurrency();
+					String localCurrency=tenancy.getLocalCurrency().getCode().getCurrency();
 					
 					Integer year = cal.get(Calendar.YEAR);
 					String month = String.format("%02d", cal.get(Calendar.MONTH)+1);
@@ -95,8 +96,8 @@ public class UpdateTodaysRate implements Runnable{
 							exchangeRate.setVariation(variation);
 							exchangeRate.setUserName("admin");
 							exchangeRate.setExchangeRate(rate);
-							exchangeRate.setLocalCurrency(localCurrency);
-							exchangeRate.setForeignCurrency(baseCurrency);
+							exchangeRate.setLocalCurrency(tenancy.getLocalCurrency());
+							exchangeRate.setForeignCurrency(tenancy.getForeignCurrency());
 							exchangeRate.setDateOfModification(cal.getTime());
 							exchangeRate.setDateOfCreation(cal.getTime());
 							

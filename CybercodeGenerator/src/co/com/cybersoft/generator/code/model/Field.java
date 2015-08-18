@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Field {
+	private String columnName;
 	private String name;
 	private String type;
 	private Boolean unique=Boolean.FALSE;
@@ -41,6 +42,12 @@ public class Field {
 	
 	private JavaScriptAPI autoCompletePeerFunction;
 	
+	public String getColumnName() {
+		return columnName;
+	}
+	public void setColumnName(String columnName) {
+		this.columnName = columnName;
+	}
 	public JavaAPI getOnBodySave() {
 		return onBodySave;
 	}

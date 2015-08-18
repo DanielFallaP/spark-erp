@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 
 $imports$
@@ -22,6 +24,7 @@ import co.com.cybersoft.$module$.tables.core.domain.$coreDomainClass$;
  * @author Cybersystems 2014. All rights reserved.
  *
  */
+$compoundIndex$
 @Entity
 public class $entityName$ {
 

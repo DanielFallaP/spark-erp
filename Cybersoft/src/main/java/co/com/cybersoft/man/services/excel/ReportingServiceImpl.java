@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +13,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.persistence.Query;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -24,9 +27,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import co.com.cybersoft.util.CyberUtils;
 
@@ -36,42 +39,41 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 public class ReportingServiceImpl implements ReportingService {
+	@Autowired
+	private LocalContainerEntityManagerFactoryBean emFactory;
 
-	@Autowired
-	private ApplicationContext context;
-	
-	@Autowired
-	private MongoOperations mongo;
-	
 	@Autowired
 	private ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource;
 	
 	@Override
-	public String toExcel(String className, Locale locale) throws Exception {
+	public String toExcel(String className, String detailsClassName, Locale locale) throws Exception {
 		Class<?> forName = Class.forName(className);
-		DBCollection collection = mongo.getCollection(toLowerCamelCase(forName.getSimpleName()));
-		return generateExcel(collection.find(), forName, locale);
-	}
+		Class<?> forNameDetails = Class.forName(detailsClassName);
+		Query query = emFactory.getObject().createEntityManager().createQuery("SELECT p from "+forName.getSimpleName()+" p");
+		return generateExcel(query.getResultList(), forName, forNameDetails, locale);
+	}	
 	
 	@Override
 	public String docToExcel(String className, String bodyClassName, Locale locale, Long id) throws Exception {
-		Class<?> header = Class.forName(className);
-		Class<?> body = Class.forName(bodyClassName);
-		DBCollection collection = mongo.getCollection(toLowerCamelCase(header.getSimpleName()));
-		BasicDBObject basicObject = new BasicDBObject();
-		basicObject.append("numericId", id);
-		File docExcel = generateDocExcel(collection.find(basicObject), header, body, locale, id);
-		return "redirect:"+CyberUtils.excelURLPath+"/"+docExcel.getName();
+//		Class<?> header = Class.forName(className);
+//		Class<?> body = Class.forName(bodyClassName);
+//		DBCollection collection = mongo.getCollection(toLowerCamelCase(header.getSimpleName()));
+//		BasicDBObject basicObject = new BasicDBObject();
+//		basicObject.append("numericId", id);
+//		File docExcel = generateDocExcel(collection.find(basicObject), header, body, locale, id);
+//		return "redirect:"+CyberUtils.excelURLPath+"/"+docExcel.getName();
+		return "";
 	}
 	
 	@Override
 	public File docToExcelFile(String className, String bodyClassName, Locale locale, Long id) throws Exception {
-		Class<?> header = Class.forName(className);
-		Class<?> body = Class.forName(bodyClassName);
-		DBCollection collection = mongo.getCollection(toLowerCamelCase(header.getSimpleName()));
-		BasicDBObject basicObject = new BasicDBObject();
-		basicObject.append("numericId", id);
-		return generateDocExcel(collection.find(basicObject), header, body, locale, id);
+//		Class<?> header = Class.forName(className);
+//		Class<?> body = Class.forName(bodyClassName);
+//		DBCollection collection = mongo.getCollection(toLowerCamelCase(header.getSimpleName()));
+//		BasicDBObject basicObject = new BasicDBObject();
+//		basicObject.append("numericId", id);
+//		return generateDocExcel(collection.find(basicObject), header, body, locale, id);
+		return null;
 	}
 
 	private String toLowerCamelCase(String name){
@@ -274,7 +276,7 @@ public class ReportingServiceImpl implements ReportingService {
 		}
 	}
 
-	private String generateExcel(DBCursor cursor, Class<?> _class, Locale locale) throws IOException{
+	private String generateExcel(List<?> cursor, Class<?> _class, Class<?> detailsClass, Locale locale) throws Exception{
 		
 		
 		//Generation of document and title
@@ -302,7 +304,7 @@ public class ReportingServiceImpl implements ReportingService {
 		int j=0;
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
-			if (!field.getName().equals(CyberUtils.tableIdField) && !field.getName().endsWith("Entity")){
+			if (!field.getName().equals(CyberUtils.tableIdField)){
 				headerCell = headerRow.createCell(j);
 				String fieldName="";
 				
@@ -324,16 +326,19 @@ public class ReportingServiceImpl implements ReportingService {
 		}
 		
 		int rownum=2;
-		while (cursor.hasNext()) {
-			DBObject next = cursor.next();
+		for (Object next : cursor) {
 			sheet.setColumnWidth(rownum, 15*256);
 			Row row = sheet.createRow(rownum);
+			Object details = detailsClass.newInstance();
+			Method toDetailsMethod=detailsClass.getDeclaredMethod("to"+toUpperCamelCase(_class.getSimpleName())+"Details", _class);
+			details=toDetailsMethod.invoke(details, next);
 			int k=0;
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];
-				if (!field.getName().equals(CyberUtils.tableIdField) && !field.getName().endsWith("Entity")){
+				if (!field.getName().equals(CyberUtils.tableIdField)){
 					Cell cell = row.createCell(k);
-					Object object = next.get(toLowerCamelCase(fields[i].getName()));
+					Method declaredMethod = detailsClass.getDeclaredMethod("get"+toUpperCamelCase(field.getName()));
+					Object object=declaredMethod.invoke(details);
 					if (object!=null){
 						if (object instanceof String){
 							cell.setCellValue((String) object);
@@ -362,6 +367,10 @@ public class ReportingServiceImpl implements ReportingService {
 						else if (object instanceof Date){
 							cell.setCellValue(((Date) object));
 							cell.setCellStyle(styles.get("dateCell"));
+						}
+						else{
+							cell.setCellValue("Reference");
+							cell.setCellStyle(styles.get("cell"));
 						}
 					}
 					else{

@@ -71,21 +71,20 @@ public class TablePersistenceGenerator {
 		template.setAttribute("references", generateDomainReferences(table));
 		
 		if (table.hasCompoundIndex()){
-			//TODO
-//			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");
-//			List<Field> compoundIndex = table.getCompoundIndex(cybertables);
-//			String dec="";
-//			int i=0;
-//			for (Field field : compoundIndex) {
-//				dec+="'"+field.getName()+"':1";
-//				if (i!=compoundIndex.size()-1)
-//					dec+=",";
-//				i++;
-//			}
-//			subTemplate.setAttribute("tableName", table.getName());
-//			subTemplate.setAttribute("fields", dec);
-//			
-//			template.setAttribute("compoundIndex", subTemplate.toString());
+			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");
+			List<Field> compoundIndex = table.getCompoundIndex(cybertables);
+			String dec="";
+			int i=0;
+			for (Field field : compoundIndex) {
+				dec+="\""+field.getColumnName()+"\"";
+				if (i!=compoundIndex.size()-1)
+					dec+=",";
+				i++;
+			}
+			subTemplate.setAttribute("tableName", table.getName());
+			subTemplate.setAttribute("fields", dec);
+			
+			template.setAttribute("compoundIndex", subTemplate.toString());
 		}
 		
 		//Write embedded references transformations
@@ -167,8 +166,6 @@ public class TablePersistenceGenerator {
 				}
 				
 				if (field.isReference()){
-					if (CodeUtils.reservedSQLWords.contains(field.getName()))
-						body+="@Column(name=\"f_"+field.getName()+"\")\n";
 					StringTemplate temp = new StringTemplate("@ManyToOne(fetch = FetchType.EAGER)\n@JoinColumn(name=\"$fieldName$_ID\" $nullable$)");
 					temp.setAttribute("refType", field.getRefType().toUpperCase());
 					temp.setAttribute("fieldName", field.getName().toUpperCase());
@@ -678,7 +675,7 @@ public class TablePersistenceGenerator {
 							
 						}
 						else{
-							template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))queryString+=\" AND p.$fieldName$ \"+filter.get$upperFieldName$()+\";\";");
+							template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))queryString+=\" AND p.$fieldName$ \"+filter.get$upperFieldName$();");
 						}
 						
 						template.setAttribute("fieldName", field.getName());

@@ -68,8 +68,17 @@ public class Table {
 	public List<Field> getCompoundIndex(Cybertables spark){
 		ArrayList<Field> compoundIndex = new ArrayList<Field>();
 		for (Field field:fields) {
-			if (field.getKeyCompound()&&!field.getCompoundReference())
+			if (field.getKeyCompound()&&!field.getCompoundReference()){
+				if (CodeUtils.reservedSQLWords.contains(field.getName()) && !field.isReference()){
+					field.setColumnName("f_"+field.getName());
+				}
+				else if (field.isReference())
+					field.setColumnName(field.getName().toUpperCase()+"_ID");
+				else
+					field.setColumnName(field.getName());
+					
 				compoundIndex.add(field);
+			}
 			if (field.getKeyCompound()&&field.getCompoundReference())
 				compoundIndex.addAll(CodeUtils.getCompoundKey(spark, field.getRefType()));
 		}

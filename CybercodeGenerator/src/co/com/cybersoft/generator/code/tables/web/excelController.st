@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import co.com.cybersoft.man.services.excel.ReportingService;
 import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;
+import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;
 
 @Controller
 @RequestMapping("/$module$/$tableName$/export")
@@ -22,7 +23,7 @@ public class $entityName$ExcelController {
 	@RequestMapping(method=RequestMethod.GET)
 	public String toExcel() throws Exception{
 		LOG.debug("Exporting $entityName$ to Excel");
-		return reportingService.toExcel($entityName$.class.getCanonicalName(), LocaleContextHolder.getLocale());
+		return reportingService.toExcel($entityName$.class.getCanonicalName(), $entityName$Details.class.getCanonicalName(), LocaleContextHolder.getLocale());
 	}
 	
 }

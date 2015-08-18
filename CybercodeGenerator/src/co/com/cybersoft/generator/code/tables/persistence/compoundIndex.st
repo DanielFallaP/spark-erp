@@ -1,3 +1,1 @@
-@CompoundIndexes({
-    @CompoundIndex(name = "$tableName$Compound", def = "{$fields$}", unique=true)
-})
+@Table( uniqueConstraints = { @UniqueConstraint( columnNames = { $fields$ } ) } )
