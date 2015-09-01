@@ -25,9 +25,32 @@ public class TableCoreGenerator {
 			generateCoreServiceInterface(table);
 			generateCoreServiceImplementation(table);
 			generateCoreDomainClass(table);
+			generateExcelServiceImp(table);
+			generateExcelServiceInterface(table);
 		}
 	}
 	
+	private void generateExcelServiceInterface(Table table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
+		StringTemplate template = templateGroup.getInstanceOf("excelReportingServiceInterface");
+		template.setAttribute("tableName", table.getName());
+		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+		template.setAttribute("module", cybertables.getModuleName());
+		
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/core/services/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"ReportingService.java");
+		
+	}
+
+	private void generateExcelServiceImp(Table table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
+		StringTemplate template = templateGroup.getInstanceOf("excelReportingServiceImpl");
+		template.setAttribute("tableName", table.getName());
+		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+		template.setAttribute("module", cybertables.getModuleName());
+		
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/core/services/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"ReportingServiceImpl.java");
+	}
+
 	private void generateCoreServiceInterface(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreServiceInterface");
@@ -109,6 +132,7 @@ public class TableCoreGenerator {
 			
 		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/core/services/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), className+".java");
 	}
+	
 	
 	private void generateCoreServiceImplementation(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");

@@ -30,4 +30,7 @@ public interface $className$ {
 	$autocompleteRequest$
 	
 	$entityUppercaseName$PageEvent request$entityUppercaseName$FilterPage(Request$entityUppercaseName$PageEvent event) throws Exception;
+
+	$entityUppercaseName$PageEvent request$entityUppercaseName$Filter(Request$entityUppercaseName$PageEvent event) throws Exception;
+	
 }

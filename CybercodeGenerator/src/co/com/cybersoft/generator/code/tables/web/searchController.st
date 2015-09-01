@@ -108,6 +108,8 @@ public class $searchControllerName$ {
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("$entityName$Field"));
 		model.addAttribute("_direction", direction);
+	    request.getSession().setAttribute("$entityName$Filter", filter);
+		
 		return "$viewURL$";
 	}
 	

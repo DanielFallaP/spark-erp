@@ -57,10 +57,12 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 		if (filter.getUserName()!=null && !filter.getUserName().equals(""))queryString+=" AND LOWER(p.userName) LIKE LOWER('"+filter.getUserName()+"')";
 		if (filter.getCreatedBy()!=null && !filter.getCreatedBy().equals(""))queryString+=" AND LOWER(p.createdBy) LIKE LOWER('"+filter.getCreatedBy()+"')";
 	
-		while (pageable.getSort().iterator().hasNext()){
-			Order next = pageable.getSort().iterator().next();
-			$orderBy$
-			break;
+		if (pageable!=null){
+			while (pageable.getSort().iterator().hasNext()){
+				Order next = pageable.getSort().iterator().next();
+				$orderBy$
+				break;
+			}
 		}
 		
 		Query query = emFactory.getObject().createEntityManager().createQuery(queryString);
@@ -71,6 +73,13 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 		$dateFieldCriteria$
 		
 		return query;
+	}
+	
+	@Override
+	public List<$entityName$> findAllNoPage(Pageable pageable,
+			$entityName$FilterInfo filter) throws Exception {
+		Query query = buildCriteriaQuery(filter, null);
+		return query.getResultList();
 	}	
 }
 

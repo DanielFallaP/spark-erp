@@ -341,6 +341,7 @@ public class TableViewGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.tableCodePath+"views");
 		List<Field> fields = table.getFields();
 		String text="";
+		System.out.println("Table: "+table.getName());
 		for (Field field : fields) {
 			if (!field.getCompoundReference() && field.getDisplayable()){
 				if (!field.isReference() && field.getVisible() && !field.getLargeText() && !field.getType().equals(Cybertables.booleanType)){
@@ -369,6 +370,7 @@ public class TableViewGenerator {
 						template = templateGroup.getInstanceOf("otherColumn");
 					}
 					
+					System.out.println("Field name "+field.getName());
 					template.setAttribute("fieldName", CodeUtils.getReferenceChain(cybertables, table, field).substring(1));
 					text+=template.toString()+"\n";
 				}

@@ -110,5 +110,14 @@ public class $entityName$PersistenceServiceImpl implements $entityName$Persisten
 	public $entityName$PageEvent request$entityName$FilterPage(Request$entityName$PageEvent event) throws Exception {
 		Page<$entityName$> page = $tableName$CustomRepo.findAll(event.getPageable(), event.getFilter());
 		return new $entityName$PageEvent(page);
-	}	
+	}
+	
+	@Override
+	public $entityName$PageEvent request$entityName$Filter(
+			Request$entityName$PageEvent event) throws Exception {
+		List<$entityName$> all = $tableName$CustomRepo.findAllNoPage(event.getPageable(), event.getFilter());
+		$entityName$PageEvent pageEvent = new $entityName$PageEvent();
+		pageEvent.setAllList(all);
+		return pageEvent;
+	}
 }

@@ -21,5 +21,7 @@ public interface $entityName$CustomRepo {
 	$findAllActive$
 	
 	Page<$entityName$> findAll(Pageable pageable, $entityName$FilterInfo filter)throws Exception;
+
+	List<$entityName$> findAllNoPage(Pageable pageable, $entityName$FilterInfo filter)throws Exception;
 	
 }

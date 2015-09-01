@@ -1,1 +1,1 @@
-<div align="right"><a th:href="@{/$module$/$tableName$/export}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div>
+<div align="right"><a href=""><img onclick="generateExcelFile();" th:src="@{/resources/img/excel.png}"/></a></div>

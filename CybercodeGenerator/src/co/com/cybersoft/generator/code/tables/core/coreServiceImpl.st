@@ -56,6 +56,12 @@ public class $entityUppercaseName$ServiceImpl implements $entityUppercaseName$Se
 	public $upperEntityName$PageEvent request$upperEntityName$FilterPage(Request$upperEntityName$PageEvent event) throws Exception {
 		return $entityName$PersistenceService.request$upperEntityName$FilterPage(event);
 	}
+	
+	@Override
+	public $upperEntityName$PageEvent request$upperEntityName$Filter(Request$upperEntityName$PageEvent event) throws Exception {
+		return $entityName$PersistenceService.request$upperEntityName$Filter(event);
+	}
+	
 
 	$requestAll$
 	

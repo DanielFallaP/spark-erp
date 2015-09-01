@@ -153,6 +153,29 @@
 				});
 			} );   	
 	    	
+	    function generateExcelFile(){
+
+	    	var path=window.location.pathname.split("/");
+  	    	var prefix="";
+  	    	if (path[1].localeCompare("configuration")!=0){
+  	    		prefix="/"+path[1];	
+  	    	}
+  	    	var url=prefix+'/$module$/$tableName$/export';
+
+	    	        \$.ajax({
+	    	            url: url,
+	    	            type: 'post',
+	    	            dataType: 'json',
+	    	            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+	    	            success : function(result, a,b,c){
+	    	            	document.location=prefix+result.url;
+	    	            },
+	    	            error: function(a,b,c,d){
+	    	            },
+	    	            async: true
+	    	            
+	    	        });
+	    }
  		       /* ]]> */
 	     </script>
 	    
