@@ -1,11 +1,13 @@
 package co.com.cybersoft.generator.code.tables.views;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
+import co.com.cybersoft.generator.code.model.Action;
 import co.com.cybersoft.generator.code.model.Cyberconstants;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Field;
@@ -241,12 +243,31 @@ public class TableViewGenerator {
 		template.setAttribute("focusCheck", getFocusCheck(table));
 		template.setAttribute("columnHeaders", getHeaderColumns(table));
 		template.setAttribute("module", cybertables.getModuleName());
-
+		template.setAttribute("actions", getActionDropdown(table));
+		
 		template.setAttribute("excel", table.getLabelTable()?"<div></div>":generateExcelLink(table));
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/"+cybertables.getModuleName()+"/"+table.getName(), "search"+CodeUtils.toCamelCase(table.getName())+".html");
 	}
 	
+
+	private Object getActionDropdown(Table table) {
+		if (table.getActions()!=null){
+			List<Action> actions = table.getActions();
+			StringTemplateGroup templateGroup = new StringTemplateGroup("views",Cybertables.tableCodePath+"views");
+			StringTemplate template = templateGroup.getInstanceOf("dropdown");
+			
+			String act="";
+			for(Action action: actions){
+				StringTemplate template2 = new StringTemplate("<li ><label onclick=\"submitAction('$actionName$');\" tabindex=\"-1\" >$actionName$</label></li>\n");
+				template2.setAttribute("actionName", action.getActionName());
+				act+=template2.toString();
+			}
+			template.setAttribute("actions", act);
+			return template.toString();
+		}
+		return "";
+	}
 
 	private Object getFocusCheck(Table table) {
 		String focusCheck="";
@@ -379,7 +400,7 @@ public class TableViewGenerator {
 				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("otherColumn");
-					template.setAttribute("fieldName", CodeUtils.getReferenceChain(cybertables, table, compoundField).substring(1));
+					template.setAttribute("fieldName", compoundField.getName());
 					text+=template.toString()+"\n";
 				}
 			}

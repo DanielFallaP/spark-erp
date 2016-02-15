@@ -43,12 +43,10 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @ComponentScan(basePackages={$moduleControllers$"co.com.cybersoft.man.controller"})
 public class WebConfig extends WebMvcConfigurerAdapter{
 
-	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry){
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
 	
-	@Override
 	public void addInterceptors(InterceptorRegistry registry){
 		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 		localeChangeInterceptor.setParamName("language");
@@ -68,7 +66,6 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	}
 	
 
-	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		converters.add(new MappingJacksonHttpMessageConverter());
 	}
@@ -120,7 +117,6 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		return messageSource;
 	}
 	
-	@Override
 	public void addViewControllers(ViewControllerRegistry registry){
 		registry.addViewController("/home").setViewName("home");
 		registry.addViewController("/").setViewName("redirect:/home");
@@ -131,7 +127,6 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		registry.addViewController("/about").setViewName("man/about");
 	}
 	
-	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
 		PageableArgumentResolver resolver = new PageableArgumentResolver();
 		resolver.setFallbackPageable(new PageRequest(1, 10));

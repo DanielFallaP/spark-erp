@@ -277,7 +277,7 @@ public class CodeUtils {
 	
 	public static boolean generateQueryForReferences(Field field){
 		if (!field.isReference()&&!field.getCompoundReference()){
-			return field.getUnique()&field.getType().equals(Cybertables.stringType);
+			return field.getType().equals(Cybertables.stringType);
 		}
 		else if (field.isReference()&&!field.getCompoundReference())
 			return true;

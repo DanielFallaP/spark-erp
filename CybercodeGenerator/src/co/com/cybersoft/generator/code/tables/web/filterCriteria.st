@@ -16,6 +16,8 @@ public class $entityName$FilterInfo {
 	
 	private String createdBy;
 	
+	private String aaaaction;
+	
 	private Integer selectedFilterPage;
 	
 	private String selectedFilterField;
@@ -23,6 +25,15 @@ public class $entityName$FilterInfo {
 	private Boolean changeSortingFieldDirection;
 
 	$filterFields$
+	
+	public String getAaaaction() {
+		return aaaaction;
+	}
+
+	public void setAaaaction(String aaaaction) {
+		this.aaaaction = aaaaction;
+	}
+	
 	public Boolean getChangeSortingFieldDirection() {
 		return changeSortingFieldDirection;
 	}

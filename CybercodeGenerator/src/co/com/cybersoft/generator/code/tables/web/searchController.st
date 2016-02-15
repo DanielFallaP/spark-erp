@@ -37,6 +37,8 @@ public class $searchControllerName$ {
 	@Autowired
 	private $coreService$ $entityName$Service;
 	
+	$actionClasses$
+	
 	@RequestMapping(method=RequestMethod.GET)
 	public String search(Model model, Pageable pageable, String field, HttpServletRequest request) throws Exception{
 		LOG.debug("Retrieving  $entityName$ ");
@@ -61,7 +63,7 @@ public class $searchControllerName$ {
 		else{
 			if (request.getSession().getAttribute("$entityName$Ascending")!=null){
 								
-				direction=(boolean) request.getSession().getAttribute("$entityName$Ascending");
+				direction=(Boolean) request.getSession().getAttribute("$entityName$Ascending");
 				pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("$entityName$Field"):field));
 			}
 			details = $entityName$Service.request$requestMethodName$Page(new $requestEvent$(pageRequest));
@@ -75,8 +77,14 @@ public class $searchControllerName$ {
 		return "$viewURL$";
 	}
 	
+	private Boolean hasActions($entityUpperCaseName$FilterInfo filter){
+		$hasActions$
+		return false;
+	}
+	
 	@RequestMapping(method=RequestMethod.POST)
 	public String filter(Model model, String field, Pageable pageable, @ModelAttribute("$entityName$FilterInfo")$entityUpperCaseName$FilterInfo filter, HttpServletRequest request) throws Exception{
+		
 		Boolean direction=null;
 		if (filter.getSelectedFilterField()!=null && !filter.getSelectedFilterField().equals("")){
 			direction=(Boolean) request.getSession().getAttribute("$entityName$Ascending");
@@ -98,7 +106,7 @@ public class $searchControllerName$ {
 		}
 		else {
 			if (request.getSession().getAttribute("$entityName$Ascending")!=null){
-				direction=(boolean) request.getSession().getAttribute("$entityName$Ascending");
+				direction=(Boolean) request.getSession().getAttribute("$entityName$Ascending");
 				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))?request.getSession().getAttribute("$entityName$Field"):filter.getSelectedFilterField()));
 				pageEvent = new Request$entityUpperCaseName$PageEvent(pageRequest,filter);			}
 		}
@@ -108,6 +116,10 @@ public class $searchControllerName$ {
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("$entityName$Field"));
 		model.addAttribute("_direction", direction);
+		if (hasActions(filter)){
+			$actions$
+			filter.setAaaaction(null);
+	    }
 	    request.getSession().setAttribute("$entityName$Filter", filter);
 		
 		return "$viewURL$";

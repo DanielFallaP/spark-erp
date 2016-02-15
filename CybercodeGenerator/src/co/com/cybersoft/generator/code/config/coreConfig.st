@@ -8,6 +8,7 @@ $imports$
 
 @Configuration
 public class $upperModule$CoreConfig {
+	$actions$
 	
 	$beanDeclarations$
 	

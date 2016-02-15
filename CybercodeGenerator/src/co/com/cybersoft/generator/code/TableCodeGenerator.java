@@ -38,13 +38,18 @@ public class TableCodeGenerator {
 			//Set singleton tables fields as not required
 			List<Table> tables = moduleTables.getTables();
 			for (Table table : tables) {
+				List<Field> fields = table.getFields();
 				if (table.getSingletonTable()){
-					List<Field> fields = table.getFields();
 					for (Field field : fields) {
 						field.setRequired(false);
 					}
 				}
 				
+				//Change fields which have Java reserved words as names
+				for (Field field : fields) {
+					if (field.getName().toLowerCase().equals("class"))
+						field.setName("classis");
+				}
 			}
 			
 			if (!moduleTables.getTables().isEmpty()){

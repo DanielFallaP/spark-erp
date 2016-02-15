@@ -39,7 +39,6 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 	
 	$findAllActive$
 
-	@Override
 	public Page<$entityName$> findAll(Pageable pageable, $entityName$FilterInfo filter) throws Exception{
 		Query query = buildCriteriaQuery(filter, pageable);
 		Long count=(long) query.getResultList().size();
@@ -75,7 +74,6 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 		return query;
 	}
 	
-	@Override
 	public List<$entityName$> findAllNoPage(Pageable pageable,
 			$entityName$FilterInfo filter) throws Exception {
 		Query query = buildCriteriaQuery(filter, null);

@@ -44,7 +44,6 @@ public class $upperDocName$CustomRepoImpl implements $upperDocName$CustomRepo {
 		new Thread(new SessionLogger(sessionAction, mongo)).start();
 	}
 	
-	@Override
 	public $upperDocName$ save($upperDocName$ $docName$) throws Exception{
 		String id=$docName$.getId();
 		$upperDocName$ $docName$2 = repo.save($docName$);
@@ -68,7 +67,6 @@ public class $upperDocName$CustomRepoImpl implements $upperDocName$CustomRepo {
 		return $docName$2;
 	}
 	
-	@Override
 	public List<$upperDocName$> findByContainingNumericId(String numericId) throws Exception{
 		numericId=CyberUtils.escapePCRECharacters(numericId);
 		BasicQuery query = new BasicQuery("{\"stringId\": {\$regex : '" + numericId + "',\$options:'i'}, \"active\":true }");
@@ -76,7 +74,6 @@ public class $upperDocName$CustomRepoImpl implements $upperDocName$CustomRepo {
 		return mongo.find(query, $upperDocName$.class);
 	}
 	
-	@Override
 	public Page<$upperDocName$> findAll(Pageable pageable, $upperDocName$FilterInfo filter) throws Exception{
 		List<$upperDocName$> list = findAll(buildCriteria(filter).with(pageable));
 		return new PageImpl<$upperDocName$>(list, pageable, count(filter));

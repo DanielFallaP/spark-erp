@@ -24,6 +24,13 @@
 		 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
 		 <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
 	     <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+ 	     <script th:src="@{/resources/js/bootstrap-alert.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-collapse.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-dropdown.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-modal.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-transitions.js}"></script>
+	     
+	     
 	     <script type="text/javascript">
 	     	/* <![CDATA[ */
 	     	
@@ -126,6 +133,14 @@
     	 	form.elements["selectedFilterPage"].value=page;
 			form.submit();
 	    }
+	    
+		function submitAction(action){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["aaaaction"].value=action;
+    	 	form.elements["selectedFilterPage"].value=1;
+    	 	form.submit();
+	    }
+	    
 		
 		function submitFilterPage(page,field,changeDirection){
     	 	var form=document.forms['filter-form'];
@@ -181,14 +196,50 @@
 	    
 </head>
 <body>
-
-	<div th:include="normal/layout$module$ :: header" ></div>
+	<div th:fragment="header">
+		    <div class="navbar navbar-inverse navbar-fixed-top">
+		        <div class="navbar-inner">
+		            <div class="container-fluid">
+					<form hidden="" id="navBar" th:action="@{/logout}" method="post">
+						<input id="logoutURL" type="hidden" th:value="@{/logout}"/>
+					</form>
+		                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                </a>
+		                <a class="brand" th:href="@{/}" ><img alt="" th:src="@{/resources/img/spark.png}" /></a>
+			                <div class="nav-collapse collapse">
+			                    <p class="navbar-text pull-right">
+			
+			                    </p>
+			                    <ul class="nav" id="navigationBar">
+				                    $actions$
+				                    
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisition}" th:text="#{label.requisitionsOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisitionDistribution}" th:text="#{label.requisitionDistributionOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchQuotation}" th:text="#{label.quotationOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.purchaseOrders}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchItemReceipt}" th:text="#{label.itemReceiptOrder}"></a></li>
+<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/purchaseOrderOtherValue}" th:text="#{label.purchaseOrderOtherValueOption}"></a></li> -->
+									<li sec:authorize-url="/$module$"><a th:href="@{/$module$}" th:text="#{label.navbarConfiguration}"></a></li>
+			                        <li sec:authorize-url="/$module$Settings"><a th:href="@{/$module$Settings}" th:text="#{label.settingsOption}"></a></li>
+			                        <li sec:authorize-url="/preferences"><a th:href="@{/preferences}" th:text="#{label.languageOption}"></a></li>
+			                        <li><a id="about-ajax-popup" class="about-ajax-popup" th:href="@{/about}" th:text="#{label.aboutOption}"></a></li>
+			                        <li><a href=""><img onclick="var url=\$('#logoutURL').val();\$.ajax({type: 'POST',url: url});" th:src="@{/resources/img/logout.png}"/></a></li>
+			                    </ul>
+			                </div> <!--/.nav-collapse -->
+		            </div>
+		        </div>
+		    </div>
+		</div>
 	<div class="container-fluid">	
 		<div class="row-fluid">
 			<div id="back"><a th:text="#{label.back}" th:href="@{/$backURL$}"></a></div>
 			<h3 th:text="#{label.$tableName$Info}"> </h3>
 			<form id="filter-form" th:object="\${$tableName$FilterInfo}" method="post" >
 		  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
+		  	<input id="aaaaction" type="hidden" th:field="*{aaaaction}"/>
 			<input id="selectedFilterField" type="hidden" th:field="*{selectedFilterField}"/>
 		  	<input id="changeSortingFieldDirection" type="hidden" th:field="*{changeSortingFieldDirection}"/>
 			<table width="100%">

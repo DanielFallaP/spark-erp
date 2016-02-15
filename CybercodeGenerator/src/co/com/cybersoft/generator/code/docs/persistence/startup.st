@@ -15,7 +15,6 @@ public class SequenceServiceImpl implements SequenceService{
 	@Autowired
 	MongoOperations mongo;
 	
-	@Override
 	public void startupSequences() throws Exception {
 	
 		$checkAndStart$

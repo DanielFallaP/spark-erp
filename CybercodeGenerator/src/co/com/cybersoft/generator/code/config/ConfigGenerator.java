@@ -2,17 +2,17 @@ package co.com.cybersoft.generator.code.config;
 
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import co.com.cybersoft.generator.code.model.Cyberconstants;
+import co.com.cybersoft.generator.code.model.Action;
 import co.com.cybersoft.generator.code.model.Cyberdocs;
 import co.com.cybersoft.generator.code.model.Cybermodules;
 import co.com.cybersoft.generator.code.model.Cybertables;
-import co.com.cybersoft.generator.code.model.Document;
 import co.com.cybersoft.generator.code.model.Module;
 import co.com.cybersoft.generator.code.model.Table;
 import co.com.cybersoft.generator.code.util.CodeUtils;
@@ -106,6 +106,8 @@ public class ConfigGenerator {
 		
 		String imports="";
 		String beans="";
+		String acts="";
+		List<String> declaredAPIClasses=new ArrayList<String>();
 
 		for (Module module : modules) {
 			Cybertables cybertables = mapper.readValue(new InputStreamReader(new FileInputStream(module.getFileName()+".json"), "UTF8"), Cybertables.class);
@@ -120,6 +122,13 @@ public class ConfigGenerator {
 				temp.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 				temp.setAttribute("module", cybertables.getModuleName());
 				imports+=temp.toString()+"\n\n";
+				
+				if (table.getActions()!=null){
+					List<Action> actions = table.getActions();
+					for (Action action:actions){
+						imports+="import "+action.getClassName()+";\n";
+					}
+				}
 			}
 			
 			//Beans
@@ -129,12 +138,28 @@ public class ConfigGenerator {
 				temp.setAttribute("tableName",table.getName());
 				temp.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 				beans+=temp.toString()+"\n\n";
+				
+				if (table.getActions()!=null){
+					List<Action> actions = table.getActions();
+					for (Action action:actions){
+						
+						if (!declaredAPIClasses.contains(action.getClassName())){
+							temp = templateGroup.getInstanceOf("actionBeanDeclaration");
+							temp.setAttribute("upperClassName", CodeUtils.toCamelCase(action.getClassName().substring(action.getClassName().lastIndexOf('.')+1)));			
+							temp.setAttribute("className", CodeUtils.toLowerCamelCase(action.getClassName().substring(action.getClassName().lastIndexOf('.')+1)));			
+							acts+=temp.toString()+'\n';
+							
+							declaredAPIClasses.add(action.getClassName());
+						}
+					}
+				}
 			}
 		}
 		
 		imports+=this.repoImports;
 		template.setAttribute("imports", imports);
 		template.setAttribute("beanDeclarations", beans);
+		template.setAttribute("actions", acts);
 		template.setAttribute("repoFields", this.repoFields);
 		template.setAttribute("repoBeans", this.repoBeans);
 		
@@ -165,7 +190,6 @@ public class ConfigGenerator {
 			persistenceTemplate.setAttribute("module", module.getName());
 			
 			basePackages+=persistenceTemplate.toString();
-			if (cybertables.getModuleName().equals("purchase"))
 			
 			for (Table table : tables) {
 				StringTemplate temp = templateGroup.getInstanceOf("persistenceConfigImport");
@@ -178,7 +202,6 @@ public class ConfigGenerator {
 			}
 			
 			//Beans
-			if (cybertables.getModuleName().equals("purchase"))
 			
 			for (Table table : tables) {
 				StringTemplate temp = templateGroup.getInstanceOf("persistenceBeanDeclaration");
@@ -214,7 +237,6 @@ public class ConfigGenerator {
 		this.repoFields=repoFields;
 		this.repoBeans=beans;
 		template.setAttribute("repos", repos);
-		template.setAttribute("module", "purchase");
 		template.setAttribute("packages", basePackages.substring(0, basePackages.length()-1));
 
 		

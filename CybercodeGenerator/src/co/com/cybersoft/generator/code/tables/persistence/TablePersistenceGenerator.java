@@ -185,7 +185,7 @@ public class TablePersistenceGenerator {
 				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = new StringTemplate("private $type$ $name$;\n");
-					template.setAttribute("type", CodeUtils.toCamelCase(compoundField.getRefType()));
+					template.setAttribute("type", Cyberconstants.stringType);
 					template.setAttribute("name", compoundField.getName());
 					body+=template.toString();
 					body+="\n";
@@ -215,7 +215,7 @@ public class TablePersistenceGenerator {
 				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-					template.setAttribute("type", CodeUtils.toCamelCase(compoundField.getRefType()));
+					template.setAttribute("type", Cybertables.stringType);
 					template.setAttribute("name", compoundField.getName());
 					template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					text+=template.toString()+"\n";

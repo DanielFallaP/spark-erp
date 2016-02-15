@@ -36,10 +36,10 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import co.com.cybersoft.man.ExcelReportResponse;
-import co.com.cybersoft.purchase.tables.core.services.$tableName$.$entityName$Service;
-import co.com.cybersoft.purchase.tables.events.$tableName$.$entityName$PageEvent;
-import co.com.cybersoft.purchase.tables.events.$tableName$.Request$entityName$PageEvent;
-import co.com.cybersoft.purchase.tables.web.domain.$tableName$.$entityName$FilterInfo;
+import co.com.cybersoft.$module$.tables.core.services.$tableName$.$entityName$Service;
+import co.com.cybersoft.$module$.tables.events.$tableName$.$entityName$PageEvent;
+import co.com.cybersoft.$module$.tables.events.$tableName$.Request$entityName$PageEvent;
+import co.com.cybersoft.$module$.tables.web.domain.$tableName$.$entityName$FilterInfo;
 import co.com.cybersoft.util.CyberUtils;
 
 import com.mongodb.BasicDBObject;
@@ -57,7 +57,6 @@ public class $entityName$ReportingServiceImpl implements $entityName$ReportingSe
 	@Autowired
 	private $entityName$Service $tableName$;
 	
-	@Override
 	public ExcelReportResponse toExcel(String className, String detailsClassName, Locale locale, $entityName$FilterInfo filter) throws Exception {
 		Class<?> forName = Class.forName(className);
 		Class<?> forNameDetails = Class.forName(detailsClassName);
@@ -101,7 +100,7 @@ public class $entityName$ReportingServiceImpl implements $entityName$ReportingSe
 					valueCell.setCellStyle(styles.get("cell"));
 				}
 				else if (value instanceof Double ){
-					valueCell.setCellValue((double) value);
+					valueCell.setCellValue((Double) value);
 					valueCell.setCellStyle(styles.get("cell"));
 				}
 				else if (value instanceof Integer){
@@ -202,7 +201,7 @@ public class $entityName$ReportingServiceImpl implements $entityName$ReportingSe
 							cell.setCellStyle(styles.get("cell"));
 						}
 						else if (object instanceof Double ){
-							cell.setCellValue((double) object);
+							cell.setCellValue((Double) object);
 							cell.setCellStyle(styles.get("cell"));
 						}
 						else if (object instanceof Integer){

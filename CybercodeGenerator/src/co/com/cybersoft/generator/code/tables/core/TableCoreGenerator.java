@@ -45,8 +45,8 @@ public class TableCoreGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("excelReportingServiceImpl");
 		template.setAttribute("tableName", table.getName());
-		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("module", cybertables.getModuleName());
+		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		
 		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/core/services/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"ReportingServiceImpl.java");
 	}
@@ -253,9 +253,7 @@ public class TableCoreGenerator {
 	private Object generateReferences(Table table) {
 		String references="";
 		List<Field> fields = table.getFields();
-		int i=0;
 		for (Field field : fields) {
-			if (!field.getCompoundReference()){
 				if (field.isReference()){
 					StringTemplate stringTemplate = new StringTemplate("this.$reference$=entity$getChain$;\n");
 					stringTemplate.setAttribute("reference", field.getName());
@@ -266,28 +264,8 @@ public class TableCoreGenerator {
 					stringTemplate = new StringTemplate("this.$reference$Id=entity.get$upperReference$().getId();\n");
 					stringTemplate.setAttribute("reference", field.getName());
 					stringTemplate.setAttribute("upperReference", CodeUtils.toCamelCase(field.getName()));
-					stringTemplate.setAttribute("upperDisplayField", CodeUtils.toCamelCase(field.getDisplayField()));
 					references+=stringTemplate.toString();
 				}
-			}
-			else{
-				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
-				Field keyCompound = fields.get(i+1);
-				for (Field compoundField : compoundKey) {
-					StringTemplate stringTemplate = new StringTemplate("this.$reference$=entity.get$upperReference$().get$upperDisplayField$();\n");
-					stringTemplate.setAttribute("reference", compoundField.getName());
-					stringTemplate.setAttribute("upperReference", CodeUtils.toCamelCase(compoundField.getRefType()));
-					stringTemplate.setAttribute("upperDisplayField", CodeUtils.toCamelCase(compoundField.getName()));
-					references+=stringTemplate.toString();
-					
-					stringTemplate = new StringTemplate("this.$reference$Id=entity.get$upperReference$().getId();\n");
-					stringTemplate.setAttribute("reference", compoundField.getName());
-					stringTemplate.setAttribute("upperReference", CodeUtils.toCamelCase(compoundField.getRefType()));
-					stringTemplate.setAttribute("upperDisplayField", CodeUtils.toCamelCase(compoundField.getName()));
-					references+=stringTemplate.toString();
-				
-				}
-			}
 		}
 		
 		return references;

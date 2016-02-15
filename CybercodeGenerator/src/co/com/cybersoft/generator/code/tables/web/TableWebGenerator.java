@@ -1,11 +1,14 @@
 package co.com.cybersoft.generator.code.tables.web;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import co.com.cybersoft.generator.code.model.Action;
 import co.com.cybersoft.generator.code.model.Field;
 import co.com.cybersoft.generator.code.model.Cybertables;
 import co.com.cybersoft.generator.code.model.Table;
@@ -231,10 +234,58 @@ public class TableWebGenerator {
 		template.setAttribute("requestMethodName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("viewURL", "/"+cybertables.getModuleName()+"/"+table.getName()+"/search"+CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("module", cybertables.getModuleName());
-
+		template.setAttribute("hasActions", generateHasActions(table));
+		template.setAttribute("actions", generateActions(table));
+		template.setAttribute("actionClasses", generateActionClasses(table));
+		
 		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/web/controller/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"SearchController.java");
 	}
 	
+	private Object generateActionClasses(Table table) {
+		String acts="";
+		if (table.getActions()!=null){
+			List<Action> actions = table.getActions();
+			List<String> declaredAPIClasses=new ArrayList<String>();
+
+			for (Action action : actions) {
+				if (!declaredAPIClasses.contains(action.getClassName())){
+					StringTemplate stringTemplate = new StringTemplate("@Autowired\n private $className$ $shortClassName$API;");
+					stringTemplate.setAttribute("className", action.getClassName());
+					stringTemplate.setAttribute("shortClassName", CodeUtils.toLowerCamelCase(action.getClassName().substring(action.getClassName().lastIndexOf('.')+1)));
+					acts+=stringTemplate.toString();
+					
+					declaredAPIClasses.add(action.getClassName());
+				}
+			}
+		}
+		return acts;
+	}
+
+	private Object generateActions(Table table) {
+		String acts="";
+		if (table.getActions()!=null){
+			List<Action> actions = table.getActions();
+			for (Action action : actions) {
+				StringTemplate stringTemplate = new StringTemplate("if (filter.getAaaaction()!=null && filter.getAaaaction()!=\"\" && filter.getAaaaction().equals(\"$actionName$\"))$className$API.$method$(filter);");
+				stringTemplate.setAttribute("upperMethod", CodeUtils.toCamelCase(action.getMethod()));
+				stringTemplate.setAttribute("method", action.getMethod());
+				stringTemplate.setAttribute("actionName", action.getActionName());
+				stringTemplate.setAttribute("className", CodeUtils.toLowerCamelCase(action.getClassName().substring(action.getClassName().lastIndexOf('.')+1)));
+				acts+=stringTemplate.toString()+"\n";
+			}
+		}
+		return acts;
+	}
+
+	private Object generateHasActions(Table table) {
+		String acts="";
+		if (table.getActions()!=null){
+			StringTemplate stringTemplate = new StringTemplate("if (filter.getAaaaction()!=null && filter.getAaaaction()!=\"\")return true;");
+			acts+=stringTemplate.toString()+"\n";
+		}
+		return acts;
+	}
+
 	private void generateCreateController(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.tableCodePath+"web");
 		StringTemplate template = templateGroup.getInstanceOf("creationController");
@@ -721,8 +772,6 @@ public class TableWebGenerator {
 							i++;
 						}
 						
-						template.setAttribute("embeddedFields", requestParameters);
-						template.setAttribute("embeddedFieldsDeclarations", decl);
 						template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
 						template.setAttribute("variableName", CodeUtils.toCamelCase(field.getName()));
 						template.setAttribute("tableName", field.getRefType());

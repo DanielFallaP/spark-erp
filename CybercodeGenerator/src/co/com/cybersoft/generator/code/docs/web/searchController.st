@@ -64,7 +64,7 @@ public class $upperDocName$SearchController {
 		else{
 			if (request.getSession().getAttribute("$docName$Ascending")!=null){
 				
-				direction=(boolean) request.getSession().getAttribute("$docName$Ascending");
+				direction=(Boolean) request.getSession().getAttribute("$docName$Ascending");
 				pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("$docName$Field"):field));
 			}
 			info = $docName$Service.request$upperDocName$Page(new Request$upperDocName$PageEvent(pageRequest));
@@ -101,7 +101,7 @@ public class $upperDocName$SearchController {
 		}
 		else {
 			if (request.getSession().getAttribute("$docName$Ascending")!=null){
-				direction=(boolean) request.getSession().getAttribute("$docName$Ascending");
+				direction=(Boolean) request.getSession().getAttribute("$docName$Ascending");
 				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))?request.getSession().getAttribute("$docName$Field"):filter.getSelectedFilterField()));
 				pageEvent = new Request$upperDocName$PageEvent(pageRequest,filter);			}
 		}
