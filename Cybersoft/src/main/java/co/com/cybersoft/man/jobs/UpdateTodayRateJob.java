@@ -8,7 +8,6 @@ import co.com.cybersoft.man.services.currency.CurrencyUpdateService;
 
 public class UpdateTodayRateJob implements Job{
 
-	@Override
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {
 		try {

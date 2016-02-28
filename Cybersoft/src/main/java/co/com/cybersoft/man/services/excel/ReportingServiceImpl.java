@@ -28,13 +28,18 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
+import co.com.cybersoft.man.ExcelReportResponse;
+import co.com.cybersoft.purchase.tables.core.services.exchangeRate.ExchangeRateService;
+import co.com.cybersoft.purchase.tables.events.exchangeRate.ExchangeRatePageEvent;
+import co.com.cybersoft.purchase.tables.events.exchangeRate.RequestExchangeRatePageEvent;
+import co.com.cybersoft.purchase.tables.web.domain.exchangeRate.ExchangeRateFilterInfo;
 import co.com.cybersoft.util.CyberUtils;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
@@ -45,15 +50,22 @@ public class ReportingServiceImpl implements ReportingService {
 	@Autowired
 	private ReloadableResourceBundleMessageSource reloadableResourceBundleMessageSource;
 	
-	@Override
-	public String toExcel(String className, String detailsClassName, Locale locale) throws Exception {
+	@Autowired
+	private ExchangeRateService exchangeRate;
+	
+	public ExcelReportResponse toExcel(String className, String detailsClassName, Locale locale, ExchangeRateFilterInfo filter) throws Exception {
 		Class<?> forName = Class.forName(className);
 		Class<?> forNameDetails = Class.forName(detailsClassName);
 		Query query = emFactory.getObject().createEntityManager().createQuery("SELECT p from "+forName.getSimpleName()+" p");
-		return generateExcel(query.getResultList(), forName, forNameDetails, locale);
+		
+		PageRequest pageRequest = new PageRequest(0, 100, Direction.DESC,"id");
+		RequestExchangeRatePageEvent pageEvent=new RequestExchangeRatePageEvent(pageRequest,filter);			
+
+		ExchangeRatePageEvent requestExchangeRateFilter = exchangeRate.requestExchangeRateFilter(pageEvent);
+		
+		return generateExcel(requestExchangeRateFilter.getAllList(), forName, forNameDetails, locale);
 	}	
 	
-	@Override
 	public String docToExcel(String className, String bodyClassName, Locale locale, Long id) throws Exception {
 //		Class<?> header = Class.forName(className);
 //		Class<?> body = Class.forName(bodyClassName);
@@ -65,7 +77,6 @@ public class ReportingServiceImpl implements ReportingService {
 		return "";
 	}
 	
-	@Override
 	public File docToExcelFile(String className, String bodyClassName, Locale locale, Long id) throws Exception {
 //		Class<?> header = Class.forName(className);
 //		Class<?> body = Class.forName(bodyClassName);
@@ -109,7 +120,7 @@ public class ReportingServiceImpl implements ReportingService {
 		int headerRowNumber=1;		
 		Field[] fields = _class.getDeclaredFields();
 		List<Field> headRow = new ArrayList<Field>();
-		List<Object> headValues=new ArrayList<>();
+		List<Object> headValues=new ArrayList<Object>();
 		int n=0;
 		if (!fields[0].getName().endsWith(CyberUtils.bodyEntityListSuffix) && !fields[0].getName().equals(CyberUtils.docIdField) && !fields[0].getName().equals(CyberUtils.docEnableDeletionField) 
 				&& !fields[0].getName().equals(CyberUtils.docNumericId) && !fields[0].getName().equals(CyberUtils.docStringIdField) && !fields[0].getName().equals(CyberUtils.defaultCreatingUser)
@@ -177,7 +188,7 @@ public class ReportingServiceImpl implements ReportingService {
 							cell.setCellStyle(styles.get("cell"));
 						}
 						else if (object instanceof Double ){
-							cell.setCellValue((double) object);
+							cell.setCellValue((Double) object);
 							cell.setCellStyle(styles.get("cell"));
 						}
 						else if (object instanceof Integer){
@@ -244,7 +255,7 @@ public class ReportingServiceImpl implements ReportingService {
 					valueCell.setCellStyle(styles.get("cell"));
 				}
 				else if (value instanceof Double ){
-					valueCell.setCellValue((double) value);
+					valueCell.setCellValue((Double) value);
 					valueCell.setCellStyle(styles.get("cell"));
 				}
 				else if (value instanceof Integer){
@@ -276,7 +287,7 @@ public class ReportingServiceImpl implements ReportingService {
 		}
 	}
 
-	private String generateExcel(List<?> cursor, Class<?> _class, Class<?> detailsClass, Locale locale) throws Exception{
+	private ExcelReportResponse generateExcel(List<?> cursor, Class<?> _class, Class<?> detailsClass, Locale locale) throws Exception{
 		
 		
 		//Generation of document and title
@@ -345,7 +356,7 @@ public class ReportingServiceImpl implements ReportingService {
 							cell.setCellStyle(styles.get("cell"));
 						}
 						else if (object instanceof Double ){
-							cell.setCellValue((double) object);
+							cell.setCellValue((Double) object);
 							cell.setCellStyle(styles.get("cell"));
 						}
 						else if (object instanceof Integer){
@@ -393,7 +404,10 @@ public class ReportingServiceImpl implements ReportingService {
 		wb.write(outputStream);
 		outputStream.close();
 		
-		return "redirect:"+CyberUtils.excelURLPath+"/"+fileName;
+		ExcelReportResponse response = new ExcelReportResponse();
+		response.setUrl(CyberUtils.excelURLPath+"/"+fileName);
+		
+		return response;
 	}
 	
 	
@@ -456,7 +470,6 @@ public class ReportingServiceImpl implements ReportingService {
         return styles;
 	}
 
-	@Override
 	public void cleanupExcelDirectory() throws Exception {
 		// TODO Auto-generated method stub
 		System.out.println("==============Directory cleansed");

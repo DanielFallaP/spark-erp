@@ -21,7 +21,6 @@ public class MailSender implements Runnable{
 		
 	}
 
-	@Override
 	public void run() {
 		try {
 			Transport.send(message);

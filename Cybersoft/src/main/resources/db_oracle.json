@@ -1,0 +1,7 @@
+{
+	"address":"jdbc:oracle:thin:@localhost:1521:orcl",
+	"username":"SYSTEM",
+	"password":"987daniel",
+	"driverClass":"oracle.jdbc.OracleDriver",
+	"dialect":"org.hibernate.dialect.Oracle10gDialect"
+}

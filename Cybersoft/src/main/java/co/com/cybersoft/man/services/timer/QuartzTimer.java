@@ -18,7 +18,6 @@ import org.quartz.impl.StdSchedulerFactory;
  */
 public class QuartzTimer implements TimerService{
 
-	@Override
 	public void scheduleFirstThingDailyJob(JobDetail job) throws Exception{
 		
 		Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();

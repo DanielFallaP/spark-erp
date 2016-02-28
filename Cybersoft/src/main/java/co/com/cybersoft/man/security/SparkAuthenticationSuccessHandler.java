@@ -19,7 +19,6 @@ public class SparkAuthenticationSuccessHandler implements AuthenticationSuccessH
 	
 	 private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	 
-	    @Override
 	    public void onAuthenticationSuccess(HttpServletRequest request, 
 	      HttpServletResponse response, Authentication authentication) throws IOException {
 	        handle(request, response, authentication);

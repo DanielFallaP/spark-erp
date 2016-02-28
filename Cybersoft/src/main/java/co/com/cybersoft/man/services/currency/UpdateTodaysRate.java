@@ -34,7 +34,6 @@ public class UpdateTodaysRate implements Runnable{
 		this.exchangeRateRepo=exchangeRateRepo;
 	}
 	
-	@Override
 	public void run() {
 		try {
 			Calendar cal = new GregorianCalendar();

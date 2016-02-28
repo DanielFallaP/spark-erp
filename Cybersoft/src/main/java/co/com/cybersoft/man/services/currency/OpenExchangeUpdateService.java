@@ -20,12 +20,10 @@ public class OpenExchangeUpdateService implements CurrencyUpdateService{
 	@Autowired
 	private ExchangeRateRepository exchangeRateRepo;
 	
-	@Override
 	public void updateTodayRates() throws Exception{
 		updateRatesForDay(new Date());
 	}
 	
-	@Override
 	public void updatePeriodRates(Date from, Date to) throws Exception{
 		GregorianCalendar init = new GregorianCalendar();
 		init.setTime(from);

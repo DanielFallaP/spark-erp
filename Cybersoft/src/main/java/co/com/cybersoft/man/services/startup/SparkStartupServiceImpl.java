@@ -39,7 +39,6 @@ public class SparkStartupServiceImpl implements SparkStartupService{
 //	private ReportingService reportingService;
 
 	@PostConstruct
-	@Override
 	public void SPARK() throws Exception {
 //		bootTenantConfig();
 		bootCurrencyConfig();

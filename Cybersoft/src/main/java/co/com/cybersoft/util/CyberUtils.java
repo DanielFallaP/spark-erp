@@ -106,6 +106,8 @@ public class CyberUtils {
 	public static final String notOp="<>";
 	
 	public static final String[] operators={notOp,greaterEqualThanOp,lessEqualThanOp,greaterThanOp,lessThanOp};
+
+	public static final String filterOperationDefault = "UNION";
 	
 	public static Map<String,String> userSessions=new HashMap<String,String>();
 	

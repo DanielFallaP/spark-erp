@@ -103,6 +103,8 @@ dependencies {
   
   //Oracle JDBC connector
   compile name: 'ojdbc6'
+  
+  compile name: 'sqljdbc42'
   //Spring JDBC
   compile 'org.springframework:spring-jdbc:3.2.8.RELEASE'
   

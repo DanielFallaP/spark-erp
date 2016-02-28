@@ -8,7 +8,6 @@ import co.com.cybersoft.man.services.excel.ReportingService;
 
 public class CleanupDirectoryJob implements Job{
 
-	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		try {
 			ReportingService reportingService = (ReportingService) context.getJobDetail().getJobDataMap().get("reportingService");
