@@ -33,7 +33,7 @@ import com.mongodb.ServerAddress;
 
 public class LabelGenerator implements DBConstants{
 
-	public static final String viewsAbsolutePath="C:\\Users\\Daniel\\git\\co.com.cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views";
+	public static final String viewsAbsolutePath="C:\\Users\\Daniel\\git\\co.com.cybersoft\\Cybersoft\\src\\main\\webapp\\WEB-INF\\views\\normal";
 	
 	public final PreparedStatement insertionPst;
 	
@@ -49,23 +49,23 @@ public class LabelGenerator implements DBConstants{
 	
 	public static void main(String[] args) {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection con=DriverManager.getConnection("jdbc:mysql://cybersoft.c6g4nh1b2apj.us-east-1.rds.amazonaws.com/cybersoft?"
-					+ "user=cybersoft&password=petronube");
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			Connection con=DriverManager.getConnection("jdbc:sqlserver://local.winsoftware.com.co:3030;databaseName=AMMessages"
+					+ ";user=AM4G;password=AM2001AM05");
 			
 			con.setAutoCommit(true);
-			PreparedStatement insertionPst = con.prepareStatement("insert into cybersoft.dictionary (message) values (?)");
+			PreparedStatement insertionPst = con.prepareStatement("insert into dbo.dictionary (message) values (?)");
 			
-			PreparedStatement englishUpdatePst = con.prepareStatement("update cybersoft.dictionary set english=?, generated=1 where message=? and english is null");
+			PreparedStatement englishUpdatePst = con.prepareStatement("update dbo.dictionary set english=?, generated=1 where message=? and english is null");
 			
-			PreparedStatement spanishUpdatePst = con.prepareStatement("update cybersoft.dictionary set spanish=?, generated=1 where message=? and spanish is null");
+			PreparedStatement spanishUpdatePst = con.prepareStatement("update dbo.dictionary set spanish=?, generated=1 where message=? and spanish is null");
 			//Mongo setup. For replica set configurations, it is necessary to supply
 			//the seed members to auto-discover the primary instance
 			MongoClient mongoClient = new MongoClient(Arrays.asList(new ServerAddress("54.165.160.198",27017)));
 			DB db = mongoClient.getDB(mongoDBName);
 			
 			ObjectMapper mapper = new ObjectMapper();
-			Cybertables cybersoft=mapper.readValue(new InputStreamReader(new FileInputStream("Cybertables.json"), "UTF8"), Cybertables.class);
+			Cybertables cybersoft=mapper.readValue(new InputStreamReader(new FileInputStream("Cybermaintenance.json"), "UTF8"), Cybertables.class);
 			
 			Cyberdocs cyberdocs=mapper.readValue(new InputStreamReader(new FileInputStream("Cyberdocs.json"), "UTF8"), Cyberdocs.class);
 
@@ -74,7 +74,7 @@ public class LabelGenerator implements DBConstants{
 			LabelGenerator labelGenerator = new LabelGenerator(cybersoft, cyberdocs, insertionPst, englishUpdatePst, spanishUpdatePst, db);
 
 			//Inserts all labels found in the views directory
-//			labelGenerator.insertLabels(rootDirectory);
+			labelGenerator.insertLabels(rootDirectory);
 			
 			//Inserts all labels found in label tables
 //			labelGenerator.insertLabelTablesContent();
@@ -83,7 +83,7 @@ public class LabelGenerator implements DBConstants{
 			labelGenerator.updateDefaultEnglishMessages();
 			
 			//Updates Spanish default messages for empty messages in the DB
-			labelGenerator.updateDefaultSpanishMessages();
+//			labelGenerator.updateDefaultSpanishMessages();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,11 +98,11 @@ public class LabelGenerator implements DBConstants{
 			generator.updateDefaultSpanishTableMessages(table);
 		}
 		
-		List<Document> documents = cyberdocs.getDocuments();
-		for (Document document : documents) {
-			System.out.println("=============Inserting default Spanish messages for document: "+document.getName());
-			generator.updateDefaultSpanishDocumentMessages(document);
-		}
+//		List<Document> documents = cyberdocs.getDocuments();
+//		for (Document document : documents) {
+//			System.out.println("=============Inserting default Spanish messages for document: "+document.getName());
+//			generator.updateDefaultSpanishDocumentMessages(document);
+//		}
 	}
 
 	private void updateDefaultEnglishMessages() throws SQLException {
@@ -112,11 +112,11 @@ public class LabelGenerator implements DBConstants{
 			updateDefaultEnglishTableMessages(table);
 		}
 		
-		List<Document> documents = cyberdocs.getDocuments();
-		for (Document document : documents) {
-			System.out.println("=============Inserting default English messages for document: "+document.getName());
-			updateDefaultEnglishDocumentMessages(document);
-		}
+//		List<Document> documents = cyberdocs.getDocuments();
+//		for (Document document : documents) {
+//			System.out.println("=============Inserting default English messages for document: "+document.getName());
+//			updateDefaultEnglishDocumentMessages(document);
+//		}
 	}
 
 	

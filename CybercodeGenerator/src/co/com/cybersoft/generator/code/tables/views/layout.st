@@ -42,7 +42,7 @@
 		
 	<div th:fragment="footer">
 	    <footer>
-	        <p>&nbsp;&nbsp;&nbsp;Copyright &copy; Cybersystems 2015</p>
+	        <p>&nbsp;&nbsp;&nbsp;Copyright &copy; Cybersystems 2016</p>
 	    </footer>
 	</div>
 	

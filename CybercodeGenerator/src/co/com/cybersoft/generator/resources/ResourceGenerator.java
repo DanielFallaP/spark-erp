@@ -29,25 +29,25 @@ public class ResourceGenerator {
 	public static void main(String[] args) {
 
 		HashMap<String, Integer> filesMap = new HashMap<String, Integer>();
-		filesMap.put("en", 2);
-		filesMap.put("es", 3);
-		filesMap.put("pt", 5);
-		filesMap.put("de", 6);
-		filesMap.put("fr", 7);
-		filesMap.put("it", 8);
-		filesMap.put("zh", 9);
-		filesMap.put("ko", 10);
-		filesMap.put("ja", 11);
+		filesMap.put("en", 1);
+		filesMap.put("es", 2);
+//		filesMap.put("pt", 5);
+//		filesMap.put("de", 6);
+//		filesMap.put("fr", 7);
+//		filesMap.put("it", 8);
+//		filesMap.put("zh", 9);
+//		filesMap.put("ko", 10);
+//		filesMap.put("ja", 11);
 		
 		Connection con=null;
 		ResultSet resultSet =null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			con=DriverManager.getConnection("jdbc:mysql://cybersoft.c6g4nh1b2apj.us-east-1.rds.amazonaws.com/cybersoft?"
-		              + "user=cybersoft&password=petronube");
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			con=DriverManager.getConnection("jdbc:sqlserver://local.winsoftware.com.co:3030;databaseName=AMMessages"
+					+ ";user=AM4G;password=AM2001AM05");
 			
 			Statement statement = con.createStatement();
-			resultSet = statement.executeQuery("select * from cybersoft.dictionary");
+			resultSet = statement.executeQuery("select * from dbo.dictionary");
 			
 			Map<String, BufferedWriter> files = ResourceGenerator.prepareFiles(filesMap);
 			
@@ -56,9 +56,9 @@ public class ResourceGenerator {
 				for (String language : keySet) {
 					String line;
 					if (resultSet.getString(filesMap.get(language))==null)
-						line="label."+resultSet.getString(1)+"="+"label."+resultSet.getString(1)+'\n';
+						line="label."+resultSet.getString(4)+"="+"label."+resultSet.getString(4)+'\n';
 					else
-						line="label."+resultSet.getString(1)+"="+resultSet.getString(filesMap.get(language))+'\n';
+						line="label."+resultSet.getString(4)+"="+resultSet.getString(filesMap.get(language))+'\n';
 					files.get(language).write(line);
 				}
 			}

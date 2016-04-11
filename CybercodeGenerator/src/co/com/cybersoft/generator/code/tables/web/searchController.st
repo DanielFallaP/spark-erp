@@ -25,7 +25,7 @@ import co.com.cybersoft.$module$.tables.web.domain.$entityName$.$entityUpperCase
 
 /**
  * Search controller class for $entityName$
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 @Controller
@@ -110,16 +110,16 @@ public class $searchControllerName$ {
 				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))?request.getSession().getAttribute("$entityName$Field"):filter.getSelectedFilterField()));
 				pageEvent = new Request$entityUpperCaseName$PageEvent(pageRequest,filter);			}
 		}
+		if (hasActions(filter)){
+			$actions$
+			filter.setAaaaction(null);
+	    }
 		$entityUpperCaseName$PageEvent details = $entityName$Service.request$entityUpperCaseName$FilterPage(pageEvent);
 		PageWrapper<$entityUpperCaseName$> page=new PageWrapper<$entityUpperCaseName$>(details.get$entityUpperCaseName$Page(),"/$module$/$entityName$/search$entityUpperCaseName$");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("$entityName$Field"));
 		model.addAttribute("_direction", direction);
-		if (hasActions(filter)){
-			$actions$
-			filter.setAaaaction(null);
-	    }
 	    request.getSession().setAttribute("$entityName$Filter", filter);
 		
 		return "$viewURL$";

@@ -25,7 +25,7 @@ import co.com.cybersoft.$module$.tables.web.domain.$tableName$.$entityName$Filte
 
 /**
  * 
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {

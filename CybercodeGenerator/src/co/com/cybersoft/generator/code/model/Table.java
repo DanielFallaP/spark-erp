@@ -64,6 +64,20 @@ public class Table {
 			return false;
 	}
 	
+	public boolean hasFieldGroups(){
+		return fields.get(0).getFieldGroup()!=null;
+	}
+	
+	public List<String> getFieldGroups(){
+		ArrayList<String> fieldGroups = new ArrayList<>();
+		for (Field field : fields) {
+			if (!fieldGroups.contains(field.getFieldGroup())){
+				fieldGroups.add(field.getFieldGroup());
+			}
+		}
+		return fieldGroups;
+	}
+	
 	public boolean hasCompoundIndex(){
 		for (Field field:fields) {
 			if (field.getKeyCompound())

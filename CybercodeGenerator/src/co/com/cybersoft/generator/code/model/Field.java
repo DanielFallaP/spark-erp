@@ -23,6 +23,7 @@ public class Field {
 	private Boolean mobileDisplayable=Boolean.TRUE;
 	private ArithmeticExpression value;
 	private String append;
+	private String fieldGroup;
 	
 	//For references only
 	private String refType;
@@ -42,6 +43,12 @@ public class Field {
 	
 	private JavaScriptAPI autoCompletePeerFunction;
 	
+	public String getFieldGroup() {
+		return fieldGroup;
+	}
+	public void setFieldGroup(String fieldGroup) {
+		this.fieldGroup = fieldGroup;
+	}
 	public String getColumnName() {
 		return columnName;
 	}

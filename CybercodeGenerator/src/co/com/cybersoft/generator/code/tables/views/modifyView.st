@@ -25,6 +25,8 @@
 	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
     	<link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
 	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script th:src="@{/resources/js/bootstrap-tab.js}"></script>
+	    
     	<script type="text/javascript">
     	/* <![CDATA[ */
     	
@@ -81,9 +83,11 @@
 		        	<div id="back"><a th:text="#{label.back}" th:href="@{/$module$/$tableName$/search$entityName$}"></a></div>
 		        	<div align="center">
 		        	<h3 th:text="#{label.$tableName$ModificationTitle}"></h3>
+		        		$tabsDef$
 		        	<br/>
+		        	
+		        	$tabs$
 		        	<table>
-		        		$rows$
 		        		<tr>
 		        			<td>
 		        				<input type="submit" th:value="#{label.save}" />

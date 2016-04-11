@@ -64,7 +64,7 @@ public class TableViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("singletonView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
-		template.setAttribute("rows", generateFieldRows(table));
+		template.setAttribute("rows", generateFieldRows(table, table.getFields()));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
 		List<Field> fields = table.getFields();
 		if (!fields.isEmpty()){
@@ -102,12 +102,14 @@ public class TableViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("createView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
-		template.setAttribute("rows", generateFieldRows(table));
+//		template.setAttribute("rows", generateFieldRows(table, table.getFields()));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
 		template.setAttribute("autocompleteFunctions", generateAutocompleteFunctions(table));
 		template.setAttribute("autocompleteReferenceFunctions", generateAutocompleteReferenceFunctions(table));
 		template.setAttribute("compoundSelectionFunctions", generateCompoundSelectionFunctions(table));
 		template.setAttribute("module", cybertables.getModuleName());
+		template.setAttribute("tabsDef", generateTabsDef(table));
+		template.setAttribute("tabs", generateTabs(table));
 		
 		
 		List<Field> fields = table.getFields();
@@ -218,11 +220,12 @@ public class TableViewGenerator {
 		StringTemplate template = templateGroup.getInstanceOf("modifyView");
 		template.setAttribute("tableName", table.getName());
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
-		template.setAttribute("rows", generateFieldRows(table));
 		template.setAttribute("datePickerConfig", generateDateFieldPickers(table));
 		template.setAttribute("autocompleteReferenceFunctions", generateAutocompleteReferenceFunctions(table));
 		template.setAttribute("modificationCompoundSelectionFunctions", generateCompoundSelectionFunctions(table));
 		template.setAttribute("module", cybertables.getModuleName());
+		template.setAttribute("tabsDef", generateTabsDef(table));
+		template.setAttribute("tabs", generateTabs(table));
 		
 		List<Field> fields = table.getFields();
 		if (!fields.isEmpty()){
@@ -230,6 +233,95 @@ public class TableViewGenerator {
 		}
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/"+cybertables.getModuleName()+"/"+table.getName(), "modify"+CodeUtils.toCamelCase(table.getName())+".html");
+	}
+
+	private Object generateTabsDef(Table table) {
+
+		if (table.hasFieldGroups()){
+			List<String> fieldGroups = table.getFieldGroups();
+			StringTemplate template = new StringTemplate(" <ul class=\"nav nav-tabs\">   <li class=\"active\"><a data-toggle=\"tab\" href=\"#$groupId$\">$group$</a></li>");
+			String[] split = fieldGroups.get(0).split(" ");
+			String groupId="";
+			
+			for (String string : split) {
+				groupId+=string;
+			}
+			template.setAttribute("group", fieldGroups.get(0));
+			template.setAttribute("groupId", groupId);
+			
+			String defs=template.toString();
+			
+			for (int i = 1; i < fieldGroups.size(); i++) {
+				split = fieldGroups.get(i).split(" ");
+				groupId="";
+				
+				for (String string : split) {
+					groupId+=string;
+				}
+				template = new StringTemplate("<li><a data-toggle=\"tab\" href=\"#$groupId$\">$group$</a></li>");
+			
+				template.setAttribute("group", fieldGroups.get(i));
+				template.setAttribute("groupId", groupId);
+				
+				defs+=template.toString();
+			}
+			
+			defs+="</ul>";
+			
+			return defs;
+		}
+		else{
+			return "";
+		}
+	}
+
+	private Object generateTabs(Table table) {
+		if (table.hasFieldGroups()){
+			String tabs="<div class=\"tab-content\">";
+			
+			List<String> fieldGroups = table.getFieldGroups();
+			int i=0;
+			for (String string : fieldGroups) {
+				StringTemplateGroup templateGroup = new StringTemplateGroup("rows",Cybertables.tableCodePath+"views");
+				StringTemplate template = templateGroup.getInstanceOf("tabbedRows");
+				
+				String[] split = string.split(" ");
+				String groupId="";
+				
+				for (String st : split) {
+					groupId+=st;
+				}
+				template.setAttribute("groupId", groupId);
+				if (i==0)
+					template.setAttribute("append", "in active");
+				
+				template.setAttribute("rows", generateTabFieldRows(table, string));
+				tabs+=template.toString();
+				
+				i++;
+			}
+
+			tabs+="</div>";
+			return tabs;
+		}else{
+			StringTemplateGroup templateGroup = new StringTemplateGroup("rows",Cybertables.tableCodePath+"views");
+			StringTemplate template = templateGroup.getInstanceOf("rows");
+			template.setAttribute("rows", generateFieldRows(table, table.getFields()));
+			return template.toString();
+		}
+	}
+
+	private Object generateTabFieldRows(Table table, String fieldGroup) {
+		List<String> fieldGroups = table.getFieldGroups();
+		List<Field> fields = table.getFields();
+		String rows="";
+		List<Field> fieldG=new ArrayList<>();
+		for (Field field:fields){
+			if (fieldGroup.equals(field.getFieldGroup()))
+				fieldG.add(field);
+		}
+		rows+=generateFieldRows(table,fieldG);
+		return rows;
 	}
 
 	private void generateSearchView(Table table){
@@ -259,7 +351,7 @@ public class TableViewGenerator {
 			
 			String act="";
 			for(Action action: actions){
-				StringTemplate template2 = new StringTemplate("<li ><label onclick=\"submitAction('$actionName$');\" tabindex=\"-1\" >$actionName$</label></li>\n");
+				StringTemplate template2 = new StringTemplate("<li ><a href=\"#\" tabindex=\"-1\" ><label onclick=\"submitAction('$actionName$');\" >$actionName$</label></a></li>\n");
 				template2.setAttribute("actionName", action.getActionName());
 				act+=template2.toString();
 			}
@@ -299,9 +391,8 @@ public class TableViewGenerator {
 		return template.toString();
 	}
 	
-	private String generateFieldRows(Table table) {
+	private String generateFieldRows(Table table, List<Field> fields) {
 		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views", Cybertables.tableCodePath+"views");
-		List<Field> fields = table.getFields();
 		String text="";
 		for (Field field : fields) {
 			if (!field.isReference() && field.getVisible() && !field.getReadOnly()){

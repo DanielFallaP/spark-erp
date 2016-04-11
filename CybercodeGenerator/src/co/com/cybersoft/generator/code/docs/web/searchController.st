@@ -26,7 +26,7 @@ import co.com.cybersoft.util.PageWrapper;
 
 /**
  * Search controller class for $docName$
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 @Controller

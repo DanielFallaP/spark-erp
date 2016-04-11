@@ -5,7 +5,7 @@ import co.com.cybersoft.$module$.docs.web.domain.$docName$.$upperDocName$FilterI
 
 /**
  * Event class for $upperDocName$
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public class Request$upperDocName$PageEvent {
