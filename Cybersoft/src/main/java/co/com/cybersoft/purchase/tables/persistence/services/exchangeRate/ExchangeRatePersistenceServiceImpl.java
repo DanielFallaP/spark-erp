@@ -19,7 +19,6 @@ import co.com.cybersoft.purchase.tables.persistence.repository.exchangeRate.Exch
 //import co.com.cybersoft.man.services.security.SessionLogger;
 
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +43,6 @@ public class ExchangeRatePersistenceServiceImpl implements ExchangeRatePersisten
 		this.exchangeRateCustomRepo=exchangeRateCustomRepo;
 	}
 	
-	@Override
 	public ExchangeRateDetailsEvent createExchangeRate(CreateExchangeRateEvent event) throws Exception{
 		ExchangeRate exchangeRate = new ExchangeRate().fromExchangeRateDetails(event.getExchangeRateDetails());
 		exchangeRate = exchangeRateRepository.save(exchangeRate);
@@ -59,13 +57,11 @@ public class ExchangeRatePersistenceServiceImpl implements ExchangeRatePersisten
 		new Thread(new SessionLogger(sessionAction, mongo)).start();
 	}*/
 
-	@Override
 	public ExchangeRatePageEvent requestExchangeRatePage(RequestExchangeRatePageEvent event) throws Exception {
 		Page<ExchangeRate> exchangeRates = exchangeRateRepository.findAll(event.getPageable());
 		return new ExchangeRatePageEvent(exchangeRates);
 	}
 
-	@Override
 	public ExchangeRateDetailsEvent requestExchangeRateDetails(RequestExchangeRateDetailsEvent event) throws Exception {
 		ExchangeRateDetails exchangeRateDetails=null;
 		if (event.getId()!=null){
@@ -77,7 +73,6 @@ public class ExchangeRatePersistenceServiceImpl implements ExchangeRatePersisten
 		
 	}
 
-	@Override
 	public ExchangeRateDetailsEvent modifyExchangeRate(ExchangeRateModificationEvent event) throws Exception {
 		ExchangeRate exchangeRate = new ExchangeRate().fromExchangeRateDetails(event.getExchangeRateDetails());
 		exchangeRate = exchangeRateRepository.save(exchangeRate);
@@ -87,7 +82,6 @@ public class ExchangeRatePersistenceServiceImpl implements ExchangeRatePersisten
 		return new ExchangeRateDetailsEvent(new ExchangeRateDetails().toExchangeRateDetails(exchangeRate));
 	}
 	
-	@Override
 		public ExchangeRateDetailsEvent getOnlyRecord() throws Exception {
 			Iterable<ExchangeRate> all = exchangeRateRepository.findAll();
 			ExchangeRateDetails single = new ExchangeRateDetails();
@@ -98,24 +92,21 @@ public class ExchangeRatePersistenceServiceImpl implements ExchangeRatePersisten
 			return new ExchangeRateDetailsEvent(single);
 		}
 	
-	@Override
-		public ExchangeRatePageEvent requestAllByLocalCurrency(EmbeddedField... fields) throws Exception {
+	public ExchangeRatePageEvent requestAllByLocalCurrency(EmbeddedField... fields) throws Exception {
 			List<ExchangeRate> all = exchangeRateCustomRepo.findAllActiveByLocalCurrency(fields);
 			List<ExchangeRateDetails> list = new ArrayList<ExchangeRateDetails>();
 			for (ExchangeRate exchangeRate : all) {
 				list.add(new ExchangeRateDetails().toExchangeRateDetails(exchangeRate));
 			}
 			return new ExchangeRatePageEvent(list);
-		}@Override
-		public ExchangeRatePageEvent requestAllByCodeName(String code) throws Exception {
+		}public ExchangeRatePageEvent requestAllByCodeName(String code) throws Exception {
 			List<ExchangeRate> all = exchangeRateCustomRepo.findByCodeName(code);
 			List<ExchangeRateDetails> list = new ArrayList<ExchangeRateDetails>();
 			for (ExchangeRate exchangeRate : all) {
 				list.add(new ExchangeRateDetails().toExchangeRateDetails(exchangeRate));
 			}
 			return new ExchangeRatePageEvent(list);
-		}@Override
-		public ExchangeRatePageEvent requestAllByForeignCurrency(EmbeddedField... fields) throws Exception {
+		}public ExchangeRatePageEvent requestAllByForeignCurrency(EmbeddedField... fields) throws Exception {
 			List<ExchangeRate> all = exchangeRateCustomRepo.findAllActiveByForeignCurrency(fields);
 			List<ExchangeRateDetails> list = new ArrayList<ExchangeRateDetails>();
 			for (ExchangeRate exchangeRate : all) {
@@ -125,18 +116,16 @@ public class ExchangeRatePersistenceServiceImpl implements ExchangeRatePersisten
 		}
 	
 
-	@Override
 	public ExchangeRatePageEvent requestExchangeRateFilterPage(RequestExchangeRatePageEvent event) throws Exception {
 		Page<ExchangeRate> page = exchangeRateCustomRepo.findAll(event.getPageable(), event.getFilter());
 		return new ExchangeRatePageEvent(page);
 	}
-
-	@Override
+	
 	public ExchangeRatePageEvent requestExchangeRateFilter(
 			RequestExchangeRatePageEvent event) throws Exception {
 		List<ExchangeRate> all = exchangeRateCustomRepo.findAllNoPage(event.getPageable(), event.getFilter());
 		ExchangeRatePageEvent pageEvent = new ExchangeRatePageEvent();
 		pageEvent.setAllList(all);
 		return pageEvent;
-	}	
+	}
 }

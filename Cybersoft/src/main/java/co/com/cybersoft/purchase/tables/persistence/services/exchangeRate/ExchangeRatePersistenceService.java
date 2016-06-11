@@ -10,7 +10,7 @@ import co.com.cybersoft.util.EmbeddedField;
 
 /**
  * 
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public interface ExchangeRatePersistenceService {

@@ -24,7 +24,6 @@ public class ExchangeRateServiceImpl implements ExchangeRateService{
 	
 	/**
 	 */
-	@Override
 	public ExchangeRateDetailsEvent createExchangeRate(CreateExchangeRateEvent event ) throws Exception{
 		return exchangeRatePersistenceService.createExchangeRate(event);
 	}
@@ -32,46 +31,38 @@ public class ExchangeRateServiceImpl implements ExchangeRateService{
 	/**
 	 * Returns all the rows of the page requested
 	 */
-	@Override
 	public ExchangeRatePageEvent requestExchangeRatePage(RequestExchangeRatePageEvent event) throws Exception{
 		return exchangeRatePersistenceService.requestExchangeRatePage(event);
 	}
 
-	@Override
 	public ExchangeRateDetailsEvent requestExchangeRateDetails(RequestExchangeRateDetailsEvent event ) throws Exception{
 		return exchangeRatePersistenceService.requestExchangeRateDetails(event);
 	}
 
-	@Override
 	public ExchangeRateDetailsEvent modifyExchangeRate(ExchangeRateModificationEvent event) throws Exception {
 		return exchangeRatePersistenceService.modifyExchangeRate(event);
 	}
 	
-	@Override
 	public ExchangeRateDetailsEvent requestOnlyRecord() throws Exception {
 		return exchangeRatePersistenceService.getOnlyRecord();
 	}
 	
-	@Override
 	public ExchangeRatePageEvent requestExchangeRateFilterPage(RequestExchangeRatePageEvent event) throws Exception {
 		return exchangeRatePersistenceService.requestExchangeRateFilterPage(event);
 	}
-
-	@Override
-	public ExchangeRatePageEvent requestAllByLocalCurrency(EmbeddedField... fields) throws Exception {
-		return exchangeRatePersistenceService.requestAllByLocalCurrency(fields);
-	}@Override
-	public ExchangeRatePageEvent requestAllByCodeName(String code)
-		throws Exception {
-		return exchangeRatePersistenceService.requestAllByCodeName(code);
-	}@Override
-	public ExchangeRatePageEvent requestAllByForeignCurrency(EmbeddedField... fields) throws Exception {
-		return exchangeRatePersistenceService.requestAllByForeignCurrency(fields);
-	}
-
-	@Override
+	
 	public ExchangeRatePageEvent requestExchangeRateFilter(RequestExchangeRatePageEvent event) throws Exception {
 		return exchangeRatePersistenceService.requestExchangeRateFilter(event);
+	}
+	
+
+	public ExchangeRatePageEvent requestAllByLocalCurrency(EmbeddedField... fields) throws Exception {
+		return exchangeRatePersistenceService.requestAllByLocalCurrency(fields);
+	}public ExchangeRatePageEvent requestAllByCodeName(String code)
+		throws Exception {
+		return exchangeRatePersistenceService.requestAllByCodeName(code);
+	}public ExchangeRatePageEvent requestAllByForeignCurrency(EmbeddedField... fields) throws Exception {
+		return exchangeRatePersistenceService.requestAllByForeignCurrency(fields);
 	}
 	
 	

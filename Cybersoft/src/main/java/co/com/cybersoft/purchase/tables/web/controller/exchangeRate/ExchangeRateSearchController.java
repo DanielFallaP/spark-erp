@@ -5,21 +5,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
-import co.com.cybersoft.man.services.excel.ReportingService;
-import co.com.cybersoft.purchase.tables.core.domain.ExchangeRateDetails;
 import co.com.cybersoft.purchase.tables.core.services.exchangeRate.ExchangeRateService;
 import co.com.cybersoft.util.PageWrapper;
 import co.com.cybersoft.purchase.tables.events.exchangeRate.ExchangeRatePageEvent;
@@ -29,7 +25,7 @@ import co.com.cybersoft.purchase.tables.web.domain.exchangeRate.ExchangeRateFilt
 
 /**
  * Search controller class for exchangeRate
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 @Controller
@@ -39,13 +35,18 @@ public class ExchangeRateSearchController {
 	private static final Logger LOG = LoggerFactory.getLogger(ExchangeRateSearchController.class);
 
 	@Autowired
-	private ReportingService reportingService;
+	private ExchangeRateService exchangeRateService;
 	
 	@Autowired
-	private ExchangeRateService exchangeRateService;
+	 private co.com.cybersoft.man.maintenance.TechnicalActions technicalActionsAPI;
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String search(Model model, Pageable pageable, String field, HttpServletRequest request) throws Exception{
+		ExchangeRateFilterInfo f=(ExchangeRateFilterInfo) request.getSession().getAttribute("exchangeRateFilter");
+		if (f!=null){
+			f.getExchangeRateFilterList().clear();
+		}
+		
 		LOG.debug("Retrieving  exchangeRate ");
 		ExchangeRatePageEvent details;
 		Boolean direction=null;
@@ -68,7 +69,7 @@ public class ExchangeRateSearchController {
 		else{
 			if (request.getSession().getAttribute("exchangeRateAscending")!=null){
 								
-				direction=(boolean) request.getSession().getAttribute("exchangeRateAscending");
+				direction=(Boolean) request.getSession().getAttribute("exchangeRateAscending");
 				pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("exchangeRateField"):field));
 			}
 			details = exchangeRateService.requestExchangeRatePage(new RequestExchangeRatePageEvent(pageRequest));
@@ -79,11 +80,26 @@ public class ExchangeRateSearchController {
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("exchangeRateField"));
 		model.addAttribute("_direction", direction);
+		model.addAttribute("ffilterAsText", "All");
+
 		return "/purchase/exchangeRate/searchExchangeRate";
+	}
+	
+	private Boolean hasActions(ExchangeRateFilterInfo filter){
+		if (filter.getAaaaction()!=null && filter.getAaaaction()!="")return true;
+
+		return false;
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String filter(Model model, String field, Pageable pageable, @ModelAttribute("exchangeRateFilterInfo")ExchangeRateFilterInfo filter, HttpServletRequest request) throws Exception{
+		
+		ExchangeRateFilterInfo f=(ExchangeRateFilterInfo) request.getSession().getAttribute("exchangeRateFilter");
+		if (f!=null && f.getExchangeRateFilterList().size()!=0)
+			filter.getExchangeRateFilterList().addAll(f.getExchangeRateFilterList());
+		if (filter.getAaddFilter())
+			filter.getExchangeRateFilterList().add((ExchangeRateFilterInfo) (request.getSession().getAttribute("exchangeRateFilterCopy")!=null?request.getSession().getAttribute("exchangeRateFilterCopy"):new ExchangeRateFilterInfo()));
+		
 		Boolean direction=null;
 		if (filter.getSelectedFilterField()!=null && !filter.getSelectedFilterField().equals("")){
 			direction=(Boolean) request.getSession().getAttribute("exchangeRateAscending");
@@ -105,7 +121,7 @@ public class ExchangeRateSearchController {
 		}
 		else {
 			if (request.getSession().getAttribute("exchangeRateAscending")!=null){
-				direction=(boolean) request.getSession().getAttribute("exchangeRateAscending");
+				direction=(Boolean) request.getSession().getAttribute("exchangeRateAscending");
 				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))?request.getSession().getAttribute("exchangeRateField"):filter.getSelectedFilterField()));
 				pageEvent = new RequestExchangeRatePageEvent(pageRequest,filter);			}
 		}
@@ -115,7 +131,20 @@ public class ExchangeRateSearchController {
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("exchangeRateField"));
 		model.addAttribute("_direction", direction);
-		request.getSession().setAttribute("exchangeRateFilter", filter);
+		model.addAttribute("ffilterAsText", filter.getFfilterAsText());
+		
+		if (hasActions(filter)){
+			if (filter.getAaaaction()!=null && filter.getAaaaction()!="" && filter.getAaaaction().equals("Transaction A"))technicalActionsAPI.transactionA(filter);
+			if (filter.getAaaaction()!=null && filter.getAaaaction()!="" && filter.getAaaaction().equals("Transaction B"))technicalActionsAPI.transactionB(filter);
+			if (filter.getAaaaction()!=null && filter.getAaaaction()!="" && filter.getAaaaction().equals("Transaction C"))technicalActionsAPI.transactionC(filter);
+			if (filter.getAaaaction()!=null && filter.getAaaaction()!="" && filter.getAaaaction().equals("Transaction D"))technicalActionsAPI.transactionD(filter);
+
+			filter.setAaaaction(null);
+	    }
+	    request.getSession().setAttribute("exchangeRateFilter", filter);
+    	request.getSession().setAttribute("exchangeRateFilterCopy", filter);
+    	filter.setAaddFilter(Boolean.FALSE);
+		
 		return "/purchase/exchangeRate/searchExchangeRate";
 	}
 	
@@ -123,6 +152,8 @@ public class ExchangeRateSearchController {
 	private ExchangeRateFilterInfo getExchangeRateFilterInfo(){
 		return new ExchangeRateFilterInfo();
 	}
+	
+	
 	@ExceptionHandler(Exception.class)
 	public ModelAndView constraintError(HttpServletRequest req, Exception exception){
 		exception.printStackTrace();

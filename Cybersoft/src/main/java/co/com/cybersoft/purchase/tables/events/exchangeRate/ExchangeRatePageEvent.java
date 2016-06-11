@@ -9,29 +9,34 @@ import java.util.List;
 
 /**
  * Event class for ExchangeRate
- * @author Cybersystems 2014. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public class ExchangeRatePageEvent {
 	private Page<ExchangeRate> exchangeRatePage;
 	
+	private List<ExchangeRate> allList;
+	
+	
 	private List<ExchangeRateDetails> exchangeRateList;
 
-	private List<ExchangeRate> allList;
 
 
 	
+	public ExchangeRatePageEvent(){
+    }
 	public ExchangeRatePageEvent(List<ExchangeRateDetails>  exchangeRateList){
 			this.exchangeRateList= exchangeRateList;
 	}
 
-	public ExchangeRatePageEvent(){
-    }
+
 
 	
 	public List<ExchangeRateDetails> getExchangeRateList() {
 	return exchangeRateList;
 	}
+
+
 
 	
 	public List<ExchangeRate> getAllList() {
@@ -41,7 +46,7 @@ public class ExchangeRatePageEvent {
 	public void setAllList(List<ExchangeRate> allList) {
 		this.allList = allList;
 	}
-
+	
 	public ExchangeRatePageEvent(Page<ExchangeRate>  exchangeRatePage){
 		this.exchangeRatePage= exchangeRatePage;
 	}
@@ -49,5 +54,6 @@ public class ExchangeRatePageEvent {
 	public Page<ExchangeRate> getExchangeRatePage() {
 		return exchangeRatePage;
 	}
+	
 	
 }

@@ -11,7 +11,7 @@ import co.com.cybersoft.purchase.tables.web.domain.exchangeRate.ExchangeRateFilt
 
 /**
  * 
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public interface ExchangeRateCustomRepo {
@@ -23,6 +23,7 @@ public interface ExchangeRateCustomRepo {
 
 	
 	Page<ExchangeRate> findAll(Pageable pageable, ExchangeRateFilterInfo filter)throws Exception;
-	List<ExchangeRate> findAllNoPage(Pageable pageable, ExchangeRateFilterInfo filter)throws Exception;
 
+	List<ExchangeRate> findAllNoPage(Pageable pageable, ExchangeRateFilterInfo filter)throws Exception;
+	
 }

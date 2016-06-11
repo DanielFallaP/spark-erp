@@ -11,7 +11,7 @@ import co.com.cybersoft.util.EmbeddedField;
 
 /**
  * 
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public interface ExchangeRateService {
@@ -30,7 +30,9 @@ public interface ExchangeRateService {
 	ExchangeRatePageEvent requestAllByForeignCurrency(EmbeddedField... fields) throws Exception;
 
 	
-	ExchangeRatePageEvent requestExchangeRateFilter(RequestExchangeRatePageEvent event) throws Exception;
-
+	
 	ExchangeRatePageEvent requestExchangeRateFilterPage(RequestExchangeRatePageEvent event) throws Exception;
+
+	ExchangeRatePageEvent requestExchangeRateFilter(RequestExchangeRatePageEvent event) throws Exception;
+	
 }
