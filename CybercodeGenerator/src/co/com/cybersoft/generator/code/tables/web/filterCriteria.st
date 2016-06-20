@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
@@ -25,6 +27,58 @@ public class $entityName$FilterInfo {
 	private Boolean changeSortingFieldDirection;
 
 	$filterFields$
+	
+		
+	private String ffilterAsText="All";
+	
+	private Boolean aaddFilter=Boolean.FALSE;
+	
+	private List<$entityName$FilterInfo> $tableName$FilterList=new ArrayList<$entityName$FilterInfo>();
+	
+	public List<$entityName$FilterInfo> get$entityName$FilterList() {
+		return $tableName$FilterList;
+	}
+
+	public void set$entityName$FilterList(
+			List<$entityName$FilterInfo> $tableName$FilterList) {
+		this.$tableName$FilterList = $tableName$FilterList;
+	}
+
+	public Boolean getAaddFilter() {
+		return aaddFilter;
+	}
+
+	public void setAaddFilter(Boolean aaddFilter) {
+		this.aaddFilter = aaddFilter;
+	}
+
+	public String getFfilterAsText() {
+		ffilterAsText="";
+		int index=0;
+		for ($entityName$FilterInfo fil : $tableName$FilterList) {
+			ffilterAsText+=(index!=0?" UNION ":"");
+			$filterFieldsAsText$
+			if (fil.getDateOfModification()!=null && !fil.getDateOfModification().equals(""))ffilterAsText+=fil.getDateOfModification()+" ";
+			if (fil.getUserName()!=null && !fil.getUserName().equals(""))ffilterAsText+=fil.getUserName()+" ";
+			if (fil.getDateOfCreation()!=null && !fil.getDateOfCreation().equals(""))ffilterAsText+=fil.getDateOfCreation()+" ";
+			if (fil.getCreatedBy()!=null && !fil.getCreatedBy().equals(""))ffilterAsText+=fil.getCreatedBy()+" ";
+			
+			index++;
+		}
+		
+		ffilterAsText+=(index!=0?" UNION ":"");
+		$lastFilterFieldsAsText$
+		if (this.getDateOfModification()!=null && !this.getDateOfModification().equals(""))ffilterAsText+=this.getDateOfModification()+" ";
+		if (this.getUserName()!=null && !this.getUserName().equals(""))ffilterAsText+=this.getUserName()+" ";
+		if (this.getDateOfCreation()!=null && !this.getDateOfCreation().equals(""))ffilterAsText+=this.getDateOfCreation()+" ";
+		if (this.getCreatedBy()!=null && !this.getCreatedBy().equals(""))ffilterAsText+=this.getCreatedBy()+" ";
+		
+		return ffilterAsText;
+	}
+
+	public void setFfilterAsText(String ffilterAsText) {
+		this.ffilterAsText = ffilterAsText;
+	}
 	
 	public String getAaaaction() {
 		return aaaaction;

@@ -39,17 +39,61 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 	
 	$findAllActive$
 
-	public Page<$entityName$> findAll(Pageable pageable, $entityName$FilterInfo filter) throws Exception{
-		Query query = buildCriteriaQuery(filter, pageable);
+	public Page<$entityName$> findAll(Pageable pageable, $entityName$FilterInfo filt) throws Exception{
+		filt.get$entityName$FilterList().add(filt);
+		List<$entityName$FilterInfo> filters = filt.get$entityName$FilterList();
+		String queryString="SELECT p FROM $entityName$ p WHERE (";
+		int index=0;
+		for ($entityName$FilterInfo filter : filters) {
+			queryString+=buildCriteriaQuery(filter, pageable, index);
+			index++;
+		}
+		
+		if (pageable!=null){
+			while (pageable.getSort().iterator().hasNext()){
+				Order next = pageable.getSort().iterator().next();
+				$orderBy$
+				break;
+			}
+		}
+		
+		Query query = emFactory.getObject().createEntityManager().createQuery(queryString);
+		index=0;	
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		for ($entityName$FilterInfo filter : filters) {
+			if (filter.getDateOfModification()!=null && !filter.getDateOfModification().equals(""))
+				query.setParameter("dateOfModification"+index, df.parse(filter.getDateOfModification().replace(CyberUtils.getOperator(filter.getDateOfModification()), "")));
+			if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))
+				query.setParameter("dateOfCreation"+index, df.parse(filter.getDateOfCreation().replace(CyberUtils.getOperator(filter.getDateOfCreation()), "")));
+			$dateFieldCriteria$
+
+			index++;
+		}
+		
+
 		Long count=(long) query.getResultList().size();
 		List<$entityName$> list = query.setFirstResult(pageable.getOffset()).setMaxResults(pageable.getPageSize()).getResultList();
+		
+		filt.get$entityName$FilterList().remove(filt.get$entityName$FilterList().size()-1);
 		return new PageImpl<$entityName$>(list, pageable, count);
+	}
+	
+	private String buildCriteriaQuery($entityName$FilterInfo filter, Pageable pageable, int index)throws Exception{
+		String queryString=(index!=0?" OR (":"")+"1=1 ";
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		$fieldCriteria$
+	
+		if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))queryString+=" AND p.dateOfCreation "+CyberUtils.getOperator(filter.getDateOfCreation())+" :dateOfCreation"+index+" ";
+		if (filter.getDateOfModification()!=null && !filter.getDateOfModification().equals(""))queryString+=" AND p.dateOfModification "+CyberUtils.getOperator(filter.getDateOfModification())+" :dateOfModification"+index;
+		if (filter.getUserName()!=null && !filter.getUserName().equals(""))queryString+=" AND LOWER(p.userName) LIKE LOWER('"+filter.getUserName()+"')";
+		if (filter.getCreatedBy()!=null && !filter.getCreatedBy().equals(""))queryString+=" AND LOWER(p.createdBy) LIKE LOWER('"+filter.getCreatedBy()+"')";
+	
+		return queryString+")";
 	}
 
 	private Query buildCriteriaQuery($entityName$FilterInfo filter, Pageable pageable)throws Exception{
 		String queryString="SELECT p FROM $entityName$ p WHERE 1=1";
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-		$fieldCriteria$
 	
 		if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))queryString+=" AND p.dateOfCreation "+CyberUtils.getOperator(filter.getDateOfCreation())+" :dateOfCreation ";
 		if (filter.getDateOfModification()!=null && !filter.getDateOfModification().equals(""))queryString+=" AND p.dateOfModification "+CyberUtils.getOperator(filter.getDateOfModification())+" :dateOfModification";
@@ -69,14 +113,44 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 			query.setParameter("dateOfModification", df.parse(filter.getDateOfModification().replace(CyberUtils.getOperator(filter.getDateOfModification()), "")));
 		if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))
 			query.setParameter("dateOfCreation", df.parse(filter.getDateOfCreation().replace(CyberUtils.getOperator(filter.getDateOfCreation()), "")));
-		$dateFieldCriteria$
 		
 		return query;
 	}
 	
 	public List<$entityName$> findAllNoPage(Pageable pageable,
-			$entityName$FilterInfo filter) throws Exception {
-		Query query = buildCriteriaQuery(filter, null);
+			$entityName$FilterInfo filt) throws Exception {
+		filt.get$entityName$FilterList().add(filt);
+		List<$entityName$FilterInfo> filters = filt.get$entityName$FilterList();
+		String queryString="SELECT p FROM $entityName$ p WHERE (";
+		int index=0;
+		for ($entityName$FilterInfo filter : filters) {
+			queryString+=buildCriteriaQuery(filter, pageable, index);
+			index++;
+		}
+		
+		if (pageable!=null){
+			while (pageable.getSort().iterator().hasNext()){
+				Order next = pageable.getSort().iterator().next();
+				$orderBy$
+				break;
+			}
+		}
+		
+		Query query = emFactory.getObject().createEntityManager().createQuery(queryString);
+		index=0;	
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		for ($entityName$FilterInfo filter : filters) {
+			if (filter.getDateOfModification()!=null && !filter.getDateOfModification().equals(""))
+				query.setParameter("dateOfModification"+index, df.parse(filter.getDateOfModification().replace(CyberUtils.getOperator(filter.getDateOfModification()), "")));
+			if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))
+				query.setParameter("dateOfCreation"+index, df.parse(filter.getDateOfCreation().replace(CyberUtils.getOperator(filter.getDateOfCreation()), "")));
+			$dateFieldCriteria$
+			index++;
+		}
+		
+		filt.get$entityName$FilterList().remove(filt.get$entityName$FilterList().size()-1);
+		
+	
 		return query.getResultList();
 	}	
 }

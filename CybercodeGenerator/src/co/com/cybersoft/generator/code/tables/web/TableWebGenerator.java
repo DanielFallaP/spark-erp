@@ -85,6 +85,8 @@ public class TableWebGenerator {
 		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.tableCodePath+"web");
 		StringTemplate fieldTemplate = templateGroup.getInstanceOf("filterCriteria");
 		String filterFields="";
+		String filterFieldsAsText="";
+		String lastFilterFieldsAsText="";
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
 				if (!field.isReference()){
@@ -93,6 +95,16 @@ public class TableWebGenerator {
 					template.setAttribute("name", field.getName());
 					filterFields+=template.toString();
 					filterFields+="\n";
+					
+					StringTemplate stringTemplate = new StringTemplate("if (fil.get$fieldName$()!=null && !fil.get$fieldName$().equals(\"\"))ffilterAsText+=fil.get$fieldName$()+\" \";\n");
+					stringTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+					
+					filterFieldsAsText+=stringTemplate.toString();
+					
+					stringTemplate = new StringTemplate("if ($name$!=null && !$name$.equals(\"\"))ffilterAsText+=$name$+\" \";");
+					stringTemplate.setAttribute("name", field.getName());
+					
+					lastFilterFieldsAsText+=stringTemplate.toString();
 					
 					StringTemplateGroup templateGroup2 = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup2.getInstanceOf("getterSetter");
@@ -107,6 +119,16 @@ public class TableWebGenerator {
 					template.setAttribute("name", field.getName());
 					filterFields+=template.toString();
 					filterFields+="\n";
+					
+					StringTemplate stringTemplate = new StringTemplate("if (fil.get$fieldName$()!=null && !fil.get$fieldName$().equals(\"\"))ffilterAsText+=fil.get$fieldName$()+\" \";\n");
+					stringTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+					
+					filterFieldsAsText+=stringTemplate.toString();
+					
+					stringTemplate = new StringTemplate("if ($name$!=null && !$name$.equals(\"\"))ffilterAsText+=$name$+\" \";");
+					stringTemplate.setAttribute("name", field.getName());
+					
+					lastFilterFieldsAsText+=stringTemplate.toString();
 					
 					StringTemplateGroup templateGroup2 = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup2.getInstanceOf("getterSetter");
@@ -124,6 +146,17 @@ public class TableWebGenerator {
 					template.setAttribute("name", compoundField.getName());
 					filterFields+=template.toString();
 					filterFields+="\n";
+					
+					StringTemplate stringTemplate = new StringTemplate("if (fil.get$fieldName$()!=null && !fil.get$fieldName$().equals(\"\"))ffilterAsText+=fil.get$fieldName$()+\" \";\n");
+					stringTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+					
+					filterFieldsAsText+=stringTemplate.toString();
+					
+					stringTemplate = new StringTemplate("if ($name$!=null && !$name$.equals(\"\"))ffilterAsText+=$name$+\" \";");
+					stringTemplate.setAttribute("name", field.getName());
+					
+					lastFilterFieldsAsText+=stringTemplate.toString();
+					
 
 					StringTemplateGroup templateGroup2 = new StringTemplateGroup("domain group",Cybertables.utilCodePath);
 					StringTemplate gettersSettersTemplate = templateGroup2.getInstanceOf("getterSetter");
@@ -136,6 +169,8 @@ public class TableWebGenerator {
 		}
 		
 		fieldTemplate.setAttribute("filterFields", filterFields);
+		fieldTemplate.setAttribute("filterFieldsAsText", filterFieldsAsText);
+		fieldTemplate.setAttribute("lastFilterFieldsAsText", lastFilterFieldsAsText);
 		fieldTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		fieldTemplate.setAttribute("tableName", table.getName());
 		fieldTemplate.setAttribute("module", cybertables.getModuleName());

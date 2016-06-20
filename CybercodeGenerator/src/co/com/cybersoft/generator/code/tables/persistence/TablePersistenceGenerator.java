@@ -667,8 +667,8 @@ public class TablePersistenceGenerator {
 							template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))queryString+=\" AND LOWER(p.$fieldName$) LIKE LOWER('\"+filter.get$upperFieldName$()+\"')\";");
 						}
 						else if (field.getType().equals(Cyberconstants.dateType)){
-							template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))queryString+=\" AND p.$fieldName$ \"+CyberUtils.getOperator(filter.get$upperFieldName$())+\" :$fieldName$ \";");
-							StringTemplate dateParameterTemp=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))\n query.setParameter(\"$fieldName$\", df.parse(filter.get$upperFieldName$().replace(CyberUtils.getOperator(filter.get$upperFieldName$()), \"\")));");
+							template=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))queryString+=\" AND p.$fieldName$ \"+CyberUtils.getOperator(filter.get$upperFieldName$())+\" :$fieldName$\"+index+\" \";");
+							StringTemplate dateParameterTemp=new StringTemplate("if (filter.get$upperFieldName$()!=null && !filter.get$upperFieldName$().equals(\"\"))\n query.setParameter(\"$fieldName$\"+index, df.parse(filter.get$upperFieldName$().replace(CyberUtils.getOperator(filter.get$upperFieldName$()), \"\")));");
 							dateParameterTemp.setAttribute("fieldName", field.getName());
 							dateParameterTemp.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 							dateFieldCriteria+=dateParameterTemp.toString()+"\n";

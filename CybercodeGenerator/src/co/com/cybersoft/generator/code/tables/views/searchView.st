@@ -141,6 +141,17 @@
     	 	form.submit();
 	    }
 	    
+	    function addFilter(){
+	    	$clearFields$
+	    	document.getElementById('dateOfModification').value='';		    	
+	    	document.getElementById('userName').value='';		    	
+	    	document.getElementById('dateOfCreation').value='';		    	
+	    	document.getElementById('createdBy').value='';		    	
+	    	
+	    
+		 	var form=document.forms['filter-form'];
+    	 	form.elements["aaddFilter"].value=true;
+		}
 		
 		function submitFilterPage(page,field,changeDirection){
     	 	var form=document.forms['filter-form'];
@@ -183,7 +194,7 @@
 	    	            dataType: 'json',
 	    	            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
 	    	            success : function(result, a,b,c){
-	    	            	document.location=prefix+result.url;
+	    	            	window.open(prefix+result.url, "_blank");
 	    	            },
 	    	            error: function(a,b,c,d){
 	    	            },
@@ -240,13 +251,16 @@
 			<form id="filter-form" th:object="\${$tableName$FilterInfo}" method="post" >
 		  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
 		  	<input id="aaaaction" type="hidden" th:field="*{aaaaction}"/>
+			<input id="aaddFilter" type="hidden" th:field="*{aaddFilter}"/>
 			<input id="selectedFilterField" type="hidden" th:field="*{selectedFilterField}"/>
 		  	<input id="changeSortingFieldDirection" type="hidden" th:field="*{changeSortingFieldDirection}"/>
+		    <div style="float:left;"><b id="filterAsText" th:text="'Filter: '+\${ffilterAsText}"></b></div><div style="float:right;margin-top: 0;margin-bottom: 0;" id="unionOp" class='pagination pagination-left'><ul><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilter();">U</label></a></li></ul></div>
+			
 			<table width="100%">
 				<tr>
 					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/$module$/$tableName$/create$entityName$/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
 					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
-					<td width="34%">$excel$</td>
+					<td width="34%"><div align="right"><img style="cursor: pointer;" onclick="generateExcelFile();" th:src="@{/resources/img/excel.png}"/></div></td>
 				</tr>
 			</table>
 			<table class="table table-striped" >

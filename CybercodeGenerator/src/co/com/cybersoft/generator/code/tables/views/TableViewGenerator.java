@@ -337,11 +337,32 @@ public class TableViewGenerator {
 		template.setAttribute("module", cybertables.getModuleName());
 		template.setAttribute("actions", getActionDropdown(table));
 		
+		template.setAttribute("clearFields", getClearFields(table));
 		template.setAttribute("excel", table.getLabelTable()?"<div></div>":generateExcelLink(table));
 		
 		CodeUtils.writeClass(template.toString(), Cybertables.targetViewPath+"/normal/"+cybertables.getModuleName()+"/"+table.getName(), "search"+CodeUtils.toCamelCase(table.getName())+".html");
 	}
 	
+
+	private String getClearFields(Table table) {
+		List<Field> fields = table.getFields();
+		String clearFields="";
+		for (Field field : fields) {
+			if (!field.getCompoundReference()){
+				StringTemplate stringTemplate = new StringTemplate("document.getElementById('$name$').value='';\n");
+				stringTemplate.setAttribute("name", field.getName());
+				clearFields+=stringTemplate.toString();
+			}else{
+				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
+				for (Field compoundField : compoundKey) {
+					StringTemplate stringTemplate = new StringTemplate("document.getElementById('$name$').value='';\n");
+					stringTemplate.setAttribute("name", compoundField.getName());
+					clearFields+=stringTemplate.toString();
+				}
+			}
+		}
+		return clearFields;
+	}
 
 	private Object getActionDropdown(Table table) {
 		if (table.getActions()!=null){

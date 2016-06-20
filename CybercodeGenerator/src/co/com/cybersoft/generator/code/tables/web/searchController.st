@@ -41,6 +41,11 @@ public class $searchControllerName$ {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String search(Model model, Pageable pageable, String field, HttpServletRequest request) throws Exception{
+		$entityUpperCaseName$FilterInfo f=($entityUpperCaseName$FilterInfo) request.getSession().getAttribute("$entityName$Filter");
+		if (f!=null){
+			f.get$entityUpperCaseName$FilterList().clear();
+		}
+		
 		LOG.debug("Retrieving  $entityName$ ");
 		$responseEvent$ details;
 		Boolean direction=null;
@@ -74,6 +79,8 @@ public class $searchControllerName$ {
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("$entityName$Field"));
 		model.addAttribute("_direction", direction);
+		model.addAttribute("ffilterAsText", "All");
+		
 		return "$viewURL$";
 	}
 	
@@ -84,6 +91,11 @@ public class $searchControllerName$ {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String filter(Model model, String field, Pageable pageable, @ModelAttribute("$entityName$FilterInfo")$entityUpperCaseName$FilterInfo filter, HttpServletRequest request) throws Exception{
+		$entityUpperCaseName$FilterInfo f=($entityUpperCaseName$FilterInfo) request.getSession().getAttribute("$entityName$Filter");
+		if (f!=null && f.get$entityUpperCaseName$FilterList().size()!=0)
+			filter.get$entityUpperCaseName$FilterList().addAll(f.get$entityUpperCaseName$FilterList());
+		if (filter.getAaddFilter())
+			filter.get$entityUpperCaseName$FilterList().add(($entityUpperCaseName$FilterInfo) (request.getSession().getAttribute("$entityName$FilterCopy")!=null?request.getSession().getAttribute("$entityName$FilterCopy"):new $entityUpperCaseName$FilterInfo()));
 		
 		Boolean direction=null;
 		if (filter.getSelectedFilterField()!=null && !filter.getSelectedFilterField().equals("")){
@@ -110,17 +122,23 @@ public class $searchControllerName$ {
 				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))?request.getSession().getAttribute("$entityName$Field"):filter.getSelectedFilterField()));
 				pageEvent = new Request$entityUpperCaseName$PageEvent(pageRequest,filter);			}
 		}
-		if (hasActions(filter)){
-			$actions$
-			filter.setAaaaction(null);
-	    }
+		
 		$entityUpperCaseName$PageEvent details = $entityName$Service.request$entityUpperCaseName$FilterPage(pageEvent);
 		PageWrapper<$entityUpperCaseName$> page=new PageWrapper<$entityUpperCaseName$>(details.get$entityUpperCaseName$Page(),"/$module$/$entityName$/search$entityUpperCaseName$");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("$entityName$Field"));
 		model.addAttribute("_direction", direction);
+		model.addAttribute("ffilterAsText", filter.getFfilterAsText());
+		
+		if (hasActions(filter)){
+			$actions$
+			filter.setAaaaction(null);
+	    }
+
 	    request.getSession().setAttribute("$entityName$Filter", filter);
+    	request.getSession().setAttribute("$entityName$FilterCopy", filter);
+    	filter.setAaddFilter(Boolean.FALSE);
 		
 		return "$viewURL$";
 	}
