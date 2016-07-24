@@ -16,6 +16,8 @@ import co.com.cybersoft.$module$.tables.web.domain.$tableName$.$entityName$Filte
  */
 public interface $entityName$CustomRepo {
 
+	Long getTotalCount() throws Exception;
+
 	$autocompleteQuery$
 
 	$findAllActive$

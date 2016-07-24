@@ -283,7 +283,7 @@
 				<tr>
 					<td width="33%"></td>
 					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
-					<td width="34%"><div></div></td>
+					<td width="34%"><span th:text="\${page.totalElements}+'/'+\${_totalCount}"></span></td>
 				</tr>
 			</table>
 		</div>

@@ -79,6 +79,7 @@ public class $searchControllerName$ {
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("$entityName$Field"));
 		model.addAttribute("_direction", direction);
+		model.addAttribute("_totalCount", page.getTotalElements());
 		model.addAttribute("ffilterAsText", "All");
 		
 		return "$viewURL$";
@@ -129,6 +130,7 @@ public class $searchControllerName$ {
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("$entityName$Field"));
 		model.addAttribute("_direction", direction);
+		model.addAttribute("_totalCount", details.getTotalCount());
 		model.addAttribute("ffilterAsText", filter.getFfilterAsText());
 		
 		if (hasActions(filter)){

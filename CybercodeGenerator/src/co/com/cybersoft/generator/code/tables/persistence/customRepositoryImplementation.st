@@ -38,6 +38,11 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 	$byContainingFields$
 	
 	$findAllActive$
+	
+	public Long getTotalCount() throws Exception{
+		Query query2 = emFactory.getObject().createEntityManager().createQuery("SELECT p FROM $entityName$ p WHERE p.active = true");
+		return (long) query2.getResultList().size();
+	}
 
 	public Page<$entityName$> findAll(Pageable pageable, $entityName$FilterInfo filt) throws Exception{
 		filt.get$entityName$FilterList().add(filt);
