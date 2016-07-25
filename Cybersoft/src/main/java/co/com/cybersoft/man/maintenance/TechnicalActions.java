@@ -1,9 +1,13 @@
 package co.com.cybersoft.man.maintenance;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 
+import co.com.cybersoft.maintenance.tables.persistence.domain.Parts;
+import co.com.cybersoft.maintenance.tables.persistence.repository.parts.PartsRepository;
 import co.com.cybersoft.purchase.tables.core.services.exchangeRate.ExchangeRateService;
 import co.com.cybersoft.purchase.tables.events.exchangeRate.ExchangeRatePageEvent;
 import co.com.cybersoft.purchase.tables.events.exchangeRate.RequestExchangeRatePageEvent;
@@ -15,6 +19,9 @@ public class TechnicalActions{
 	
 	@Autowired
 	private ExchangeRateRepository repo;
+	
+	@Autowired
+	private PartsRepository partsRepo;
 	
 	@Autowired
 	private ExchangeRateService exchangeRate;
@@ -34,10 +41,19 @@ public class TechnicalActions{
 
 		try {
 			ExchangeRatePageEvent requestExchangeRateFilter = exchangeRate.requestExchangeRateFilter(pageEvent);
-			requestExchangeRateFilter.getAllList();
+			List<ExchangeRate> allList = requestExchangeRateFilter.getAllList();
+			
+			Parts parts=new Parts();
+			//operacion custom
+			
+			partsRepo.save(parts);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void transactionD(ExchangeRateFilterInfo filter){
+		System.out.println("Transaccion D");
 	}
 }

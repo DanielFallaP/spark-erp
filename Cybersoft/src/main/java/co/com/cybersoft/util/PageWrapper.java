@@ -23,6 +23,10 @@ public class PageWrapper<T> {
     private int number;
     private String url;
     private Boolean ascending;
+    
+    public Long getTotalElements(){
+    	return page.getTotalElements();
+    }
 
     public String getUrl() {
         return url;
