@@ -23,6 +23,10 @@ import javax.mail.internet.MimeMultipart;
 
 public class CyberUtils {
 
+	public static final String filterUnion="UNION";
+	
+	public static final String filterSubstract="SUBSTRACT";
+	
 	public static final String arraySeparator="/////";
 	
 	public final static String decisionTableTrueValue="label.true";

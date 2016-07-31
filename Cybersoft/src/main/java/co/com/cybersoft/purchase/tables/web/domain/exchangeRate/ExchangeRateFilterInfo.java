@@ -4,8 +4,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import co.com.cybersoft.util.CyberUtils;
+
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -28,45 +30,15 @@ public class ExchangeRateFilterInfo {
 	private Boolean changeSortingFieldDirection;
 
 	private String localCurrency;
+
+	private String fffilterNature;
 	
-	private String ffilterAsText="All";
-	
-	private Boolean aaddFilter=Boolean.FALSE;
-	
-	private List<ExchangeRateFilterInfo> exchangeRateFilterList=new ArrayList<ExchangeRateFilterInfo>();
-	
-	public List<ExchangeRateFilterInfo> getExchangeRateFilterList() {
-		return exchangeRateFilterList;
+	public String getFffilterNature() {
+		return fffilterNature;
 	}
 
-	public void setExchangeRateFilterList(
-			List<ExchangeRateFilterInfo> exchangeRateFilterList) {
-		this.exchangeRateFilterList = exchangeRateFilterList;
-	}
-
-	public Boolean getAaddFilter() {
-		return aaddFilter;
-	}
-
-	public void setAaddFilter(Boolean aaddFilter) {
-		this.aaddFilter = aaddFilter;
-	}
-
-	public String getFfilterAsText() {
-		ffilterAsText="";
-		int index=0;
-		for (ExchangeRateFilterInfo fil : exchangeRateFilterList) {
-			if (fil.getDate()!=null && !fil.getDate().equals(""))
-				ffilterAsText+=(index!=0?" UNION ":"")+fil.getDate();
-			index++;
-		}
-		if (date!=null && !date.equals(""))
-			ffilterAsText+=(index!=0?" UNION ":"")+date;
-		return ffilterAsText;
-	}
-
-	public void setFfilterAsText(String ffilterAsText) {
-		this.ffilterAsText = ffilterAsText;
+	public void setFffilterNature(String fffilterNature) {
+		this.fffilterNature = fffilterNature;
 	}
 
 	public String getLocalCurrency() {
@@ -133,6 +105,64 @@ public class ExchangeRateFilterInfo {
 	}
 
 
+	
+		
+	private String ffilterAsText="All";
+	
+	private Boolean aaddFilter=Boolean.FALSE;
+	
+	private List<ExchangeRateFilterInfo> exchangeRateFilterList=new ArrayList<ExchangeRateFilterInfo>();
+	
+	public List<ExchangeRateFilterInfo> getExchangeRateFilterList() {
+		return exchangeRateFilterList;
+	}
+
+	public void setExchangeRateFilterList(
+			List<ExchangeRateFilterInfo> exchangeRateFilterList) {
+		this.exchangeRateFilterList = exchangeRateFilterList;
+	}
+
+	public Boolean getAaddFilter() {
+		return aaddFilter;
+	}
+
+	public void setAaddFilter(Boolean aaddFilter) {
+		this.aaddFilter = aaddFilter;
+	}
+
+	public String getFfilterAsText() {
+		ffilterAsText="";
+		int index=0;
+		for (ExchangeRateFilterInfo fil : exchangeRateFilterList) {
+			ffilterAsText+=(index!=0?(fil.getFffilterNature().equals(CyberUtils.filterUnion)?" UNION ":" MINUS "):"");
+			if (fil.getLocalCurrency()!=null && !fil.getLocalCurrency().equals(""))ffilterAsText+=fil.getLocalCurrency()+" ";
+			if (fil.getForeignCurrency()!=null && !fil.getForeignCurrency().equals(""))ffilterAsText+=fil.getForeignCurrency()+" ";
+			if (fil.getDate()!=null && !fil.getDate().equals(""))ffilterAsText+=fil.getDate()+" ";
+			if (fil.getExchangeRate()!=null && !fil.getExchangeRate().equals(""))ffilterAsText+=fil.getExchangeRate()+" ";
+			if (fil.getVariation()!=null && !fil.getVariation().equals(""))ffilterAsText+=fil.getVariation()+" ";
+			if (fil.getActive()!=null && !fil.getActive().equals(""))ffilterAsText+=fil.getActive()+" ";
+
+			if (fil.getDateOfModification()!=null && !fil.getDateOfModification().equals(""))ffilterAsText+=fil.getDateOfModification()+" ";
+			if (fil.getUserName()!=null && !fil.getUserName().equals(""))ffilterAsText+=fil.getUserName()+" ";
+			if (fil.getDateOfCreation()!=null && !fil.getDateOfCreation().equals(""))ffilterAsText+=fil.getDateOfCreation()+" ";
+			if (fil.getCreatedBy()!=null && !fil.getCreatedBy().equals(""))ffilterAsText+=fil.getCreatedBy()+" ";
+			
+			index++;
+		}
+		
+		ffilterAsText+=(index!=0?(fffilterNature.equals(CyberUtils.filterUnion)?" UNION ":" MINUS "):"");
+		if (localCurrency!=null && !localCurrency.equals(""))ffilterAsText+=localCurrency+" ";if (foreignCurrency!=null && !foreignCurrency.equals(""))ffilterAsText+=foreignCurrency+" ";if (date!=null && !date.equals(""))ffilterAsText+=date+" ";if (exchangeRate!=null && !exchangeRate.equals(""))ffilterAsText+=exchangeRate+" ";if (variation!=null && !variation.equals(""))ffilterAsText+=variation+" ";if (active!=null && !active.equals(""))ffilterAsText+=active+" ";
+		if (this.getDateOfModification()!=null && !this.getDateOfModification().equals(""))ffilterAsText+=this.getDateOfModification()+" ";
+		if (this.getUserName()!=null && !this.getUserName().equals(""))ffilterAsText+=this.getUserName()+" ";
+		if (this.getDateOfCreation()!=null && !this.getDateOfCreation().equals(""))ffilterAsText+=this.getDateOfCreation()+" ";
+		if (this.getCreatedBy()!=null && !this.getCreatedBy().equals(""))ffilterAsText+=this.getCreatedBy()+" ";
+		
+		return ffilterAsText;
+	}
+
+	public void setFfilterAsText(String ffilterAsText) {
+		this.ffilterAsText = ffilterAsText;
+	}
 	
 	public String getAaaaction() {
 		return aaaaction;

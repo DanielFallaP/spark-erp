@@ -144,14 +144,46 @@
     	 	var form=document.forms['filter-form'];
     	 	form.elements["aaaaction"].value=action;
     	 	form.elements["selectedFilterPage"].value=1;
-    	 	
     	 	form.submit();
 	    }
-		
-		function addFilter(){
+	    
+	    function addFilter(){
+	    	if(document.getElementById('localCurrency').value!=undefined)document.getElementById('localCurrency').value='';
+	    	if(document.getElementById('foreignCurrency').value!=undefined)document.getElementById('foreignCurrency').value='';
+	    	if(document.getElementById('date').value!=undefined)document.getElementById('date').value='';
+	    	if(document.getElementById('exchangeRate').value!=undefined)document.getElementById('exchangeRate').value='';
+	    	if(document.getElementById('variation').value!=undefined)document.getElementById('variation').value='';
+	    	if(document.getElementById('active').value!=undefined)document.getElementById('active').value='';
+
+	    	document.getElementById('dateOfModification').value='';		    	
+	    	document.getElementById('userName').value='';		    	
+	    	document.getElementById('dateOfCreation').value='';		    	
+	    	document.getElementById('createdBy').value='';		    	
+	    	
+	    
 		 	var form=document.forms['filter-form'];
     	 	form.elements["aaddFilter"].value=true;
-		}
+    	 	form.elements["fffilterNature"].value='UNION';
+	    }
+	    
+	    function addFilterSubstract(){
+	    	if(document.getElementById('localCurrency').value!=undefined)document.getElementById('localCurrency').value='';
+	    	if(document.getElementById('foreignCurrency').value!=undefined)document.getElementById('foreignCurrency').value='';
+	    	if(document.getElementById('date').value!=undefined)document.getElementById('date').value='';
+	    	if(document.getElementById('exchangeRate').value!=undefined)document.getElementById('exchangeRate').value='';
+	    	if(document.getElementById('variation').value!=undefined)document.getElementById('variation').value='';
+	    	if(document.getElementById('active').value!=undefined)document.getElementById('active').value='';
+
+	    	document.getElementById('dateOfModification').value='';		    	
+	    	document.getElementById('userName').value='';		    	
+	    	document.getElementById('dateOfCreation').value='';		    	
+	    	document.getElementById('createdBy').value='';		    	
+	    	
+	    
+		 	var form=document.forms['filter-form'];
+    	 	form.elements["aaddFilter"].value=true;
+    	 	form.elements["fffilterNature"].value='SUBSTRACT';
+	    }
 		
 		function submitFilterPage(page,field,changeDirection){
     	 	var form=document.forms['filter-form'];
@@ -195,7 +227,6 @@
 	    	            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
 	    	            success : function(result, a,b,c){
 	    	            	window.open(prefix+result.url, "_blank");
-// 	    	            	document.location=prefix+result.url;
 	    	            },
 	    	            error: function(a,b,c,d){
 	    	            },
@@ -262,9 +293,11 @@
 		  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
 		  	<input id="aaaaction" type="hidden" th:field="*{aaaaction}"/>
 			<input id="aaddFilter" type="hidden" th:field="*{aaddFilter}"/>
+			<input id="fffilterNature" type="hidden" th:field="*{fffilterNature}"/>
 			<input id="selectedFilterField" type="hidden" th:field="*{selectedFilterField}"/>
 		  	<input id="changeSortingFieldDirection" type="hidden" th:field="*{changeSortingFieldDirection}"/>
-		  	<div style="float:left;"><b id="filterAsText" th:text="'Filter: '+${ffilterAsText}"></b></div><div style="float:right;" id="unionOp" class='pagination pagination-left'><ul><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilter();" >+</label></a></li></ul></div>
+		    <div style="float:left;"><b id="filterAsText" th:text="'Filter: '+${ffilterAsText}"></b></div><div style="float:right;margin-top: 0;margin-bottom: 0;" id="unionOp" class='pagination pagination-left'><ul><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilterSubstract();">-</label></a></li><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilter();">U</label></a></li></ul></div>
+			
 			<table width="100%">
 				<tr>
 					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/purchase/exchangeRate/createExchangeRate/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
@@ -402,7 +435,7 @@
 				<tr>
 					<td width="33%"></td>
 					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
-					<td width="34%"><div></div></td>
+					<td width="34%"><span th:text="${page.totalElements}+'/'+${_totalCount}"></span></td>
 				</tr>
 			</table>
 		</div>

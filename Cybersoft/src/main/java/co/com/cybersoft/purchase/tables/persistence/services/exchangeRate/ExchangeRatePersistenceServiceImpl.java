@@ -118,7 +118,7 @@ public class ExchangeRatePersistenceServiceImpl implements ExchangeRatePersisten
 
 	public ExchangeRatePageEvent requestExchangeRateFilterPage(RequestExchangeRatePageEvent event) throws Exception {
 		Page<ExchangeRate> page = exchangeRateCustomRepo.findAll(event.getPageable(), event.getFilter());
-		return new ExchangeRatePageEvent(page);
+		return new ExchangeRatePageEvent(page, exchangeRateCustomRepo.getTotalCount());
 	}
 	
 	public ExchangeRatePageEvent requestExchangeRateFilter(

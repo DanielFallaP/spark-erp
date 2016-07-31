@@ -80,8 +80,9 @@ public class ExchangeRateSearchController {
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("exchangeRateField"));
 		model.addAttribute("_direction", direction);
+		model.addAttribute("_totalCount", page.getTotalElements());
 		model.addAttribute("ffilterAsText", "All");
-
+		
 		return "/purchase/exchangeRate/searchExchangeRate";
 	}
 	
@@ -93,7 +94,6 @@ public class ExchangeRateSearchController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String filter(Model model, String field, Pageable pageable, @ModelAttribute("exchangeRateFilterInfo")ExchangeRateFilterInfo filter, HttpServletRequest request) throws Exception{
-		
 		ExchangeRateFilterInfo f=(ExchangeRateFilterInfo) request.getSession().getAttribute("exchangeRateFilter");
 		if (f!=null && f.getExchangeRateFilterList().size()!=0)
 			filter.getExchangeRateFilterList().addAll(f.getExchangeRateFilterList());
@@ -125,12 +125,14 @@ public class ExchangeRateSearchController {
 				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))?request.getSession().getAttribute("exchangeRateField"):filter.getSelectedFilterField()));
 				pageEvent = new RequestExchangeRatePageEvent(pageRequest,filter);			}
 		}
+		
 		ExchangeRatePageEvent details = exchangeRateService.requestExchangeRateFilterPage(pageEvent);
 		PageWrapper<ExchangeRate> page=new PageWrapper<ExchangeRate>(details.getExchangeRatePage(),"/purchase/exchangeRate/searchExchangeRate");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("exchangeRateField"));
 		model.addAttribute("_direction", direction);
+		model.addAttribute("_totalCount", details.getTotalCount());
 		model.addAttribute("ffilterAsText", filter.getFfilterAsText());
 		
 		if (hasActions(filter)){
@@ -141,6 +143,7 @@ public class ExchangeRateSearchController {
 
 			filter.setAaaaction(null);
 	    }
+
 	    request.getSession().setAttribute("exchangeRateFilter", filter);
     	request.getSession().setAttribute("exchangeRateFilterCopy", filter);
     	filter.setAaddFilter(Boolean.FALSE);

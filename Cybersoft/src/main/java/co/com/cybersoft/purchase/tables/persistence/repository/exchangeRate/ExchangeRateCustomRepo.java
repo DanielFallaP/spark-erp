@@ -16,6 +16,8 @@ import co.com.cybersoft.purchase.tables.web.domain.exchangeRate.ExchangeRateFilt
  */
 public interface ExchangeRateCustomRepo {
 
+	Long getTotalCount() throws Exception;
+
 
 	List<ExchangeRate> findAllActiveByLocalCurrency(EmbeddedField ...fields) throws Exception;
 	List<ExchangeRate> findByCodeName(String code) throws Exception;

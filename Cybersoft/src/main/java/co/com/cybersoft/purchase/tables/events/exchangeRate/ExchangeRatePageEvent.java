@@ -17,6 +17,7 @@ public class ExchangeRatePageEvent {
 	
 	private List<ExchangeRate> allList;
 	
+	private Long totalCount;
 	
 	private List<ExchangeRateDetails> exchangeRateList;
 
@@ -49,6 +50,19 @@ public class ExchangeRatePageEvent {
 	
 	public ExchangeRatePageEvent(Page<ExchangeRate>  exchangeRatePage){
 		this.exchangeRatePage= exchangeRatePage;
+	}
+	
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+	
+		
+	public ExchangeRatePageEvent(Page<ExchangeRate>  exchangeRatePage, Long totalCount){
+		this.exchangeRatePage= exchangeRatePage;
+		this.totalCount=totalCount;
 	}
 
 	public Page<ExchangeRate> getExchangeRatePage() {
