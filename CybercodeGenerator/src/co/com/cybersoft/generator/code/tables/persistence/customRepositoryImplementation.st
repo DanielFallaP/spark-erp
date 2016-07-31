@@ -47,12 +47,39 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 	public Page<$entityName$> findAll(Pageable pageable, $entityName$FilterInfo filt) throws Exception{
 		filt.get$entityName$FilterList().add(filt);
 		List<$entityName$FilterInfo> filters = filt.get$entityName$FilterList();
-		String queryString="SELECT p FROM $entityName$ p WHERE (";
+		String queryString="SELECT p FROM $entityName$ p WHERE (((";
 		int index=0;
+		List<$entityName$FilterInfo> unionFilters= new ArrayList<$entityName$FilterInfo>();
+		List<$entityName$FilterInfo> substractFilters= new ArrayList<$entityName$FilterInfo>();
+		unionFilters.add(filters.get(0));
+		
 		for ($entityName$FilterInfo filter : filters) {
-			queryString+=buildCriteriaQuery(filter, pageable, index);
+			if (index!=0)
+				if (filter.getFffilterNature().equals(CyberUtils.filterSubstract))
+					substractFilters.add(filter);
+				else
+					unionFilters.add(filter);
 			index++;
 		}
+		
+		index=0;
+		for ($entityName$FilterInfo filter : unionFilters) {
+			queryString+=buildCriteriaQuery(filter, pageable, index, 0, CyberUtils.filterUnion);
+			index++;
+		}
+		queryString+=")";
+		
+		int index2=index;
+		index=0;
+		queryString+=(substractFilters.size()>0?" AND p.id NOT IN (select p from $entityName$ p WHERE (":"");
+		for ($entityName$FilterInfo filter : substractFilters) {
+			queryString+=buildCriteriaQuery(filter, pageable, index, index2, CyberUtils.filterSubstract);
+			index++;
+			if (index==substractFilters.size())
+				queryString+=")";
+		}
+
+		queryString+=")";
 		
 		if (pageable!=null){
 			while (pageable.getSort().iterator().hasNext()){
@@ -83,13 +110,20 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 		return new PageImpl<$entityName$>(list, pageable, count);
 	}
 	
-	private String buildCriteriaQuery($entityName$FilterInfo filter, Pageable pageable, int index)throws Exception{
-		String queryString=(index!=0?" OR (":"")+"1=1 ";
+	private String buildCriteriaQuery($entityName$FilterInfo filter, Pageable pageable, int index, int offset, String nature)throws Exception{
+		String queryString="";
+
+		if (index!=0)
+				queryString=" OR (";
+		else {
+			queryString="";
+		}
+		queryString+="1=1 ";
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		$fieldCriteria$
 	
-		if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))queryString+=" AND p.dateOfCreation "+CyberUtils.getOperator(filter.getDateOfCreation())+" :dateOfCreation"+index+" ";
-		if (filter.getDateOfModification()!=null && !filter.getDateOfModification().equals(""))queryString+=" AND p.dateOfModification "+CyberUtils.getOperator(filter.getDateOfModification())+" :dateOfModification"+index;
+		if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))queryString+=" AND p.dateOfCreation "+CyberUtils.getOperator(filter.getDateOfCreation())+" :dateOfCreation"+(index+offset)+" ";
+		if (filter.getDateOfModification()!=null && !filter.getDateOfModification().equals(""))queryString+=" AND p.dateOfModification "+CyberUtils.getOperator(filter.getDateOfModification())+" :dateOfModification"+(index+offset);
 		if (filter.getUserName()!=null && !filter.getUserName().equals(""))queryString+=" AND LOWER(p.userName) LIKE LOWER('"+filter.getUserName()+"')";
 		if (filter.getCreatedBy()!=null && !filter.getCreatedBy().equals(""))queryString+=" AND LOWER(p.createdBy) LIKE LOWER('"+filter.getCreatedBy()+"')";
 	
@@ -126,12 +160,39 @@ public class $entityName$CustomRepoImpl implements $entityName$CustomRepo {
 			$entityName$FilterInfo filt) throws Exception {
 		filt.get$entityName$FilterList().add(filt);
 		List<$entityName$FilterInfo> filters = filt.get$entityName$FilterList();
-		String queryString="SELECT p FROM $entityName$ p WHERE (";
+		String queryString="SELECT p FROM $entityName$ p WHERE (((";
 		int index=0;
+		List<$entityName$FilterInfo> unionFilters= new ArrayList<$entityName$FilterInfo>();
+		List<$entityName$FilterInfo> substractFilters= new ArrayList<$entityName$FilterInfo>();
+		unionFilters.add(filters.get(0));
+		
 		for ($entityName$FilterInfo filter : filters) {
-			queryString+=buildCriteriaQuery(filter, pageable, index);
+			if (index!=0)
+				if (filter.getFffilterNature().equals(CyberUtils.filterSubstract))
+					substractFilters.add(filter);
+				else
+					unionFilters.add(filter);
 			index++;
 		}
+		
+		index=0;
+		for ($entityName$FilterInfo filter : unionFilters) {
+			queryString+=buildCriteriaQuery(filter, pageable, index, 0, CyberUtils.filterUnion);
+			index++;
+		}
+		queryString+=")";
+		
+		int index2=index;
+		index=0;
+		queryString+=(substractFilters.size()>0?" AND p.id NOT IN (select p from $entityName$ p WHERE (":"");
+		for ($entityName$FilterInfo filter : substractFilters) {
+			queryString+=buildCriteriaQuery(filter, pageable, index, index2, CyberUtils.filterSubstract);
+			index++;
+			if (index==substractFilters.size())
+				queryString+=")";
+		}
+		
+		queryString+=")";
 		
 		if (pageable!=null){
 			while (pageable.getSort().iterator().hasNext()){

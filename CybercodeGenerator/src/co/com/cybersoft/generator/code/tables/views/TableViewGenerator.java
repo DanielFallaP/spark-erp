@@ -349,13 +349,13 @@ public class TableViewGenerator {
 		String clearFields="";
 		for (Field field : fields) {
 			if (!field.getCompoundReference()){
-				StringTemplate stringTemplate = new StringTemplate("if(document.getElementById('$name$').value!=undefined)document.getElementById('$name$').value='';\n");
+				StringTemplate stringTemplate = new StringTemplate("if(document.getElementById('$name$')!=undefined)document.getElementById('$name$').value='';\n");
 				stringTemplate.setAttribute("name", field.getName());
 				clearFields+=stringTemplate.toString();
 			}else{
 				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
 				for (Field compoundField : compoundKey) {
-					StringTemplate stringTemplate = new StringTemplate("if(document.getElementById('$name$').value!=undefined)document.getElementById('$name$').value='';\n");
+					StringTemplate stringTemplate = new StringTemplate("if(document.getElementById('$name$')!=undefined)document.getElementById('$name$').value='';\n");
 					stringTemplate.setAttribute("name", compoundField.getName());
 					clearFields+=stringTemplate.toString();
 				}

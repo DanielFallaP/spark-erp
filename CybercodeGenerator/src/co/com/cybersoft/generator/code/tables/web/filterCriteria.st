@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import co.com.cybersoft.util.CyberUtils;
 
 @Component
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
@@ -28,6 +29,15 @@ public class $entityName$FilterInfo {
 
 	$filterFields$
 	
+	private String fffilterNature;
+	
+	public String getFffilterNature() {
+		return fffilterNature;
+	}
+
+	public void setFffilterNature(String fffilterNature) {
+		this.fffilterNature = fffilterNature;
+	}
 		
 	private String ffilterAsText="All";
 	
@@ -56,7 +66,7 @@ public class $entityName$FilterInfo {
 		ffilterAsText="";
 		int index=0;
 		for ($entityName$FilterInfo fil : $tableName$FilterList) {
-			ffilterAsText+=(index!=0?" UNION ":"");
+			ffilterAsText+=(index!=0?(fil.getFffilterNature().equals(CyberUtils.filterUnion)?" UNION ":" MINUS "):"");
 			$filterFieldsAsText$
 			if (fil.getDateOfModification()!=null && !fil.getDateOfModification().equals(""))ffilterAsText+=fil.getDateOfModification()+" ";
 			if (fil.getUserName()!=null && !fil.getUserName().equals(""))ffilterAsText+=fil.getUserName()+" ";
@@ -66,7 +76,7 @@ public class $entityName$FilterInfo {
 			index++;
 		}
 		
-		ffilterAsText+=(index!=0?" UNION ":"");
+		ffilterAsText+=(index!=0?(fffilterNature.equals(CyberUtils.filterUnion)?" UNION ":" MINUS "):"");
 		$lastFilterFieldsAsText$
 		if (this.getDateOfModification()!=null && !this.getDateOfModification().equals(""))ffilterAsText+=this.getDateOfModification()+" ";
 		if (this.getUserName()!=null && !this.getUserName().equals(""))ffilterAsText+=this.getUserName()+" ";

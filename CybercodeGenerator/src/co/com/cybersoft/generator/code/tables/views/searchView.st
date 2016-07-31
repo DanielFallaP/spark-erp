@@ -151,7 +151,21 @@
 	    
 		 	var form=document.forms['filter-form'];
     	 	form.elements["aaddFilter"].value=true;
+    	 	form.elements["fffilterNature"].value='UNION';
 		}
+		
+	    function addFilterSubstract(){
+        	$clearFields$
+	    	document.getElementById('dateOfModification').value='';		    	
+	    	document.getElementById('userName').value='';		    	
+	    	document.getElementById('dateOfCreation').value='';		    	
+	    	document.getElementById('createdBy').value='';		    	
+	    	
+	    
+		 	var form=document.forms['filter-form'];
+    	 	form.elements["aaddFilter"].value=true;
+    		form.elements["fffilterNature"].value='SUBSTRACT';
+	    }
 		
 		function submitFilterPage(page,field,changeDirection){
     	 	var form=document.forms['filter-form'];
@@ -252,9 +266,11 @@
 		  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
 		  	<input id="aaaaction" type="hidden" th:field="*{aaaaction}"/>
 			<input id="aaddFilter" type="hidden" th:field="*{aaddFilter}"/>
+			<input id="fffilterNature" type="hidden" th:field="*{fffilterNature}"/>
 			<input id="selectedFilterField" type="hidden" th:field="*{selectedFilterField}"/>
 		  	<input id="changeSortingFieldDirection" type="hidden" th:field="*{changeSortingFieldDirection}"/>
-		    <div style="float:left;"><b id="filterAsText" th:text="'Filter: '+\${ffilterAsText}"></b></div><div style="float:right;margin-top: 0;margin-bottom: 0;" id="unionOp" class='pagination pagination-left'><ul><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilter();">U</label></a></li></ul></div>
+			<div style="float:left;"><b id="filterAsText" th:text="'Filter: '+\${ffilterAsText}"></b></div><div style="float:right;margin-top: 0;margin-bottom: 0;" id="unionOp" class='pagination pagination-left'><ul><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilterSubstract();">-</label></a></li><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilter();">U</label></a></li></ul></div>
+			
 			
 			<table width="100%">
 				<tr>

@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import co.com.cybersoft.man.security.SparkAuthenticationSuccessHandler;
 import co.com.cybersoft.util.CyberUtils;
@@ -26,8 +27,12 @@ import com.mongodb.Mongo;
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
+	@Autowired
+	private LocalContainerEntityManagerFactoryBean emFactory;
+	
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+		auth.userDetailsService(new SQLUserDetailsService(emFactory));
 	}
 	
 	protected void configure(HttpSecurity http) throws Exception{
