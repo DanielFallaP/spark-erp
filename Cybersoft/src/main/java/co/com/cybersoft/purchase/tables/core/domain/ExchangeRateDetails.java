@@ -146,9 +146,9 @@ public class ExchangeRateDetails {
 	
 	public ExchangeRateDetails toExchangeRateDetails(ExchangeRate entity){
 		BeanUtils.copyProperties(entity, this);
-		this.localCurrency=entity.getLocalCurrency().getCode().getCurrency();
+		this.localCurrency=entity.getLocalCurrency().getCode().getCurrency()+"-"+entity.getLocalCurrency().getCurrency();
 		this.localCurrencyId=entity.getLocalCurrency().getId();
-		this.foreignCurrency=entity.getForeignCurrency().getCode().getCurrency();
+		this.foreignCurrency=entity.getForeignCurrency().getCode().getCurrency()+"-"+entity.getForeignCurrency().getCurrency();
 		this.foreignCurrencyId=entity.getForeignCurrency().getId();
 
 		return this;

@@ -78,7 +78,10 @@ public class ExchangeRateCreationController {
 		exchangeRateInfo=new ExchangeRateInfo();
 		exchangeRateInfo.setCreated(true);
 		exchangeRateInfo.setCalledFrom(calledFrom);
-		CurrencyPageEvent allLocalCurrencyEvent = currencyService.requestAllByCode();
+		EmbeddedField[] _embeddedFields=new EmbeddedField[1];
+		EmbeddedField _embeddedField=new EmbeddedField("Currency", null);
+		_embeddedFields[0]=_embeddedField;
+		CurrencyPageEvent allLocalCurrencyEvent = currencyService.requestAllByCode(_embeddedFields);
 		exchangeRateInfo.setLocalCurrencyList(allLocalCurrencyEvent.getCurrencyList());CurrencyPageEvent allForeignCurrencyEvent = currencyService.requestAllByCode();
 		exchangeRateInfo.setForeignCurrencyList(allForeignCurrencyEvent.getCurrencyList());
 		
@@ -102,8 +105,11 @@ public class ExchangeRateCreationController {
 		
 		String value = request.getParameter("value");
 		String field = request.getParameter("field");
-		
-		CurrencyPageEvent allLocalCurrencyEvent = currencyService.requestAllByCode();
+	
+		EmbeddedField[] _embeddedFields=new EmbeddedField[1];
+		EmbeddedField _embeddedField=new EmbeddedField("Currency", null);
+		_embeddedFields[0]=_embeddedField;
+		CurrencyPageEvent allLocalCurrencyEvent = currencyService.requestAllByCode(_embeddedFields);
 		exchangeRateInfo.setLocalCurrencyList(allLocalCurrencyEvent.getCurrencyList());CurrencyPageEvent allForeignCurrencyEvent = currencyService.requestAllByCode();
 		exchangeRateInfo.setForeignCurrencyList(allForeignCurrencyEvent.getCurrencyList());
 		

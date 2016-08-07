@@ -3,12 +3,10 @@ package co.com.cybersoft.purchase.tables.web.domain.exchangeRate;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-
-import co.com.cybersoft.util.CyberUtils;
-
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import co.com.cybersoft.util.CyberUtils;
 
 @Component
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
@@ -31,15 +29,6 @@ public class ExchangeRateFilterInfo {
 
 	private String localCurrency;
 
-	private String fffilterNature;
-	
-	public String getFffilterNature() {
-		return fffilterNature;
-	}
-
-	public void setFffilterNature(String fffilterNature) {
-		this.fffilterNature = fffilterNature;
-	}
 
 	public String getLocalCurrency() {
 		return localCurrency;	
@@ -106,6 +95,15 @@ public class ExchangeRateFilterInfo {
 
 
 	
+	private String fffilterNature;
+	
+	public String getFffilterNature() {
+		return fffilterNature;
+	}
+
+	public void setFffilterNature(String fffilterNature) {
+		this.fffilterNature = fffilterNature;
+	}
 		
 	private String ffilterAsText="All";
 	
