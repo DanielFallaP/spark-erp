@@ -29,7 +29,8 @@ public class CodeUtils {
 	public static List<Table> allTables;
 	
 	public static String getReferenceChain(Cybertables cybertables, Table table, Field field){
-		List<Table> tables = cybertables.getTables();
+		List<Table> tables = allTables;
+		
 		String chain="";
 		StringTemplate stringTemplate = new StringTemplate(".$reference$");
 		stringTemplate.setAttribute("reference", field.getName());
