@@ -501,6 +501,17 @@ public class TableViewGenerator {
 					}
 					else{
 						template = templateGroup.getInstanceOf("otherColumn");
+						if (!field.getAdditionalFields().isEmpty()){
+							String additional="";
+							List<String> additionalFields = field.getAdditionalFields();
+							for (String string : additionalFields) {
+								StringTemplate stringTemplate = new StringTemplate("+' - '+\\${object.$fieldName$.$additionalField$}");
+								stringTemplate.setAttribute("fieldName", field.getName());
+								stringTemplate.setAttribute("additionalField", string);
+								additional+=stringTemplate.toString();
+							}
+							template.setAttribute("additionalFields", additional);
+						}
 					}
 					
 					System.out.println("Field name "+field.getName());

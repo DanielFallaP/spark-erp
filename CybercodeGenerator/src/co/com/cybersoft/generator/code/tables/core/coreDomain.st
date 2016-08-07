@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.beans.BeanUtils;
 import co.com.cybersoft.$module$.tables.persistence.domain.$entityName$;
+import co.com.cybersoft.util.EmbeddedField;
+import java.lang.reflect.Method;
 $imports$
 
 /**
@@ -63,8 +65,18 @@ public class $coreDomainClass$ {
 	
 	$gettersAndSetters$
 	
-	public $entityName$Details to$entityName$Details($entityName$ entity){
+	public $entityName$Details to$entityName$Details($entityName$ entity, EmbeddedField... fields){
 		BeanUtils.copyProperties(entity, this);
+		String _embedded="";
+		for (EmbeddedField embeddedField : fields) {
+			try {
+				Method _method = $entityName$Details.class.getMethod("get"+embeddedField.getName());
+				String _invoke = (String) _method.invoke(this);
+				_embedded+=" - "+_invoke;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		$references$
 		$embeddedReferences$
 		return this;

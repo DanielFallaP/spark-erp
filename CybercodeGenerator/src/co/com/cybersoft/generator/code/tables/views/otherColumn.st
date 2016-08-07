@@ -1,1 +1,1 @@
-<td th:text="\${object.$fieldName$}"></td>
+<td th:text="\${object.$fieldName$}$additionalFields$"></td>

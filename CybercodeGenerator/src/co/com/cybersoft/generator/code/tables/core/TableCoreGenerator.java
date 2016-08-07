@@ -255,10 +255,18 @@ public class TableCoreGenerator {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
 				if (field.isReference()){
-					StringTemplate stringTemplate = new StringTemplate("this.$reference$=entity$getChain$;\n");
+					StringTemplate stringTemplate = new StringTemplate("this.$reference$=entity$getChain$$additionalFields$+_embedded;\n");
 					stringTemplate.setAttribute("reference", field.getName());
 					stringTemplate.setAttribute("upperReference", CodeUtils.toCamelCase(field.getName()));
 					stringTemplate.setAttribute("getChain", CodeUtils.getGetChain(cybertables, table, field));
+					String addFields="";
+					if (!field.getAdditionalFields().isEmpty()){
+						List<String> additionalFields = field.getAdditionalFields();
+						for (String addField : additionalFields) {
+							addFields+="+\" - \"+entity.get"+CodeUtils.toCamelCase(field.getName())+"().get"+CodeUtils.toCamelCase(addField)+"()";
+						}
+					}
+					stringTemplate.setAttribute("additionalFields", addFields);
 					references+=stringTemplate.toString();
 					
 					stringTemplate = new StringTemplate("this.$reference$Id=entity.get$upperReference$().getId();\n");
@@ -266,6 +274,15 @@ public class TableCoreGenerator {
 					stringTemplate.setAttribute("upperReference", CodeUtils.toCamelCase(field.getName()));
 					references+=stringTemplate.toString();
 				}
+				else{
+					if (field.getType().equals("String")){
+						StringTemplate stringTemplate = new StringTemplate("this.$field$=$field$+_embedded;\n");
+						stringTemplate.setAttribute("field", field.getName());
+						references+=stringTemplate.toString();
+					}
+				}
+				
+				
 		}
 		
 		return references;

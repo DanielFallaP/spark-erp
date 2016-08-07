@@ -193,9 +193,34 @@ public class TableWebGenerator {
 		
 		//reference lists
 		template.setAttribute("setReferencesLists", generateControllerReferencesLists(table));
+		template.setAttribute("additionalFields", generateAdditionalFields(table));
 		template.setAttribute("module", cybertables.getModuleName());
 
 		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/web/controller/"+table.getName()).replace("{{module}}", cybertables.getModuleName()), "Set"+CodeUtils.toCamelCase(table.getName())+"Controller.java");
+	}
+
+	private Object generateAdditionalFields(Table table) {
+		String embedded="";
+		List<Field> fields = table.getFields();
+		for (Field field : fields) {
+			if (!field.getCompoundReference() && field.isReference()){
+				if (!field.getAdditionalFields().isEmpty()){
+					List<String> additionalFields = field.getAdditionalFields();
+					int index=0;
+					for (String string : additionalFields) {
+						embedded+="EmbeddedField[] _additionalFields"+CodeUtils.toCamelCase(field.getName())+"=new EmbeddedField["+field.getAdditionalFields().size()+"];\n";
+						StringTemplate stringTemplate = new StringTemplate("EmbeddedField _additionalField$fieldName$$embUpperName$=new EmbeddedField(\"$embUpperName$\", null);\n_additionalFields$fieldName$[$index$]=_additionalField$fieldName$$embUpperName$;\n");
+						stringTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+						stringTemplate.setAttribute("embUpperName", CodeUtils.toCamelCase(string));
+						stringTemplate.setAttribute("index", index);
+							
+						embedded+=stringTemplate.toString();
+						index++;
+					}
+				}
+			}
+		}
+		return embedded;
 	}
 
 	private void generateExcelController(Table table) {
@@ -341,7 +366,8 @@ public class TableWebGenerator {
 		
 		//reference lists
 		template.setAttribute("setReferencesLists", generateControllerReferencesLists(table));
-		
+		template.setAttribute("additionalFields", generateAdditionalFields(table));
+
 		//default values
 		template.setAttribute("setDefaults", generateDefaults(table));
 		
@@ -403,6 +429,7 @@ public class TableWebGenerator {
 		
 		//reference lists
 		template.setAttribute("setReferencesLists", generateControllerReferencesLists(table));
+		template.setAttribute("additionalFields", generateAdditionalFields(table));
 
 		//compound reference lists
 		template.setAttribute("setCompoundLists", generateModificationControllerCompoundLists(table));
@@ -777,13 +804,14 @@ public class TableWebGenerator {
 		for (Field field : fields) {
 			if (field.isReference()){
 				if (!field.isEmbeddedReference() && !field.getCompoundReference() && !CodeUtils.generateAutoCompleteReference(field)){
-					StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAllBy$referenceField$();\n"
+					StringTemplate template = new StringTemplate("$entityName$PageEvent all$variableName$Event = $tableName$Service.requestAllBy$referenceField$($additionalFields$);\n"
 							+ "$parentTableName$Info.set$variableName$List(all$variableName$Event.get$entityName$List());\n");
 					template.setAttribute("entityName", CodeUtils.toCamelCase(field.getRefType()));
 					template.setAttribute("variableName", CodeUtils.toCamelCase(field.getName()));
 					template.setAttribute("tableName", field.getRefType());
 					template.setAttribute("parentTableName", table.getName());
 					template.setAttribute("referenceField", CodeUtils.toCamelCase(field.getDisplayField()));
+					template.setAttribute("additionalFields", field.getAdditionalFields().isEmpty()?"":"_additionalFields"+CodeUtils.toCamelCase(field.getName()));
 					lists+=template.toString();
 				}
 				else{

@@ -74,6 +74,7 @@ public class $entityName$CreationController {
 		$tableName$Info=new $entityName$Info();
 		$tableName$Info.setCreated(true);
 		$tableName$Info.setCalledFrom(calledFrom);
+		$additionalFields$
 		$setReferencesLists$
 		$setCompoundLists$
 		
@@ -96,6 +97,7 @@ public class $entityName$CreationController {
 		String value = request.getParameter("value");
 		String field = request.getParameter("field");
 		
+		$additionalFields$
 		$setReferencesLists$
 		
 		$setCompoundLists$

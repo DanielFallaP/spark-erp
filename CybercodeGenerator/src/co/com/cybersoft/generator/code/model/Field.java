@@ -31,6 +31,7 @@ public class Field {
 	private List<String> embeddedFields=new ArrayList<String>();
 	private String tableName;
 	private Boolean checkReference=Boolean.TRUE;
+	private List<String> additionalFields=new ArrayList<String>();
 	
 	//For documents only
 	private String docRefType;
@@ -41,6 +42,14 @@ public class Field {
 	
 	private OnLoad onLoad;
 	
+	
+	
+	public List<String> getAdditionalFields() {
+		return additionalFields;
+	}
+	public void setAdditionalFields(List<String> additionalFields) {
+		this.additionalFields = additionalFields;
+	}
 	private JavaScriptAPI autoCompletePeerFunction;
 	
 	public String getFieldGroup() {

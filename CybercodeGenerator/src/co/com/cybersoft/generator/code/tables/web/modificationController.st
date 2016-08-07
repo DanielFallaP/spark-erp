@@ -83,6 +83,7 @@ public class $entityName$ModificationController {
 			
 		$entityName$DetailsEvent request$entityName$Details = $tableName$Service.request$entityName$Details(new Request$entityName$DetailsEvent(id));
 		
+		$additionalFields$
 		$setReferencesLists$
 		$setCompoundLists$
 		

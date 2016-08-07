@@ -2,7 +2,7 @@
 		List<$entityName$> all = $tableName$$repo$.findAllActiveBy$upperReferencedField$(fields);
 		List<$entityName$Details> list = new ArrayList<$entityName$Details>();
 		for ($entityName$ $tableName$ : all) {
-			list.add(new $entityName$Details().to$entityName$Details($tableName$));
+			list.add(new $entityName$Details().to$entityName$Details($tableName$, fields));
 		}
 		return new $entityName$PageEvent(list);
 	}
