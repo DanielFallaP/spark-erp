@@ -2,21 +2,21 @@ package co.com.cybersoft.purchase.tables.persistence.repository.continent;
 
 import java.util.List;
 
+import co.com.cybersoft.purchase.tables.persistence.domain.Continent;
+import co.com.cybersoft.util.EmbeddedField;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-
-import co.com.cybersoft.purchase.tables.persistence.domain.Continent;
 import co.com.cybersoft.purchase.tables.web.domain.continent.ContinentFilterInfo;
-import co.com.cybersoft.util.EmbeddedField;
 
 
 /**
  * 
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public interface ContinentCustomRepo {
+
+	Long getTotalCount() throws Exception;
 
 	List<Continent> findByContainingContinent(String substring);
 
@@ -25,5 +25,7 @@ public interface ContinentCustomRepo {
 
 	
 	Page<Continent> findAll(Pageable pageable, ContinentFilterInfo filter)throws Exception;
+
+	List<Continent> findAllNoPage(Pageable pageable, ContinentFilterInfo filter)throws Exception;
 	
 }

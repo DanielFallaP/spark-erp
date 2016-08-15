@@ -6,6 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.transaction.annotation.Transactional;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -18,13 +21,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
+import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
 import co.com.cybersoft.purchase.tables.core.domain.ContinentDetails;
 import co.com.cybersoft.purchase.tables.core.services.continent.ContinentService;
 import co.com.cybersoft.purchase.tables.events.continent.ContinentDetailsEvent;
@@ -59,6 +62,7 @@ public class ContinentModificationController {
 		ContinentDetails continentDetails = createContinentDetails(continentInfo);
 		continentDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		continentDetails.setDateOfModification(new Date());
+		continentDetails.set_companyId(((Company)request.getSession().getAttribute("_companyObject")).getId());
 		
 		request.getSession().setAttribute("continentInfo", continentInfo);
 		continentService.modifyContinent(new ContinentModificationEvent(continentDetails));

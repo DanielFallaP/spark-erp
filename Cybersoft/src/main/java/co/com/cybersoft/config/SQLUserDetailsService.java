@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
 import co.com.cybersoft.purchase.tables.persistence.domain.Users;
 import co.com.cybersoft.util.CyberUtils;
 
@@ -38,7 +39,7 @@ public class SQLUserDetailsService implements UserDetailsService{
 				if (!resultList.isEmpty()){
 					
 					Users user = (Users) resultList.get(0);
-					org.springframework.security.core.userdetails.User userDetail = new org.springframework.security.core.userdetails.User(user.getLogin(),user.getPassword(),true,true,true,true,getAuthorities("ROLE_"+user.getRole().toUpperCase()));
+					org.springframework.security.core.userdetails.User userDetail = new org.springframework.security.core.userdetails.User(user.getLogin(),user.getPassword(),true,true,true,true,getAuthorities("ROLE_"+user.getRole().toUpperCase(),user.getCompany()));
 					
 					//Session id creation for the user
 					CyberUtils.userSessions.put(userName, UUID.randomUUID().toString());
@@ -55,9 +56,9 @@ public class SQLUserDetailsService implements UserDetailsService{
 			return null;
 	}
 	
-	public List<GrantedAuthority> getAuthorities(String role){
+	public List<GrantedAuthority> getAuthorities(String role, Company company){
 		ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority(role));
+		authorities.add(new SparkGrantedAuthority(role, company));
 		return authorities;
 	}
 

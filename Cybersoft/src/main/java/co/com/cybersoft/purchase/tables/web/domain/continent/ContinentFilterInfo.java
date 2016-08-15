@@ -4,6 +4,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import co.com.cybersoft.util.CyberUtils;
 
 @Component
 @Scope(value="session", proxyMode=ScopedProxyMode.TARGET_CLASS)
@@ -16,6 +19,8 @@ public class ContinentFilterInfo {
 	
 	private String createdBy;
 	
+	private String aaaaction;
+	
 	private Integer selectedFilterPage;
 	
 	private String selectedFilterField;
@@ -23,7 +28,16 @@ public class ContinentFilterInfo {
 	private Boolean changeSortingFieldDirection;
 
 	private String continent;
+	
+	private String _company;
+	
+	public String get_company() {
+		return _company;
+	}
 
+	public void set_company(String _company) {
+		this._company = _company;
+	}
 
 	public String getContinent() {
 		return continent;	
@@ -45,6 +59,78 @@ public class ContinentFilterInfo {
 	}
 
 
+	
+	private String fffilterNature;
+	
+	public String getFffilterNature() {
+		return fffilterNature;
+	}
+
+	public void setFffilterNature(String fffilterNature) {
+		this.fffilterNature = fffilterNature;
+	}
+		
+	private String ffilterAsText="All";
+	
+	private Boolean aaddFilter=Boolean.FALSE;
+	
+	private List<ContinentFilterInfo> continentFilterList=new ArrayList<ContinentFilterInfo>();
+	
+	public List<ContinentFilterInfo> getContinentFilterList() {
+		return continentFilterList;
+	}
+
+	public void setContinentFilterList(
+			List<ContinentFilterInfo> continentFilterList) {
+		this.continentFilterList = continentFilterList;
+	}
+
+	public Boolean getAaddFilter() {
+		return aaddFilter;
+	}
+
+	public void setAaddFilter(Boolean aaddFilter) {
+		this.aaddFilter = aaddFilter;
+	}
+
+	public String getFfilterAsText() {
+		ffilterAsText="";
+		int index=0;
+		for (ContinentFilterInfo fil : continentFilterList) {
+			ffilterAsText+=(index!=0?(fil.getFffilterNature().equals(CyberUtils.filterUnion)?" UNION ":" MINUS "):"");
+			if (fil.getContinent()!=null && !fil.getContinent().equals(""))ffilterAsText+=fil.getContinent()+" ";
+			if (fil.getActive()!=null && !fil.getActive().equals(""))ffilterAsText+=fil.getActive()+" ";
+
+			if (fil.getDateOfModification()!=null && !fil.getDateOfModification().equals(""))ffilterAsText+=fil.getDateOfModification()+" ";
+			if (fil.getUserName()!=null && !fil.getUserName().equals(""))ffilterAsText+=fil.getUserName()+" ";
+			if (fil.getDateOfCreation()!=null && !fil.getDateOfCreation().equals(""))ffilterAsText+=fil.getDateOfCreation()+" ";
+			if (fil.getCreatedBy()!=null && !fil.getCreatedBy().equals(""))ffilterAsText+=fil.getCreatedBy()+" ";
+			
+			index++;
+		}
+		
+		ffilterAsText+=(index!=0?(fffilterNature.equals(CyberUtils.filterUnion)?" UNION ":" MINUS "):"");
+		if (continent!=null && !continent.equals(""))ffilterAsText+=continent+" ";if (active!=null && !active.equals(""))ffilterAsText+=active+" ";
+		if (this.getDateOfModification()!=null && !this.getDateOfModification().equals(""))ffilterAsText+=this.getDateOfModification()+" ";
+		if (this.getUserName()!=null && !this.getUserName().equals(""))ffilterAsText+=this.getUserName()+" ";
+		if (this.getDateOfCreation()!=null && !this.getDateOfCreation().equals(""))ffilterAsText+=this.getDateOfCreation()+" ";
+		if (this.getCreatedBy()!=null && !this.getCreatedBy().equals(""))ffilterAsText+=this.getCreatedBy()+" ";
+		
+		return ffilterAsText;
+	}
+
+	public void setFfilterAsText(String ffilterAsText) {
+		this.ffilterAsText = ffilterAsText;
+	}
+	
+	public String getAaaaction() {
+		return aaaaction;
+	}
+
+	public void setAaaaction(String aaaaction) {
+		this.aaaaction = aaaaction;
+	}
+	
 	public Boolean getChangeSortingFieldDirection() {
 		return changeSortingFieldDirection;
 	}

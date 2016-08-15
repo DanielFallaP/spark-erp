@@ -24,7 +24,6 @@ public class ContinentServiceImpl implements ContinentService{
 	
 	/**
 	 */
-	@Override
 	public ContinentDetailsEvent createContinent(CreateContinentEvent event ) throws Exception{
 		return continentPersistenceService.createContinent(event);
 	}
@@ -32,38 +31,36 @@ public class ContinentServiceImpl implements ContinentService{
 	/**
 	 * Returns all the rows of the page requested
 	 */
-	@Override
 	public ContinentPageEvent requestContinentPage(RequestContinentPageEvent event) throws Exception{
 		return continentPersistenceService.requestContinentPage(event);
 	}
 
-	@Override
 	public ContinentDetailsEvent requestContinentDetails(RequestContinentDetailsEvent event ) throws Exception{
 		return continentPersistenceService.requestContinentDetails(event);
 	}
 
-	@Override
 	public ContinentDetailsEvent modifyContinent(ContinentModificationEvent event) throws Exception {
 		return continentPersistenceService.modifyContinent(event);
 	}
 	
-	@Override
 	public ContinentDetailsEvent requestOnlyRecord() throws Exception {
 		return continentPersistenceService.getOnlyRecord();
 	}
 	
-	@Override
 	public ContinentPageEvent requestContinentFilterPage(RequestContinentPageEvent event) throws Exception {
 		return continentPersistenceService.requestContinentFilterPage(event);
 	}
+	
+	public ContinentPageEvent requestContinentFilter(RequestContinentPageEvent event) throws Exception {
+		return continentPersistenceService.requestContinentFilter(event);
+	}
+	
 
-	@Override
 	public ContinentPageEvent requestAllByContinent(EmbeddedField... fields) throws Exception {
 		return continentPersistenceService.requestAllByContinent(fields);
 	}
 	
-	@Override
-			public ContinentPageEvent requestByContainingContinent(String continent) throws Exception {
+	public ContinentPageEvent requestByContainingContinent(String continent) throws Exception {
 				return continentPersistenceService.requestByContainingContinent(continent);
 			}
 	

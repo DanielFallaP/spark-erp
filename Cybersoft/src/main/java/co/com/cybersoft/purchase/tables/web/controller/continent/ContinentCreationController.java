@@ -12,7 +12,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,9 +22,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
+import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
 import co.com.cybersoft.purchase.tables.core.domain.ContinentDetails;
 import co.com.cybersoft.purchase.tables.core.services.continent.ContinentService;
 import co.com.cybersoft.purchase.tables.events.continent.CreateContinentEvent;
@@ -64,6 +65,7 @@ public class ContinentCreationController {
 		continentDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		continentDetails.setDateOfCreation(new Date());
 		continentDetails.setDateOfModification(new Date());
+		continentDetails.set_companyId(((Company)request.getSession().getAttribute("_companyObject")).getId());
 		
 		request.getSession().setAttribute("continentInfo", continentInfo);
 		continentService.createContinent(new CreateContinentEvent(continentDetails));

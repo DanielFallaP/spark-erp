@@ -11,7 +11,7 @@ import co.com.cybersoft.util.EmbeddedField;
 
 /**
  * 
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public interface ContinentService {
@@ -31,4 +31,7 @@ public interface ContinentService {
 	ContinentPageEvent requestByContainingContinent(String continent) throws Exception;
 	
 	ContinentPageEvent requestContinentFilterPage(RequestContinentPageEvent event) throws Exception;
+
+	ContinentPageEvent requestContinentFilter(RequestContinentPageEvent event) throws Exception;
+	
 }

@@ -20,6 +20,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
+
 
 public class CyberUtils {
 
@@ -114,6 +116,8 @@ public class CyberUtils {
 	public static final String filterOperationDefault = "UNION";
 	
 	public static Map<String,String> userSessions=new HashMap<String,String>();
+	
+	public static Map<Long,Company> userCompany=new HashMap<Long,Company>();
 	
 	public static String getOperator(String value){
 		for (int i = 0; i < operators.length; i++) {

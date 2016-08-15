@@ -2,14 +2,22 @@ package co.com.cybersoft.purchase.tables.persistence.domain;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import org.springframework.beans.BeanUtils;
 
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+
+
+import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
 import co.com.cybersoft.purchase.tables.core.domain.ContinentDetails;
 
 /**
@@ -28,6 +36,19 @@ public class Continent {
 	private String continent;
 
 	private Boolean active;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="COMPANY_ID" , nullable=true)
+	private Company _company;
+	
+	
+
+	public Company get_company() {
+		return _company;
+	}
+	public void set_company(Company _company) {
+		this._company = _company;
+	}
 
 
 	private Date dateOfModification;
@@ -51,13 +72,14 @@ public class Continent {
 	public void setDateOfCreation(Date dateOfCreation) {
 		this.dateOfCreation = dateOfCreation;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -91,6 +113,9 @@ public class Continent {
 	public Continent fromContinentDetails(ContinentDetails details){
 		BeanUtils.copyProperties(details, this);
 		
+		Company _company = new Company();
+		_company.setId(details.get_companyId());
+		this._company=_company;
 		return this;
 	}
 

@@ -14,6 +14,8 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import co.com.cybersoft.config.SparkGrantedAuthority;
+
 public class SparkAuthenticationSuccessHandler implements AuthenticationSuccessHandler{
 
 	
@@ -21,6 +23,11 @@ public class SparkAuthenticationSuccessHandler implements AuthenticationSuccessH
 	 
 	    public void onAuthenticationSuccess(HttpServletRequest request, 
 	      HttpServletResponse response, Authentication authentication) throws IOException {
+	    	 Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+		        for (GrantedAuthority grantedAuthority : authorities) {
+		            if (grantedAuthority instanceof SparkGrantedAuthority)
+		            	request.getSession().setAttribute("_companyObject", ((SparkGrantedAuthority)grantedAuthority).getCompany());
+		        }
 	        handle(request, response, authentication);
 	        clearAuthenticationAttributes(request);
 	    }

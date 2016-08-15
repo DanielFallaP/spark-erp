@@ -7,22 +7,31 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
+import co.com.cybersoft.purchase.tables.core.services.continent.ContinentReportingService;
+
+import co.com.cybersoft.man.ExcelReportResponse;
 import co.com.cybersoft.man.services.excel.ReportingService;
 import co.com.cybersoft.purchase.tables.persistence.domain.Continent;
+import co.com.cybersoft.purchase.tables.core.domain.ContinentDetails;
+import co.com.cybersoft.purchase.tables.web.domain.continent.ContinentFilterInfo;
 
-//@Controller
+
+@Controller
 @RequestMapping("/purchase/continent/export")
 public class ContinentExcelController {
 	private static final Logger LOG=LoggerFactory.getLogger(ContinentModificationController.class);
 
-//	@Autowired
-//	private ReportingService reportingService;
+	@Autowired
+	private ContinentReportingService reportingService;
 	
-//	@RequestMapping(method=RequestMethod.GET)
-//	public String toExcel() throws Exception{
-//		LOG.debug("Exporting Continent to Excel");
-//		return reportingService.toExcel(Continent.class.getCanonicalName(), LocaleContextHolder.getLocale());
-//	}
+	@RequestMapping(method=RequestMethod.POST)
+	public @ResponseBody ExcelReportResponse toExcel(HttpServletRequest request) throws Exception{
+		LOG.debug("Exporting Continent to Excel");
+		return reportingService.toExcel(Continent.class.getCanonicalName(), ContinentDetails.class.getCanonicalName(), LocaleContextHolder.getLocale(),(ContinentFilterInfo) (request.getSession().getAttribute("continentFilter")!=null?request.getSession().getAttribute("continentFilter"):new ContinentFilterInfo()));
+	}
 	
 }
