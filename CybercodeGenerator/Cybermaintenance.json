@@ -1,0 +1,892 @@
+{ 
+	"tables":
+	[
+		 {
+		 	"name":"company",
+		 	"spanishName":"Compañía",
+		 	"fields":[
+		 		{"name":"name", "type":"String", "spanishName":""},
+		 		{"name":"corporation", "refType":"corporation", "displayField":"name"},
+			    {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+		 	]
+		 },
+		 {
+		 	"name":"corporation",
+		 	"spanishName":"Corporación",
+		 	"fields":[
+		 		{"name":"name", "type":"String", "spanishName":""},
+			    {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+		 	]
+		 },
+		 {	
+		   "name":"technicalActions",
+		   "spanishName":"Acciones TÃ©cnicas",
+		   "fields":[
+					   {"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+					   {"name":"code", "type":"String","length":"30","spanishName":"CÃ³digo"},
+					   {"name":"name", "type":"String", "length":"80", "spanishName":"Nombre"},
+					   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+		   ]
+		},
+		{
+				   "name":"maintenanceActivities",
+				   "spanishName":"Actividades Mantenimiento",
+				   "fields":[
+							   {"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+							   {"name":"name", "type":"String", "length":"50", "spanishName":"Nombre"},
+		   					   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+				   ]
+		},
+		{
+				   "name":"unitsOfMeasure",
+				   "spanishName":"Unidades Medida",
+				   "fields":[
+							   {"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+							   {"name":"name", "type":"String", "length":"50", "spanishName":"Nombre"},
+							   {"name":"abbreviation", "type":"String", "length":"50", "spanishName":"Abreviatura"},
+							   {"name":"type", "type":"String", "length":"50", "spanishName":"Tipo"},
+							   {"name":"conversionPattern", "type":"Double", "spanishName":"PatrÃ³n de ConversiÃ³n"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+				   ]
+		},
+		{
+				   "name":"physicalLocations",
+				   "spanishName":"Ubicaciones FÃ­sicas",
+				   "fields":[
+							   {"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+							   {"name":"name", "type":"String", "length":"50", "spanishName":"Nombre"},
+							   {"name":"area", "type":"String", "length":"50", "spanishName":"Area"},
+							   {"name":"unitOfMeasure", "spanishName":"Unidad de Medida", "refType":"unitsOfMeasure", "displayField":"name"},
+							   {"name":"capacity", "type":"Double", "spanishName":"Capacidad"},
+							   {"name":"consumerUnit", "spanishName":"Unidad de Consumo", "refType":"unitsOfMeasure", "displayField":"name"},
+							   {"name":"description1", "type":"String", "length":"100", "spanishName":"Descripcicion1"},
+							   {"name":"description2", "type":"String", "length":"100", "spanishName":"Descripcicion2"},
+							   {"name":"description3", "type":"String", "length":"100", "spanishName":"Descripcicion3"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+				   ]
+		},
+		{
+				   "name":"warehouses",
+				   "spanishName":"Almacenes",
+				   "fields":[
+							   {"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+							   {"name":"code", "type":"String","length":"3", "spanishName":"CÃ³digo"},
+							   {"name":"name", "type":"String","length":"20","spanishName":"Nombre"},
+							   {"name":"physicalLocation", "spanishName":"UbicaciÃ³n FÃ­sica", "refType":"physicalLocations", "displayField":"name"},								
+							   {"name":"costingType", "type":"Integer", "spanishName":"Tipo de Costeo"},
+							   {"name":"comments", "type":"String", "length":"4000", "spanishName":"Comentarios"},
+							   {"name":"type", "type":"String", "length":"2", "spanishName":"Tipo AlmacÃ©n"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							   
+				   ]
+		},
+		{
+				   "name":"features",
+				   "spanishName":"CaracterÃ­sticas",
+				   "fields":[
+							   {"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+							   {"name":"name", "type":"String","length":"30","spanishName":"Nombre"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"causes",
+				   "spanishName":"Causas",
+				   "fields":[
+							   {"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+							   {"name":"name", "type":"String","length":"50","spanishName":"Nombre"},
+							   {"name":"type", "type":"Integer","spanishName":"Tipo"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"customersCostCenters",
+				   "spanishName":"Centros de Costos Clientes",
+				   "fields":[
+							   {"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+							   {"name":"code", "type":"String","length":"40" ,"spanishName":"CÃ³digo"},
+							   {"name":"name", "type":"String","length":"50","spanishName":"Nombre"},
+								{"name":"nameContact", "type":"String","length":"40","spanishName":"Contacto"},
+								{"name":"area","type":"String","length":"50","spanishName":"Ã�rea"},
+								{"name":"address1","type":"String","length":"40","spanishName":"DirecciÃ³n 1"},
+								{"name":"address2", "type":"String","length":"40","spanishName":"DirecciÃ³n 2"},
+								{"name":"city","type":"String","length":"30","spanishName":"Ciudad"},
+								{"name":"phone", "type":"String","length":"25","spanishName":"TelÃ©fono"},
+								{"name":"class", "type":"Integer","spanishName":"Clase"},
+								{"name":"state", "type":"Integer","spanishName":"Estado"},
+								{"name":"comments", "type":"String","length":"4000","spanishName":"Comentarios"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"responsibleCenters",
+				   "spanishName":"Centros Responsables",
+				   "fields":[
+							  {"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+							  {"name":"name", "type":"String","length":"30", "spanishName":"Nombre"},
+							   {"name":"state", "type":"Integer","spanishName":"Estado"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"offices",
+				   "spanishName":"Oficios",
+				   "fields":[
+							  {"name":"responsibleCenter", "spanishName":"Centro Responsable", "refType":"responsibleCenters", "displayField":"name",  "embeddedFields":["code"]},
+							  {"name":"name", "type":"String","length":"25", "spanishName":"Nombre"},
+							   {"name":"hourValue1", "type":"Double","spanishName":"Valor 1 Hora"},
+							   {"name":"hourValue2", "type":"Double","spanishName":"Valor 2 Hora"},
+							   {"name":"hourValue3", "type":"Double","spanishName":"Valor 3 Hora"},
+							   {"name":"typeWork", "type":"Integer","spanishName":"Tipo de Trabajo"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"thirdParty",
+				   "spanishName":"Terceros",
+				   "fields":[
+							   {"name":"company", "type":"String","length":"25", "spanishName":"CompaÃ±Ã­a"},
+							   {"name":"code", "type":"String","length":"3","spanishName":"Codigo"},
+							   {"name":"name", "type":"String","spanishName":"Nombre"},
+							   {"name":"type", "type":"Integer","spanishName":"Tipo"},
+							   {"name":"nameContact", "type":"String","spanishName":"Contacto"},
+							   {"name":"address", "type":"String","spanishName":"DirecciÃ³n"},
+							   {"name":"city", "type":"String","spanishName":"Ciudad"},
+							   {"name":"country", "type":"String","spanishName":"Pais"},
+							   {"name":"phone1", "type":"String","spanishName":"TelÃ©fono 1"},
+							   {"name":"phone2", "type":"String","spanishName":"TelÃ©fono 2"},
+							   {"name":"fax", "type":"String","spanishName":"Fax"},
+							   {"name":"email", "type":"String","spanishName":"Email"},
+							   {"name":"admissionDate", "type":"Date","spanishName":"Fecha Ingreso"},
+							   {"name":"retirementDate", "type":"Date","spanishName":"Fecha Retiro"},
+							   {"name":"comments", "type":"String","spanishName":"Comentarios"},
+							   {"name":"state", "type":"Integer","spanishName":"Estado"},
+							   {"name":"greatContributor", "type":"Integer","spanishName":"Gran Contribuyente"},
+							   {"name":"autoretenedor", "type":"Integer","spanishName":"AutoRetenedor"},
+							   {"name":"typeRegime", "type":"String","spanishName":"Tipo RÃ©gimen"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"responsibles",
+				   "spanishName":"Responsables",
+				   "fields":[
+							   {"name":"code", "type":"String","length":"3","spanishName":"CÃ³digo"},
+							  {"name":"office", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+							  {"name":"responsible", "spanishName":"Responsable", "refType":"thirdParty", "displayField":"name"},
+							   {"name":"state", "type":"Integer","spanishName":"Estado"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"authorizers",
+				   "spanishName":"Autorizador Centro de Costos",
+				   "fields":[
+							  {"name":"costCenter", "spanishName":"Centro de Costos", "refType":"customersCostCenters", "displayField":"name",  "embeddedFields":["code"]},
+							  {"name":"office", "spanishName":"Oficio", "refType":"offices", "displayField":"name",  "embeddedFields":["code"]},
+							  {"name":"responsible", "spanishName":"Responsable", "refType":"responsibles", "displayField":"code"},
+							  {"name":"type", "type":"Integer","spanishName":"Tipo"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"classifiers",
+				   "spanishName":"Clasificadores",
+				   "fields":[
+							    {"name":"company", "type":"Integer","spanishName":"CompaÃ±Ã­a"},
+								{"name":"name", "type":"String", "length":"20", "spanishName":"Nombre"},
+							    {"name":"type", "type":"Integer","spanishName":"Tipo"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"counter",
+				   "spanishName":"Contadores",
+				   "fields":[
+							    {"name":"company", "type":"Integer","spanishName":"CompaÃ±Ã­a"},
+								{"name":"name", "type":"String", "length":"15", "spanishName":"Nombre"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"contracts",
+				   "spanishName":"Contratos",
+				   "fields":[
+							    {"name":"company", "type":"Integer","spanishName":"CompaÃ±Ã­a"},
+								{"name":"code", "type":"String", "length":"15", "spanishName":"Codigo Contrato"},
+								{"name":"startDate", "type":"Date",  "spanishName":"Fecha Inicio"},
+								{"name":"finishDate", "type":"Date",  "spanishName":"Fecha Fin"},
+								{"name":"value", "type":"Double",  "spanishName":"Valor Anual"},
+								{"name":"office", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+							    {"name":"responsible", "spanishName":"Responsable", "refType":"responsibles", "displayField":"code"},
+								{"name":"state", "type":"String", "length":"15", "spanishName":"Estado"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"effects",
+				   "spanishName":"Efectos",
+				   "fields":[
+							    {"name":"company", "type":"Integer","spanishName":"CompaÃ±Ã­a"},
+								{"name":"name", "type":"String", "length":"40", "spanishName":"Nombre"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"effectsTechnicalActions",
+				   "spanishName":"Efectos Acciones Tecnicas",
+				   "fields":[
+								{"name":"effect", "spanishName":"Efecto", "refType":"effects", "displayField":"name"},
+								{"name":"technicalAction", "spanishName":"AcciÃ³n TÃ©cnica", "refType":"technicalActions", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"workOrderNumber", "type":"Integer", "spanishName":"Numero Orden"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"states",
+				   "spanishName":"Estados",
+				   "fields":[
+							    {"name":"company", "type":"Integer","spanishName":"CompaÃ±Ã­a"},
+								{"name":"name", "type":"String", "length":"40", "spanishName":"Nombre"},
+								{"name":"type", "type":"Integer", "spanishName":"Tipo"},
+								{"name":"class", "type":"String", "length":"2", "spanishName":"Clase"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"failureCauses",
+				   "spanishName":"Causas Falla",
+				   "fields":[
+							    {"name":"company", "type":"Integer","spanishName":"CompaÃ±Ã­a"},
+								{"name":"name", "type":"String", "length":"40", "spanishName":"Nombre"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"technicalFailureCausesActions",
+				   "spanishName":"Acciones TÃ©cnicas Causas De Falla",
+				   "fields":[
+								{"name":"nameFails", "spanishName":"Causa de Falla", "refType":"failureCauses", "displayField":"name"},
+								{"name":"nameTechnicalAction", "spanishName":"AcciÃ³n TÃ©cnica", "refType":"technicalActions", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"numberOrder", "type":"Integer", "spanishName":"Numero Orden"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"operations",
+				   "spanishName":"Operaciones",
+				   "fields":[
+							    {"name":"company", "type":"Integer","spanishName":"CompaÃ±Ã­a"},
+								{"name":"code", "type":"String", "length":"40", "spanishName":"Codigo"},
+								{"name":"name", "type":"String", "length":"40", "spanishName":"Nombre"},
+								{"name":"state", "type":"String", "length":"40", "spanishName":"Estado"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"otherCostConcepts",
+				   "spanishName":"Otros Conceptos Costos",
+				   "fields":[
+							    {"name":"company", "type":"Integer","spanishName":"CompaÃ±Ã­a"},
+								{"name":"name", "type":"String", "length":"25", "spanishName":"Nombre"},
+								{"name":"cost", "type":"Double",  "spanishName":"Valor"},
+								{"name":"typeWork", "type":"String", "length":"40", "spanishName":"Tipo Trabajo"},
+								{"name":"unity", "spanishName":"Unidad", "refType":"unitsOfMeasure", "displayField":"name"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"references",
+				   "spanishName":"Referencias",
+				   "fields":[
+							    {"name":"company", "type":"Integer","spanishName":"CompaÃ±Ã­a"},
+								{"name":"code", "type":"String", "length":"10", "spanishName":"Codigo"},
+								{"name":"name", "type":"String", "length":"80", "spanishName":"Nombre"},
+								{"name":"state", "type":"Integer", "spanishName":"Estado"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"referencesOperations",
+				   "spanishName":"Referencias Operaciones",
+				   "fields":[
+								{"name":"reference", "spanishName":"Referencia", "refType":"references", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"operation", "spanishName":"OperaciÃ³n", "refType":"operations", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"numberOrder", "type":"Integer", "spanishName":"Numero Orden"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"fixedAssets",
+				   "spanishName":"Activos Fijos",
+				   "fields":[
+							    {"name":"company", "type":"Integer","spanishName":"CompaÃ±Ã­a"},
+								{"name":"code", "type":"String", "length":"18", "spanishName":"CÃ³digo"},
+								{"name":"description", "type":"String", "length":"60", "spanishName":"DescripciÃ³n"},
+								{"name":"route", "type":"Boolean", "defaultValue":"true", "spanishName":"Ruta"},
+								{"name":"class", "type":"String", "length":"1", "spanishName":"Clase"},
+								{"name":"reference", "type":"String", "length":"20", "spanishName":"Referencia"},
+								{"name":"make", "type":"String", "length":"20", "spanishName":"Marca"},
+								{"name":"serial", "type":"String", "length":"40", "spanishName":"Serial"},
+								{"name":"root", "type":"Boolean", "defaultValue":"true", "spanishName":"Raiz"},
+								{"name":"physicalLocation", "spanishName":"UbicaciÃ³n FÃ­sica", "refType":"physicalLocations", "displayField":"name"},
+								{"name":"costCenter", "spanishName":"Centro de Costos", "refType":"customersCostCenters", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"provider", "spanishName":"Referencia", "refType":"thirdParty", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"responsible", "spanishName":"Referencia", "refType":"thirdParty", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"manufacturer", "spanishName":"Referencia", "refType":"thirdParty", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"reliability", "type":"Integer", "spanishName":"Confiabilidad"},
+								{"name":"type", "type":"String", "length":"20", "spanishName":"Tipo"},
+								{"name":"model", "type":"String", "length":"30", "spanishName":"Modelo"},
+								{"name":"purchaseDate", "type":"Date", "spanishName":"Fecha de Compra"},
+								{"name":"warrantyFinishDate", "type":"Date", "spanishName":"Fecha Fin GarantÃ­a"},
+								{"name":"startupDate", "type":"Date", "spanishName":"Fecha de Arranque"},
+								{"name":"registrationDate", "type":"Date", "spanishName":"Fecha de Registro"},
+								{"name":"purchaseValue1", "type":"Double", "spanishName":"Valor de Compra"},
+								{"name":"purchaseValue2", "type":"Double", "spanishName":"Valor de Compra 2"},
+								{"name":"relationship", "type":"String", "length":"2", "spanishName":"RelaciÃ³n"},
+								{"name":"state", "spanishName":"Estado", "refType":"states", "displayField":"name"},
+								{"name":"comments", "type":"String", "length":"4000", "spanishName":"Comentarios"},
+								{"name":"fixedAssetNumber", "type":"String", "length":"20", "spanishName":"Numero Activo Fijo"},
+								{"name":"alias", "type":"String", "length":"20", "spanishName":"Alias"},
+								{"name":"office", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"image1", "type":"String", "length":"40", "spanishName":""},
+								{"name":"image2", "type":"String", "length":"40", "spanishName":""},
+								{"name":"clientCodeBars", "type":"String", "length":"40", "spanishName":"CÃ³digo  Barras Cliente"},
+								{"name":"clientCodeProvider", "type":"String", "length":"40", "spanishName":"Bodigo Barras Proveedor"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"activeFeatures",
+				   "spanishName":"CaracterÃ­sticas Activos",
+				   "fields":[
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"feature", "spanishName":"CaracterÃ­stica", "refType":"features", "displayField":"name"},
+								{"name":"type", "type":"Integer", "spanishName":"Tipo"},
+								{"name":"nominalValue", "type":"String", "length":"70", "spanishName":"Valor Nominal"},
+								{"name":"toleranceSince", "type":"String", "length":"70", "spanishName":"Tolerancia"},
+								{"name":"toleranceTo", "type":"String", "length":"70", "spanishName":"Tolerancia Hasta"},
+								{"name":"unity", "spanishName":"Unidad", "refType":"unitsOfMeasure", "displayField":"name"},								
+								{"name":"accessory", "type":"Boolean", "defaultValue":"false",  "spanishName":"Ind. Accesorio"},
+								{"name":"make", "type":"String", "length":"25", "spanishName":"Marca"},
+								{"name":"model", "type":"String", "length":"20", "spanishName":"Modelo"},
+								{"name":"serie", "type":"String", "length":"25", "spanishName":"Serie"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"activeCounters",
+				   "spanishName":"Contadores Activos",
+				   "fields":[
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"counter", "spanishName":"Contador", "refType":"counter", "displayField":"name"},
+								{"name":"counterValue", "type":"Double", "spanishName":"Valor Contador"},
+								{"name":"measurementDate", "type":"Date", "spanishName":"Fecha MediciÃ³n"},
+								{"name":"standardPlanning", "type":"String", "length":"40", "spanishName":"EstÃ¡ndar Planeacion"},
+								{"name":"standardDaysPlanning", "type":"String", "length":"40", "spanishName":"Numero DÃ­as Planeacion"},
+								{"name":"state", "type":"String", "length":"40", "spanishName":"Estado"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"parts",
+				   "spanishName":"Repuestos",
+				   "fields":[
+								{"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+								{"name":"warehouseCode", "spanishName":"Almacen", "refType":"warehouses", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"code", "type":"String", "length":"15", "spanishName":"CÃ³digo"},
+								{"name":"description", "type":"String", "length":"60", "spanishName":"DescripciÃ³n"},
+								{"name":"packagingUnit", "spanishName":"Unidad Empaque", "refType":"unitsOfMeasure", "displayField":"name"},
+								{"name":"unitConsumption", "spanishName":"Unidad Consumo", "refType":"unitsOfMeasure", "displayField":"name"},
+								{"name":"type", "type":"Integer", "spanishName":"Tipo"},
+								{"name":"class", "type":"String", "length":"50", "spanishName":"Clase"},
+								{"name":"lastDateUse", "type":"Date", "spanishName":"Fecha Ultimo Uso"},
+								{"name":"box", "type":"String", "length":"50", "spanishName":"Casilla"},
+								{"name":"unitValue", "type":"Double", "spanishName":"Valor Unitario"},
+								{"name":"costingDate", "type":"Date", "spanishName":"Fecha Costeo"},
+								{"name":"currentInventory", "type":"Double", "spanishName":"Inventario Actual"},
+								{"name":"minimumOrderPoint", "type":"Double", "spanishName":"Punto Pedido"},
+								{"name":"optimumBatchBuying", "type":"Double", "spanishName":"Lote Optimo"},
+								{"name":"provisioningPeriod", "type":"Double", "spanishName":"Periodo Aprovisionamiento"},
+								{"name":"provider1", "spanishName":"Proveedor 1", "refType":"thirdParty", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"referenceProvider1", "type":"String", "length":"30", "spanishName":"Referencia Proveedor 1"},
+								{"name":"provider2", "spanishName":"Proveedor 1", "refType":"thirdParty", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"referenceProvider2", "type":"String", "length":"30", "spanishName":"Referencia Proveedor 2"},
+								{"name":"provider3", "spanishName":"Proveedor 1", "refType":"thirdParty", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"referenceProvider3", "type":"String", "length":"30", "spanishName":"Referencia Proveedor 3"},
+								{"name":"pendingOrders", "type":"Integer", "spanishName":"Pedidos Pendientes"},								
+								{"name":"purchaseOrders1", "type":"String", "length":"50", "spanishName":"Orden Compra 1"},	
+								{"name":"purchaseOrdersDate1", "type":"Date", "spanishName":"Fecha Orden Compra 1"},
+								{"name":"purchaseOrderQuantity1", "type":"Double", "spanishName":"Cantidad Orden Compra 1"},
+								{"name":"purchaseOrders2", "type":"String", "length":"50", "spanishName":"Orden Compra 2"},	
+								{"name":"purchaseOrdersDate2", "type":"Date", "spanishName":"Fecha Orden Compra 2"},
+								{"name":"purchaseOrderQuantity2", "type":"Double", "spanishName":"Cantidad Orden Compra 2"},
+								{"name":"purchaseOrders3", "type":"String", "length":"50", "spanishName":"Orden Compra 3"},	
+								{"name":"purchaseOrdersDate3", "type":"Date", "spanishName":"Fecha Orden Compra 3"},
+								{"name":"purchaseOrderQuantity3", "type":"Double", "spanishName":"Cantidad Orden Compra 3"},
+								{"name":"state", "type":"Integer", "spanishName":"Estado"},
+								{"name":"feature1", "spanishName":"CaracterÃ­stica", "refType":"features", "displayField":"name"},
+								{"name":"feature2", "spanishName":"CaracterÃ­stica", "refType":"features", "displayField":"name"},
+								{"name":"feature3", "spanishName":"CaracterÃ­stica", "refType":"features", "displayField":"name"},
+								{"name":"feature4", "spanishName":"CaracterÃ­stica", "refType":"features", "displayField":"name"},
+								{"name":"feature5", "spanishName":"CaracterÃ­stica", "refType":"features", "displayField":"name"},
+								{"name":"featureValue1", "type":"String", "length":"12", "spanishName":""},
+								{"name":"featureValue2", "type":"String", "length":"12", "spanishName":""},
+								{"name":"featureValue3", "type":"String", "length":"12", "spanishName":""},
+								{"name":"featureValue4", "type":"String", "length":"12", "spanishName":""},
+								{"name":"featureValue5", "type":"String", "length":"12", "spanishName":""},
+								{"name":"reservation", "type":"Boolean", "defaultValue":"false", "spanishName":"Reserva"},
+								{"name":"comments", "type":"String", "length":"4000", "spanishName":"Comentarios"},
+								{"name":"image1", "type":"String", "length":"200", "spanishName":""},
+								{"name":"image2", "type":"String", "length":"200", "spanishName":""},
+								{"name":"physicalInventory", "type":"Double", "spanishName":"Inventario FÃ­sico"},
+								{"name":"theoreticalInventory", "type":"Double", "spanishName":"Inventario TeÃ³rico"},
+								{"name":"datePhysicalInventory", "type":"Date", "spanishName":"Fecha Inventario FÃ­sico"},
+								{"name":"reservedQuantity", "type":"Double", "spanishName":"Cantidad Reservada"},
+								{"name":"classification", "type":"String", "length":"1", "spanishName":"ClasificaciÃ³n"},
+								{"name":"price1", "type":"Double", "spanishName":"Precio 1"},
+								{"name":"price2", "type":"Double", "spanishName":"Precio 2"},
+								{"name":"price3", "type":"Double", "spanishName":"Precio 3"},
+								{"name":"currentCost", "type":"Double", "spanishName":"Costo Actual"},
+								{"name":"averageCost", "type":"Double", "spanishName":"Costo Promedio"},
+								{"name":"previousCost", "type":"Double", "spanishName":"Costo Ultima Compra"},
+								{"name":"account", "type":"String", "length":"50", "spanishName":"Cuenta"},
+								{"name":"clientCodeBars", "type":"String", "length":"100", "spanishName":"Codigo Barras Cliente"},
+								{"name":"barcodeProvider", "type":"String", "length":"100", "spanishName":"Codigo Barras Proveedor"},								
+								{"name":"lastPurchaseValue", "type":"Double", "spanishName":"Valor Ultima Compra"},
+								{"name":"lastPurchaseDate", "type":"Date", "spanishName":"Fecha Ultima Compra"},
+								{"name":"longDescription", "type":"String", "length":"200", "spanishName":"DescripciÃ³n Larga"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}							 	
+							 ]
+		},
+		{
+				   "name":"maintenancePrograms",
+				   "spanishName":"Programas Mantenimiento",
+				   "fields":[
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"task", "type":"Integer", "spanishName":"Tarea"},
+								{"name":"description", "type":"String", "length":"80", "spanishName":"Descripcicion"},
+								{"name":"activeStopped", "type":"Boolean", "defaultValue":"false", "spanishName":"Indica Equipo Parado"},
+								{"name":"instructive", "type":"String", "length":"256", "spanishName":""},
+								{"name":"typeMechanicalWork", "type":"Integer", "spanishName":"Tipo de Trabajo MecÃ¡nico"},
+								{"name":"typeElectricalWork", "type":"Integer", "spanishName":"Tipo de Trabajo ElÃ©ctrico"},
+								{"name":"typeWorkInstrumentation", "type":"Integer", "spanishName":"Tipo de Trabajo Instrumental"},
+								{"name":"anotherTypeWork", "type":"Integer", "spanishName":"Tipo de Trabajo Otro"},
+								{"name":"maintenanceType", "type":"Integer", "spanishName":"Tipo de Mantenimiento"},
+								{"name":"technicalAction", "spanishName":"AcciÃ³n TÃ©cnica", "refType":"technicalActions", "displayField":"name"},
+								{"name":"costCenter", "spanishName":"Centro de Costos", "refType":"customersCostCenters", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"office", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"responsible", "spanishName":"Responsable", "refType":"thirdParty", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"duration", "type":"Integer", "spanishName":"DuraciÃ³n"},
+								{"name":"durationUnit", "type":"Integer", "spanishName":"Unidad DuraciÃ³n"},
+								{"name":"priority", "type":"Integer", "spanishName":"Prioridad"},
+								{"name":"dateLastGeneration", "type":"Date", "spanishName":"Fecha Ultima GeneraciÃ³n"},
+								{"name":"lastGenerationCounter", "type":"Double", "spanishName":"Contador Ultima GeneraciÃ³n"},
+								{"name":"frequency", "type":"Integer", "spanishName":"Frecuencia"},
+								{"name":"period", "type":"Integer", "spanishName":"Periodo"},
+								{"name":"periodStartDate", "type":"Date", "spanishName":"Fecha de Inicio de Periodo"},
+								{"name":"ordinal", "type":"Integer", "spanishName":"Ordinal"},
+								{"name":"counterProgram", "type":"Integer", "spanishName":"Contador Programa"},
+								{"name":"limitIncrease", "type":"Integer", "spanishName":"Incremento Limite"},
+								{"name":"recurrence", "type":"Double", "spanishName":"Valor Contador"},
+								{"name":"firstSemester", "type":"Integer", "spanishName":""},
+								{"name":"secondSemester", "type":"Integer", "spanishName":""},
+								{"name":"feature", "spanishName":"CaracterÃ­stica", "refType":"features", "displayField":"name"},
+								{"name":"valueSince", "type":"String", "length":"12" ,"spanishName":"Valor Desde CA"},
+								{"name":"valueTo", "type":"String", "length":"12", "spanishName":"Valor Hasta CA"},
+								{"name":"criterion", "type":"String", "length":"2", "spanishName":"Criterio"},
+								{"name":"ivaLabor", "type":"Integer", "spanishName":"Iva Mano Obra"},
+								{"name":"ivaParts", "type":"Integer", "spanishName":"Iva Materiales"},
+								{"name":"ivaOtherCostConcepts", "type":"Integer", "spanishName":"Iva Otros Conceptos"},
+								{"name":"comments", "type":"String", "length":"80", "spanishName":"Comentarios"},
+								{"name":"contract", "spanishName":"Contrato", "refType":"contracts", "displayField":"code"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"technicalFailurePrograms",
+				   "spanishName":"Acciones TÃ©cnicas Programas",
+				   "fields":[
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+							 	{"name":"task", "spanishName":"Tarea", "refType":"maintenancePrograms", "displayField":"description"},
+								{"name":"technicalAction", "spanishName":"AcciÃ³n TÃ©cnica", "refType":"technicalActions", "displayField":"name"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"laborMaintenancePrograms",
+				   "spanishName":"ManoObra Programas de Mantenimiento",
+				   "fields":[
+							 	{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+							 	{"name":"task", "spanishName":"Tarea", "refType":"maintenancePrograms", "displayField":"description"},
+								{"name":"office", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"totalHours", "type":"Integer", "spanishName":"Horas"},
+								{"name":"totalMinutes", "type":"Integer", "spanishName":"Minutos"},
+								{"name":"totalpeople", "type":"Integer", "spanishName":"Personas"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"materialsMaintenancePrograms",
+				   "spanishName":"Materiales Programas de Mantenimiento",
+				   "fields":[
+							 	{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+							 	{"name":"task", "spanishName":"Tarea", "refType":"maintenancePrograms", "displayField":"description"},
+								{"name":"part", "spanishName":"Repuesto", "refType":"parts", "displayField":"description",  "embeddedFields":["code"]},
+								 {"name":"typeWork", "type":"Integer", "spanishName":"Tipo de Trabajo"},
+								 {"name":"numberUnits", "type":"Integer", "spanishName":"Cantidad"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"otherCostConceptsMaintenanceProgram",
+				   "spanishName":"Otros Conceptos Costos Programas de Mantenimiento",
+				   "fields":[
+							 	{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+							 	{"name":"task", "spanishName":"Tarea", "refType":"maintenancePrograms", "displayField":"description"},
+								{"name":"concept", "spanishName":"Concepto", "refType":"otherCostConcepts", "displayField":"name"},
+								 {"name":"value", "type":"Double", "spanishName":"Valor Unitario"},
+								 {"name":"numberUnits", "type":"Double", "spanishName":"Cantidad"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"stoppages",
+				   "spanishName":"Paros",
+				   "fields":[
+								{"name":"code", "type":"String","length":"5", "spanishName":"","unique":"true"},
+								{"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+								{"name":"state", "type":"Integer", "spanishName":"Estado"},
+								{"name":"turn", "type":"Integer", "spanishName":"Turno"},
+								{"name":"module", "type":"String", "length":"8", "spanishName":"Modulo"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"previousOperation", "type":"Integer", "spanishName":"OperaciÃ³n Anterior"},
+								{"name":"currentOperation", "type":"Integer", "spanishName":"OperaciÃ³n Actual"},
+								{"name":"reference", "spanishName":"Referencia", "refType":"references", "displayField":"name"},
+								{"name":"restriction", "type":"String", "length":"8", "spanishName":"RestricciÃ³n"},
+								{"name":"officeCollaborator", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"collaborator", "spanishName":"Colaborador", "refType":"thirdParty", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"dateGeneration", "type":"Date", "spanishName":"Fecha GeneraciÃ³n"},
+								{"name":"damageDate", "type":"Date", "spanishName":"Fecha DaÃ±o"},
+								{"name":"dateAttention", "type":"Date", "spanishName":"Fecha AtenciÃ³n"},
+								{"name":"workStartDate", "type":"Date", "spanishName":"Fecha Inicio Trabajos"},
+								{"name":"endDateTrials", "type":"Date", "spanishName":"Fecha Inicio Ensayos"},
+								{"name":"endDateWorks", "type":"Date", "spanishName":"Fecha Fin Trabajos"},
+								{"name":"closingDate", "type":"Date", "spanishName":"Fecha Cierre"},
+								{"name":"failureCause", "spanishName":"Causa de Falla", "refType":"failureCauses", "displayField":"name"},
+								{"name":"effect", "spanishName":"Efecto de Falla", "refType":"effects", "displayField":"name"},
+								{"name":"officeResponsible", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"responsible", "spanishName":"Colaborador", "refType":"responsibles", "displayField":"code"},								
+								{"name":"yearOrder", "type":"Integer", "spanishName":"AÃ±o OT"},
+								{"name":"orderNumber", "type":"Integer", "spanishName":"Numero OT"},
+								{"name":"description", "type":"String", "length":"80", "spanishName":"DescripciÃ³n"},
+								{"name":"comments", "type":"String", "length":"3000", "spanishName":"Comentarios"},
+								{"name":"typeMechanicalWork", "type":"Integer", "spanishName":"Tipo de Trabajo MecÃ¡nico"},
+								{"name":"typeElectricalWork", "type":"Integer", "spanishName":"Tipo de Trabajo ElÃ©ctrico"},
+								{"name":"typeWorkInstrumentation", "type":"Integer", "spanishName":"Tipo de Trabajo Instrumental"},
+								{"name":"anotherTypeWork", "type":"Integer", "spanishName":"Tipo de Trabajo Otro"},
+								{"name":"maintenanceType", "type":"Integer", "spanishName":"Tipo de Mantenimiento"},
+								{"name":"maintenanceActivitie", "spanishName":"Actividad de Mantenimiento", "refType":"maintenanceActivities", "displayField":"name"},
+								{"name":"descriptionApplicant", "type":"String", "length":"50", "spanishName":"Solicitante"},
+								{"name":"officeApplicant", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"applicant", "spanishName":"Solicitante", "refType":"thirdParty", "displayField":"name",  "embeddedFields":["code"]},		
+								{"name":"applicantEmail", "type":"String", "length":"80", "spanishName":"Email Solicitante"},
+								{"name":"applicantType", "type":"Integer", "spanishName":"Tipo Solicitante"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"technicalFailureStoppages",
+				   "spanishName":"Acciones TÃ©cnicas Paros",
+				   "fields":[
+								{"name":"task", "spanishName":"Tarea", "refType":"stoppages", "displayField":"code"},
+								{"name":"stoppage", "spanishName":"Tarea", "refType":"technicalActions", "displayField":"name"},								
+							 	{"name":"orderNumber", "type":"Integer", "spanishName":"Numero OT"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"serviceRequests",
+				   "spanishName":"Solicitudes de Servicio",
+				   "fields":[
+								{"name":"code", "type":"String","length":"10","spanishName":"","unique":"true"},
+								{"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+								{"name":"dateGeneration", "type":"Date", "spanishName":"Fecha Solicitud"},
+								{"name":"closingDate", "type":"Date", "spanishName":"Fecha Cierre"},
+								{"name":"loguin", "type":"String", "length":"50", "spanishName":""},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"fixedAssetDescription", "type":"String", "length":"60", "spanishName":"Equipo"},
+								{"name":"costCenter", "spanishName":"Centro de Costos", "refType":"customersCostCenters", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"diagnosis", "type":"String", "length":"400", "spanishName":"Diagnostico"},
+								{"name":"descriptionApplicant", "type":"String", "length":"50", "spanishName":"Solicitante"},
+								{"name":"state", "spanishName":"Estado", "refType":"states", "displayField":"name"},
+								{"name":"comments", "type":"String", "length":"4000", "spanishName":"Comentarios"},
+								{"name":"officeResponsible", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"responsible", "spanishName":"Colaborador", "refType":"responsibles", "displayField":"code"},	
+								{"name":"physicalLocation", "spanishName":"UbicaciÃ³n FÃ­sica", "refType":"physicalLocations", "displayField":"name"},								
+								{"name":"deliveryFinalDate", "type":"Date", "spanishName":"Fecha Entrega"},
+								{"name":"priority", "type":"Integer", "spanishName":"Prioridad"},
+								{"name":"allocationDate", "type":"Date", "spanishName":"Fecha AsignaciÃ³n"},
+								{"name":"daysDuration", "type":"Integer", "spanishName":"DÃ­as DuraciÃ³n"},
+								{"name":"hoursDuration", "type":"Integer", "spanishName":"Horas DuraciÃ³n"},
+								{"name":"minutesDuration", "type":"Integer", "spanishName":"Minutos DuraciÃ³n"},
+								{"name":"deliveryDate", "type":"Date", "spanishName":"Fecha Entrega"},
+								{"name":"yearOrder", "type":"Integer", "spanishName":"AÃ±o Orden"},
+								{"name":"numberOrder", "type":"Integer", "spanishName":"Numero Orden"},
+								{"name":"failure", "spanishName":"Falla", "refType":"failureCauses", "displayField":"name"},
+								{"name":"officeApplicant", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"applicant", "spanishName":"Solicitante", "refType":"thirdParty", "displayField":"name",  "embeddedFields":["code"]},		
+								{"name":"applicantType", "type":"Integer", "spanishName":""},	
+								{"name":"valueLabor", "type":"Double", "spanishName":"Valor Mano Obra"},
+								{"name":"valueMaterials", "type":"Integer", "spanishName":"Valor Materiales"},
+								{"name":"responsibleCenter", "spanishName":"Centro Responsable", "refType":"responsibleCenters", "displayField":"name"},
+								{"name":"responseEvaluation1", "type":"Integer", "spanishName":"Respuesta EvaluaciÃ³n 1"},
+								{"name":"responseEvaluation2", "type":"Integer", "spanishName":"Respuesta EvaluaciÃ³n 2"},
+								{"name":"responseEvaluation3", "type":"Integer", "spanishName":"Respuesta EvaluaciÃ³n 3"},
+								{"name":"responseEvaluation4", "type":"Integer", "spanishName":"Respuesta EvaluaciÃ³n 4"},
+								{"name":"responseEvaluation5", "type":"Integer", "spanishName":"Respuesta EvaluaciÃ³n 5"},
+								{"name":"workStartDate", "type":"Date", "spanishName":"Fecha Inicio Trabajos"},
+								{"name":"applicantEmail", "type":"String", "length":"100", "spanishName":"Email Solicitante"},
+								{"name":"source", "type":"String", "length":"50", "spanishName":""},
+								{"name":"contact", "type":"Integer", "spanishName":"Contacto"},
+								{"name":"typeMechanicalWork", "type":"Integer", "spanishName":"Tipo de Trabajo MecÃ¡nico"},
+								{"name":"typeElectricalWork", "type":"Integer", "spanishName":"Tipo de Trabajo ElÃ©ctrico"},
+								{"name":"typeWorkInstrumentation", "type":"Integer", "spanishName":"Tipo de Trabajo Instrumental"},
+								{"name":"anotherTypeWork", "type":"Integer", "spanishName":"Tipo de Trabajo Otro"},
+								{"name":"maintenanceType", "type":"Integer", "spanishName":"Tipo de Mantenimiento"},
+								{"name":"maintenanceActivitie", "spanishName":"Actividad Mantenimiento", "refType":"maintenanceActivities", "displayField":"name"},
+								{"name":"physicalLocationDescription", "type":"String", "length":"100", "spanishName":"UbicaciÃ³n FÃ­sica"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+
+		{
+				   "name":"workOrders",
+				   "spanishName":"Orden De Trabajo",
+				   "actions":[
+				{"className":"co.com.cybersoft.man.maintenance.WorkOrdersAPI", "method":"sendToHistory", "actionName":"Send to History", "spanishActionName":""}
+			],
+				   "fields":[
+								{"name":"yearOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"numberOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"dateGeneration", "type":"Date", "spanishName":"Fecha GeneraciÃ³n"},
+								{"name":"description", "type":"String", "length":"80", "spanishName":"DescripciÃ³n"},
+					   		   	{"name":"description2", "type":"String", "length":"80", "spanishName":"DescripciÃ³n", "required":"false"},
+					   		   	{"name":"state", "spanishName":"Estado", "type":"String", "required":"false"},
+					   		   
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"actualExpenditureLaborWorkOrders",
+				   "spanishName":"Gasto Real Mano Obra OT",
+				   "fields":[
+							 	{"name":"yearOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"numberOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"internalNumber", "type":"Integer", "spanishName":"Numero Interno","unique":"true"},
+								{"name":"office", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"responsible", "spanishName":"Colaborador", "refType":"responsibles", "displayField":"code"},	
+								{"name":"consumptionDate", "type":"Date", "spanishName":"Fecha Consumo"},
+								{"name":"numberHours", "type":"Integer", "spanishName":"Horas"},
+								{"name":"numberMinutes", "type":"Integer", "spanishName":"Minutos"},
+								{"name":"typeHour", "type":"Integer", "spanishName":"Tipo Hora"},
+								{"name":"hourValue", "type":"Double", "spanishName":"Valor Hora"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"actualExpenditureMaterialsWorkOrders",
+				   "spanishName":"Gasto Real Materiales OT",
+				   "fields":[
+							 	{"name":"yearOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"numberOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"internalNumber", "type":"Integer", "spanishName":"Numero Interno","unique":"true"},
+								{"name":"part", "spanishName":"Repuesto", "refType":"parts", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"consumptionDate", "type":"Date", "spanishName":"Fecha Consumo"},
+								{"name":"typeWork", "type":"Integer", "spanishName":"Tipo Trabajo"},
+								{"name":"numberUnits", "type":"Double", "spanishName":"Unidades"},
+								{"name":"unitValue", "type":"Double", "spanishName":"Valor Unitario"},
+								{"name":"processed", "type":"Boolean", "defaultValue":"false", "spanishName":"Procesado"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}						 
+								
+							 ]
+		},
+		{
+				   "name":"actualExpenditureOtherCostConceptsWorkOrders",
+				   "spanishName":"Gasto Real Otros Conceptos Costos OT",
+				   "fields":[
+							 	{"name":"yearOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"numberOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"internalNumber", "type":"Integer", "spanishName":"Numero Interno","unique":"true"},
+								{"name":"concept", "spanishName":"Concepto", "refType":"otherCostConcepts", "displayField":"name"},
+								{"name":"consumptionDate", "type":"Date", "spanishName":"Fecha Consumo"},
+								{"name":"value", "type":"Double", "spanishName":"Valor"},
+								{"name":"additionalInformation", "type":"String","length":"60", "spanishName":"InformaciÃ³n Adicional"},
+								{"name":"unity", "spanishName":"Unidad", "refType":"unitsOfMeasure", "displayField":"name"},
+								{"name":"numberUnits", "type":"Double", "spanishName":"Cantidad"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"budgetLaborWorkOrders",
+				   "spanishName":"Presupuesto Mano Obra OT",
+				   "fields":[
+							 	{"name":"yearOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"numberOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"office", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"numberHours", "type":"Integer", "spanishName":"Horas"},
+								{"name":"numberMinutes", "type":"Integer", "spanishName":"Minutos"},
+								{"name":"numberPeople", "type":"Integer", "spanishName":"Personas"},
+								{"name":"hourValue", "type":"Double", "spanishName":"Valor Hora"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"budgetMaterialsWorkOrders",
+				   "spanishName":"Presupuesto Materiales OT",
+				   "fields":[
+							 	{"name":"yearOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"numberOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"part", "spanishName":"Repuesto", "refType":"parts", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"typeWork", "type":"Integer", "spanishName":"Tipo Trabajo"},
+								{"name":"numberUnits", "type":"Double", "spanishName":"Unidades"},
+								{"name":"unitValue", "type":"Double", "spanishName":"Valor Unitario"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"budgetOtherCostConceptsWorkOrders",
+				   "spanishName":"Presupuesto Otros Conceptos Costos OT",
+				   "fields":[
+							 	{"name":"yearOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"numberOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"concept", "spanishName":"Concepto", "refType":"otherCostConcepts", "displayField":"name"},
+								{"name":"value", "type":"Double", "spanishName":"Valor"},
+								{"name":"numberUnits", "type":"Double", "spanishName":""},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"lastGeneratedWorkOrders",
+				   "spanishName":"Ultima Generada OT",
+				   "fields":[
+							 	{"name":"company", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"yearOrder", "type":"Integer", "spanishName":"","unique":"true"},
+								{"name":"numberOrder", "type":"Integer", "spanishName":"","unique":"true"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"maintenanceHistory",
+				   "spanishName":"Historia De Mantenimiento",
+				   "fields":[
+								{"name":"yearHistoricalOrder", "type":"Integer", "spanishName":"AÃ±o OT","unique":"true"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"laborMaintenanceHistory",
+				   "spanishName":"Mano Obra HI",
+				   "fields":[
+							 	{"name":"yearHistoricalOrder", "type":"Integer", "spanishName":"AÃ±o OT","unique":"true"},
+								{"name":"historicalOrderNumber", "type":"Integer", "spanishName":"Numero OT","unique":"true"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"internalNumber", "type":"Integer", "spanishName":"Numero Interno","unique":"true"},
+								{"name":"office", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"responsible", "spanishName":"Colaborador", "refType":"responsibles", "displayField":"code"},	
+								{"name":"consumptionDate", "type":"Date", "spanishName":"Fecha Consumo"},
+								{"name":"numberHours", "type":"Integer", "spanishName":"Horas"},
+								{"name":"numberMinutes", "type":"Integer", "spanishName":"Minutos"},
+								{"name":"typeHour", "type":"Integer", "spanishName":"Tipo Hora"},
+								{"name":"hourValue", "type":"Double", "spanishName":"Valor Hora"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"materialsMaintenanceHistoryI",
+				   "spanishName":"Materiales HI",
+				   "fields":[
+							 	{"name":"yearHistoricalOrder", "type":"Integer", "spanishName":"AÃ±o OT","unique":"true"},
+								{"name":"historicalOrderNumber", "type":"Integer", "spanishName":"Numero OT","unique":"true"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"internalNumber", "type":"Integer", "spanishName":"Numero Interno","unique":"true"},
+								{"name":"part", "spanishName":"Repuesto", "refType":"parts", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"consumptionDate", "type":"Date", "spanishName":"Fecha Consumo"},
+								{"name":"typeWork", "type":"Integer", "spanishName":"Tipo Trabajo"},
+								{"name":"numberUnits", "type":"Double", "spanishName":"Unidades"},
+								{"name":"unitValue", "type":"Double", "spanishName":"Valor Unitario"},
+								{"name":"processed", "type":"Boolean", "defaultValue":"false", "spanishName":"Procesado"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}		
+							 ]
+		},
+		{
+				   "name":"otherCostConceptsMaintenanceHistory",
+				   "spanishName":"Otros Conceptos Costos HI",
+				   "fields":[
+							 	{"name":"yearHistoricalOrder", "type":"Integer", "spanishName":"AÃ±o OT","unique":"true"},
+								{"name":"historicalOrderNumber", "type":"Integer", "spanishName":"Numero OT","unique":"true"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"internalNumber", "type":"Integer", "spanishName":"Numero Interno","unique":"true"},
+								{"name":"concept", "spanishName":"Concepto", "refType":"otherCostConcepts", "displayField":"name"},
+								{"name":"consumptionDate", "type":"Date", "spanishName":"Fecha Consumo"},
+								{"name":"value", "type":"Double", "spanishName":"Valor"},
+								{"name":"additionalInformation", "type":"String","length":"60", "spanishName":"InformaciÃ³n Adicional"},
+								{"name":"unity", "spanishName":"Unidad", "refType":"unitsOfMeasure", "displayField":"name"},
+								{"name":"numberUnits", "type":"Double", "spanishName":"Cantidad"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							 ]
+		},
+		{
+				   "name":"serviceRequestsMaintenanceHistory",
+				   "spanishName":"Solicitudes Servicio HI",
+				   "fields":[
+								{"name":"yearHistoricalOrder", "type":"Integer", "spanishName":"AÃ±o OT","unique":"true"},
+								{"name":"historicalOrderNumber", "type":"Integer", "spanishName":"Numero OT","unique":"true"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"requestNumber", "type":"Integer", "spanishName":"Numero Solicitud"},
+								{"name":"company", "type":"Integer", "spanishName":"CompaÃ±Ã­a"},
+								{"name":"loguin", "type":"String", "length":"80", "spanishName":""},
+								{"name":"fixedAssetDescription", "type":"String", "length":"80", "spanishName":"DescripciÃ³n Equipo"},
+								{"name":"deliveryDeadline", "type":"Date", "spanishName":"Fecha Limite Entrega"},
+								{"name":"allocationDate", "type":"Date", "spanishName":"Fecha GeneraciÃ³n"},
+								{"name":"yearGeneratedOrder", "type":"Integer", "spanishName":"AÃ±o OT","unique":"true"},
+								{"name":"orderNumberGenerated", "type":"Integer", "spanishName":"Numero OT","unique":"true"},
+								{"name":"valueLabor", "type":"Integer", "spanishName":"Valor Mano Obra"},
+								{"name":"valueMaterials", "type":"Integer", "spanishName":"Valor Materiales"},
+								{"name":"workStartDate", "type":"Date", "spanishName":"Fecha Inicio Trabajos"},
+								{"name":"applicantEmail", "type":"String", "length":"80", "spanishName":"Email Solicitante"},
+								{"name":"source", "type":"Date", "spanishName":"Fuente"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							]
+		},
+		{
+				   "name":"stoppagesMaintenanceHistory",
+				   "spanishName":"Paros HI",
+				   "fields":[
+								{"name":"yearHistoricalOrder", "type":"Integer", "spanishName":"AÃ±o OT","unique":"true"},
+								{"name":"historicalOrderNumber", "type":"Integer", "spanishName":"Numero OT","unique":"true"},
+								{"name":"fixedAsset", "spanishName":"Activo Fijo", "refType":"fixedAssets", "displayField":"description",  "embeddedFields":["code"]},
+								{"name":"stoppagesMaintenance","type":"Integer", "spanishName":"Paro"},
+								{"name":"turn", "type":"Integer", "spanishName":"Turno"},
+								{"name":"module", "type":"String", "length":"8", "spanishName":"Modulo"},
+								{"name":"previousOperation", "type":"Integer", "spanishName":""},
+								{"name":"currentOperation", "type":"Integer", "spanishName":""},
+								{"name":"reference", "spanishName":"Referencia", "refType":"references", "displayField":"name"},
+								{"name":"restriction", "type":"String", "length":"8", "spanishName":"RestricciÃ³n"},
+								{"name":"office", "spanishName":"Oficio", "refType":"offices", "displayField":"name"},
+								{"name":"collaborator", "spanishName":"Colaborador", "refType":"thirdParty", "displayField":"name",  "embeddedFields":["code"]},
+								{"name":"yearGeneratedOrder", "type":"Integer", "spanishName":"AÃ±o OT","unique":"true"},
+								{"name":"orderNumberGenerated", "type":"Integer", "spanishName":"Numero OT","unique":"true"},
+					   		   {"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+							]
+		}
+		
+		
+	]
+}
