@@ -170,7 +170,6 @@
                                 {
                                     "name": "company",
                                     "spanishName": "Compañía",
-                                    "type": "Integer",
                                     "refType": "company",
                                     "displayField": "companyName"
                                 },
@@ -641,7 +640,7 @@
                             ]
                 },
                 {
-                    "name": "otherconcepts",
+                    "name": "otherConcepts",
                     "spanishName": "Otros Conceptos",
                     "fields":
                             [
@@ -847,7 +846,6 @@
                                 {
                                     "name": "company",
                                     "spanishName": "Compañía",
-                                    "type": "Integer",
                                     "refType": "company",
                                     "displayField": "companyName"
                                 },
@@ -1030,7 +1028,7 @@
                                     "name": "responsible",
                                     "spanishName": "Responsable",
                                     "refType": "responsible",
-                                    "displayField": "stateResponsible"
+                                    "displayField": "third"
                                 },
                                 {
                                     "name": "stateAuthorizerCostCenter",
@@ -1365,9 +1363,9 @@
                                 },
                                 {
                                     "name": "responsible",
-                                    "spanishName": "responsible",
-                                    "refType": "responsible",
-                                    "displayField": "stateResponsible"
+                                    "spanishName": "Responsable",
+                                    "refType": "responsibleCenter",
+                                    "displayField": "nameResponsibleCenter"
                                 },
                                 {
                                     "name": "costCenter",
