@@ -720,6 +720,18 @@
                                     "type": "String",
                                     "length": "50"
                                 },
+								{
+                                    "name": "subCostCentersCustomers",
+                                    "spanishName": "Sub Centros Costo Clientes",
+                                    "type": "String",
+                                    "length": "40"
+                                },
+                                {
+                                    "name": "subDescription",
+                                    "spanishName": "Sub Descripción",
+                                    "type": "String",
+                                    "length": "50"
+                                },
                                 {
                                     "name": "contact",
                                     "spanishName": "Contacto",
@@ -1364,8 +1376,8 @@
                                 {
                                     "name": "responsible",
                                     "spanishName": "Responsable",
-                                    "refType": "responsibleCenter",
-                                    "displayField": "nameResponsibleCenter"
+                                    "refType": "responsible",
+                                    "displayField": "third"
                                 },
                                 {
                                     "name": "costCenter",
