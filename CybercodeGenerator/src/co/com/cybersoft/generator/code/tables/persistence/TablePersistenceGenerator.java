@@ -156,12 +156,22 @@ public class TablePersistenceGenerator {
 							body+="@Column(unique=true,name=\"f_"+field.getName()+"\")\n";
 						}
 						else{
-							body+="@Column(unique=true)\n";
+							String alias="";
+							if (field.getName().length()>CodeUtils.maxColumnSize)
+								alias=",name=\""+field.getName().substring(0, CodeUtils.maxColumnSize)+"\"";
+							body+="@Column(unique=true"+alias+")\n";
 						}
 					}
 					else{
 						if (CodeUtils.reservedSQLWords.contains(field.getName()))
 							body+="@Column(name=\"f_"+field.getName()+"\")\n";
+						else{
+							if (field.getName().length()>CodeUtils.maxColumnSize){
+								String alias="";
+								alias="name=\""+field.getName().substring(0, CodeUtils.maxColumnSize)+"\"";
+								body+="@Column("+alias+")\n";
+							}
+						}
 					}
 				}
 				

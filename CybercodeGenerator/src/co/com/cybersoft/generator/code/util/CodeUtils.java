@@ -28,6 +28,8 @@ public class CodeUtils {
 	
 	public static List<Table> allTables;
 	
+	public static int maxColumnSize=30;
+	
 	public static String getReferenceChain(Cybertables cybertables, Table table, Field field){
 		List<Table> tables = allTables;
 		
@@ -79,7 +81,7 @@ public class CodeUtils {
 			return "";
 	}
 
-	public final static List<String> reservedSQLWords=Arrays.asList("date");
+	public final static List<String> reservedSQLWords=Arrays.asList("date","comment","language");
 
 	public static String getTableModule(String tableName){
 		for (Table table : allTables) {
