@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.beans.BeanUtils;
 import co.com.cybersoft.purchase.tables.persistence.domain.ExchangeRate;
+import co.com.cybersoft.util.EmbeddedField;
+import java.lang.reflect.Method;
 import co.com.cybersoft.purchase.tables.core.domain.CurrencyDetails;
 
 
@@ -144,11 +146,21 @@ public class ExchangeRateDetails {
 	}
 
 	
-	public ExchangeRateDetails toExchangeRateDetails(ExchangeRate entity){
+	public ExchangeRateDetails toExchangeRateDetails(ExchangeRate entity, EmbeddedField... fields){
 		BeanUtils.copyProperties(entity, this);
-		this.localCurrency=entity.getLocalCurrency().getCode().getCurrency()+"-"+entity.getLocalCurrency().getCurrency();
+		String _embedded="";
+		for (EmbeddedField embeddedField : fields) {
+			try {
+				Method _method = ExchangeRateDetails.class.getMethod("get"+embeddedField.getName());
+				String _invoke = (String) _method.invoke(this);
+				_embedded+=" - "+_invoke;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		this.localCurrency=entity.getLocalCurrency().getCode().getCurrency()+" - "+entity.getLocalCurrency().getCurrency()+_embedded;
 		this.localCurrencyId=entity.getLocalCurrency().getId();
-		this.foreignCurrency=entity.getForeignCurrency().getCode().getCurrency()+"-"+entity.getForeignCurrency().getCurrency();
+		this.foreignCurrency=entity.getForeignCurrency().getCode().getCurrency()+" - "+entity.getForeignCurrency().getCurrency()+_embedded;
 		this.foreignCurrencyId=entity.getForeignCurrency().getId();
 
 		return this;

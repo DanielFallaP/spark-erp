@@ -118,6 +118,8 @@ public class CyberUtils {
 	public static Map<String,String> userSessions=new HashMap<String,String>();
 	
 	public static Map<Long,Company> userCompany=new HashMap<Long,Company>();
+
+	public static String companyIdField="_company";
 	
 	public static String getOperator(String value){
 		for (int i = 0; i < operators.length; i++) {

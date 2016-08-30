@@ -128,8 +128,7 @@ public class ContinentCustomRepoImpl implements ContinentCustomRepo {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		if (filter.getContinent()!=null && !filter.getContinent().equals(""))queryString+=" AND LOWER(p.continent) LIKE LOWER('"+filter.getContinent()+"')";
 
-		if (filter.get_company()!=null && !filter.get_company().equals(""))queryString+=" AND p._company.id="+filter.get_company();
-		
+	
 		if (filter.getDateOfCreation()!=null && !filter.getDateOfCreation().equals(""))queryString+=" AND p.dateOfCreation "+CyberUtils.getOperator(filter.getDateOfCreation())+" :dateOfCreation"+(index+offset)+" ";
 		if (filter.getDateOfModification()!=null && !filter.getDateOfModification().equals(""))queryString+=" AND p.dateOfModification "+CyberUtils.getOperator(filter.getDateOfModification())+" :dateOfModification"+(index+offset);
 		if (filter.getUserName()!=null && !filter.getUserName().equals(""))queryString+=" AND LOWER(p.userName) LIKE LOWER('"+filter.getUserName()+"')";

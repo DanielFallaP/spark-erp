@@ -39,7 +39,7 @@ public class SQLUserDetailsService implements UserDetailsService{
 				if (!resultList.isEmpty()){
 					
 					Users user = (Users) resultList.get(0);
-					org.springframework.security.core.userdetails.User userDetail = new org.springframework.security.core.userdetails.User(user.getLogin(),user.getPassword(),true,true,true,true,getAuthorities("ROLE_"+user.getRole().toUpperCase(),user.getCompany()));
+					org.springframework.security.core.userdetails.User userDetail = new org.springframework.security.core.userdetails.User(user.getLogin(),user.getPassword(),true,true,true,true,getAuthorities("ROLE_"+user.getRole().toUpperCase(),user));
 					
 					//Session id creation for the user
 					CyberUtils.userSessions.put(userName, UUID.randomUUID().toString());
@@ -56,9 +56,9 @@ public class SQLUserDetailsService implements UserDetailsService{
 			return null;
 	}
 	
-	public List<GrantedAuthority> getAuthorities(String role, Company company){
+	public List<GrantedAuthority> getAuthorities(String role, Users user){
 		ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SparkGrantedAuthority(role, company));
+		authorities.add(new SparkGrantedAuthority(role, user));
 		return authorities;
 	}
 

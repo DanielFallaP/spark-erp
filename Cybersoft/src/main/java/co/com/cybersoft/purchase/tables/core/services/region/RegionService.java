@@ -11,7 +11,7 @@ import co.com.cybersoft.util.EmbeddedField;
 
 /**
  * 
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public interface RegionService {
@@ -32,4 +32,7 @@ public interface RegionService {
 	RegionPageEvent requestByContainingRegion(String region) throws Exception;
 	
 	RegionPageEvent requestRegionFilterPage(RequestRegionPageEvent event) throws Exception;
+
+	RegionPageEvent requestRegionFilter(RequestRegionPageEvent event) throws Exception;
+	
 }

@@ -82,6 +82,7 @@ public class ExchangeRateSearchController {
 		model.addAttribute("_direction", direction);
 		model.addAttribute("_totalCount", page.getTotalElements());
 		model.addAttribute("ffilterAsText", "All");
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		return "/purchase/exchangeRate/searchExchangeRate";
 	}
@@ -134,6 +135,7 @@ public class ExchangeRateSearchController {
 		model.addAttribute("_direction", direction);
 		model.addAttribute("_totalCount", details.getTotalCount());
 		model.addAttribute("ffilterAsText", filter.getFfilterAsText());
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		if (hasActions(filter)){
 			if (filter.getAaaaction()!=null && filter.getAaaaction()!="" && filter.getAaaaction().equals("Transaction A"))technicalActionsAPI.transactionA(filter);

@@ -11,10 +11,12 @@ import co.com.cybersoft.purchase.tables.web.domain.region.RegionFilterInfo;
 
 /**
  * 
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public interface RegionCustomRepo {
+
+	Long getTotalCount() throws Exception;
 
 	List<Region> findByContainingRegion(String substring);
 
@@ -24,5 +26,7 @@ public interface RegionCustomRepo {
 
 	
 	Page<Region> findAll(Pageable pageable, RegionFilterInfo filter)throws Exception;
+
+	List<Region> findAllNoPage(Pageable pageable, RegionFilterInfo filter)throws Exception;
 	
 }

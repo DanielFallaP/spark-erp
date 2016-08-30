@@ -10,7 +10,7 @@ import co.com.cybersoft.util.EmbeddedField;
 
 /**
  * 
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public interface RegionPersistenceService {
@@ -23,6 +23,7 @@ public interface RegionPersistenceService {
 	
 	RegionDetailsEvent modifyRegion(RegionModificationEvent event) throws Exception;
 	RegionPageEvent requestRegionFilterPage(RequestRegionPageEvent event) throws Exception;
+	RegionPageEvent requestRegionFilter(RequestRegionPageEvent event) throws Exception;
 	
 	RegionPageEvent requestAllByContinent(EmbeddedField... fields) throws Exception;
 	RegionPageEvent requestAllByRegion(EmbeddedField... fields) throws Exception;

@@ -16,8 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 
-
-import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
 import co.com.cybersoft.purchase.tables.core.domain.ContinentDetails;
 
 /**
@@ -36,19 +34,6 @@ public class Continent {
 	private String continent;
 
 	private Boolean active;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="COMPANY_ID" , nullable=true)
-	private Company _company;
-	
-	
-
-	public Company get_company() {
-		return _company;
-	}
-	public void set_company(Company _company) {
-		this._company = _company;
-	}
 
 
 	private Date dateOfModification;
@@ -112,10 +97,8 @@ public class Continent {
 	
 	public Continent fromContinentDetails(ContinentDetails details){
 		BeanUtils.copyProperties(details, this);
+
 		
-		Company _company = new Company();
-		_company.setId(details.get_companyId());
-		this._company=_company;
 		return this;
 	}
 

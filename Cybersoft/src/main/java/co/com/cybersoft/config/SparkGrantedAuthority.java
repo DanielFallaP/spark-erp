@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
 
 import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
+import co.com.cybersoft.purchase.tables.persistence.domain.Users;
 
 
 
@@ -14,22 +15,21 @@ public class SparkGrantedAuthority implements GrantedAuthority{
 	 */
 	private static final long serialVersionUID = -5634035129804693325L;
 	private final String role;
-	private final Company company;
+	private final Users user;
 
-    public SparkGrantedAuthority(String role, Company company) {
+    public SparkGrantedAuthority(String role, Users user) {
         Assert.hasText(role, "A granted authority textual representation is required");
         this.role = role;
-        this.company = company;
+        this.user = user;
     }
 
     public String getAuthority() {
         return role;
     }
     
-    public Company getCompany() {
-		return company;
-	}
 
+    
+    
 	public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -42,7 +42,11 @@ public class SparkGrantedAuthority implements GrantedAuthority{
         return false;
     }
 
-    public int hashCode() {
+    public Users getUser() {
+		return user;
+	}
+
+	public int hashCode() {
         return this.role.hashCode();
     }
 

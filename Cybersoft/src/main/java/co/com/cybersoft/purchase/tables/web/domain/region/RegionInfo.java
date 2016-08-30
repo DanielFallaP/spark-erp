@@ -34,25 +34,20 @@ public class RegionInfo implements Serializable{
 	
 	private String createdBy;
 	
-//	@NotEmpty
-	
+	private Long continentId;
+
+
 	private String continent;
 
-	private Long continentId;
-	
+
 	private List<ContinentDetails> continentList;
 	@NotEmpty
 	private String region;
 
 
 	private Boolean active;
-	
-	public Long getContinentId() {
-		return continentId;
-	}
-	public void setContinentId(Long continentId) {
-		this.continentId = continentId;
-	}
+
+
 	public List<ContinentDetails> getContinentList() {
 		return continentList;
 	}
@@ -67,6 +62,14 @@ public class RegionInfo implements Serializable{
 		
 	public void setContinent(String continent) {
 		this.continent = continent;	
+	}
+
+	public Long getContinentId() {
+		return continentId;	
+	}
+		
+	public void setContinentId(Long continentId) {
+		this.continentId = continentId;	
 	}
 
 	public String getRegion() {
@@ -116,6 +119,7 @@ public class RegionInfo implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
 	public String getCalledFrom() {
 		return calledFrom;
 	}

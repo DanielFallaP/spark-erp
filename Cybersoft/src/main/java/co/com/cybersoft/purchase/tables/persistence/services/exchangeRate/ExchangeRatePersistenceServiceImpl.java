@@ -96,7 +96,7 @@ public class ExchangeRatePersistenceServiceImpl implements ExchangeRatePersisten
 			List<ExchangeRate> all = exchangeRateCustomRepo.findAllActiveByLocalCurrency(fields);
 			List<ExchangeRateDetails> list = new ArrayList<ExchangeRateDetails>();
 			for (ExchangeRate exchangeRate : all) {
-				list.add(new ExchangeRateDetails().toExchangeRateDetails(exchangeRate));
+				list.add(new ExchangeRateDetails().toExchangeRateDetails(exchangeRate, fields));
 			}
 			return new ExchangeRatePageEvent(list);
 		}public ExchangeRatePageEvent requestAllByCodeName(String code) throws Exception {
@@ -110,7 +110,7 @@ public class ExchangeRatePersistenceServiceImpl implements ExchangeRatePersisten
 			List<ExchangeRate> all = exchangeRateCustomRepo.findAllActiveByForeignCurrency(fields);
 			List<ExchangeRateDetails> list = new ArrayList<ExchangeRateDetails>();
 			for (ExchangeRate exchangeRate : all) {
-				list.add(new ExchangeRateDetails().toExchangeRateDetails(exchangeRate));
+				list.add(new ExchangeRateDetails().toExchangeRateDetails(exchangeRate, fields));
 			}
 			return new ExchangeRatePageEvent(list);
 		}

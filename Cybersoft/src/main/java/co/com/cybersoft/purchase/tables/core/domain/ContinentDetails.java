@@ -19,18 +19,8 @@ public class ContinentDetails {
 
 	private Boolean active;
 
-	private Long _companyId;
-	
 
-	public Long get_companyId() {
-		return _companyId;
-	}
-
-	public void set_companyId(Long _companyId) {
-		this._companyId = _companyId;
-	}
-
-
+		
 	private Date dateOfModification;
 	
 	private Long id;
@@ -107,7 +97,6 @@ public class ContinentDetails {
 			}
 		}
 		this.continent=continent+_embedded;
-		this._companyId=entity.get_company().getId();
 
 		return this;
 	}

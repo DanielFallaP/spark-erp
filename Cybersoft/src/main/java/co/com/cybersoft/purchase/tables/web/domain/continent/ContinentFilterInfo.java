@@ -28,16 +28,7 @@ public class ContinentFilterInfo {
 	private Boolean changeSortingFieldDirection;
 
 	private String continent;
-	
-	private String _company;
-	
-	public String get_company() {
-		return _company;
-	}
 
-	public void set_company(String _company) {
-		this._company = _company;
-	}
 
 	public String getContinent() {
 		return continent;	

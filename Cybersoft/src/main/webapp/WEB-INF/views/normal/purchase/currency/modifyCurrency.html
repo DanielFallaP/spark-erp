@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.currencyModificationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	    
+	    <link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+    	<link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script th:src="@{/resources/js/bootstrap-tab.js}"></script>
+	    
+    	<script type="text/javascript">
+    	/* <![CDATA[ */
+    	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  $('#back a').trigger('click');
+	    	  }
+	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("code").focus();
+		   }
+
+		    
+		    
+		    
+		    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} ); 
+		    
+		 /* ]]> */
+	     </script>
+	     
+    
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${currencyInfo}" method="post">
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/purchase/currency/searchCurrency}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.currencyModificationTitle}"></h3>
+		        	<br/>
+		        	
+		        	<table>
+		        		<tr>
+		        			<td ><b th:text="#{label.currencyCode}+': '"></b></td>
+		        			<td>
+		        				<select th:if="${_loggedInUser.currencyUpdate}" id="code" onChange="codeSelectedRefresh()" th:field="*{codeId}"><option th:each="reference : ${currencyInfo.codeList}" th:value="${reference.id}" th:text="${reference.currency}"></option></select>
+	        					<select th:if="${_loggedInUser.currencyUpdate} != true" disabled="disabled" id="code" onChange="codeSelectedRefresh()" th:field="*{codeId}"><option th:each="reference : ${currencyInfo.codeList}" th:value="${reference.id}" th:text="${reference.currency}"></option></select>
+	        				</td>
+		        			<td th:if="${codeException}"><div class="alert alert-error" th:text="#{${codeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.currencyCurrency}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.currencyUpdate}" id="currency" name="currency" type="text" th:value="*{{currency}}" />
+	        						<input th:if="${_loggedInUser.currencyUpdate} != true" disabled="disabled" id="currency" name="currency" type="text" th:value="*{{currency}}" />
+	        					</td>
+		        				<td th:if="${currencyException}"><div class="alert alert-error" th:text="#{${currencyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.currencyActive}+': '"></b></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.currencyUpdate}" type="checkbox" th:field="*{active}" />
+	        		   					<input th:if="${_loggedInUser.currencyUpdate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+	        		   				</td>
+		        		</tr>
+
+		        	</table>
+		        	<table>
+		        		<tr>
+		        			<td>
+		        				<input th:if="${_loggedInUser.currencyUpdate}" type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div th:if='${currencyModificationException}' class="alert alert-error" th:text="#{label.currencyModificationError}">
+            </div>
+            <div th:if='${currencyValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

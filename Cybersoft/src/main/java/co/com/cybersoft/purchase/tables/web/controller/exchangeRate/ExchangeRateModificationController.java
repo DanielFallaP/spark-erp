@@ -87,9 +87,18 @@ public class ExchangeRateModificationController {
 			
 		ExchangeRateDetailsEvent requestExchangeRateDetails = exchangeRateService.requestExchangeRateDetails(new RequestExchangeRateDetailsEvent(id));
 		
-		CurrencyPageEvent allLocalCurrencyEvent = currencyService.requestAllByCode();
-		exchangeRateInfo.setLocalCurrencyList(allLocalCurrencyEvent.getCurrencyList());CurrencyPageEvent allForeignCurrencyEvent = currencyService.requestAllByCode();
+		EmbeddedField[] _additionalFieldsLocalCurrency=new EmbeddedField[1];
+		EmbeddedField _additionalFieldLocalCurrencyCurrency=new EmbeddedField("Currency", null);
+		_additionalFieldsLocalCurrency[0]=_additionalFieldLocalCurrencyCurrency;
+		EmbeddedField[] _additionalFieldsForeignCurrency=new EmbeddedField[1];
+		EmbeddedField _additionalFieldForeignCurrencyCurrency=new EmbeddedField("Currency", null);
+		_additionalFieldsForeignCurrency[0]=_additionalFieldForeignCurrencyCurrency;
+
+		CurrencyPageEvent allLocalCurrencyEvent = currencyService.requestAllByCode(_additionalFieldsLocalCurrency);
+		exchangeRateInfo.setLocalCurrencyList(allLocalCurrencyEvent.getCurrencyList());
+		CurrencyPageEvent allForeignCurrencyEvent = currencyService.requestAllByCode(_additionalFieldsForeignCurrency);
 		exchangeRateInfo.setForeignCurrencyList(allForeignCurrencyEvent.getCurrencyList());
+
 		
 		BeanUtils.copyProperties(requestExchangeRateDetails.getExchangeRateDetails(), exchangeRateInfo);
 		request.getSession().setAttribute("exchangeRateInfo", exchangeRateInfo);

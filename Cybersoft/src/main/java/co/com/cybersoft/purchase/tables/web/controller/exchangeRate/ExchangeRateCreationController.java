@@ -78,12 +78,18 @@ public class ExchangeRateCreationController {
 		exchangeRateInfo=new ExchangeRateInfo();
 		exchangeRateInfo.setCreated(true);
 		exchangeRateInfo.setCalledFrom(calledFrom);
-		EmbeddedField[] _embeddedFields=new EmbeddedField[1];
-		EmbeddedField _embeddedField=new EmbeddedField("Currency", null);
-		_embeddedFields[0]=_embeddedField;
-		CurrencyPageEvent allLocalCurrencyEvent = currencyService.requestAllByCode(_embeddedFields);
-		exchangeRateInfo.setLocalCurrencyList(allLocalCurrencyEvent.getCurrencyList());CurrencyPageEvent allForeignCurrencyEvent = currencyService.requestAllByCode();
+		EmbeddedField[] _additionalFieldsLocalCurrency=new EmbeddedField[1];
+		EmbeddedField _additionalFieldLocalCurrencyCurrency=new EmbeddedField("Currency", null);
+		_additionalFieldsLocalCurrency[0]=_additionalFieldLocalCurrencyCurrency;
+		EmbeddedField[] _additionalFieldsForeignCurrency=new EmbeddedField[1];
+		EmbeddedField _additionalFieldForeignCurrencyCurrency=new EmbeddedField("Currency", null);
+		_additionalFieldsForeignCurrency[0]=_additionalFieldForeignCurrencyCurrency;
+
+		CurrencyPageEvent allLocalCurrencyEvent = currencyService.requestAllByCode(_additionalFieldsLocalCurrency);
+		exchangeRateInfo.setLocalCurrencyList(allLocalCurrencyEvent.getCurrencyList());
+		CurrencyPageEvent allForeignCurrencyEvent = currencyService.requestAllByCode(_additionalFieldsForeignCurrency);
 		exchangeRateInfo.setForeignCurrencyList(allForeignCurrencyEvent.getCurrencyList());
+
 		
 		exchangeRateInfo.setDate(new Date());
 		exchangeRateInfo.setActive(true);
@@ -105,13 +111,19 @@ public class ExchangeRateCreationController {
 		
 		String value = request.getParameter("value");
 		String field = request.getParameter("field");
-	
-		EmbeddedField[] _embeddedFields=new EmbeddedField[1];
-		EmbeddedField _embeddedField=new EmbeddedField("Currency", null);
-		_embeddedFields[0]=_embeddedField;
-		CurrencyPageEvent allLocalCurrencyEvent = currencyService.requestAllByCode(_embeddedFields);
-		exchangeRateInfo.setLocalCurrencyList(allLocalCurrencyEvent.getCurrencyList());CurrencyPageEvent allForeignCurrencyEvent = currencyService.requestAllByCode();
+		
+		EmbeddedField[] _additionalFieldsLocalCurrency=new EmbeddedField[1];
+		EmbeddedField _additionalFieldLocalCurrencyCurrency=new EmbeddedField("Currency", null);
+		_additionalFieldsLocalCurrency[0]=_additionalFieldLocalCurrencyCurrency;
+		EmbeddedField[] _additionalFieldsForeignCurrency=new EmbeddedField[1];
+		EmbeddedField _additionalFieldForeignCurrencyCurrency=new EmbeddedField("Currency", null);
+		_additionalFieldsForeignCurrency[0]=_additionalFieldForeignCurrencyCurrency;
+
+		CurrencyPageEvent allLocalCurrencyEvent = currencyService.requestAllByCode(_additionalFieldsLocalCurrency);
+		exchangeRateInfo.setLocalCurrencyList(allLocalCurrencyEvent.getCurrencyList());
+		CurrencyPageEvent allForeignCurrencyEvent = currencyService.requestAllByCode(_additionalFieldsForeignCurrency);
 		exchangeRateInfo.setForeignCurrencyList(allForeignCurrencyEvent.getCurrencyList());
+
 		
 		
 		if (value!=null){

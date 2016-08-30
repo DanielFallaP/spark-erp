@@ -40,15 +40,13 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages={"co.com.cybersoft.purchase.tables.web.controller","co.com.cybersoft.purchase.tables.web.domain"})
+@ComponentScan(basePackages={"co.com.cybersoft.maintenance.tables.web.controller","co.com.cybersoft.maintenance.tables.web.domain","co.com.cybersoft.purchase.tables.web.controller","co.com.cybersoft.purchase.tables.web.domain","co.com.cybersoft.man.controller"})
 public class WebConfig extends WebMvcConfigurerAdapter{
 
-	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry){
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
 	
-	@Override
 	public void addInterceptors(InterceptorRegistry registry){
 		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
 		localeChangeInterceptor.setParamName("language");
@@ -68,7 +66,6 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	}
 	
 
-	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 		converters.add(new MappingJacksonHttpMessageConverter());
 	}
@@ -120,18 +117,16 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		return messageSource;
 	}
 	
-	@Override
 	public void addViewControllers(ViewControllerRegistry registry){
 		registry.addViewController("/home").setViewName("home");
 		registry.addViewController("/").setViewName("redirect:/home");
 		registry.addViewController("/settings").setViewName("settings");
-		registry.addViewController("/purchase").setViewName("purchase");registry.addViewController("/purchaseSettings").setViewName("purchaseSettings");registry.addViewController("/payroll").setViewName("payroll");registry.addViewController("/payrollSettings").setViewName("payrollSettings");registry.addViewController("/assets").setViewName("assets");registry.addViewController("/assetsSettings").setViewName("assetsSettings");
+		registry.addViewController("/maintenance").setViewName("maintenance");registry.addViewController("/maintenanceSettings").setViewName("maintenanceSettings");registry.addViewController("/purchaseSettings").setViewName("purchaseSettings");
 		registry.addViewController("/preferences").setViewName("language");
 		registry.addViewController("/login").setViewName("man/login");
 		registry.addViewController("/about").setViewName("man/about");
 	}
 	
-	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
 		PageableArgumentResolver resolver = new PageableArgumentResolver();
 		resolver.setFallbackPageable(new PageRequest(1, 10));

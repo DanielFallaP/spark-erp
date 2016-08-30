@@ -2,17 +2,21 @@ package co.com.cybersoft.purchase.tables.persistence.domain;
 
 import java.util.Date;
 
+import org.springframework.beans.BeanUtils;
+
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.transaction.annotation.Transactional;
+
+import co.com.cybersoft.purchase.tables.persistence.domain.Continent;
 
 import co.com.cybersoft.purchase.tables.core.domain.RegionDetails;
 
@@ -28,15 +32,16 @@ public class Region {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="CONTINENT_ID" , nullable=false)
+	private Continent continent;
+
 	@Column(unique=true)
 	private String region;
-	
+
 	private Boolean active;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="CONTINENT_ID", nullable=false)
-	private Continent continent;
-	
+
 	private Date dateOfModification;
 	
 	private Date dateOfCreation;
@@ -51,26 +56,21 @@ public class Region {
 	public void setDateOfModification(Date dateOfModification) {
 		this.dateOfModification = dateOfModification;
 	}
+	
 	public Date getDateOfCreation() {
 		return dateOfCreation;
 	}
 	public void setDateOfCreation(Date dateOfCreation) {
 		this.dateOfCreation = dateOfCreation;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	@Transactional
-	public Continent getContinent() {
-		return continent;
-	}
-	public void setContinent(Continent continent) {
-		this.continent = continent;
-	}
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -85,6 +85,13 @@ public class Region {
 		this.createdBy = createdBy;
 	}
 	
+	public Continent getContinent() {
+		return continent;	
+	}
+		
+	public void setContinent(Continent continent) {
+		this.continent = continent;	
+	}
 	public String getRegion() {
 		return region;	
 	}
@@ -103,9 +110,9 @@ public class Region {
 	
 	public Region fromRegionDetails(RegionDetails details){
 		BeanUtils.copyProperties(details, this);
-		Continent continent = new Continent();
-		continent.setId(details.getContinentId());
-		this.continent=continent;
+
+		Continent continent0=new Continent();continent0.setId(details.getContinentId());this.continent=continent0; 
+		
 		return this;
 	}
 

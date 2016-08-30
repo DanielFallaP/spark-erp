@@ -35,6 +35,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
+import co.com.cybersoft.util.EmbeddedField;
 import co.com.cybersoft.man.ExcelReportResponse;
 import co.com.cybersoft.purchase.tables.core.services.exchangeRate.ExchangeRateService;
 import co.com.cybersoft.purchase.tables.events.exchangeRate.ExchangeRatePageEvent;
@@ -186,8 +187,8 @@ public class ExchangeRateReportingServiceImpl implements ExchangeRateReportingSe
 			sheet.setColumnWidth(rownum, 15*256);
 			Row row = sheet.createRow(rownum);
 			Object details = detailsClass.newInstance();
-			Method toDetailsMethod=detailsClass.getDeclaredMethod("to"+toUpperCamelCase(_class.getSimpleName())+"Details", _class);
-			details=toDetailsMethod.invoke(details, next);
+			Method toDetailsMethod=detailsClass.getDeclaredMethod("to"+toUpperCamelCase(_class.getSimpleName())+"Details", _class, EmbeddedField[].class);
+			details=toDetailsMethod.invoke(details, next, new EmbeddedField[0]);
 			int k=0;
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];

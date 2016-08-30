@@ -3,8 +3,10 @@ package co.com.cybersoft.purchase.tables.core.domain;
 import java.util.Date;
 
 import org.springframework.beans.BeanUtils;
-
 import co.com.cybersoft.purchase.tables.persistence.domain.Region;
+import co.com.cybersoft.util.EmbeddedField;
+import java.lang.reflect.Method;
+import co.com.cybersoft.purchase.tables.core.domain.ContinentDetails;
 
 
 /**
@@ -14,13 +16,17 @@ import co.com.cybersoft.purchase.tables.persistence.domain.Region;
  */
 public class RegionDetails {
 	
+	private Long continentId;
+
+
 	private String continent;
 
-	private Long continentId;
 
 	private String region;
 
+
 	private Boolean active;
+
 
 		
 	private Date dateOfModification;
@@ -33,14 +39,6 @@ public class RegionDetails {
 	
 	private String createdBy;
 	
-	public Long getContinentId() {
-		return continentId;
-	}
-
-	public void setContinentId(Long continentId) {
-		this.continentId = continentId;
-	}
-	
 	public Long getId() {
 		return id;
 	}
@@ -48,7 +46,7 @@ public class RegionDetails {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public String getUserName() {
 		return userName;
 	}
@@ -78,6 +76,13 @@ public class RegionDetails {
 		this.createdBy = createdBy;
 	}
 	
+	public Long getContinentId() {
+		return continentId;	
+	}
+		
+	public void setContinentId(Long continentId) {
+		this.continentId = continentId;	
+	}
 	public String getContinent() {
 		return continent;	
 	}
@@ -101,9 +106,22 @@ public class RegionDetails {
 	}
 
 	
-	public RegionDetails toRegionDetails(Region entity){
+	public RegionDetails toRegionDetails(Region entity, EmbeddedField... fields){
 		BeanUtils.copyProperties(entity, this);
-		this.continent=entity.getContinent().getContinent();
+		String _embedded="";
+		for (EmbeddedField embeddedField : fields) {
+			try {
+				Method _method = RegionDetails.class.getMethod("get"+embeddedField.getName());
+				String _invoke = (String) _method.invoke(this);
+				_embedded+=" - "+_invoke;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		this.continent=entity.getContinent().getContinent()+_embedded;
+		this.continentId=entity.getContinent().getId();
+		this.region=region+_embedded;
+
 		return this;
 	}
 }

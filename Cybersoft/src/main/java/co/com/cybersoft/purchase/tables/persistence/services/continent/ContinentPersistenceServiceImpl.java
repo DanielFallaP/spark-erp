@@ -19,8 +19,6 @@ import co.com.cybersoft.purchase.tables.persistence.repository.continent.Contine
 //import co.com.cybersoft.man.services.security.SessionLogger;
 
 
-import co.com.cybersoft.purchase.tables.web.domain.continent.ContinentFilterInfo;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,11 +58,7 @@ public class ContinentPersistenceServiceImpl implements ContinentPersistenceServ
 	}*/
 
 	public ContinentPageEvent requestContinentPage(RequestContinentPageEvent event) throws Exception {
-		ContinentFilterInfo filter=new ContinentFilterInfo();
-		filter.set_company(event.getCompany().getId().toString());
-		
-		Page<Continent> continents = continentCustomRepo.findAll(event.getPageable(), filter);
-//		Page<Continent> continents = continentRepository.findAll(event.getPageable());
+		Page<Continent> continents = continentRepository.findAll(event.getPageable());
 		return new ContinentPageEvent(continents);
 	}
 

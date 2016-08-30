@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
-import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
 import co.com.cybersoft.purchase.tables.core.services.continent.ContinentService;
 import co.com.cybersoft.util.PageWrapper;
 import co.com.cybersoft.purchase.tables.events.continent.ContinentPageEvent;
@@ -63,9 +62,7 @@ public class ContinentSearchController {
 		PageRequest pageRequest=null;
 		if (field==null && request.getSession().getAttribute("continentField")==null){
 			pageRequest = new PageRequest(pageable.getPageNumber(),pageable.getPageSize(), Direction.DESC, "id");
-			RequestContinentPageEvent requestContinentPageEvent = new RequestContinentPageEvent(pageRequest);
-			requestContinentPageEvent.setCompany(((Company)request.getSession().getAttribute("_companyObject")));
-			details = continentService.requestContinentPage(requestContinentPageEvent);
+			details = continentService.requestContinentPage(new RequestContinentPageEvent(pageRequest));
 		}
 		else{
 			if (request.getSession().getAttribute("continentAscending")!=null){
@@ -73,9 +70,7 @@ public class ContinentSearchController {
 				direction=(Boolean) request.getSession().getAttribute("continentAscending");
 				pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("continentField"):field));
 			}
-			RequestContinentPageEvent requestContinentPageEvent = new RequestContinentPageEvent(pageRequest);
-			requestContinentPageEvent.setCompany(((Company)request.getSession().getAttribute("_companyObject")));
-			details = continentService.requestContinentPage(requestContinentPageEvent);
+			details = continentService.requestContinentPage(new RequestContinentPageEvent(pageRequest));
 		}
 		
 		PageWrapper<Continent> page=new PageWrapper<Continent>(details.getContinentPage(),"/purchase/continent/searchContinent");
@@ -119,15 +114,12 @@ public class ContinentSearchController {
 		if ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))&& request.getSession().getAttribute("continentField")==null){
 			pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), Direction.DESC,"id");
 			pageEvent = new RequestContinentPageEvent(pageRequest,filter);
-			pageEvent.setCompany(((Company)request.getSession().getAttribute("_companyObject")));
 		}
 		else {
 			if (request.getSession().getAttribute("continentAscending")!=null){
 				direction=(Boolean) request.getSession().getAttribute("continentAscending");
 				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))?request.getSession().getAttribute("continentField"):filter.getSelectedFilterField()));
-				pageEvent = new RequestContinentPageEvent(pageRequest,filter);			
-				pageEvent.setCompany(((Company)request.getSession().getAttribute("_companyObject")));
-			}
+				pageEvent = new RequestContinentPageEvent(pageRequest,filter);			}
 		}
 		
 		ContinentPageEvent details = continentService.requestContinentFilterPage(pageEvent);

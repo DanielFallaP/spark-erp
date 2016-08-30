@@ -1,14 +1,12 @@
 package co.com.cybersoft.purchase.tables.core.domain;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Date;
 
 import org.springframework.beans.BeanUtils;
-
 import co.com.cybersoft.purchase.tables.persistence.domain.Currency;
-import co.com.cybersoft.purchase.tables.core.domain.CurrencyCodeDetails;
 import co.com.cybersoft.util.EmbeddedField;
+import java.lang.reflect.Method;
+import co.com.cybersoft.purchase.tables.core.domain.CurrencyCodeDetails;
 
 
 /**
@@ -40,6 +38,18 @@ public class CurrencyDetails {
 	private Date dateOfCreation;
 	
 	private String createdBy;
+
+	
+	private Long _companyId;
+	
+
+	public Long get_companyId() {
+		return _companyId;
+	}
+
+	public void set_companyId(Long _companyId) {
+		this._companyId = _companyId;
+	}
 	
 	public Long getId() {
 		return id;
@@ -110,19 +120,20 @@ public class CurrencyDetails {
 	
 	public CurrencyDetails toCurrencyDetails(Currency entity, EmbeddedField... fields){
 		BeanUtils.copyProperties(entity, this);
-		String embedded="";
+		String _embedded="";
 		for (EmbeddedField embeddedField : fields) {
 			try {
-				Method method = CurrencyDetails.class.getMethod("get"+embeddedField.getName());
-				String invoke = (String) method.invoke(this);
-				embedded+="-"+invoke;
+				Method _method = CurrencyDetails.class.getMethod("get"+embeddedField.getName());
+				String _invoke = (String) _method.invoke(this);
+				_embedded+=" - "+_invoke;
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		this.code=entity.getCode().getCurrency()+embedded;
+		this.code=entity.getCode().getCurrency()+_embedded;
 		this.codeId=entity.getCode().getId();
+		this.currency=currency+_embedded;
+		this._companyId=entity.get_company().getId();
 
 		return this;
 	}

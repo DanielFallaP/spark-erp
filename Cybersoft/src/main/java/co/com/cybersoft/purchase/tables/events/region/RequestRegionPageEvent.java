@@ -5,7 +5,7 @@ import co.com.cybersoft.purchase.tables.web.domain.region.RegionFilterInfo;
 
 /**
  * Event class for Region
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 public class RequestRegionPageEvent {

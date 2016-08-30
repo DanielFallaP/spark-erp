@@ -1,8 +1,6 @@
 package co.com.cybersoft.purchase.tables.events.continent;
 
 import org.springframework.data.domain.Pageable;
-
-import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
 import co.com.cybersoft.purchase.tables.web.domain.continent.ContinentFilterInfo;
 
 /**
@@ -14,16 +12,7 @@ public class RequestContinentPageEvent {
 
 	private Pageable pageable;
 	private ContinentFilterInfo filter;
-	private Company company;
 	
-	public Company getCompany() {
-		return company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
-
 	public RequestContinentPageEvent(Pageable pageable, ContinentFilterInfo filter){
 		this.pageable=pageable;
 		this.filter=filter;

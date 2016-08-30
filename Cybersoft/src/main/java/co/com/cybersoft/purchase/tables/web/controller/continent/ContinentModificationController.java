@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -27,7 +26,6 @@ import org.springframework.validation.ObjectError;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
-import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
 import co.com.cybersoft.purchase.tables.core.domain.ContinentDetails;
 import co.com.cybersoft.purchase.tables.core.services.continent.ContinentService;
 import co.com.cybersoft.purchase.tables.events.continent.ContinentDetailsEvent;
@@ -62,7 +60,6 @@ public class ContinentModificationController {
 		ContinentDetails continentDetails = createContinentDetails(continentInfo);
 		continentDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		continentDetails.setDateOfModification(new Date());
-		continentDetails.set_companyId(((Company)request.getSession().getAttribute("_companyObject")).getId());
 		
 		request.getSession().setAttribute("continentInfo", continentInfo);
 		continentService.modifyContinent(new ContinentModificationEvent(continentDetails));

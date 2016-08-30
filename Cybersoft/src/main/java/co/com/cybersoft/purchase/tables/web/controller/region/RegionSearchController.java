@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,7 +25,7 @@ import co.com.cybersoft.purchase.tables.web.domain.region.RegionFilterInfo;
 
 /**
  * Search controller class for region
- * @author Cybersystems 2015. All rights reserved.
+ * @author Cybersystems 2016. All rights reserved.
  *
  */
 @Controller
@@ -38,9 +37,14 @@ public class RegionSearchController {
 	@Autowired
 	private RegionService regionService;
 	
-	@Transactional
+	
 	@RequestMapping(method=RequestMethod.GET)
 	public String search(Model model, Pageable pageable, String field, HttpServletRequest request) throws Exception{
+		RegionFilterInfo f=(RegionFilterInfo) request.getSession().getAttribute("regionFilter");
+		if (f!=null){
+			f.getRegionFilterList().clear();
+		}
+		
 		LOG.debug("Retrieving  region ");
 		RegionPageEvent details;
 		Boolean direction=null;
@@ -63,7 +67,7 @@ public class RegionSearchController {
 		else{
 			if (request.getSession().getAttribute("regionAscending")!=null){
 								
-				direction=(boolean) request.getSession().getAttribute("regionAscending");
+				direction=(Boolean) request.getSession().getAttribute("regionAscending");
 				pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("regionField"):field));
 			}
 			details = regionService.requestRegionPage(new RequestRegionPageEvent(pageRequest));
@@ -74,12 +78,24 @@ public class RegionSearchController {
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("regionField"));
 		model.addAttribute("_direction", direction);
+		model.addAttribute("_totalCount", page.getTotalElements());
+		model.addAttribute("ffilterAsText", "All");
+		
 		return "/purchase/region/searchRegion";
 	}
 	
-	@Transactional
+	private Boolean hasActions(RegionFilterInfo filter){
+		return false;
+	}
+	
 	@RequestMapping(method=RequestMethod.POST)
 	public String filter(Model model, String field, Pageable pageable, @ModelAttribute("regionFilterInfo")RegionFilterInfo filter, HttpServletRequest request) throws Exception{
+		RegionFilterInfo f=(RegionFilterInfo) request.getSession().getAttribute("regionFilter");
+		if (f!=null && f.getRegionFilterList().size()!=0)
+			filter.getRegionFilterList().addAll(f.getRegionFilterList());
+		if (filter.getAaddFilter())
+			filter.getRegionFilterList().add((RegionFilterInfo) (request.getSession().getAttribute("regionFilterCopy")!=null?request.getSession().getAttribute("regionFilterCopy"):new RegionFilterInfo()));
+		
 		Boolean direction=null;
 		if (filter.getSelectedFilterField()!=null && !filter.getSelectedFilterField().equals("")){
 			direction=(Boolean) request.getSession().getAttribute("regionAscending");
@@ -101,16 +117,28 @@ public class RegionSearchController {
 		}
 		else {
 			if (request.getSession().getAttribute("regionAscending")!=null){
-				direction=(boolean) request.getSession().getAttribute("regionAscending");
+				direction=(Boolean) request.getSession().getAttribute("regionAscending");
 				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))?request.getSession().getAttribute("regionField"):filter.getSelectedFilterField()));
 				pageEvent = new RequestRegionPageEvent(pageRequest,filter);			}
 		}
+		
 		RegionPageEvent details = regionService.requestRegionFilterPage(pageEvent);
 		PageWrapper<Region> page=new PageWrapper<Region>(details.getRegionPage(),"/purchase/region/searchRegion");
 		model.addAttribute("page", page);
 		model.addAttribute("list",page.getContent());
 		model.addAttribute("_field", request.getSession().getAttribute("regionField"));
 		model.addAttribute("_direction", direction);
+		model.addAttribute("_totalCount", details.getTotalCount());
+		model.addAttribute("ffilterAsText", filter.getFfilterAsText());
+		
+		if (hasActions(filter)){
+			filter.setAaaaction(null);
+	    }
+
+	    request.getSession().setAttribute("regionFilter", filter);
+    	request.getSession().setAttribute("regionFilterCopy", filter);
+    	filter.setAaddFilter(Boolean.FALSE);
+		
 		return "/purchase/region/searchRegion";
 	}
 	

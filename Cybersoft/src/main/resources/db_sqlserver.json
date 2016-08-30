@@ -1,7 +1,7 @@
 {
 	"address":"jdbc:sqlserver://local.winsoftware.com.co:3030;databaseName=AM",
 	"username":"AM4G",
-	"password":"AM2001AM05",
+	"password":"AM2016AM4G",
 	"driverClass":"com.microsoft.sqlserver.jdbc.SQLServerDriver",
 	"dialect":"org.hibernate.dialect.SQLServerDialect"
 }

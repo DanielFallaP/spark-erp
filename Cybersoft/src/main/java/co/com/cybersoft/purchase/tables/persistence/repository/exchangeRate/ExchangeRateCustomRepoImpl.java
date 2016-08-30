@@ -57,8 +57,8 @@ public class ExchangeRateCustomRepoImpl implements ExchangeRateCustomRepo {
 		int index=0;
 		List<ExchangeRateFilterInfo> unionFilters= new ArrayList<ExchangeRateFilterInfo>();
 		List<ExchangeRateFilterInfo> substractFilters= new ArrayList<ExchangeRateFilterInfo>();
-		
 		unionFilters.add(filters.get(0));
+		
 		for (ExchangeRateFilterInfo filter : filters) {
 			if (index!=0)
 				if (filter.getFffilterNature().equals(CyberUtils.filterSubstract))
@@ -84,7 +84,7 @@ public class ExchangeRateCustomRepoImpl implements ExchangeRateCustomRepo {
 			if (index==substractFilters.size())
 				queryString+=")";
 		}
-		
+
 		queryString+=")";
 		
 		if (pageable!=null){
@@ -133,7 +133,6 @@ public class ExchangeRateCustomRepoImpl implements ExchangeRateCustomRepo {
 			queryString="";
 		}
 		queryString+="1=1 ";
-//		(index!=0?" AND p.id NOT IN (select p from ExchangeRate p WHERE  ":"")+"1=1 ";
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		if (filter.getLocalCurrency()!=null && !filter.getLocalCurrency().equals(""))queryString+=" AND LOWER(p.localCurrency.code.currency) LIKE LOWER('"+filter.getLocalCurrency()+"')";
 		if (filter.getForeignCurrency()!=null && !filter.getForeignCurrency().equals(""))queryString+=" AND LOWER(p.foreignCurrency.code.currency) LIKE LOWER('"+filter.getForeignCurrency()+"')";
@@ -186,13 +185,12 @@ public class ExchangeRateCustomRepoImpl implements ExchangeRateCustomRepo {
 			ExchangeRateFilterInfo filt) throws Exception {
 		filt.getExchangeRateFilterList().add(filt);
 		List<ExchangeRateFilterInfo> filters = filt.getExchangeRateFilterList();
-		String queryString="SELECT p FROM ExchangeRate p WHERE (";
+		String queryString="SELECT p FROM ExchangeRate p WHERE (((";
 		int index=0;
-		
 		List<ExchangeRateFilterInfo> unionFilters= new ArrayList<ExchangeRateFilterInfo>();
 		List<ExchangeRateFilterInfo> substractFilters= new ArrayList<ExchangeRateFilterInfo>();
-		
 		unionFilters.add(filters.get(0));
+		
 		for (ExchangeRateFilterInfo filter : filters) {
 			if (index!=0)
 				if (filter.getFffilterNature().equals(CyberUtils.filterSubstract))
@@ -203,27 +201,23 @@ public class ExchangeRateCustomRepoImpl implements ExchangeRateCustomRepo {
 		}
 		
 		index=0;
-
 		for (ExchangeRateFilterInfo filter : unionFilters) {
-			if (index>0)
-				queryString=queryString.substring(0, queryString.length()-1);
 			queryString+=buildCriteriaQuery(filter, pageable, index, 0, CyberUtils.filterUnion);
-			if (index>0)
-				queryString+=")";
 			index++;
 		}
+		queryString+=")";
 		
+		int index2=index;
+		index=0;
 		queryString+=(substractFilters.size()>0?" AND p.id NOT IN (select p from ExchangeRate p WHERE (":"");
 		for (ExchangeRateFilterInfo filter : substractFilters) {
-			if (index>0)
-				queryString=queryString.substring(0, queryString.length()-1);
-			queryString+=buildCriteriaQuery(filter, pageable, index, 0,CyberUtils.filterSubstract);
-			if (index>0)
-				queryString+=")";
+			queryString+=buildCriteriaQuery(filter, pageable, index, index2, CyberUtils.filterSubstract);
 			index++;
+			if (index==substractFilters.size())
+				queryString+=")";
 		}
 		
-		queryString+="))";
+		queryString+=")";
 		
 		if (pageable!=null){
 			while (pageable.getSort().iterator().hasNext()){

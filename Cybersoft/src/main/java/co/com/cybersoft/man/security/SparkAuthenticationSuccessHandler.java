@@ -26,7 +26,7 @@ public class SparkAuthenticationSuccessHandler implements AuthenticationSuccessH
 	    	 Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		        for (GrantedAuthority grantedAuthority : authorities) {
 		            if (grantedAuthority instanceof SparkGrantedAuthority)
-		            	request.getSession().setAttribute("_companyObject", ((SparkGrantedAuthority)grantedAuthority).getCompany());
+		            	request.getSession().setAttribute("_loggedInUser", ((SparkGrantedAuthority)grantedAuthority).getUser());
 		        }
 	        handle(request, response, authentication);
 	        clearAuthenticationAttributes(request);

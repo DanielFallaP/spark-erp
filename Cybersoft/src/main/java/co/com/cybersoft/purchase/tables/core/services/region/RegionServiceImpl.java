@@ -24,7 +24,6 @@ public class RegionServiceImpl implements RegionService{
 	
 	/**
 	 */
-	@Override
 	public RegionDetailsEvent createRegion(CreateRegionEvent event ) throws Exception{
 		return regionPersistenceService.createRegion(event);
 	}
@@ -32,41 +31,38 @@ public class RegionServiceImpl implements RegionService{
 	/**
 	 * Returns all the rows of the page requested
 	 */
-	@Override
 	public RegionPageEvent requestRegionPage(RequestRegionPageEvent event) throws Exception{
 		return regionPersistenceService.requestRegionPage(event);
 	}
 
-	@Override
 	public RegionDetailsEvent requestRegionDetails(RequestRegionDetailsEvent event ) throws Exception{
 		return regionPersistenceService.requestRegionDetails(event);
 	}
 
-	@Override
 	public RegionDetailsEvent modifyRegion(RegionModificationEvent event) throws Exception {
 		return regionPersistenceService.modifyRegion(event);
 	}
 	
-	@Override
 	public RegionDetailsEvent requestOnlyRecord() throws Exception {
 		return regionPersistenceService.getOnlyRecord();
 	}
 	
-	@Override
 	public RegionPageEvent requestRegionFilterPage(RequestRegionPageEvent event) throws Exception {
 		return regionPersistenceService.requestRegionFilterPage(event);
 	}
+	
+	public RegionPageEvent requestRegionFilter(RequestRegionPageEvent event) throws Exception {
+		return regionPersistenceService.requestRegionFilter(event);
+	}
+	
 
-	@Override
 	public RegionPageEvent requestAllByContinent(EmbeddedField... fields) throws Exception {
 		return regionPersistenceService.requestAllByContinent(fields);
-	}@Override
-	public RegionPageEvent requestAllByRegion(EmbeddedField... fields) throws Exception {
+	}public RegionPageEvent requestAllByRegion(EmbeddedField... fields) throws Exception {
 		return regionPersistenceService.requestAllByRegion(fields);
 	}
 	
-	@Override
-			public RegionPageEvent requestByContainingRegion(String region) throws Exception {
+	public RegionPageEvent requestByContainingRegion(String region) throws Exception {
 				return regionPersistenceService.requestByContainingRegion(region);
 			}
 	
