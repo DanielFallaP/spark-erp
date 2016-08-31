@@ -4,11 +4,15 @@
 		 	"name":"users",
 		 	"spanishName":"Usuarios",
 		 	"fields":[
-		 		{"name":"login", "type":"String", "spanishName":""},
-		 		{"name":"password", "type":"String", "spanishName":""},
-		 		{"name":"role", "type":"String", "spanishName":""},
-		 		{"name":"company", "refType":"company", "displayField":"name"},
-		 		{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true"}
+		 		{"name":"login", "type":"String", "spanishName":"", "fieldGroup":"General"},
+		 		{"name":"password", "type":"String", "spanishName":"", "fieldGroup":"General"},
+		 		{"name":"role", "type":"String", "spanishName":"", "fieldGroup":"General"},
+		 		{"name":"company", "refType":"company", "displayField":"companyName", "fieldGroup":"General"},
+		 		{"name":"currencyRead", "type":"Boolean", "fieldGroup":"Infrastructure"},
+		 		{"name":"currencyCreate", "type":"Boolean", "fieldGroup":"Infrastructure"},
+		 		{"name":"currencyUpdate", "type":"Boolean", "fieldGroup":"Infrastructure"},
+		 		{"name":"currencyExport", "type":"Boolean", "fieldGroup":"Infrastructure"},
+		 		{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true", "fieldGroup":"General"}
 			]
 		 },	
 		 {  
