@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.personModificationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	    
+	    <link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+    	<link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+    	<script type="text/javascript">
+    	/* <![CDATA[ */
+    	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  $('#back a').trigger('click');
+	    	  }
+	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("code").focus();
+		   }
+
+		    $(function(){
+		    	  			$("#country").change(function(){
+		    	  				var e=document.getElementById("country");
+		    	  	 		   	var country=e.options[e.selectedIndex].value;
+		    	  	 		   	var path=window.location.pathname.split("/");
+		    	  	 		    var prefix="";
+		    	  	 		   	if (path[1].localeCompare("configuration")!=0){
+		    	  	 		   			prefix="/"+path[1];	
+		    	  	 		   	}
+		    	  	 		   	var url=prefix+"//person/retrievePopulatedPlace/retrieve?country="+country;
+		    	  	 		 $.ajax({
+		    		  	 		  url: url,
+		    		  	 		  beforeSend: function(xhr) {
+		    		  	            xhr.setRequestHeader("Accept", "application/json");
+		    		  	        }
+		    		  	 		 }).done(function(info){
+		    		  	 			var optionsAsString;
+		    		  	 			
+		    		  	 			optionsAsString = "";
+		    		  	 			var stateArray=info.stateList;
+		    		  	 					  	 			
+		    		  	 			if (stateArray!=null){
+		    		  	 				for(var i = 0; i < stateArray.length; i++) {
+		    		  	 			    optionsAsString += "<option value='" + stateArray[i].state + "'>" + stateArray[i].state + "</option>";
+		    		  	 				}
+		    		  	 				$( 'select[name="state"]' ).find('option').remove().end().append( optionsAsString );
+		    		  	 			}
+		    		  	 			else {
+		    		  	 				$( 'select[name="state"]' ).find('option').remove().end();
+		    		  	 			}
+		    		  	 			optionsAsString = "";
+		    		  	 			var populatedPlaceArray=info.populatedPlaceList;
+		    		  	 					  	 			
+		    		  	 			if (populatedPlaceArray!=null){
+		    		  	 				for(var i = 0; i < populatedPlaceArray.length; i++) {
+		    		  	 			    optionsAsString += "<option value='" + populatedPlaceArray[i].populatedPlace + "'>" + populatedPlaceArray[i].populatedPlace + "</option>";
+		    		  	 				}
+		    		  	 				$( 'select[name="populatedPlace"]' ).find('option').remove().end().append( optionsAsString );
+		    		  	 			}
+		    		  	 			else {
+		    		  	 				$( 'select[name="populatedPlace"]' ).find('option').remove().end();
+		    		  	 			}
+
+		    		  	 					  	 			
+		    		  	 		 });
+		    	  	 		  
+		    	  	 		  });
+		    			});
+		    $(function(){
+		    	  			$("#state").change(function(){
+		    	  				var e=document.getElementById("state");
+		    	  	 		   	var state=e.options[e.selectedIndex].value;
+		    	  	 		   	var path=window.location.pathname.split("/");
+		    	  	 		    var prefix="";
+		    	  	 		   	if (path[1].localeCompare("configuration")!=0){
+		    	  	 		   			prefix="/"+path[1];	
+		    	  	 		   	}
+		    	  	 		   	var url=prefix+"//person/retrievePopulatedPlace/retrieve?state="+state;
+		    	  	 		 $.ajax({
+		    		  	 		  url: url,
+		    		  	 		  beforeSend: function(xhr) {
+		    		  	            xhr.setRequestHeader("Accept", "application/json");
+		    		  	        }
+		    		  	 		 }).done(function(info){
+		    		  	 			var optionsAsString;
+		    		  	 			
+		    		  	 			optionsAsString = "";
+		    		  	 			var populatedPlaceArray=info.populatedPlaceList;
+		    		  	 					  	 			
+		    		  	 			if (populatedPlaceArray!=null){
+		    		  	 				for(var i = 0; i < populatedPlaceArray.length; i++) {
+		    		  	 			    optionsAsString += "<option value='" + populatedPlaceArray[i].populatedPlace + "'>" + populatedPlaceArray[i].populatedPlace + "</option>";
+		    		  	 				}
+		    		  	 				$( 'select[name="populatedPlace"]' ).find('option').remove().end().append( optionsAsString );
+		    		  	 			}
+		    		  	 			else {
+		    		  	 				$( 'select[name="populatedPlace"]' ).find('option').remove().end();
+		    		  	 			}
+
+		    		  	 					  	 			
+		    		  	 		 });
+		    	  	 		  
+		    	  	 		  });
+		    			});
+
+		    
+		    
+		    
+		    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} ); 
+		    
+		 /* ]]> */
+	     </script>
+	     
+    
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${personInfo}" method="post">
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/purchase/person/searchPerson}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.personModificationTitle}"></h3>
+		        	<br/>
+		        	<table>
+		        		<tr>
+		        				<td ><b th:text="#{label.personCode}+': '"></b></td>
+		        				<td><input id="code" name="code" type="text" th:value="*{{code}}" /></td>
+		        				<td th:if="${codeException}"><div class="alert alert-error" th:text="#{${codeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.personThirdParty}+': '"></b></td>
+		        				<td><input id="thirdParty" name="thirdParty" type="text" th:value="*{{thirdParty}}" /></td>
+		        				<td th:if="${thirdPartyException}"><div class="alert alert-error" th:text="#{${thirdPartyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.personIdentification}+': '"></b></td>
+		        				<td><input id="identification" name="identification" type="text" th:value="*{{identification}}" /></td>
+		        				<td th:if="${identificationException}"><div class="alert alert-error" th:text="#{${identificationValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.personSection}+': '"></b></td>
+		        			<td><select id="section" onChange="sectionSelectedRefresh()" th:field="*{sectionId}"><option th:each="reference : ${personInfo.sectionList}" th:value="${reference.id}" th:text="${reference.section}"></option></select></td>
+		        			<td th:if="${sectionException}"><div class="alert alert-error" th:text="#{${sectionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.personAddress}+': '"></b></td>
+		        				<td><input id="address" name="address" type="text" th:value="*{{address}}" /></td>
+		        				<td th:if="${addressException}"><div class="alert alert-error" th:text="#{${addressValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.personCountry}+': '"></b></td>
+		        			<td><select id="country" onChange="countrySelectedRefresh()" th:field="*{countryId}"><option th:each="reference : ${personInfo.countryList}" th:value="${reference.id}" th:text="${reference.country}"></option></select></td>
+		        			<td th:if="${countryException}"><div class="alert alert-error" th:text="#{${countryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.personState}+': '"></b></td>
+		        			<td><select id="state" onChange="stateSelectedRefresh()" th:field="*{stateId}"><option th:each="reference : ${personInfo.stateList}" th:value="${reference.id}" th:text="${reference.state}"></option></select></td>
+		        			<td th:if="${stateException}"><div class="alert alert-error" th:text="#{${stateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.personPopulatedPlace}+': '"></b></td>
+		        			<td><select id="populatedPlace" onChange="populatedPlaceSelectedRefresh()" th:field="*{populatedPlaceId}"><option th:each="reference : ${personInfo.populatedPlaceList}" th:value="${reference.id}" th:text="${reference.populatedPlace}"></option></select></td>
+		        			<td th:if="${populatedPlaceException}"><div class="alert alert-error" th:text="#{${populatedPlaceValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.personEmail}+': '"></b></td>
+		        				<td><input id="email" name="email" type="text" th:value="*{{email}}" /></td>
+		        				<td th:if="${emailException}"><div class="alert alert-error" th:text="#{${emailValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.personPhone1Number}+': '"></b></td>
+		        				<td><input id="phone1Number" name="phone1Number" type="text" th:value="*{{phone1Number}}" /></td>
+		        				<td th:if="${phone1NumberException}"><div class="alert alert-error" th:text="#{${phone1NumberValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.personPhone2Number}+': '"></b></td>
+		        				<td><input id="phone2Number" name="phone2Number" type="text" th:value="*{{phone2Number}}" /></td>
+		        				<td th:if="${phone2NumberException}"><div class="alert alert-error" th:text="#{${phone2NumberValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.personCellularNumber}+': '"></b></td>
+		        				<td><input id="cellularNumber" name="cellularNumber" type="text" th:value="*{{cellularNumber}}" /></td>
+		        				<td th:if="${cellularNumberException}"><div class="alert alert-error" th:text="#{${cellularNumberValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.personActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div th:if='${personModificationException}' class="alert alert-error" th:text="#{label.personModificationError}">
+            </div>
+            <div th:if='${personValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.localAccountLevel1CreationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	      
+	      function hideAlert(){
+	    	  document.getElementById("_savedAlert").style.display='none';
+	      }
+	     
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("configuration")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/purchase/localAccountLevel1/searchLocalAccountLevel1","_self");
+	    	  }
+	    	});
+	        	     
+
+		   $(function(){
+		   		     $("#localAccountLevel1").autocomplete({
+		   		    	    source: function (request, response) {
+		   		    	    		var path=window.location.pathname.split("/");
+		   		    	    		var prefix="";
+		   		    	    		if (path[1].localeCompare("configuration")!=0){
+		   		    	    			prefix="/"+path[1];	
+		   		    	    		}
+		   							$.get(prefix+"/common/localAccountLevel1/getListByLocalAccountLevel1ReturnLocalAccountLevel1?localAccountLevel1="+request.term, {}, function (data) {
+		   		    	            var array=data.split("/////");
+		   		    	            if (data!="")
+		   		    	            	response(array);
+		   		    	            else
+		   		    	            	response(null);
+		   		    	        });
+		   		    	    },
+		   		    	    minLength: 3,
+		   	    	    		select: function(a, b){
+		   	    	    		$(this).val(b.item.value);
+		   	    	    		var path=window.location.pathname.split("/");
+		   	    	    		var prefix="";
+		   	    	    		if (path[1].localeCompare("configuration")!=0){
+		   	    	    			prefix="/"+path[1];	
+		   	    	    		}
+		   	    	    		window.open(prefix+"/purchase/localAccountLevel1/createLocalAccountLevel1/fromList?field=localAccountLevel1&value="+encodeURIComponent(b.item.value),"_self");
+		   	    	    	}
+		   		    	});
+		   		    	 
+		   		     });
+		   
+		     
+		  function setFocus(){
+		   		document.getElementById("code").focus();
+		   } 
+		   
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+	       /* ]]> */
+	     </script>
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${localAccountLevel1Info}" method="post" onchange="hideAlert();">
+		        	<div id="back"><a th:if="${localAccountLevel1Info.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/purchase/localAccountLevel1/searchLocalAccountLevel1}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.localAccountLevel1CreationTitle}"></h3>
+		        	<br/>
+		        	<table>		        			        			
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountLevel1Code}+': '"></b></td>
+		        				<td><input id="code" name="code" type="text" th:value="*{{code}}" /></td>
+		        				<td th:if="${codeException}"><div class="alert alert-error" th:text="#{${codeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountLevel1LocalAccountLevel1}+': '"></b></td>
+		        				<td><input id="localAccountLevel1" name="localAccountLevel1" type="text" th:value="*{{localAccountLevel1}}" /></td>
+		        				<td th:if="${localAccountLevel1Exception}"><div class="alert alert-error" th:text="#{${localAccountLevel1ValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountLevel1EnglishName}+': '"></b></td>
+		        				<td><input id="englishName" name="englishName" type="text" th:value="*{{englishName}}" /></td>
+		        				<td th:if="${englishNameException}"><div class="alert alert-error" th:text="#{${englishNameValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.localAccountLevel1BalanceGroup}+': '"></b></td>
+		        			<td><select th:field="*{balanceGroupId}"><option value=""></option><option th:each="reference : ${localAccountLevel1Info.balanceGroupList}" th:value="${reference.id}" th:text="#{${reference.balanceGroup}}"></option></select></td>
+		        			<td th:if="${balanceGroupException}"><div class="alert alert-error" th:text="#{${balanceGroupValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.localAccountLevel1AccountSign}+': '"></b></td>
+		        			<td><select id="accountSign" onChange="accountSignSelectedRefresh()" th:field="*{accountSignId}"><option th:each="reference : ${localAccountLevel1Info.accountSignList}" th:value="${reference.id}" th:text="${reference.sign}"></option></select></td>
+		        			<td th:if="${accountSignException}"><div class="alert alert-error" th:text="#{${accountSignValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.localAccountLevel1AccountNature}+': '"></b></td>
+		        			<td><select th:field="*{accountNatureId}"><option value=""></option><option th:each="reference : ${localAccountLevel1Info.accountNatureList}" th:value="${reference.id}" th:text="#{${reference.nature}}"></option></select></td>
+		        			<td th:if="${accountNatureException}"><div class="alert alert-error" th:text="#{${accountNatureValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.localAccountLevel1Active}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${localAccountLevel1Info.created}' class="alert alert-info" th:text="#{label.created}">
+            </div>
+            <div th:if='${localAccountLevel1CreateException}' class="alert alert-error" th:text="#{label.localAccountLevel1CreationError}">
+            </div>
+            <div th:if='${localAccountLevel1ValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

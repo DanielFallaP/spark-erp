@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.withholdingModificationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	    
+	    <link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+    	<link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+    	<script type="text/javascript">
+    	/* <![CDATA[ */
+    	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  $('#back a').trigger('click');
+	    	  }
+	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("withholding").focus();
+		   }
+
+		    
+		    
+		    
+		    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} ); 
+		    
+		 /* ]]> */
+	     </script>
+	     
+    
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${withholdingInfo}" method="post">
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/purchase/withholding/searchWithholding}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.withholdingModificationTitle}"></h3>
+		        	<br/>
+		        	<table>
+		        		<tr>
+		        				<td ><b th:text="#{label.withholdingWithholding}+': '"></b></td>
+		        				<td><input id="withholding" name="withholding" type="text" th:value="*{{withholding}}" /></td>
+		        				<td th:if="${withholdingException}"><div class="alert alert-error" th:text="#{${withholdingValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.withholdingWithholdingPercentage}+': '"></b></td>
+		        				<td><input id="withholdingPercentage" name="withholdingPercentage" type="text" th:value="*{{withholdingPercentage}}" /></td>
+		        				<td th:if="${withholdingPercentageException}"><div class="alert alert-error" th:text="#{${withholdingPercentageValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.withholdingAccount}+': '"></b></td>
+		        			<td><select id="account" onChange="accountSelectedRefresh()" th:field="*{accountId}"><option th:each="reference : ${withholdingInfo.accountList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        			<td th:if="${accountException}"><div class="alert alert-error" th:text="#{${accountValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.withholdingMinimumValue}+': '"></b></td>
+		        				<td><input id="minimumValue" name="minimumValue" type="text" th:value="*{{minimumValue}}" /></td>
+		        				<td th:if="${minimumValueException}"><div class="alert alert-error" th:text="#{${minimumValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.withholdingActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div th:if='${withholdingModificationException}' class="alert alert-error" th:text="#{label.withholdingModificationError}">
+            </div>
+            <div th:if='${withholdingValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

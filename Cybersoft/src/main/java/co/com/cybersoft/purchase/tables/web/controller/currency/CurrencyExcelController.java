@@ -17,6 +17,7 @@ import co.com.cybersoft.man.services.excel.ReportingService;
 import co.com.cybersoft.purchase.tables.persistence.domain.Currency;
 import co.com.cybersoft.purchase.tables.persistence.domain.Users;
 import co.com.cybersoft.purchase.tables.core.domain.CurrencyDetails;
+import co.com.cybersoft.purchase.tables.core.domain.UsersDetails;
 import co.com.cybersoft.purchase.tables.web.domain.currency.CurrencyFilterInfo;
 
 
@@ -33,7 +34,7 @@ public class CurrencyExcelController {
 		LOG.debug("Exporting Currency to Excel");
 
 		CurrencyFilterInfo filter=(CurrencyFilterInfo) (request.getSession().getAttribute("currencyFilter")!=null?request.getSession().getAttribute("currencyFilter"):new CurrencyFilterInfo());
-		filter.set_company(((Users)request.getSession().getAttribute("_loggedInUser")).getCompany().getId().toString());
+		filter.set_company(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId().toString());
 		return reportingService.toExcel(Currency.class.getCanonicalName(), CurrencyDetails.class.getCanonicalName(), LocaleContextHolder.getLocale(),filter);
 	}
 	

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.stateModificationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	    
+	    <link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+    	<link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+    	<script type="text/javascript">
+    	/* <![CDATA[ */
+    	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  $('#back a').trigger('click');
+	    	  }
+	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("country").focus();
+		   }
+
+		    
+		    
+		    
+		    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} ); 
+		    
+	    	$(document).ready( function () {
+	    								 
+	    				    $( "#dateOfEstablishment" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    	} );
+
+		 /* ]]> */
+	     </script>
+	     
+    
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${stateInfo}" method="post">
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/purchase/state/searchState}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.stateModificationTitle}"></h3>
+		        	<br/>
+		        	<table>
+		        		<tr>
+		        			<td ><b th:text="#{label.stateCountry}+': '"></b></td>
+		        			<td><select id="country" onChange="countrySelectedRefresh()" th:field="*{countryId}"><option th:each="reference : ${stateInfo.countryList}" th:value="${reference.id}" th:text="${reference.country}"></option></select></td>
+		        			<td th:if="${countryException}"><div class="alert alert-error" th:text="#{${countryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.stateState}+': '"></b></td>
+		        				<td><input id="state" name="state" type="text" th:value="*{{state}}" /></td>
+		        				<td th:if="${stateException}"><div class="alert alert-error" th:text="#{${stateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.stateCapital}+': '"></b></td>
+		        				<td><input id="capital" name="capital" type="text" th:value="*{{capital}}" /></td>
+		        				<td th:if="${capitalException}"><div class="alert alert-error" th:text="#{${capitalValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.stateArea}+': '"></b></td>
+		        				<td><input id="area" name="area" type="text" th:value="*{{area}}" /></td>
+		        				<td th:if="${areaException}"><div class="alert alert-error" th:text="#{${areaValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.statePopulation}+': '"></b></td>
+		        				<td><input id="population" name="population" type="text" th:value="*{{population}}" /></td>
+		        				<td th:if="${populationException}"><div class="alert alert-error" th:text="#{${populationValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.stateDateOfEstablishment}+': '"></b></td>
+		        				<td><input id="dateOfEstablishment" name="dateOfEstablishment" type="text" th:value="*{{dateOfEstablishment}}" /></td>
+		        				<td th:if="${dateOfEstablishmentException}"><div class="alert alert-error" th:text="#{${dateOfEstablishmentValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.stateAbbreviation}+': '"></b></td>
+		        				<td><input id="abbreviation" name="abbreviation" type="text" th:value="*{{abbreviation}}" /></td>
+		        				<td th:if="${abbreviationException}"><div class="alert alert-error" th:text="#{${abbreviationValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.stateActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div th:if='${stateModificationException}' class="alert alert-error" th:text="#{label.stateModificationError}">
+            </div>
+            <div th:if='${stateValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

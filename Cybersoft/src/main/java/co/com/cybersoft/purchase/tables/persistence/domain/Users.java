@@ -42,16 +42,9 @@ public class Users {
 	@JoinColumn(name="COMPANY_ID" , nullable=false)
 	private Company company;
 
-	private Boolean currencyRead;
-
-	private Boolean currencyCreate;
-
-	private Boolean currencyUpdate;
-
-	private Boolean currencyExport;
+	private String currencyPermissions;
 
 	private Boolean active;
-
 
 	private Date dateOfModification;
 	
@@ -61,6 +54,13 @@ public class Users {
 	
 	private String createdBy;
 	
+	
+	public String getCurrencyPermissions() {
+		return currencyPermissions;
+	}
+	public void setCurrencyPermissions(String currencyPermissions) {
+		this.currencyPermissions = currencyPermissions;
+	}
 	public Date getDateOfModification() {
 		return dateOfModification;
 	}
@@ -124,34 +124,6 @@ public class Users {
 	public void setCompany(Company company) {
 		this.company = company;	
 	}
-	public Boolean getCurrencyRead() {
-		return currencyRead;	
-	}
-		
-	public void setCurrencyRead(Boolean currencyRead) {
-		this.currencyRead = currencyRead;	
-	}
-	public Boolean getCurrencyCreate() {
-		return currencyCreate;	
-	}
-		
-	public void setCurrencyCreate(Boolean currencyCreate) {
-		this.currencyCreate = currencyCreate;	
-	}
-	public Boolean getCurrencyUpdate() {
-		return currencyUpdate;	
-	}
-		
-	public void setCurrencyUpdate(Boolean currencyUpdate) {
-		this.currencyUpdate = currencyUpdate;	
-	}
-	public Boolean getCurrencyExport() {
-		return currencyExport;	
-	}
-		
-	public void setCurrencyExport(Boolean currencyExport) {
-		this.currencyExport = currencyExport;	
-	}
 	public Boolean getActive() {
 		return active;	
 	}
@@ -163,6 +135,8 @@ public class Users {
 	
 	public Users fromUsersDetails(UsersDetails details){
 		BeanUtils.copyProperties(details, this);
+		
+		this.currencyPermissions=(details.getCurrencyCreate()?"C":"")+(details.getCurrencyRead()?"R":"")+(details.getCurrencyUpdate()?"U":"")+(details.getCurrencyExport()?"E":"");
 
 		Company company0=new Company();company0.setId(details.getCompanyId());this.company=company0; 
 		

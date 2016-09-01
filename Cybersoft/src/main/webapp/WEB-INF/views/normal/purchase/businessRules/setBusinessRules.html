@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.businessRules}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	    
+	    <link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+    	<link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+    
+    	<script type="text/javascript">
+    	 /* <![CDATA[ */
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+	    	  var link = $(this);
+	    	  var target = link.attr("target");
+	    	  if($.trim(target).length > 0)
+	    	  {
+	    	    window.open(link.attr("href"), target);
+	    	  }
+	    	  else
+	    	  {
+	    	     window.location = link.attr("href");
+	    	  }
+
+	    	  event.preventDefault();
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  $('#back a').trigger('click');
+	    	  }
+	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("businessRules").focus();
+		   }
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} ); 
+			
+    		$(document).ready( function () {
+    									 
+    					    $( "#yearEndInventoryCutoffDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+    		} );
+
+		 /* ]]> */
+	     </script>
+    
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${businessRulesInfo}" method="post">
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/purchaseSettings}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.businessRules}"></h3>
+		        	<br/>
+		        	<table>
+		        		<tr>
+		        				<td ><b th:text="#{label.businessRulesBusinessRules}+': '"></b></td>
+		        				<td><input id="businessRules" name="businessRules" type="text" th:value="*{{businessRules}}" /></td>
+		        				<td th:if="${businessRulesException}"><div class="alert alert-error" th:text="#{${businessRulesValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesStandardTax}+': '"></b></td>
+		        			<td><select id="standardTax" onChange="standardTaxSelectedRefresh()" th:field="*{standardTaxId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.standardTaxList}" th:value="${reference.id}" th:text="${reference.tax}"></option></select></td>
+		        			<td th:if="${standardTaxException}"><div class="alert alert-error" th:text="#{${standardTaxValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesStandardTransportation}+': '"></b></td>
+		        			<td><select th:field="*{standardTransportationId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.standardTransportationList}" th:value="${reference.id}" th:text="#{${reference.transportationType}}"></option></select></td>
+		        			<td th:if="${standardTransportationException}"><div class="alert alert-error" th:text="#{${standardTransportationValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesStandardPriority}+': '"></b></td>
+		        			<td><select th:field="*{standardPriorityId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.standardPriorityList}" th:value="${reference.id}" th:text="#{${reference.priority}}"></option></select></td>
+		        			<td th:if="${standardPriorityException}"><div class="alert alert-error" th:text="#{${standardPriorityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesStandardSectionThatIssuesRequisition}+': '"></b></td>
+		        			<td><select id="standardSectionThatIssuesRequisition" onChange="standardSectionThatIssuesRequisitionSelectedRefresh()" th:field="*{standardSectionThatIssuesRequisitionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.standardSectionThatIssuesRequisitionList}" th:value="${reference.id}" th:text="${reference.section}"></option></select></td>
+		        			<td th:if="${standardSectionThatIssuesRequisitionException}"><div class="alert alert-error" th:text="#{${standardSectionThatIssuesRequisitionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesStandardSectionThatIssuesPurchaseOrder}+': '"></b></td>
+		        			<td><select id="standardSectionThatIssuesPurchaseOrder" onChange="standardSectionThatIssuesPurchaseOrderSelectedRefresh()" th:field="*{standardSectionThatIssuesPurchaseOrderId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.standardSectionThatIssuesPurchaseOrderList}" th:value="${reference.id}" th:text="${reference.section}"></option></select></td>
+		        			<td th:if="${standardSectionThatIssuesPurchaseOrderException}"><div class="alert alert-error" th:text="#{${standardSectionThatIssuesPurchaseOrderValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesStandardSectionThatIssuesItemReceipt}+': '"></b></td>
+		        			<td><select id="standardSectionThatIssuesItemReceipt" onChange="standardSectionThatIssuesItemReceiptSelectedRefresh()" th:field="*{standardSectionThatIssuesItemReceiptId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.standardSectionThatIssuesItemReceiptList}" th:value="${reference.id}" th:text="${reference.section}"></option></select></td>
+		        			<td th:if="${standardSectionThatIssuesItemReceiptException}"><div class="alert alert-error" th:text="#{${standardSectionThatIssuesItemReceiptValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesStandardTitleOfPersonSigningRequisition}+': '"></b></td>
+		        			<td><select id="standardTitleOfPersonSigningRequisition" onChange="standardTitleOfPersonSigningRequisitionSelectedRefresh()" th:field="*{standardTitleOfPersonSigningRequisitionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.standardTitleOfPersonSigningRequisitionList}" th:value="${reference.id}" th:text="${reference.section}"></option></select></td>
+		        			<td th:if="${standardTitleOfPersonSigningRequisitionException}"><div class="alert alert-error" th:text="#{${standardTitleOfPersonSigningRequisitionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesStandardTitleOfPersonSigningPurchaseOrder}+': '"></b></td>
+		        			<td><select id="standardTitleOfPersonSigningPurchaseOrder" onChange="standardTitleOfPersonSigningPurchaseOrderSelectedRefresh()" th:field="*{standardTitleOfPersonSigningPurchaseOrderId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.standardTitleOfPersonSigningPurchaseOrderList}" th:value="${reference.id}" th:text="${reference.section}"></option></select></td>
+		        			<td th:if="${standardTitleOfPersonSigningPurchaseOrderException}"><div class="alert alert-error" th:text="#{${standardTitleOfPersonSigningPurchaseOrderValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesStandardTitleOfPersonSigningItemReceipt}+': '"></b></td>
+		        			<td><select id="standardTitleOfPersonSigningItemReceipt" onChange="standardTitleOfPersonSigningItemReceiptSelectedRefresh()" th:field="*{standardTitleOfPersonSigningItemReceiptId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.standardTitleOfPersonSigningItemReceiptList}" th:value="${reference.id}" th:text="${reference.section}"></option></select></td>
+		        			<td th:if="${standardTitleOfPersonSigningItemReceiptException}"><div class="alert alert-error" th:text="#{${standardTitleOfPersonSigningItemReceiptValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.businessRulesAcceptsRequisitionDate}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{acceptsRequisitionDate}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.businessRulesAcceptsPurchaseOrderDate}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{acceptsPurchaseOrderDate}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.businessRulesAcceptsItemReceiptDate}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{acceptsItemReceiptDate}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.businessRulesUsePriorityByItem}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{usePriorityByItem}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.businessRulesUseRequiredDateByItem}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{useRequiredDateByItem}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.businessRulesUseCostDiscriminationByItem}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{useCostDiscriminationByItem}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.businessRulesUseMiniMaxByItem}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{useMiniMaxByItem}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.businessRulesUsePurchaseOrderBudget}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{usePurchaseOrderBudget}" /></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.businessRulesPercentageThatWarnsThatTheBudgetIsRunningOut}+': '"></b></td>
+		        				<td><input id="percentageThatWarnsThatTheBudgetIsRunningOut" name="percentageThatWarnsThatTheBudgetIsRunningOut" type="text" th:value="*{{percentageThatWarnsThatTheBudgetIsRunningOut}}" /></td>
+		        				<td th:if="${percentageThatWarnsThatTheBudgetIsRunningOutException}"><div class="alert alert-error" th:text="#{${percentageThatWarnsThatTheBudgetIsRunningOutValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.businessRulesUseNewItemControlCondition}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{useNewItemControlCondition}" /></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesNewItemCondition}+': '"></b></td>
+		        			<td><select th:field="*{newItemConditionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.newItemConditionList}" th:value="${reference.id}" th:text="#{${reference.itemCondition}}"></option></select></td>
+		        			<td th:if="${newItemConditionException}"><div class="alert alert-error" th:text="#{${newItemConditionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.businessRulesPurchaseOrderImportationPercentage}+': '"></b></td>
+		        				<td><input id="purchaseOrderImportationPercentage" name="purchaseOrderImportationPercentage" type="text" th:value="*{{purchaseOrderImportationPercentage}}" /></td>
+		        				<td th:if="${purchaseOrderImportationPercentageException}"><div class="alert alert-error" th:text="#{${purchaseOrderImportationPercentageValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesTransitWarehouse}+': '"></b></td>
+		        			<td><select id="transitWarehouse" onChange="transitWarehouseSelectedRefresh()" th:field="*{transitWarehouseId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.transitWarehouseList}" th:value="${reference.id}" th:text="${reference.warehouse}"></option></select></td>
+		        			<td th:if="${transitWarehouseException}"><div class="alert alert-error" th:text="#{${transitWarehouseValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesTransitInputTransaction}+': '"></b></td>
+		        			<td><select id="transitInputTransaction" onChange="transitInputTransactionSelectedRefresh()" th:field="*{transitInputTransactionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.transitInputTransactionList}" th:value="${reference.id}" th:text="${reference.stockTransaction}"></option></select></td>
+		        			<td th:if="${transitInputTransactionException}"><div class="alert alert-error" th:text="#{${transitInputTransactionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesTransitOutputTransaction}+': '"></b></td>
+		        			<td><select id="transitOutputTransaction" onChange="transitOutputTransactionSelectedRefresh()" th:field="*{transitOutputTransactionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.transitOutputTransactionList}" th:value="${reference.id}" th:text="${reference.stockTransaction}"></option></select></td>
+		        			<td th:if="${transitOutputTransactionException}"><div class="alert alert-error" th:text="#{${transitOutputTransactionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesInputStockTransaction}+': '"></b></td>
+		        			<td><select id="inputStockTransaction" onChange="inputStockTransactionSelectedRefresh()" th:field="*{inputStockTransactionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.inputStockTransactionList}" th:value="${reference.id}" th:text="${reference.stockTransaction}"></option></select></td>
+		        			<td th:if="${inputStockTransactionException}"><div class="alert alert-error" th:text="#{${inputStockTransactionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesOutputStockTransaction}+': '"></b></td>
+		        			<td><select id="outputStockTransaction" onChange="outputStockTransactionSelectedRefresh()" th:field="*{outputStockTransactionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.outputStockTransactionList}" th:value="${reference.id}" th:text="${reference.stockTransaction}"></option></select></td>
+		        			<td th:if="${outputStockTransactionException}"><div class="alert alert-error" th:text="#{${outputStockTransactionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesInputBorrowTransaction}+': '"></b></td>
+		        			<td><select id="inputBorrowTransaction" onChange="inputBorrowTransactionSelectedRefresh()" th:field="*{inputBorrowTransactionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.inputBorrowTransactionList}" th:value="${reference.id}" th:text="${reference.stockTransaction}"></option></select></td>
+		        			<td th:if="${inputBorrowTransactionException}"><div class="alert alert-error" th:text="#{${inputBorrowTransactionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesOutputBorrowTransaction}+': '"></b></td>
+		        			<td><select id="outputBorrowTransaction" onChange="outputBorrowTransactionSelectedRefresh()" th:field="*{outputBorrowTransactionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.outputBorrowTransactionList}" th:value="${reference.id}" th:text="${reference.stockTransaction}"></option></select></td>
+		        			<td th:if="${outputBorrowTransactionException}"><div class="alert alert-error" th:text="#{${outputBorrowTransactionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesInputBorrowReturnTransaction}+': '"></b></td>
+		        			<td><select id="inputBorrowReturnTransaction" onChange="inputBorrowReturnTransactionSelectedRefresh()" th:field="*{inputBorrowReturnTransactionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.inputBorrowReturnTransactionList}" th:value="${reference.id}" th:text="${reference.stockTransaction}"></option></select></td>
+		        			<td th:if="${inputBorrowReturnTransactionException}"><div class="alert alert-error" th:text="#{${inputBorrowReturnTransactionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesOutputBorrowReturnTransaction}+': '"></b></td>
+		        			<td><select id="outputBorrowReturnTransaction" onChange="outputBorrowReturnTransactionSelectedRefresh()" th:field="*{outputBorrowReturnTransactionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.outputBorrowReturnTransactionList}" th:value="${reference.id}" th:text="${reference.stockTransaction}"></option></select></td>
+		        			<td th:if="${outputBorrowReturnTransactionException}"><div class="alert alert-error" th:text="#{${outputBorrowReturnTransactionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesInputTransferenceTransaction}+': '"></b></td>
+		        			<td><select id="inputTransferenceTransaction" onChange="inputTransferenceTransactionSelectedRefresh()" th:field="*{inputTransferenceTransactionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.inputTransferenceTransactionList}" th:value="${reference.id}" th:text="${reference.stockTransaction}"></option></select></td>
+		        			<td th:if="${inputTransferenceTransactionException}"><div class="alert alert-error" th:text="#{${inputTransferenceTransactionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesOutputTransferenceTransaction}+': '"></b></td>
+		        			<td><select id="outputTransferenceTransaction" onChange="outputTransferenceTransactionSelectedRefresh()" th:field="*{outputTransferenceTransactionId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.outputTransferenceTransactionList}" th:value="${reference.id}" th:text="${reference.stockTransaction}"></option></select></td>
+		        			<td th:if="${outputTransferenceTransactionException}"><div class="alert alert-error" th:text="#{${outputTransferenceTransactionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.businessRulesYearEndInventoryCutoffDate}+': '"></b></td>
+		        				<td><input id="yearEndInventoryCutoffDate" name="yearEndInventoryCutoffDate" type="text" th:value="*{{yearEndInventoryCutoffDate}}" /></td>
+		        				<td th:if="${yearEndInventoryCutoffDateException}"><div class="alert alert-error" th:text="#{${yearEndInventoryCutoffDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.businessRulesPercentOfLargerQuantityIssuingItemReception}+': '"></b></td>
+		        				<td><input id="percentOfLargerQuantityIssuingItemReception" name="percentOfLargerQuantityIssuingItemReception" type="text" th:value="*{{percentOfLargerQuantityIssuingItemReception}}" /></td>
+		        				<td th:if="${percentOfLargerQuantityIssuingItemReceptionException}"><div class="alert alert-error" th:text="#{${percentOfLargerQuantityIssuingItemReceptionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.businessRulesCreateExchangeRate}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{createExchangeRate}" /></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesInventoryGroupForConsumptionItems}+': '"></b></td>
+		        			<td><select id="inventoryGroupForConsumptionItems" onChange="inventoryGroupForConsumptionItemsSelectedRefresh()" th:field="*{inventoryGroupForConsumptionItemsId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.inventoryGroupForConsumptionItemsList}" th:value="${reference.id}" th:text="${reference.stockGroup}"></option></select></td>
+		        			<td th:if="${inventoryGroupForConsumptionItemsException}"><div class="alert alert-error" th:text="#{${inventoryGroupForConsumptionItemsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesLocalCurrency}+': '"></b></td>
+		        			<td><select id="localCurrency" onChange="localCurrencySelectedRefresh()" th:field="*{localCurrencyId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.localCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        			<td th:if="${localCurrencyException}"><div class="alert alert-error" th:text="#{${localCurrencyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesForeignCurrency}+': '"></b></td>
+		        			<td><select id="foreignCurrency" onChange="foreignCurrencySelectedRefresh()" th:field="*{foreignCurrencyId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.foreignCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        			<td th:if="${foreignCurrencyException}"><div class="alert alert-error" th:text="#{${foreignCurrencyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.businessRulesChiefAdminUser}+': '"></b></td>
+		        			<td><select id="chiefAdminUser" onChange="chiefAdminUserSelectedRefresh()" th:field="*{chiefAdminUserId}"><option value=""></option><option th:each="reference : ${businessRulesInfo.chiefAdminUserList}" th:value="${reference.id}" th:text="${reference.user}"></option></select></td>
+		        			<td th:if="${chiefAdminUserException}"><div class="alert alert-error" th:text="#{${chiefAdminUserValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.businessRulesActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div th:if='${businessRulesModificationException}' class="alert alert-error" th:text="#{label.businessRulesModificationError}">
+            </div>
+            <div th:if='${businessRulesValidationException}' class="alert alert-error" th:text="#{label.businessRulesValidationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

@@ -61,7 +61,7 @@ public class CurrencyPersistenceServiceImpl implements CurrencyPersistenceServic
 
 	public CurrencyPageEvent requestCurrencyPage(RequestCurrencyPageEvent event) throws Exception {
 		CurrencyFilterInfo filter=new CurrencyFilterInfo();
-		filter.set_company(event.getCompany().getId().toString());
+		filter.set_company(event.getCompanyId().toString());
 		
 		Page<Currency> currencys = currencyCustomRepo.findAll(event.getPageable(), filter);
 

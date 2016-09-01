@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.thirdPartyClassCreationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	      
+	      function hideAlert(){
+	    	  document.getElementById("_savedAlert").style.display='none';
+	      }
+	     
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("configuration")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/purchase/thirdPartyClass/searchThirdPartyClass","_self");
+	    	  }
+	    	});
+	        	     
+		   
+
+		   $(function(){
+		   		     $("#identification").autocomplete({
+		   		    	    source: function (request, response) {
+		   		    	    		var path=window.location.pathname.split("/");
+		   		    	    		var prefix="";
+		   		    	    		if (path[1].localeCompare("configuration")!=0){
+		   		    	    			prefix="/"+path[1];	
+		   		    	    		}
+		   							$.get(prefix+"/common/thirdParty/getListByIdentificationReturnIdentification?identification="+request.term, {}, function (data) {
+		   		    	            var array=data.split("/////");
+		   		    	            if (data!="")
+		   		    	            	response(array);
+		   		    	            else
+		   		    	            	response(null);
+		   		    	        });
+		   		    	    },
+		   		    	    minLength: 3,
+		   	    	    		select: function(a, b){
+		   	    	    		
+		   	    	    		$(this).val(b.item.value);
+		   	    	    	}
+		   		    	});
+		   		    	 
+		   		     });
+		     
+		  function setFocus(){
+		   		document.getElementById("identification").focus();
+		   } 
+		   
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+	       /* ]]> */
+	     </script>
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${thirdPartyClassInfo}" method="post" onchange="hideAlert();">
+		        	<div id="back"><a th:if="${thirdPartyClassInfo.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/purchase/thirdPartyClass/searchThirdPartyClass}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.thirdPartyClassCreationTitle}"></h3>
+		        	<br/>
+		        	<table>		        			        			
+		        		<tr>
+		        			<td ><b th:text="#{label.thirdPartyClassIdentification}+': '"></b></td>
+		        			<td><input id="identification" type="text" th:field="*{identification}" /></td>
+		        			<td th:if="${identificationException}"><div class="alert alert-error" th:text="#{${identificationValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.thirdPartyClassThirdPartyType}+': '"></b></td>
+		        			<td><select id="thirdPartyType" onChange="thirdPartyTypeSelectedRefresh()" th:field="*{thirdPartyTypeId}"><option th:each="reference : ${thirdPartyClassInfo.thirdPartyTypeList}" th:value="${reference.id}" th:text="${reference.thirdPartyType}"></option></select></td>
+		        			<td th:if="${thirdPartyTypeException}"><div class="alert alert-error" th:text="#{${thirdPartyTypeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.thirdPartyClassActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${thirdPartyClassInfo.created}' class="alert alert-info" th:text="#{label.created}">
+            </div>
+            <div th:if='${thirdPartyClassCreateException}' class="alert alert-error" th:text="#{label.thirdPartyClassCreationError}">
+            </div>
+            <div th:if='${thirdPartyClassValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

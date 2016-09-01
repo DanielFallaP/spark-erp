@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.periodCreationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	      
+	      function hideAlert(){
+	    	  document.getElementById("_savedAlert").style.display='none';
+	      }
+	     
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("configuration")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/purchase/period/searchPeriod","_self");
+	    	  }
+	    	});
+	        	     
+
+		   $(function(){
+		   		     $("#period").autocomplete({
+		   		    	    source: function (request, response) {
+		   		    	    		var path=window.location.pathname.split("/");
+		   		    	    		var prefix="";
+		   		    	    		if (path[1].localeCompare("configuration")!=0){
+		   		    	    			prefix="/"+path[1];	
+		   		    	    		}
+		   							$.get(prefix+"/common/period/getListByPeriodReturnPeriod?period="+request.term, {}, function (data) {
+		   		    	            var array=data.split("/////");
+		   		    	            if (data!="")
+		   		    	            	response(array);
+		   		    	            else
+		   		    	            	response(null);
+		   		    	        });
+		   		    	    },
+		   		    	    minLength: 3,
+		   	    	    		select: function(a, b){
+		   	    	    		$(this).val(b.item.value);
+		   	    	    		var path=window.location.pathname.split("/");
+		   	    	    		var prefix="";
+		   	    	    		if (path[1].localeCompare("configuration")!=0){
+		   	    	    			prefix="/"+path[1];	
+		   	    	    		}
+		   	    	    		window.open(prefix+"/purchase/period/createPeriod/fromList?field=period&value="+encodeURIComponent(b.item.value),"_self");
+		   	    	    	}
+		   		    	});
+		   		    	 
+		   		     });
+		   
+		     
+		  function setFocus(){
+		   		document.getElementById("periodType").focus();
+		   } 
+		   
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+		    $(document).ready( function () {
+		    							 
+		    			    $( "#fromDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		    } );
+		    $(document).ready( function () {
+		    							 
+		    			    $( "#toDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		    } );
+
+	       /* ]]> */
+	     </script>
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${periodInfo}" method="post" onchange="hideAlert();">
+		        	<div id="back"><a th:if="${periodInfo.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/purchase/period/searchPeriod}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.periodCreationTitle}"></h3>
+		        	<br/>
+		        	<table>		        			        			
+		        		<tr>
+		        			<td ><b th:text="#{label.periodPeriodType}+': '"></b></td>
+		        			<td><select id="periodType" onChange="periodTypeSelectedRefresh()" th:field="*{periodTypeId}"><option th:each="reference : ${periodInfo.periodTypeList}" th:value="${reference.id}" th:text="${reference.periodType}"></option></select></td>
+		        			<td th:if="${periodTypeException}"><div class="alert alert-error" th:text="#{${periodTypeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.periodPeriod}+': '"></b></td>
+		        				<td><input id="period" name="period" type="text" th:value="*{{period}}" /></td>
+		        				<td th:if="${periodException}"><div class="alert alert-error" th:text="#{${periodValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.periodCode}+': '"></b></td>
+		        				<td><input id="code" name="code" type="text" th:value="*{{code}}" /></td>
+		        				<td th:if="${codeException}"><div class="alert alert-error" th:text="#{${codeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.periodYear}+': '"></b></td>
+		        				<td><input id="year" name="year" type="text" th:value="*{{year}}" /></td>
+		        				<td th:if="${yearException}"><div class="alert alert-error" th:text="#{${yearValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.periodMonth}+': '"></b></td>
+		        				<td><input id="month" name="month" type="text" th:value="*{{month}}" /></td>
+		        				<td th:if="${monthException}"><div class="alert alert-error" th:text="#{${monthValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.periodFromDate}+': '"></b></td>
+		        				<td><input id="fromDate" name="fromDate" type="text" th:value="*{{fromDate}}" /></td>
+		        				<td th:if="${fromDateException}"><div class="alert alert-error" th:text="#{${fromDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.periodToDate}+': '"></b></td>
+		        				<td><input id="toDate" name="toDate" type="text" th:value="*{{toDate}}" /></td>
+		        				<td th:if="${toDateException}"><div class="alert alert-error" th:text="#{${toDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.periodActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${periodInfo.created}' class="alert alert-info" th:text="#{label.created}">
+            </div>
+            <div th:if='${periodCreateException}' class="alert alert-error" th:text="#{label.periodCreationError}">
+            </div>
+            <div th:if='${periodValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

@@ -183,6 +183,18 @@ public class UsersDetails {
 		this.role=role+_embedded;
 		this.company=entity+_embedded;
 		this.companyId=entity.getCompany().getId();
+		
+		if (entity.getCurrencyPermissions()==null || entity.getCurrencyPermissions().equals("")){
+			this.currencyCreate=false;
+			this.currencyRead=false;
+			this.currencyUpdate=false;
+			this.currencyExport=false;
+		}else{
+			this.currencyCreate=entity.getCurrencyPermissions().contains("C");
+			this.currencyRead=entity.getCurrencyPermissions().contains("R");
+			this.currencyUpdate=entity.getCurrencyPermissions().contains("U");
+			this.currencyExport=entity.getCurrencyPermissions().contains("E");
+		}
 
 		return this;
 	}

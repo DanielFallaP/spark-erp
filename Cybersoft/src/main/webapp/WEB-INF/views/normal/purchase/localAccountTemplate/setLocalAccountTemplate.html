@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.localAccountTemplate}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	    
+	    <link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+    	<link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+    
+    	<script type="text/javascript">
+    	 /* <![CDATA[ */
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+	    	  var link = $(this);
+	    	  var target = link.attr("target");
+	    	  if($.trim(target).length > 0)
+	    	  {
+	    	    window.open(link.attr("href"), target);
+	    	  }
+	    	  else
+	    	  {
+	    	     window.location = link.attr("href");
+	    	  }
+
+	    	  event.preventDefault();
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  $('#back a').trigger('click');
+	    	  }
+	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("level1Digits").focus();
+		   }
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} ); 
+			
+		 /* ]]> */
+	     </script>
+    
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${localAccountTemplateInfo}" method="post">
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/purchaseSettings}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.localAccountTemplate}"></h3>
+		        	<br/>
+		        	<table>
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountTemplateLevel1Digits}+': '"></b></td>
+		        				<td><input id="level1Digits" name="level1Digits" type="text" th:value="*{{level1Digits}}" /></td>
+		        				<td th:if="${level1DigitsException}"><div class="alert alert-error" th:text="#{${level1DigitsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountTemplateLevel2Digits}+': '"></b></td>
+		        				<td><input id="level2Digits" name="level2Digits" type="text" th:value="*{{level2Digits}}" /></td>
+		        				<td th:if="${level2DigitsException}"><div class="alert alert-error" th:text="#{${level2DigitsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountTemplateLevel3Digits}+': '"></b></td>
+		        				<td><input id="level3Digits" name="level3Digits" type="text" th:value="*{{level3Digits}}" /></td>
+		        				<td th:if="${level3DigitsException}"><div class="alert alert-error" th:text="#{${level3DigitsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountTemplateLevel4Digits}+': '"></b></td>
+		        				<td><input id="level4Digits" name="level4Digits" type="text" th:value="*{{level4Digits}}" /></td>
+		        				<td th:if="${level4DigitsException}"><div class="alert alert-error" th:text="#{${level4DigitsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountTemplateLevel5Digits}+': '"></b></td>
+		        				<td><input id="level5Digits" name="level5Digits" type="text" th:value="*{{level5Digits}}" /></td>
+		        				<td th:if="${level5DigitsException}"><div class="alert alert-error" th:text="#{${level5DigitsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountTemplateLevel6Digits}+': '"></b></td>
+		        				<td><input id="level6Digits" name="level6Digits" type="text" th:value="*{{level6Digits}}" /></td>
+		        				<td th:if="${level6DigitsException}"><div class="alert alert-error" th:text="#{${level6DigitsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountTemplateLevel7Digits}+': '"></b></td>
+		        				<td><input id="level7Digits" name="level7Digits" type="text" th:value="*{{level7Digits}}" /></td>
+		        				<td th:if="${level7DigitsException}"><div class="alert alert-error" th:text="#{${level7DigitsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountTemplateLevel8Digits}+': '"></b></td>
+		        				<td><input id="level8Digits" name="level8Digits" type="text" th:value="*{{level8Digits}}" /></td>
+		        				<td th:if="${level8DigitsException}"><div class="alert alert-error" th:text="#{${level8DigitsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.localAccountTemplateLevel9Digits}+': '"></b></td>
+		        				<td><input id="level9Digits" name="level9Digits" type="text" th:value="*{{level9Digits}}" /></td>
+		        				<td th:if="${level9DigitsException}"><div class="alert alert-error" th:text="#{${level9DigitsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.localAccountTemplateActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div th:if='${localAccountTemplateModificationException}' class="alert alert-error" th:text="#{label.localAccountTemplateModificationError}">
+            </div>
+            <div th:if='${localAccountTemplateValidationException}' class="alert alert-error" th:text="#{label.localAccountTemplateValidationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

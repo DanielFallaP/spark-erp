@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
 import co.com.cybersoft.purchase.tables.core.domain.CurrencyDetails;
+import co.com.cybersoft.purchase.tables.core.domain.UsersDetails;
 import co.com.cybersoft.purchase.tables.core.services.currency.CurrencyService;
 import co.com.cybersoft.purchase.tables.events.currency.CreateCurrencyEvent;
 import co.com.cybersoft.purchase.tables.persistence.domain.Users;
@@ -72,7 +73,7 @@ public class CurrencyCreationController {
 		currencyDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		currencyDetails.setDateOfCreation(new Date());
 		currencyDetails.setDateOfModification(new Date());
-		currencyDetails.set_companyId(((Users)request.getSession().getAttribute("_loggedInUser")).getCompany().getId());
+		currencyDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
 		
 		request.getSession().setAttribute("currencyInfo", currencyInfo);
 		currencyService.createCurrency(new CreateCurrencyEvent(currencyDetails));

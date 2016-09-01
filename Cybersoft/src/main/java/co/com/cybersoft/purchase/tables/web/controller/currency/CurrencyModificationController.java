@@ -29,6 +29,7 @@ import org.springframework.validation.ObjectError;
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
 import co.com.cybersoft.purchase.tables.core.domain.CurrencyDetails;
+import co.com.cybersoft.purchase.tables.core.domain.UsersDetails;
 import co.com.cybersoft.purchase.tables.core.services.currency.CurrencyService;
 import co.com.cybersoft.purchase.tables.events.currency.CurrencyDetailsEvent;
 import co.com.cybersoft.purchase.tables.events.currency.CurrencyModificationEvent;
@@ -72,7 +73,7 @@ public class CurrencyModificationController {
 		CurrencyDetails currencyDetails = createCurrencyDetails(currencyInfo);
 		currencyDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		currencyDetails.setDateOfModification(new Date());
-		currencyDetails.set_companyId(((Users)request.getSession().getAttribute("_loggedInUser")).getCompany().getId());
+		currencyDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
 
 		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 

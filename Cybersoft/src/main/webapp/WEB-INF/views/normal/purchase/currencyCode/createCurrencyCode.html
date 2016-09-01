@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.currencyCodeCreationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+        <script th:src="@{/resources/js/bootstrap-tab.js}"></script>
+	  
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	      
+	      function hideAlert(){
+	    	  document.getElementById("_savedAlert").style.display='none';
+	      }
+	     
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("configuration")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/purchase/currencyCode/searchCurrencyCode","_self");
+	    	  }
+	    	});
+	        	     
+
+		   $(function(){
+		   		     $("#currencyName").autocomplete({
+		   		    	    source: function (request, response) {
+		   		    	    		var path=window.location.pathname.split("/");
+		   		    	    		var prefix="";
+		   		    	    		if (path[1].localeCompare("configuration")!=0){
+		   		    	    			prefix="/"+path[1];	
+		   		    	    		}
+		   							$.get(prefix+"/common/currencyCode/getListByCurrencyNameReturnCurrencyName?currencyName="+request.term, {}, function (data) {
+		   		    	            var array=data.split("/////");
+		   		    	            if (data!="")
+		   		    	            	response(array);
+		   		    	            else
+		   		    	            	response(null);
+		   		    	        });
+		   		    	    },
+		   		    	    minLength: 3,
+		   	    	    		select: function(a, b){
+		   	    	    		$(this).val(b.item.value);
+		   	    	    		var path=window.location.pathname.split("/");
+		   	    	    		var prefix="";
+		   	    	    		if (path[1].localeCompare("configuration")!=0){
+		   	    	    			prefix="/"+path[1];	
+		   	    	    		}
+		   	    	    		window.open(prefix+"/purchase/currencyCode/createCurrencyCode/fromList?field=currencyName&value="+encodeURIComponent(b.item.value),"_self");
+		   	    	    	}
+		   		    	});
+		   		    	 
+		   		     });
+		   
+		     
+		  function setFocus(){
+		   		document.getElementById("currencyName").focus();
+		   } 
+		   
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+	       /* ]]> */
+	     </script>
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${currencyCodeInfo}" method="post" onchange="hideAlert();">
+		        	<div id="back"><a th:if="${currencyCodeInfo.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/purchase/currencyCode/searchCurrencyCode}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.currencyCodeCreationTitle}"></h3>
+		        	<br/>
+		        	
+		        	<table>
+		        		<tr>
+		        				<td ><b th:text="#{label.currencyCodeCurrencyName}+': '"></b></td>
+		        				<td><input id="currencyName" name="currencyName" type="text" th:value="*{{currencyName}}" /></td>
+		        				<td th:if="${currencyNameException}"><div class="alert alert-error" th:text="#{${currencyNameValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.currencyCodeCountry}+': '"></b></td>
+		        			<td><select id="country" onChange="countrySelectedRefresh()" th:field="*{countryId}"><option th:each="reference : ${currencyCodeInfo.countryList}" th:value="${reference.id}" th:text="${reference.country}"></option></select></td>
+		        			<td th:if="${countryException}"><div class="alert alert-error" th:text="#{${countryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.currencyCodeCurrency}+': '"></b></td>
+		        				<td><input id="currency" name="currency" type="text" th:value="*{{currency}}" /></td>
+		        				<td th:if="${currencyException}"><div class="alert alert-error" th:text="#{${currencyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.currencyCodeSymbol}+': '"></b></td>
+		        				<td><input id="symbol" name="symbol" type="text" th:value="*{{symbol}}" /></td>
+		        				<td th:if="${symbolException}"><div class="alert alert-error" th:text="#{${symbolValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.currencyCodeDec1}+': '"></b></td>
+		        				<td><input id="dec1" name="dec1" type="text" th:value="*{{dec1}}" /></td>
+		        				<td th:if="${dec1Exception}"><div class="alert alert-error" th:text="#{${dec1ValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.currencyCodeDec2}+': '"></b></td>
+		        				<td><input id="dec2" name="dec2" type="text" th:value="*{{dec2}}" /></td>
+		        				<td th:if="${dec2Exception}"><div class="alert alert-error" th:text="#{${dec2ValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.currencyCodeDec3}+': '"></b></td>
+		        				<td><input id="dec3" name="dec3" type="text" th:value="*{{dec3}}" /></td>
+		        				<td th:if="${dec3Exception}"><div class="alert alert-error" th:text="#{${dec3ValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.currencyCodeHex1}+': '"></b></td>
+		        				<td><input id="hex1" name="hex1" type="text" th:value="*{{hex1}}" /></td>
+		        				<td th:if="${hex1Exception}"><div class="alert alert-error" th:text="#{${hex1ValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.currencyCodeHex2}+': '"></b></td>
+		        				<td><input id="hex2" name="hex2" type="text" th:value="*{{hex2}}" /></td>
+		        				<td th:if="${hex2Exception}"><div class="alert alert-error" th:text="#{${hex2ValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.currencyCodeHex3}+': '"></b></td>
+		        				<td><input id="hex3" name="hex3" type="text" th:value="*{{hex3}}" /></td>
+		        				<td th:if="${hex3Exception}"><div class="alert alert-error" th:text="#{${hex3ValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.currencyCodeActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        	</table>
+		        	<table>		        			        			
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${currencyCodeInfo.created}' class="alert alert-info" th:text="#{label.created}">
+            </div>
+            <div th:if='${currencyCodeCreateException}' class="alert alert-error" th:text="#{label.currencyCodeCreationError}">
+            </div>
+            <div th:if='${currencyCodeValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

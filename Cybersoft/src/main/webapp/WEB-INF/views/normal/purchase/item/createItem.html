@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.itemCreationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	      
+	      function hideAlert(){
+	    	  document.getElementById("_savedAlert").style.display='none';
+	      }
+	     
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("configuration")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/purchase/item/searchItem","_self");
+	    	  }
+	    	});
+	        	     
+
+		   $(function(){
+		   		     $("#code").autocomplete({
+		   		    	    source: function (request, response) {
+		   		    	    		var path=window.location.pathname.split("/");
+		   		    	    		var prefix="";
+		   		    	    		if (path[1].localeCompare("configuration")!=0){
+		   		    	    			prefix="/"+path[1];	
+		   		    	    		}
+		   							$.get(prefix+"/common/item/getListByCodeReturnCode?code="+request.term, {}, function (data) {
+		   		    	            var array=data.split("/////");
+		   		    	            if (data!="")
+		   		    	            	response(array);
+		   		    	            else
+		   		    	            	response(null);
+		   		    	        });
+		   		    	    },
+		   		    	    minLength: 3,
+		   	    	    		select: function(a, b){
+		   	    	    		$(this).val(b.item.value);
+		   	    	    		var path=window.location.pathname.split("/");
+		   	    	    		var prefix="";
+		   	    	    		if (path[1].localeCompare("configuration")!=0){
+		   	    	    			prefix="/"+path[1];	
+		   	    	    		}
+		   	    	    		window.open(prefix+"/purchase/item/createItem/fromList?field=code&value="+encodeURIComponent(b.item.value),"_self");
+		   	    	    	}
+		   		    	});
+		   		    	 
+		   		     });
+		   $(function(){
+		   		     $("#description").autocomplete({
+		   		    	    source: function (request, response) {
+		   		    	    		var path=window.location.pathname.split("/");
+		   		    	    		var prefix="";
+		   		    	    		if (path[1].localeCompare("configuration")!=0){
+		   		    	    			prefix="/"+path[1];	
+		   		    	    		}
+		   							$.get(prefix+"/common/item/getListByDescriptionReturnDescription?description="+request.term, {}, function (data) {
+		   		    	            var array=data.split("/////");
+		   		    	            if (data!="")
+		   		    	            	response(array);
+		   		    	            else
+		   		    	            	response(null);
+		   		    	        });
+		   		    	    },
+		   		    	    minLength: 3,
+		   	    	    		select: function(a, b){
+		   	    	    		$(this).val(b.item.value);
+		   	    	    		var path=window.location.pathname.split("/");
+		   	    	    		var prefix="";
+		   	    	    		if (path[1].localeCompare("configuration")!=0){
+		   	    	    			prefix="/"+path[1];	
+		   	    	    		}
+		   	    	    		window.open(prefix+"/purchase/item/createItem/fromList?field=description&value="+encodeURIComponent(b.item.value),"_self");
+		   	    	    	}
+		   		    	});
+		   		    	 
+		   		     });
+		   
+		     
+		  function setFocus(){
+		   		document.getElementById("code").focus();
+		   } 
+		   
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+		    $(document).ready( function () {
+		    							 
+		    			    $( "#lastItemUsedDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		    } );
+
+	       /* ]]> */
+	     </script>
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${itemInfo}" method="post" onchange="hideAlert();">
+		        	<div id="back"><a th:if="${itemInfo.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/purchase/item/searchItem}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.itemCreationTitle}"></h3>
+		        	<br/>
+		        	<table>		        			        			
+		        		<tr>
+		        				<td ><b th:text="#{label.itemCode}+': '"></b></td>
+		        				<td><input id="code" name="code" type="text" th:value="*{{code}}" /></td>
+		        				<td th:if="${codeException}"><div class="alert alert-error" th:text="#{${codeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemDescription}+': '"></b></td>
+		        				<td><input id="description" name="description" type="text" th:value="*{{description}}" /></td>
+		        				<td th:if="${descriptionException}"><div class="alert alert-error" th:text="#{${descriptionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				        				<td ><b th:text="#{label.itemLargeName}+': '"></b></td>
+		        				        				<td><textarea th:field="*{largeName}" ></textarea></td>
+		        										<td th:if="${largeNameException}"><div class="alert alert-error" th:text="#{${largeNameValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemStockSubGroup}+': '"></b></td>
+		        			<td><select id="stockSubGroup" onChange="stockSubGroupSelectedRefresh()" th:field="*{stockSubGroupId}"><option th:each="reference : ${itemInfo.stockSubGroupList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        			<td th:if="${stockSubGroupException}"><div class="alert alert-error" th:text="#{${stockSubGroupValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemDivision}+': '"></b></td>
+		        			<td><select id="division" onChange="divisionSelectedRefresh()" th:field="*{divisionId}"><option value=""></option><option th:each="reference : ${itemInfo.divisionList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        			<td th:if="${divisionException}"><div class="alert alert-error" th:text="#{${divisionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemInputMeasurementUnit}+': '"></b></td>
+		        			<td><select id="inputMeasurementUnit" onChange="inputMeasurementUnitSelectedRefresh()" th:field="*{inputMeasurementUnitId}"><option th:each="reference : ${itemInfo.inputMeasurementUnitList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        			<td th:if="${inputMeasurementUnitException}"><div class="alert alert-error" th:text="#{${inputMeasurementUnitValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemPackingUnits}+': '"></b></td>
+		        				<td><input id="packingUnits" name="packingUnits" type="text" th:value="*{{packingUnits}}" /></td>
+		        				<td th:if="${packingUnitsException}"><div class="alert alert-error" th:text="#{${packingUnitsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemConversionFactor}+': '"></b></td>
+		        				<td><input id="conversionFactor" name="conversionFactor" type="text" th:value="*{{conversionFactor}}" /></td>
+		        				<td th:if="${conversionFactorException}"><div class="alert alert-error" th:text="#{${conversionFactorValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemOutputMeasurementUnit}+': '"></b></td>
+		        			<td><select id="outputMeasurementUnit" onChange="outputMeasurementUnitSelectedRefresh()" th:field="*{outputMeasurementUnitId}"><option th:each="reference : ${itemInfo.outputMeasurementUnitList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        			<td th:if="${outputMeasurementUnitException}"><div class="alert alert-error" th:text="#{${outputMeasurementUnitValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.itemUseMiniMax}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{useMiniMax}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.itemUseMiniMaxByItem}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{useMiniMaxByItem}" /></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemTax}+': '"></b></td>
+		        			<td><select id="tax" onChange="taxSelectedRefresh()" th:field="*{taxId}"><option th:each="reference : ${itemInfo.taxList}" th:value="${reference.id}" th:text="${reference.tax}"></option></select></td>
+		        			<td th:if="${taxException}"><div class="alert alert-error" th:text="#{${taxValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemItemType}+': '"></b></td>
+		        			<td><select id="itemType" onChange="itemTypeSelectedRefresh()" th:field="*{itemTypeId}"><option th:each="reference : ${itemInfo.itemTypeList}" th:value="${reference.id}" th:text="${reference.itemType}"></option></select></td>
+		        			<td th:if="${itemTypeException}"><div class="alert alert-error" th:text="#{${itemTypeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemPartNumber}+': '"></b></td>
+		        				<td><input id="partNumber" name="partNumber" type="text" th:value="*{{partNumber}}" /></td>
+		        				<td th:if="${partNumberException}"><div class="alert alert-error" th:text="#{${partNumberValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemCommodity}+': '"></b></td>
+		        				<td><input id="commodity" name="commodity" type="text" th:value="*{{commodity}}" /></td>
+		        				<td th:if="${commodityException}"><div class="alert alert-error" th:text="#{${commodityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemOldItem}+': '"></b></td>
+		        				<td><input id="oldItem" name="oldItem" type="text" th:value="*{{oldItem}}" /></td>
+		        				<td th:if="${oldItemException}"><div class="alert alert-error" th:text="#{${oldItemValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemArray}+': '"></b></td>
+		        				<td><input id="array" name="array" type="text" th:value="*{{array}}" /></td>
+		        				<td th:if="${arrayException}"><div class="alert alert-error" th:text="#{${arrayValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemSet}+': '"></b></td>
+		        				<td><input id="set" name="set" type="text" th:value="*{{set}}" /></td>
+		        				<td th:if="${setException}"><div class="alert alert-error" th:text="#{${setValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.itemPermitsLargerQuantityIssuingItemReception}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{permitsLargerQuantityIssuingItemReception}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.itemBlocked}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{blocked}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.itemActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${itemInfo.created}' class="alert alert-info" th:text="#{label.created}">
+            </div>
+            <div th:if='${itemCreateException}' class="alert alert-error" th:text="#{label.itemCreationError}">
+            </div>
+            <div th:if='${itemValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

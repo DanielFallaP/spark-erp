@@ -15,6 +15,8 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import co.com.cybersoft.config.SparkGrantedAuthority;
+import co.com.cybersoft.purchase.tables.core.domain.UsersDetails;
+import co.com.cybersoft.purchase.tables.persistence.domain.Users;
 
 public class SparkAuthenticationSuccessHandler implements AuthenticationSuccessHandler{
 
@@ -25,8 +27,12 @@ public class SparkAuthenticationSuccessHandler implements AuthenticationSuccessH
 	      HttpServletResponse response, Authentication authentication) throws IOException {
 	    	 Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		        for (GrantedAuthority grantedAuthority : authorities) {
-		            if (grantedAuthority instanceof SparkGrantedAuthority)
-		            	request.getSession().setAttribute("_loggedInUser", ((SparkGrantedAuthority)grantedAuthority).getUser());
+		            if (grantedAuthority instanceof SparkGrantedAuthority){
+		            	Users user = ((SparkGrantedAuthority)grantedAuthority).getUser();
+		            	UsersDetails details=new UsersDetails();
+		            	details = details.toUsersDetails(user);
+		            	request.getSession().setAttribute("_loggedInUser", details);
+		            }
 		        }
 	        handle(request, response, authentication);
 	        clearAuthenticationAttributes(request);

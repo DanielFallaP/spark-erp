@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.thirdPartyModificationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	    
+	    <link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+    	<link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+    	<script type="text/javascript">
+    	/* <![CDATA[ */
+    	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  $('#back a').trigger('click');
+	    	  }
+	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("thirdParty").focus();
+		   }
+
+		    $(function(){
+		    	  			$("#country").change(function(){
+		    	  				var e=document.getElementById("country");
+		    	  	 		   	var country=e.options[e.selectedIndex].value;
+		    	  	 		   	var path=window.location.pathname.split("/");
+		    	  	 		    var prefix="";
+		    	  	 		   	if (path[1].localeCompare("configuration")!=0){
+		    	  	 		   			prefix="/"+path[1];	
+		    	  	 		   	}
+		    	  	 		   	var url=prefix+"//thirdParty/retrievePopulatedPlace/retrieve?country="+country;
+		    	  	 		 $.ajax({
+		    		  	 		  url: url,
+		    		  	 		  beforeSend: function(xhr) {
+		    		  	            xhr.setRequestHeader("Accept", "application/json");
+		    		  	        }
+		    		  	 		 }).done(function(info){
+		    		  	 			var optionsAsString;
+		    		  	 			
+		    		  	 			optionsAsString = "";
+		    		  	 			var stateArray=info.stateList;
+		    		  	 					  	 			
+		    		  	 			if (stateArray!=null){
+		    		  	 				for(var i = 0; i < stateArray.length; i++) {
+		    		  	 			    optionsAsString += "<option value='" + stateArray[i].state + "'>" + stateArray[i].state + "</option>";
+		    		  	 				}
+		    		  	 				$( 'select[name="state"]' ).find('option').remove().end().append( optionsAsString );
+		    		  	 			}
+		    		  	 			else {
+		    		  	 				$( 'select[name="state"]' ).find('option').remove().end();
+		    		  	 			}
+		    		  	 			optionsAsString = "";
+		    		  	 			var populatedPlaceArray=info.populatedPlaceList;
+		    		  	 					  	 			
+		    		  	 			if (populatedPlaceArray!=null){
+		    		  	 				for(var i = 0; i < populatedPlaceArray.length; i++) {
+		    		  	 			    optionsAsString += "<option value='" + populatedPlaceArray[i].populatedPlace + "'>" + populatedPlaceArray[i].populatedPlace + "</option>";
+		    		  	 				}
+		    		  	 				$( 'select[name="populatedPlace"]' ).find('option').remove().end().append( optionsAsString );
+		    		  	 			}
+		    		  	 			else {
+		    		  	 				$( 'select[name="populatedPlace"]' ).find('option').remove().end();
+		    		  	 			}
+
+		    		  	 					  	 			
+		    		  	 		 });
+		    	  	 		  
+		    	  	 		  });
+		    			});
+		    $(function(){
+		    	  			$("#state").change(function(){
+		    	  				var e=document.getElementById("state");
+		    	  	 		   	var state=e.options[e.selectedIndex].value;
+		    	  	 		   	var path=window.location.pathname.split("/");
+		    	  	 		    var prefix="";
+		    	  	 		   	if (path[1].localeCompare("configuration")!=0){
+		    	  	 		   			prefix="/"+path[1];	
+		    	  	 		   	}
+		    	  	 		   	var url=prefix+"//thirdParty/retrievePopulatedPlace/retrieve?state="+state;
+		    	  	 		 $.ajax({
+		    		  	 		  url: url,
+		    		  	 		  beforeSend: function(xhr) {
+		    		  	            xhr.setRequestHeader("Accept", "application/json");
+		    		  	        }
+		    		  	 		 }).done(function(info){
+		    		  	 			var optionsAsString;
+		    		  	 			
+		    		  	 			optionsAsString = "";
+		    		  	 			var populatedPlaceArray=info.populatedPlaceList;
+		    		  	 					  	 			
+		    		  	 			if (populatedPlaceArray!=null){
+		    		  	 				for(var i = 0; i < populatedPlaceArray.length; i++) {
+		    		  	 			    optionsAsString += "<option value='" + populatedPlaceArray[i].populatedPlace + "'>" + populatedPlaceArray[i].populatedPlace + "</option>";
+		    		  	 				}
+		    		  	 				$( 'select[name="populatedPlace"]' ).find('option').remove().end().append( optionsAsString );
+		    		  	 			}
+		    		  	 			else {
+		    		  	 				$( 'select[name="populatedPlace"]' ).find('option').remove().end();
+		    		  	 			}
+
+		    		  	 					  	 			
+		    		  	 		 });
+		    	  	 		  
+		    	  	 		  });
+		    			});
+
+		    
+		    
+		    
+		    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} ); 
+		    
+	    	$(document).ready( function () {
+	    								 
+	    				    $( "#autoWithholderDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    	} );
+	    	$(document).ready( function () {
+	    								 
+	    				    $( "#lastDateOfContact" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    	} );
+
+		 /* ]]> */
+	     </script>
+	     
+    
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${thirdPartyInfo}" method="post">
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/purchase/thirdParty/searchThirdParty}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.thirdPartyModificationTitle}"></h3>
+		        	<br/>
+		        	<table>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyThirdParty}+': '"></b></td>
+		        				<td><input id="thirdParty" name="thirdParty" type="text" th:value="*{{thirdParty}}" /></td>
+		        				<td th:if="${thirdPartyException}"><div class="alert alert-error" th:text="#{${thirdPartyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyIdentification}+': '"></b></td>
+		        				<td><input id="identification" name="identification" type="text" th:value="*{{identification}}" /></td>
+		        				<td th:if="${identificationException}"><div class="alert alert-error" th:text="#{${identificationValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyAddress}+': '"></b></td>
+		        				<td><input id="address" name="address" type="text" th:value="*{{address}}" /></td>
+		        				<td th:if="${addressException}"><div class="alert alert-error" th:text="#{${addressValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyZipCode}+': '"></b></td>
+		        				<td><input id="zipCode" name="zipCode" type="text" th:value="*{{zipCode}}" /></td>
+		        				<td th:if="${zipCodeException}"><div class="alert alert-error" th:text="#{${zipCodeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.thirdPartyCountry}+': '"></b></td>
+		        			<td><select id="country" onChange="countrySelectedRefresh()" th:field="*{countryId}"><option th:each="reference : ${thirdPartyInfo.countryList}" th:value="${reference.id}" th:text="${reference.country}"></option></select></td>
+		        			<td th:if="${countryException}"><div class="alert alert-error" th:text="#{${countryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.thirdPartyState}+': '"></b></td>
+		        			<td><select id="state" onChange="stateSelectedRefresh()" th:field="*{stateId}"><option th:each="reference : ${thirdPartyInfo.stateList}" th:value="${reference.id}" th:text="${reference.state}"></option></select></td>
+		        			<td th:if="${stateException}"><div class="alert alert-error" th:text="#{${stateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.thirdPartyPopulatedPlace}+': '"></b></td>
+		        			<td><select id="populatedPlace" onChange="populatedPlaceSelectedRefresh()" th:field="*{populatedPlaceId}"><option th:each="reference : ${thirdPartyInfo.populatedPlaceList}" th:value="${reference.id}" th:text="${reference.populatedPlace}"></option></select></td>
+		        			<td th:if="${populatedPlaceException}"><div class="alert alert-error" th:text="#{${populatedPlaceValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyPob}+': '"></b></td>
+		        				<td><input id="pob" name="pob" type="text" th:value="*{{pob}}" /></td>
+		        				<td th:if="${pobException}"><div class="alert alert-error" th:text="#{${pobValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyEmail}+': '"></b></td>
+		        				<td><input id="email" name="email" type="text" th:value="*{{email}}" /></td>
+		        				<td th:if="${emailException}"><div class="alert alert-error" th:text="#{${emailValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyPhone1Number}+': '"></b></td>
+		        				<td><input id="phone1Number" name="phone1Number" type="text" th:value="*{{phone1Number}}" /></td>
+		        				<td th:if="${phone1NumberException}"><div class="alert alert-error" th:text="#{${phone1NumberValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyPhone2Number}+': '"></b></td>
+		        				<td><input id="phone2Number" name="phone2Number" type="text" th:value="*{{phone2Number}}" /></td>
+		        				<td th:if="${phone2NumberException}"><div class="alert alert-error" th:text="#{${phone2NumberValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyCellularNumber}+': '"></b></td>
+		        				<td><input id="cellularNumber" name="cellularNumber" type="text" th:value="*{{cellularNumber}}" /></td>
+		        				<td th:if="${cellularNumberException}"><div class="alert alert-error" th:text="#{${cellularNumberValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.thirdPartyLocalSupplier}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{localSupplier}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.thirdPartyLegalPerson}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{legalPerson}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.thirdPartyMajorContributor}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{majorContributor}" /></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.thirdPartyTaxResponsible}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{taxResponsible}" /></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.thirdPartyTaxRegime}+': '"></b></td>
+		        			<td><select th:field="*{taxRegimeId}"><option value=""></option><option th:each="reference : ${thirdPartyInfo.taxRegimeList}" th:value="${reference.id}" th:text="#{${reference.taxRegime}}"></option></select></td>
+		        			<td th:if="${taxRegimeException}"><div class="alert alert-error" th:text="#{${taxRegimeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.thirdPartyAutoWithholder}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{autoWithholder}" /></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyAutoWithholderDocument}+': '"></b></td>
+		        				<td><input id="autoWithholderDocument" name="autoWithholderDocument" type="text" th:value="*{{autoWithholderDocument}}" /></td>
+		        				<td th:if="${autoWithholderDocumentException}"><div class="alert alert-error" th:text="#{${autoWithholderDocumentValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyAutoWithholderDate}+': '"></b></td>
+		        				<td><input id="autoWithholderDate" name="autoWithholderDate" type="text" th:value="*{{autoWithholderDate}}" /></td>
+		        				<td th:if="${autoWithholderDateException}"><div class="alert alert-error" th:text="#{${autoWithholderDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.thirdPartyPrincipalWithholding}+': '"></b></td>
+		        			<td><select id="principalWithholding" onChange="principalWithholdingSelectedRefresh()" th:field="*{principalWithholdingId}"><option value=""></option><option th:each="reference : ${thirdPartyInfo.principalWithholdingList}" th:value="${reference.id}" th:text="${reference.withholding}"></option></select></td>
+		        			<td th:if="${principalWithholdingException}"><div class="alert alert-error" th:text="#{${principalWithholdingValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.thirdPartyPrincipalConsignmentWithholding}+': '"></b></td>
+		        			<td><select id="principalConsignmentWithholding" onChange="principalConsignmentWithholdingSelectedRefresh()" th:field="*{principalConsignmentWithholdingId}"><option value=""></option><option th:each="reference : ${thirdPartyInfo.principalConsignmentWithholdingList}" th:value="${reference.id}" th:text="${reference.consignmentWithholding}"></option></select></td>
+		        			<td th:if="${principalConsignmentWithholdingException}"><div class="alert alert-error" th:text="#{${principalConsignmentWithholdingValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.thirdPartyPrincipalCommerceWithholding}+': '"></b></td>
+		        			<td><select id="principalCommerceWithholding" onChange="principalCommerceWithholdingSelectedRefresh()" th:field="*{principalCommerceWithholdingId}"><option value=""></option><option th:each="reference : ${thirdPartyInfo.principalCommerceWithholdingList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        			<td th:if="${principalCommerceWithholdingException}"><div class="alert alert-error" th:text="#{${principalCommerceWithholdingValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyCommerceActivity}+': '"></b></td>
+		        				<td><input id="commerceActivity" name="commerceActivity" type="text" th:value="*{{commerceActivity}}" /></td>
+		        				<td th:if="${commerceActivityException}"><div class="alert alert-error" th:text="#{${commerceActivityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.thirdPartyPaymentByBank}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{paymentByBank}" /></td>
+		        		</tr>
+		        		<tr>
+		        				        				<td ><b th:text="#{label.thirdPartyContactPerson}+': '"></b></td>
+		        				        				<td><textarea th:field="*{contactPerson}" ></textarea></td>
+		        										<td th:if="${contactPersonException}"><div class="alert alert-error" th:text="#{${contactPersonValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPartyLastDateOfContact}+': '"></b></td>
+		        				<td><input id="lastDateOfContact" name="lastDateOfContact" type="text" th:value="*{{lastDateOfContact}}" /></td>
+		        				<td th:if="${lastDateOfContactException}"><div class="alert alert-error" th:text="#{${lastDateOfContactValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.thirdPartyActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div th:if='${thirdPartyModificationException}' class="alert alert-error" th:text="#{label.thirdPartyModificationError}">
+            </div>
+            <div th:if='${thirdPartyValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>    
+    </body>
+</html>

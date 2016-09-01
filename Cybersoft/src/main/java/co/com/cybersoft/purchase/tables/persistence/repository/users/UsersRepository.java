@@ -19,14 +19,6 @@ public interface UsersRepository extends PagingAndSortingRepository<Users, Long>
 
 	Users findByCompany(String value);
 
-	Users findByCurrencyRead(Boolean value);
-
-	Users findByCurrencyCreate(Boolean value);
-
-	Users findByCurrencyUpdate(Boolean value);
-
-	Users findByCurrencyExport(Boolean value);
-
 	Users findByActive(Boolean value);
 
 
