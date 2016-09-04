@@ -263,6 +263,7 @@ public class TableCoreGenerator {
 				permissions+=template.toString();
 			}
 		}
+		permissions+="this.usersCreate=true;this.usersRead=true;this.usersUpdate=true;this.usersExport=true;";
 		return permissions;
 	}
 

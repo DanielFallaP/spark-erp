@@ -60,7 +60,7 @@ public class ConfigGenerator {
 			Cybertables cybertables = mapper.readValue(new InputStreamReader(new FileInputStream(module.getFileName()+".json"), "UTF8"), Cybertables.class);
 			cybertables.setModuleName(module.getName());
 			
-			StringTemplate modTemplate = new StringTemplate(".antMatchers(\"/$module$/**\").access(\"hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')\").antMatchers(\"/$module$Settings/**\").access(\"hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')\")");	
+			StringTemplate modTemplate = new StringTemplate(".antMatchers(\"/$module$/**\").access(\"hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')\").antMatchers(\"/$module$Settings/**\").access(\"hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')\")");	
 					modTemplate.setAttribute("module", module.getName());
 			modulesString+=modTemplate.toString();
 		}

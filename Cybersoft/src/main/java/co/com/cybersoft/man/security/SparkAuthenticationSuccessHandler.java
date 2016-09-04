@@ -58,7 +58,7 @@ public class SparkAuthenticationSuccessHandler implements AuthenticationSuccessH
 	            if (grantedAuthority.getAuthority().equals("ROLE_DOCUMENT MANAGER")) {
 	                isUser = true;
 	                break;
-	            } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
+	            } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN") || grantedAuthority.getAuthority().equals("ROLE_USER")) {
 	                isAdmin = true;
 	                break;
 	            }

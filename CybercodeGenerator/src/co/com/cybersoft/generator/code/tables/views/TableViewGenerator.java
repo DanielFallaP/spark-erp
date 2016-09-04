@@ -747,14 +747,14 @@ public class TableViewGenerator {
 		List<Table> configurationRow = new ArrayList<Table>();
 		int i=0;
 		int j=0;
-		if (!tables.get(0).getLabelTable() && !tables.get(0).getSingletonTable()){
+		if (!tables.get(0).getName().equals(CodeUtils.usersTableName) && !tables.get(0).getLabelTable() && !tables.get(0).getSingletonTable()){
 			configurationRow.add(tables.get(0));
 			i++;
 			j++;
 		}
 		for (; i<tables.size(); i++){
 			Table table = tables.get(i);
-			if (!table.getLabelTable() && !table.getSingletonTable()){
+			if (!table.getName().equals(CodeUtils.usersTableName) && !table.getLabelTable() && !table.getSingletonTable()){
 				if (j%Cyberconstants.configPageColumns!=0){
 					configurationRow.add(table);
 				}
@@ -780,14 +780,14 @@ public class TableViewGenerator {
 		List<Table> configurationRow = new ArrayList<Table>();
 		int i=0;
 		int j=0;
-		if (tables.get(0).getLabelTable() || tables.get(0).getSingletonTable()){
+		if (!tables.get(0).getName().equals(CodeUtils.usersTableName) && (tables.get(0).getLabelTable() || tables.get(0).getSingletonTable())){
 			configurationRow.add(tables.get(0));
 			i++;
 			j++;
 		}
 		for (; i<tables.size(); i++){
 			Table table = tables.get(i);
-			if (table.getLabelTable() || table.getSingletonTable()){
+			if (!table.getName().equals(CodeUtils.usersTableName) && (table.getLabelTable() || table.getSingletonTable())){
 				if (j%Cyberconstants.configPageColumns!=0){
 					configurationRow.add(table);
 				}

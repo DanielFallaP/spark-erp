@@ -38,9 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
 			$modules$
-			.antMatchers("/docs/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_SUPER')")
-			.antMatchers("/common/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_SUPER') or hasRole('ROLE_ADMIN')")
-			.antMatchers("/preferences/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_SUPER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/docs/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_USER')")
+			.antMatchers("/common/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/preferences/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/globalSettings/**").access("hasRole('ROLE_ADMIN')")
 			.antMatchers("/resources/js/jquery-1.11.0.min.js","/resources/css/bootstrap-responsive.min.css", "/resources/css/bootstrap.min.css", "/resources/img/spark_large.png").permitAll()
 			.anyRequest().authenticated()
             .and()
