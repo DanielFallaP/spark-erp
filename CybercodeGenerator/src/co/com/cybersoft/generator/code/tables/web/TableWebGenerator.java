@@ -29,6 +29,7 @@ public class TableWebGenerator {
 	
 	public void generate(){
 		List<Table> tables = cybertables.getTables();
+		generateModuleController();
 		for (Table table : tables) {
 			if (!table.getSingletonTable()){
 				generateSearchController(table);
@@ -60,6 +61,15 @@ public class TableWebGenerator {
 		}
 	}
 	
+	private void generateModuleController() {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("controller",Cybertables.tableCodePath+"web");
+		StringTemplate template = templateGroup.getInstanceOf("moduleController");
+		template.setAttribute("module", cybertables.getModuleName());
+		template.setAttribute("upperModule", CodeUtils.toCamelCase(cybertables.getModuleName()));
+
+		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/web/controller/").replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(cybertables.getModuleName())+"Controller.java");
+	}
+
 	private void generateCompoundReferenceControllers(Table table) {
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {

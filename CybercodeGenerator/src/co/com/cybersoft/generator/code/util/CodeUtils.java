@@ -83,6 +83,8 @@ public class CodeUtils {
 
 	public final static List<String> reservedSQLWords=Arrays.asList("date","comment","language");
 
+	public static final Object usersTableName = "users";
+
 	public static String getTableModule(String tableName){
 		for (Table table : allTables) {
 			if (table.getName().equals(tableName))

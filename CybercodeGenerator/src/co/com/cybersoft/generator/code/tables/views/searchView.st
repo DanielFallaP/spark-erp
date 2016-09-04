@@ -244,9 +244,9 @@
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisition}" th:text="#{label.requisitionsOption}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisitionDistribution}" th:text="#{label.requisitionDistributionOption}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchQuotation}" th:text="#{label.quotationOption}"></a></li>
-			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.purchaseOrders}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.$model$Orders}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchItemReceipt}" th:text="#{label.itemReceiptOrder}"></a></li>
-<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/purchaseOrderOtherValue}" th:text="#{label.purchaseOrderOtherValueOption}"></a></li> -->
+<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/$model$OrderOtherValue}" th:text="#{label.$model$OrderOtherValueOption}"></a></li> -->
 									<li sec:authorize-url="/$module$"><a th:href="@{/$module$}" th:text="#{label.navbarConfiguration}"></a></li>
 			                        <li sec:authorize-url="/$module$Settings"><a th:href="@{/$module$Settings}" th:text="#{label.settingsOption}"></a></li>
 			                        <li sec:authorize-url="/preferences"><a th:href="@{/preferences}" th:text="#{label.languageOption}"></a></li>
@@ -274,9 +274,9 @@
 			
 			<table width="100%">
 				<tr>
-					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/$module$/$tableName$/create$entityName$/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:if="\${_loggedInUser.$tableName$Create}" th:href="@{/$module$/$tableName$/create$entityName$/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
 					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
-					<td width="34%"><div align="right"><img style="cursor: pointer;" onclick="generateExcelFile();" th:src="@{/resources/img/excel.png}"/></div></td>
+					<td width="34%"><div align="right"><img th:if="\${_loggedInUser.$tableName$Export}" style="cursor: pointer;" onclick="generateExcelFile();" th:src="@{/resources/img/excel.png}"/></div></td>
 				</tr>
 			</table>
 			<table class="table table-striped" >

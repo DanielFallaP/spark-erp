@@ -79,6 +79,7 @@ public class $coreDomainClass$ {
 		}
 		$references$
 		$embeddedReferences$
+		$permissions$
 		return this;
 	}
 }

@@ -81,6 +81,7 @@ public class $searchControllerName$ {
 		model.addAttribute("_direction", direction);
 		model.addAttribute("_totalCount", page.getTotalElements());
 		model.addAttribute("ffilterAsText", "All");
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		return "$viewURL$";
 	}
@@ -132,6 +133,7 @@ public class $searchControllerName$ {
 		model.addAttribute("_direction", direction);
 		model.addAttribute("_totalCount", details.getTotalCount());
 		model.addAttribute("ffilterAsText", filter.getFfilterAsText());
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		if (hasActions(filter)){
 			$actions$

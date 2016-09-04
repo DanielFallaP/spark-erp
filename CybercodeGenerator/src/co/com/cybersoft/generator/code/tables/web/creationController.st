@@ -1,10 +1,13 @@
 package co.com.cybersoft.$module$.tables.web.controller.$tableName$;
 
+import co.com.cybersoft.$module$.tables.core.domain.$entityName$Details;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
+import org.springframework.ui.Model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,8 +56,10 @@ public class $entityName$CreationController {
 	$referenceServicesDeclarations$
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String $tableName$Creation() throws Exception {
+	public String modification(Model model, HttpServletRequest request){
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		return "/$module$/$tableName$/create$entityName$";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -67,6 +72,9 @@ public class $entityName$CreationController {
 		$tableName$Details.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		$tableName$Details.setDateOfCreation(new Date());
 		$tableName$Details.setDateOfModification(new Date());
+		//$tableName$Details.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		request.getSession().setAttribute("$tableName$Info", $tableName$Info);
 		$tableName$Service.create$entityName$(new Create$entityName$Event($tableName$Details));

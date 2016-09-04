@@ -83,7 +83,7 @@ public class ConfigGenerator {
 			Cybertables cybertables = mapper.readValue(new InputStreamReader(new FileInputStream(module.getFileName()+".json"), "UTF8"), Cybertables.class);
 			cybertables.setModuleName(module.getName());
 			
-			StringTemplate modTemplate = new StringTemplate("registry.addViewController(\"/$module$\").setViewName(\"$module$\");registry.addViewController(\"/$module$Settings\").setViewName(\"$module$Settings\");");
+			StringTemplate modTemplate = new StringTemplate("registry.addViewController(\"/$module$Settings\").setViewName(\"$module$Settings\");");
 			modTemplate.setAttribute("module", module.getName());
 			modulesString+=modTemplate.toString();
 			

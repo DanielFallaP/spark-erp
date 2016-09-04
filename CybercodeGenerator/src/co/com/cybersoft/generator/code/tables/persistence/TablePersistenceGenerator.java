@@ -8,6 +8,7 @@ import java.util.List;
 
 
 
+
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
@@ -69,6 +70,7 @@ public class TablePersistenceGenerator {
 		template.setAttribute("variableName", table.getName());
 		template.setAttribute("imports", generateDomainImports(table));
 		template.setAttribute("references", generateDomainReferences(table));
+		template.setAttribute("permissions", generateUserPermissions(table));
 		
 		if (table.hasCompoundIndex()){
 			StringTemplate subTemplate = templateGroup.getInstanceOf("compoundIndex");
@@ -105,6 +107,22 @@ public class TablePersistenceGenerator {
 		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/persistence/domain").replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+".java");
 	}
 	
+	private Object generateUserPermissions(Table table) {
+		String permissions="";
+		if (table.getName().equals(CodeUtils.usersTableName)){
+			for (Table table2 : CodeUtils.allTables) {
+				if (!table2.getName().equals(CodeUtils.usersTableName) &&
+						!table2.getLabelTable() && !table2.getSingletonTable()){
+					StringTemplate template = new StringTemplate("this.$tableName$Permissions=(details.get$entityName$Create()?\"C\":\"\")+(details.get$entityName$Read()?\"R\":\"\")+(details.get$entityName$Update()?\"U\":\"\")+(details.get$entityName$Export()?\"E\":\"\");\n");
+					template.setAttribute("entityName", CodeUtils.toCamelCase(table2.getName()));
+					template.setAttribute("tableName", table2.getName());
+					permissions+=template.toString();
+				}
+			}
+		}
+		return permissions;
+	}
+
 	private Object generateDomainReferences(Table table) {
 		List<Field> fields = table.getFields();
 		String  references="";
@@ -148,57 +166,72 @@ public class TablePersistenceGenerator {
 		
 		List<Field> fields = table.getFields();
 		
-		for (Field field : fields) {
-			if (!field.getCompoundReference()){
-				if (!field.isReference()){
-					if (field.getUnique()!=null && field.getUnique()){
-						if (CodeUtils.reservedSQLWords.contains(field.getName())){
-							body+="@Column(unique=true,name=\"f_"+field.getName()+"\")\n";
-						}
-						else{
-							String alias="";
-							if (field.getName().length()>CodeUtils.maxColumnSize)
-								alias=",name=\""+field.getName().substring(0, CodeUtils.maxColumnSize)+"\"";
-							body+="@Column(unique=true"+alias+")\n";
-						}
+		if (table.getName().equals(CodeUtils.usersTableName)){
+			for (Table table2: CodeUtils.allTables){
+				if (!table2.getLabelTable() && !table2.getSingletonTable()){
+					if ((table2.getName()+"Permissions").length()>CodeUtils.maxColumnSize){
+						String alias="";
+						alias="name=\""+(table2.getName()+"Permissions").substring(0, CodeUtils.maxColumnSize)+"\"";
+						body+="@Column("+alias+")\n";
 					}
-					else{
-						if (CodeUtils.reservedSQLWords.contains(field.getName()))
-							body+="@Column(name=\"f_"+field.getName()+"\")\n";
-						else{
-							if (field.getName().length()>CodeUtils.maxColumnSize){
+					body+="private String "+table2.getName()+"Permissions;\n";
+				}
+			}
+		}
+		
+		for (Field field : fields) {
+			if (!field.getTrans()){
+				if (!field.getCompoundReference()){
+					if (!field.isReference()){
+						if (field.getUnique()!=null && field.getUnique()){
+							if (CodeUtils.reservedSQLWords.contains(field.getName())){
+								body+="@Column(unique=true,name=\"f_"+field.getName()+"\")\n";
+							}
+							else{
 								String alias="";
-								alias="name=\""+field.getName().substring(0, CodeUtils.maxColumnSize)+"\"";
-								body+="@Column("+alias+")\n";
+								if (field.getName().length()>CodeUtils.maxColumnSize)
+									alias=",name=\""+field.getName().substring(0, CodeUtils.maxColumnSize)+"\"";
+								body+="@Column(unique=true"+alias+")\n";
+							}
+						}
+						else{
+							if (CodeUtils.reservedSQLWords.contains(field.getName()))
+								body+="@Column(name=\"f_"+field.getName()+"\")\n";
+							else{
+								if (field.getName().length()>CodeUtils.maxColumnSize){
+									String alias="";
+									alias="name=\""+field.getName().substring(0, CodeUtils.maxColumnSize)+"\"";
+									body+="@Column("+alias+")\n";
+								}
 							}
 						}
 					}
-				}
-				
-				if (field.isReference()){
-					StringTemplate temp = new StringTemplate("@ManyToOne(fetch = FetchType.EAGER)\n@JoinColumn(name=\"$fieldName$_ID\" $nullable$)");
-					temp.setAttribute("refType", field.getRefType().toUpperCase());
-					temp.setAttribute("fieldName", field.getName().toUpperCase());
+					
+					if (field.isReference()){
+						StringTemplate temp = new StringTemplate("@ManyToOne(fetch = FetchType.EAGER)\n@JoinColumn(name=\"$fieldName$_ID\" $nullable$)");
+						temp.setAttribute("refType", field.getRefType().toUpperCase());
+						temp.setAttribute("fieldName", field.getName().toUpperCase());
 						if (field.getRequired())
-						temp.setAttribute("nullable", ", nullable=false");
-					body+=temp.toString();
-					body+="\n";
-				}
-				StringTemplate template = new StringTemplate("private $type$ $name$;\n");
-				template.setAttribute("type", field.isReference()?CodeUtils.toCamelCase(field.getRefType()):field.getType());
-				template.setAttribute("name", field.getName());
-				body+=template.toString();
-				body+="\n";
-				
-			}
-			else{
-				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
-				for (Field compoundField : compoundKey) {
+							temp.setAttribute("nullable", ", nullable=false");
+						body+=temp.toString();
+						body+="\n";
+					}
 					StringTemplate template = new StringTemplate("private $type$ $name$;\n");
-					template.setAttribute("type", Cyberconstants.stringType);
-					template.setAttribute("name", compoundField.getName());
+					template.setAttribute("type", field.isReference()?CodeUtils.toCamelCase(field.getRefType()):field.getType());
+					template.setAttribute("name", field.getName());
 					body+=template.toString();
 					body+="\n";
+					
+				}
+				else{
+					List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
+					for (Field compoundField : compoundKey) {
+						StringTemplate template = new StringTemplate("private $type$ $name$;\n");
+						template.setAttribute("type", Cyberconstants.stringType);
+						template.setAttribute("name", compoundField.getName());
+						body+=template.toString();
+						body+="\n";
+					}
 				}
 			}
 		}
@@ -213,22 +246,37 @@ public class TablePersistenceGenerator {
 		
 		String text="";
 		
-		for (Field field : fields) {
-			if (!field.getCompoundReference()){
-				StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-				template.setAttribute("type", field.isReference()?CodeUtils.toCamelCase(field.getRefType()):field.getType());
-				template.setAttribute("name", field.getName());
-				template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
-				text+=template.toString()+"\n";
-			}
-			else{
-				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
-				for (Field compoundField : compoundKey) {
+		if (table.getName().equals(CodeUtils.usersTableName)){
+			for (Table table2: CodeUtils.allTables){
+				if (!table2.getLabelTable() && !table2.getSingletonTable()){
+
 					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
-					template.setAttribute("type", Cybertables.stringType);
-					template.setAttribute("name", compoundField.getName());
-					template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
+					template.setAttribute("type", Cyberconstants.stringType);
+					template.setAttribute("name", table2.getName()+"Permissions");
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(table2.getName()+"Permissions"));
+					text+=template.toString()+"\n"; 
+				}
+			}
+		}
+		
+		for (Field field : fields) {
+			if (!field.getTrans()){
+				if (!field.getCompoundReference()){
+					StringTemplate template = templateGroup.getInstanceOf("getterSetter");
+					template.setAttribute("type", field.isReference()?CodeUtils.toCamelCase(field.getRefType()):field.getType());
+					template.setAttribute("name", field.getName());
+					template.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
 					text+=template.toString()+"\n";
+				}
+				else{
+					List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
+					for (Field compoundField : compoundKey) {
+						StringTemplate template = templateGroup.getInstanceOf("getterSetter");
+						template.setAttribute("type", Cybertables.stringType);
+						template.setAttribute("name", compoundField.getName());
+						template.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
+						text+=template.toString()+"\n";
+					}
 				}
 			}
 		}
@@ -471,24 +519,25 @@ public class TablePersistenceGenerator {
 		String methods="";
 		List<Field> fields = table.getFields();
 		for (Field field : fields) {
-			if (!field.getCompoundReference()){
-				StringTemplate subTemplate=new StringTemplate("$entityName$ findBy$fieldName$($fieldType$ value);\n");
-				subTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
-				subTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
-				subTemplate.setAttribute("fieldType", field.getType()!=null?CodeUtils.toCamelCase(field.getType()):Cybertables.stringType);
-				methods+=subTemplate.toString()+"\n";
-			}
-			else
-			{
-				List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
-				for (Field compoundField : compoundKey) {
+			if (!field.getTrans())
+				if (!field.getCompoundReference()){
 					StringTemplate subTemplate=new StringTemplate("$entityName$ findBy$fieldName$($fieldType$ value);\n");
 					subTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
-					subTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
-					subTemplate.setAttribute("fieldType", compoundField.getType()!=null?CodeUtils.toCamelCase(compoundField.getType()):Cybertables.stringType);
+					subTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(field.getName()));
+					subTemplate.setAttribute("fieldType", field.getType()!=null?CodeUtils.toCamelCase(field.getType()):Cybertables.stringType);
 					methods+=subTemplate.toString()+"\n";
 				}
-			}
+				else
+				{
+					List<Field> compoundKey = CodeUtils.getCompoundKey(cybertables, field.getRefType());
+					for (Field compoundField : compoundKey) {
+						StringTemplate subTemplate=new StringTemplate("$entityName$ findBy$fieldName$($fieldType$ value);\n");
+						subTemplate.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
+						subTemplate.setAttribute("fieldName", CodeUtils.toCamelCase(compoundField.getName()));
+						subTemplate.setAttribute("fieldType", compoundField.getType()!=null?CodeUtils.toCamelCase(compoundField.getType()):Cybertables.stringType);
+						methods+=subTemplate.toString()+"\n";
+					}
+				}
 			
 		}
 		

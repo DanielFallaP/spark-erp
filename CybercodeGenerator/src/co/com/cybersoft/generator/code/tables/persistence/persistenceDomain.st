@@ -80,6 +80,8 @@ public class $entityName$ {
 	
 	public $entityName$ from$coreDomainClass$($coreDomainClass$ details){
 		BeanUtils.copyProperties(details, this);
+		
+		$permissions$
 
 		$references$		
 		return this;

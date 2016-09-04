@@ -231,7 +231,9 @@ public class TableCoreGenerator {
 		template.setAttribute("entityName", CodeUtils.toCamelCase(table.getName()));
 		template.setAttribute("imports", generateDomainImports(table));
 		template.setAttribute("references", generateReferences(table));
-		
+		if (table.getName().equals(CodeUtils.usersTableName)){
+			template.setAttribute("permissions", generateUserPermissions(table));
+		}
 		//Write embedded references transformations
 //		List<Field> fields = table.getFields();
 //		for (Field field : fields) {
@@ -248,6 +250,20 @@ public class TableCoreGenerator {
 		template.setAttribute("module", cybertables.getModuleName());
 		
 		CodeUtils.writeClass(template.toString(), (Cybertables.targetTableClassPath+"/core/domain").replace("{{module}}", cybertables.getModuleName()), CodeUtils.toCamelCase(table.getName())+"Details.java");
+	}
+
+	private Object generateUserPermissions(Table table) {
+		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
+		String permissions="";
+		for (Table table2 :CodeUtils.allTables) {
+			if (!table2.getName().equals(CodeUtils.usersTableName) && !table2.getLabelTable() && !table2.getSingletonTable()){
+				StringTemplate template = templateGroup.getInstanceOf("coreDomainPermissions");
+				template.setAttribute("tableName", table2.getName());
+				template.setAttribute("entityName", CodeUtils.toCamelCase(table2.getName()));
+				permissions+=template.toString();
+			}
+		}
+		return permissions;
 	}
 
 	private Object generateReferences(Table table) {

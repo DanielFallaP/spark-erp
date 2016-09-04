@@ -90,7 +90,7 @@
 		        	<table>
 		        		<tr>
 		        			<td>
-		        				<input type="submit" th:value="#{label.save}" />
+		        				<input th:if="\${_loggedInUser.$entityName$Update}" type="submit" th:value="#{label.save}" />
 		        			</td>
 		        		</tr>
 		        	</table>

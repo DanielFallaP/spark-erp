@@ -24,6 +24,7 @@ public class Field {
 	private ArithmeticExpression value;
 	private String append;
 	private String fieldGroup;
+	private Boolean trans=Boolean.FALSE;
 	
 	//For references only
 	private String refType;
@@ -42,8 +43,12 @@ public class Field {
 	
 	private OnLoad onLoad;
 	
-	
-	
+	public Boolean getTrans() {
+		return trans;
+	}
+	public void setTrans(Boolean trans) {
+		this.trans = trans;
+	}
 	public List<String> getAdditionalFields() {
 		return additionalFields;
 	}

@@ -1,1 +1,1 @@
-<td style="padding:0 40px;"><a id="$tableName$" th:href="@{/$module$/$tableName$/$option$$entityName$}" th:text="#{label.$tableName$Configuration}"></a></td>
+<td style="padding:0 40px;"><b id="$tableName$" th:if="\${_loggedInUser.$tableName$Read} != true" th:href="@{/$module$/$tableName$/$option$$entityName$}" th:text="#{label.$tableName$Configuration}"></b><a id="$tableName$" th:if="\${_loggedInUser.$tableName$Read}" th:href="@{/$module$/$tableName$/$option$$entityName$}" th:text="#{label.$tableName$Configuration}"></a></td>

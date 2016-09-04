@@ -1,0 +1,1 @@
+<td style="padding:0 40px;"><a id="$tableName$" th:href="@{/$module$/$tableName$/$option$$entityName$}" th:text="#{label.$tableName$Configuration}"></a></td>
