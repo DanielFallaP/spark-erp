@@ -111,7 +111,7 @@ public class TableViewGenerator {
 		template.setAttribute("compoundSelectionFunctions", generateCompoundSelectionFunctions(table));
 		template.setAttribute("module", cybertables.getModuleName());
 		template.setAttribute("tabsDef", generateTabsDef(table));
-		template.setAttribute("tabs", generateTabs(table));
+		template.setAttribute("tabs", generateTabs(table, "Create"));
 		
 		
 		List<Field> fields = table.getFields();
@@ -227,7 +227,7 @@ public class TableViewGenerator {
 		template.setAttribute("modificationCompoundSelectionFunctions", generateCompoundSelectionFunctions(table));
 		template.setAttribute("module", cybertables.getModuleName());
 		template.setAttribute("tabsDef", generateTabsDef(table));
-		template.setAttribute("tabs", generateTabs(table));
+		template.setAttribute("tabs", generateTabs(table,"Update"));
 		
 		List<Field> fields = table.getFields();
 		if (!fields.isEmpty()){
@@ -277,7 +277,7 @@ public class TableViewGenerator {
 		}
 	}
 
-	private Object generateTabs(Table table) {
+	private Object generateTabs(Table table, String operation) {
 		if (table.hasFieldGroups()){
 			String tabs="<div class=\"tab-content\">";
 			
@@ -297,7 +297,7 @@ public class TableViewGenerator {
 				if (i==0)
 					template.setAttribute("append", "in active");
 				
-				template.setAttribute("rows", generateTabFieldRows(table, string));
+				template.setAttribute("rows", generateTabFieldRows(table, string, operation));
 				tabs+=template.toString();
 				
 				i++;
@@ -308,12 +308,12 @@ public class TableViewGenerator {
 		}else{
 			StringTemplateGroup templateGroup = new StringTemplateGroup("rows",Cybertables.tableCodePath+"views");
 			StringTemplate template = templateGroup.getInstanceOf("rows");
-			template.setAttribute("rows", generateFieldRows(table, table.getFields()));
+			template.setAttribute("rows", generateFieldRows(table, table.getFields(), operation));
 			return template.toString();
 		}
 	}
 
-	private Object generateTabFieldRows(Table table, String fieldGroup) {
+	private Object generateTabFieldRows(Table table, String fieldGroup, String operation) {
 		List<String> fieldGroups = table.getFieldGroups();
 		List<Field> fields = table.getFields();
 		String rows="";
@@ -322,7 +322,7 @@ public class TableViewGenerator {
 			if (fieldGroup.equals(field.getFieldGroup()))
 				fieldG.add(field);
 		}
-		rows+=generateFieldRows(table,fieldG);
+		rows+=generateFieldRows(table,fieldG,operation);
 		return rows;
 	}
 
@@ -414,7 +414,7 @@ public class TableViewGenerator {
 		return template.toString();
 	}
 	
-	private String generateFieldRows(Table table, List<Field> fields) {
+	private String generateFieldRows(Table table, List<Field> fields, String operation) {
 		StringTemplateGroup stringTemplateGroup = new StringTemplateGroup("views", Cybertables.tableCodePath+"views");
 		String text="";
 		for (Field field : fields) {
@@ -429,6 +429,8 @@ public class TableViewGenerator {
 				template.setAttribute("tableName", table.getName());
 				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
+				template.setAttribute("operation", operation);
+
 				if (field.getType().equals(Cybertables.dateType))
 					template.setAttribute("datePicker", "id=\""+field.getName()+"\"");
 				text+=template.toString()+"\n";
@@ -454,6 +456,7 @@ public class TableViewGenerator {
 				template.setAttribute("upperFieldName", CodeUtils.toCamelCase(field.getName()));
 				template.setAttribute("fieldName", field.getName());
 				template.setAttribute("displayName", field.getDisplayField());
+				template.setAttribute("operation", operation);
 				text+=template.toString()+"\n";
 			}
 			
@@ -465,6 +468,7 @@ public class TableViewGenerator {
 					template.setAttribute("upperFieldName", CodeUtils.toCamelCase(compoundField.getName()));
 					template.setAttribute("fieldName", compoundField.getName());
 					template.setAttribute("displayName", compoundField.getName());
+					template.setAttribute("operation", operation);
 					text+=template.toString()+"\n";
 				}
 			}

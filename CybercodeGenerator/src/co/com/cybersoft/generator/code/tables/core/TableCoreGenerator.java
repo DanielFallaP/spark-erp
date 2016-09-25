@@ -225,6 +225,9 @@ public class TableCoreGenerator {
 	private void generateCoreDomainClass(Table table){
 		StringTemplateGroup templateGroup = new StringTemplateGroup("core",Cybertables.tableCodePath+"core");
 		StringTemplate template = templateGroup.getInstanceOf("coreDomain");
+		if (table.getName().equals("users")){
+			System.out.println("");
+		}
 		template.setAttribute("fieldDeclaration", CodeUtils.getFieldDeclarations(cybertables,table));
 		template.setAttribute("gettersAndSetters", CodeUtils.getGettersAndSetters(cybertables,table));
 		template.setAttribute("coreDomainClass", CodeUtils.toCamelCase(table.getName())+"Details");

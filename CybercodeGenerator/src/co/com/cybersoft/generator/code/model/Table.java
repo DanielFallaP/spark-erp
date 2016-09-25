@@ -13,7 +13,15 @@ public class Table {
 	private Boolean singletonTable=Boolean.FALSE;
 	private String module;
 	private List<Action> actions;
+	private Boolean multiCompany;
+
 	
+	public Boolean getMultiCompany() {
+		return multiCompany;
+	}
+	public void setMultiCompany(Boolean multiCompany) {
+		this.multiCompany = multiCompany;
+	}
 	public List<Action> getActions() {
 		return actions;
 	}

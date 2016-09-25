@@ -65,7 +65,7 @@ public class SparkAuthenticationSuccessHandler implements AuthenticationSuccessH
 	        }
 	 
 	        if (isUser) {
-	            return "/docs/requisition";
+	            return "/";
 	        } else if (isAdmin) {
 	            return "/";
 	        } else {
