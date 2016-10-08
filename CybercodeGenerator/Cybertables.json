@@ -8,10 +8,6 @@
 		 		{"name":"password", "type":"String", "spanishName":"", "fieldGroup":"General"},
 		 		{"name":"role", "type":"String", "spanishName":"", "fieldGroup":"General"},
 		 		{"name":"company", "refType":"company", "displayField":"companyName", "fieldGroup":"General"},
-		 		{"name":"currencyRead", "type":"Boolean", "fieldGroup":"Infrastructure"},
-		 		{"name":"currencyCreate", "type":"Boolean", "fieldGroup":"Infrastructure"},
-		 		{"name":"currencyUpdate", "type":"Boolean", "fieldGroup":"Infrastructure"},
-		 		{"name":"currencyExport", "type":"Boolean", "fieldGroup":"Infrastructure"},
 		 		{"name":"active", "spanishName":"Activo", "type":"Boolean", "defaultValue":"true", "fieldGroup":"General"}
 			]
 		 },	
