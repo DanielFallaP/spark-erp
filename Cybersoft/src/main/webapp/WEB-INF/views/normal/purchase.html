@@ -42,17 +42,15 @@
 			<div class="hero-unit">
 				<table class="inheritBackground" align="center">
 					<tr>
-							        			<td style="padding:0 40px;"><a id="users" th:href="@{/purchase/users/searchUsers}" th:text="#{label.usersConfiguration}"></a></td>
+							        		</tr><tr>
 							        			<td style="padding:0 40px;"><b id="currency" th:if="${_loggedInUser.currencyRead} != true" th:href="@{/purchase/currency/searchCurrency}" th:text="#{label.currencyConfiguration}"></b><a id="currency" th:if="${_loggedInUser.currencyRead}" th:href="@{/purchase/currency/searchCurrency}" th:text="#{label.currencyConfiguration}"></a></td>
-							        			<td style="padding:0 40px;"><a id="exchangeRate" th:href="@{/purchase/exchangeRate/searchExchangeRate}" th:text="#{label.exchangeRateConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="exchangeRate" th:if="${_loggedInUser.exchangeRateRead} != true" th:href="@{/purchase/exchangeRate/searchExchangeRate}" th:text="#{label.exchangeRateConfiguration}"></b><a id="exchangeRate" th:if="${_loggedInUser.exchangeRateRead}" th:href="@{/purchase/exchangeRate/searchExchangeRate}" th:text="#{label.exchangeRateConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="continent" th:if="${_loggedInUser.continentRead} != true" th:href="@{/purchase/continent/searchContinent}" th:text="#{label.continentConfiguration}"></b><a id="continent" th:if="${_loggedInUser.continentRead}" th:href="@{/purchase/continent/searchContinent}" th:text="#{label.continentConfiguration}"></a></td>
 
 							        		</tr><tr>
-							        			<td style="padding:0 40px;"><a id="continent" th:href="@{/purchase/continent/searchContinent}" th:text="#{label.continentConfiguration}"></a></td>
-							        			<td style="padding:0 40px;"><a id="region" th:href="@{/purchase/region/searchRegion}" th:text="#{label.regionConfiguration}"></a></td>
-							        			<td style="padding:0 40px;"><a id="currencyCode" th:href="@{/purchase/currencyCode/searchCurrencyCode}" th:text="#{label.currencyCodeConfiguration}"></a></td>
-
-							        		</tr><tr>
-							        			<td style="padding:0 40px;"><a id="country" th:href="@{/purchase/country/searchCountry}" th:text="#{label.countryConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="region" th:if="${_loggedInUser.regionRead} != true" th:href="@{/purchase/region/searchRegion}" th:text="#{label.regionConfiguration}"></b><a id="region" th:if="${_loggedInUser.regionRead}" th:href="@{/purchase/region/searchRegion}" th:text="#{label.regionConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="currencyCode" th:if="${_loggedInUser.currencyCodeRead} != true" th:href="@{/purchase/currencyCode/searchCurrencyCode}" th:text="#{label.currencyCodeConfiguration}"></b><a id="currencyCode" th:if="${_loggedInUser.currencyCodeRead}" th:href="@{/purchase/currencyCode/searchCurrencyCode}" th:text="#{label.currencyCodeConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="country" th:if="${_loggedInUser.countryRead} != true" th:href="@{/purchase/country/searchCountry}" th:text="#{label.countryConfiguration}"></b><a id="country" th:if="${_loggedInUser.countryRead}" th:href="@{/purchase/country/searchCountry}" th:text="#{label.countryConfiguration}"></a></td>
 
 							        		</tr>
 				</table>

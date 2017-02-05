@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.companyCreationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+        <script th:src="@{/resources/js/bootstrap-tab.js}"></script>
+	  
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	      
+	      function hideAlert(){
+	    	  document.getElementById("_savedAlert").style.display='none';
+	      }
+	     
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("configuration")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/maintenance/company/searchCompany","_self");
+	    	  }
+	    	});
+	        	     
+		   
+		     
+		  function setFocus(){
+		   		document.getElementById("code").focus();
+		   } 
+		   
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+		    $(document).ready( function () {
+		    							 
+		    			    $( "#homeRangesOfDatesOfTheLastGeneration" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		    } );
+		    $(document).ready( function () {
+		    							 
+		    			    $( "#endDateRangesOfTheLastGeneration" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		    } );
+		    $(document).ready( function () {
+		    							 
+		    			    $( "#startDateCompanyProcess" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		    } );
+		    $(document).ready( function () {
+		    							 
+		    			    $( "#endDateProcessCompany" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		    } );
+		    $(document).ready( function () {
+		    							 
+		    			    $( "#startDateSendingHistory" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		    } );
+		    $(document).ready( function () {
+		    							 
+		    			    $( "#endingDatelSendingHistory" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		    } );
+
+	       /* ]]> */
+	     </script>
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutmaintenance :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${companyInfo}" method="post" onchange="hideAlert();">
+		        	<div id="back"><a th:if="${companyInfo.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/maintenance/company/searchCompany}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.companyCreationTitle}"></h3>
+		        	<br/>
+		        	
+		        	<table>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyCode}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="code" name="code" type="text" th:value="*{{code}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="code" name="code" type="text" th:value="*{{code}}" />
+		        					
+		        				</td>
+		        				<td th:if="${codeException}"><div class="alert alert-error" th:text="#{${codeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyCodeNit}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="codeNit" name="codeNit" type="text" th:value="*{{codeNit}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="codeNit" name="codeNit" type="text" th:value="*{{codeNit}}" />
+		        					
+		        				</td>
+		        				<td th:if="${codeNitException}"><div class="alert alert-error" th:text="#{${codeNitValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyCompanyName}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="companyName" name="companyName" type="text" th:value="*{{companyName}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="companyName" name="companyName" type="text" th:value="*{{companyName}}" />
+		        					
+		        				</td>
+		        				<td th:if="${companyNameException}"><div class="alert alert-error" th:text="#{${companyNameValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyCompanyLicense}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="companyLicense" name="companyLicense" type="text" th:value="*{{companyLicense}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="companyLicense" name="companyLicense" type="text" th:value="*{{companyLicense}}" />
+		        					
+		        				</td>
+		        				<td th:if="${companyLicenseException}"><div class="alert alert-error" th:text="#{${companyLicenseValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyComment}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="comment" name="comment" type="text" th:value="*{{comment}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="comment" name="comment" type="text" th:value="*{{comment}}" />
+		        					
+		        				</td>
+		        				<td th:if="${commentException}"><div class="alert alert-error" th:text="#{${commentValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyHomeRangesOfDatesOfTheLastGeneration}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="homeRangesOfDatesOfTheLastGeneration" name="homeRangesOfDatesOfTheLastGeneration" type="text" th:value="*{{homeRangesOfDatesOfTheLastGeneration}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="homeRangesOfDatesOfTheLastGeneration" name="homeRangesOfDatesOfTheLastGeneration" type="text" th:value="*{{homeRangesOfDatesOfTheLastGeneration}}" />
+		        					
+		        				</td>
+		        				<td th:if="${homeRangesOfDatesOfTheLastGenerationException}"><div class="alert alert-error" th:text="#{${homeRangesOfDatesOfTheLastGenerationValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyEndDateRangesOfTheLastGeneration}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="endDateRangesOfTheLastGeneration" name="endDateRangesOfTheLastGeneration" type="text" th:value="*{{endDateRangesOfTheLastGeneration}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="endDateRangesOfTheLastGeneration" name="endDateRangesOfTheLastGeneration" type="text" th:value="*{{endDateRangesOfTheLastGeneration}}" />
+		        					
+		        				</td>
+		        				<td th:if="${endDateRangesOfTheLastGenerationException}"><div class="alert alert-error" th:text="#{${endDateRangesOfTheLastGenerationValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyUserLoginCompany}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="userLoginCompany" name="userLoginCompany" type="text" th:value="*{{userLoginCompany}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="userLoginCompany" name="userLoginCompany" type="text" th:value="*{{userLoginCompany}}" />
+		        					
+		        				</td>
+		        				<td th:if="${userLoginCompanyException}"><div class="alert alert-error" th:text="#{${userLoginCompanyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.companyStateAnalysisCompany}+': '"></b></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.companyCreate}" type="checkbox" th:field="*{stateAnalysisCompany}" />
+		        		   				<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" type="checkbox" th:field="*{stateAnalysisCompany}" />
+		        		   			</td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.companyStateGenerationCompany}+': '"></b></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.companyCreate}" type="checkbox" th:field="*{stateGenerationCompany}" />
+		        		   				<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" type="checkbox" th:field="*{stateGenerationCompany}" />
+		        		   			</td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyStartDateCompanyProcess}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="startDateCompanyProcess" name="startDateCompanyProcess" type="text" th:value="*{{startDateCompanyProcess}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="startDateCompanyProcess" name="startDateCompanyProcess" type="text" th:value="*{{startDateCompanyProcess}}" />
+		        					
+		        				</td>
+		        				<td th:if="${startDateCompanyProcessException}"><div class="alert alert-error" th:text="#{${startDateCompanyProcessValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyEndDateProcessCompany}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="endDateProcessCompany" name="endDateProcessCompany" type="text" th:value="*{{endDateProcessCompany}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="endDateProcessCompany" name="endDateProcessCompany" type="text" th:value="*{{endDateProcessCompany}}" />
+		        					
+		        				</td>
+		        				<td th:if="${endDateProcessCompanyException}"><div class="alert alert-error" th:text="#{${endDateProcessCompanyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyNumberPartialWorkOrderCompany}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="numberPartialWorkOrderCompany" name="numberPartialWorkOrderCompany" type="text" th:value="*{{numberPartialWorkOrderCompany}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="numberPartialWorkOrderCompany" name="numberPartialWorkOrderCompany" type="text" th:value="*{{numberPartialWorkOrderCompany}}" />
+		        					
+		        				</td>
+		        				<td th:if="${numberPartialWorkOrderCompanyException}"><div class="alert alert-error" th:text="#{${numberPartialWorkOrderCompanyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyTotalNumberofWorkOrderintheCompany}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="totalNumberofWorkOrderintheCompany" name="totalNumberofWorkOrderintheCompany" type="text" th:value="*{{totalNumberofWorkOrderintheCompany}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="totalNumberofWorkOrderintheCompany" name="totalNumberofWorkOrderintheCompany" type="text" th:value="*{{totalNumberofWorkOrderintheCompany}}" />
+		        					
+		        				</td>
+		        				<td th:if="${totalNumberofWorkOrderintheCompanyException}"><div class="alert alert-error" th:text="#{${totalNumberofWorkOrderintheCompanyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.companyCancelProcessCompany}+': '"></b></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.companyCreate}" type="checkbox" th:field="*{cancelProcessCompany}" />
+		        		   				<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" type="checkbox" th:field="*{cancelProcessCompany}" />
+		        		   			</td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyUserSendHistory}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="userSendHistory" name="userSendHistory" type="text" th:value="*{{userSendHistory}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="userSendHistory" name="userSendHistory" type="text" th:value="*{{userSendHistory}}" />
+		        					
+		        				</td>
+		        				<td th:if="${userSendHistoryException}"><div class="alert alert-error" th:text="#{${userSendHistoryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyStateShippingHistory}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="stateShippingHistory" name="stateShippingHistory" type="text" th:value="*{{stateShippingHistory}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="stateShippingHistory" name="stateShippingHistory" type="text" th:value="*{{stateShippingHistory}}" />
+		        					
+		        				</td>
+		        				<td th:if="${stateShippingHistoryException}"><div class="alert alert-error" th:text="#{${stateShippingHistoryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyStartDateSendingHistory}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="startDateSendingHistory" name="startDateSendingHistory" type="text" th:value="*{{startDateSendingHistory}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="startDateSendingHistory" name="startDateSendingHistory" type="text" th:value="*{{startDateSendingHistory}}" />
+		        					
+		        				</td>
+		        				<td th:if="${startDateSendingHistoryException}"><div class="alert alert-error" th:text="#{${startDateSendingHistoryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyEndingDatelSendingHistory}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="endingDatelSendingHistory" name="endingDatelSendingHistory" type="text" th:value="*{{endingDatelSendingHistory}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="endingDatelSendingHistory" name="endingDatelSendingHistory" type="text" th:value="*{{endingDatelSendingHistory}}" />
+		        					
+		        				</td>
+		        				<td th:if="${endingDatelSendingHistoryException}"><div class="alert alert-error" th:text="#{${endingDatelSendingHistoryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyPartialNumberOfSendingHistory}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="partialNumberOfSendingHistory" name="partialNumberOfSendingHistory" type="text" th:value="*{{partialNumberOfSendingHistory}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="partialNumberOfSendingHistory" name="partialNumberOfSendingHistory" type="text" th:value="*{{partialNumberOfSendingHistory}}" />
+		        					
+		        				</td>
+		        				<td th:if="${partialNumberOfSendingHistoryException}"><div class="alert alert-error" th:text="#{${partialNumberOfSendingHistoryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyTotalNumberOfSendingHistory}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="totalNumberOfSendingHistory" name="totalNumberOfSendingHistory" type="text" th:value="*{{totalNumberOfSendingHistory}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="totalNumberOfSendingHistory" name="totalNumberOfSendingHistory" type="text" th:value="*{{totalNumberOfSendingHistory}}" />
+		        					
+		        				</td>
+		        				<td th:if="${totalNumberOfSendingHistoryException}"><div class="alert alert-error" th:text="#{${totalNumberOfSendingHistoryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.companyCancelSendingHistory}+': '"></b></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.companyCreate}" type="checkbox" th:field="*{cancelSendingHistory}" />
+		        		   				<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" type="checkbox" th:field="*{cancelSendingHistory}" />
+		        		   			</td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyStateCompany}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="stateCompany" name="stateCompany" type="text" th:value="*{{stateCompany}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="stateCompany" name="stateCompany" type="text" th:value="*{{stateCompany}}" />
+		        					
+		        				</td>
+		        				<td th:if="${stateCompanyException}"><div class="alert alert-error" th:text="#{${stateCompanyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyCodeOfWIN}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="codeOfWIN" name="codeOfWIN" type="text" th:value="*{{codeOfWIN}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="codeOfWIN" name="codeOfWIN" type="text" th:value="*{{codeOfWIN}}" />
+		        					
+		        				</td>
+		        				<td th:if="${codeOfWINException}"><div class="alert alert-error" th:text="#{${codeOfWINValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyInventoryConditionPermanent}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="inventoryConditionPermanent" name="inventoryConditionPermanent" type="text" th:value="*{{inventoryConditionPermanent}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="inventoryConditionPermanent" name="inventoryConditionPermanent" type="text" th:value="*{{inventoryConditionPermanent}}" />
+		        					
+		        				</td>
+		        				<td th:if="${inventoryConditionPermanentException}"><div class="alert alert-error" th:text="#{${inventoryConditionPermanentValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyPermanentInventoryWorkOrder}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="permanentInventoryWorkOrder" name="permanentInventoryWorkOrder" type="text" th:value="*{{permanentInventoryWorkOrder}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="permanentInventoryWorkOrder" name="permanentInventoryWorkOrder" type="text" th:value="*{{permanentInventoryWorkOrder}}" />
+		        					
+		        				</td>
+		        				<td th:if="${permanentInventoryWorkOrderException}"><div class="alert alert-error" th:text="#{${permanentInventoryWorkOrderValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyLanguage}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="language" name="language" type="text" th:value="*{{language}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="language" name="language" type="text" th:value="*{{language}}" />
+		        					
+		        				</td>
+		        				<td th:if="${languageException}"><div class="alert alert-error" th:text="#{${languageValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.companyActiveCompany}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.companyCreate}" id="activeCompany" name="activeCompany" type="text" th:value="*{{activeCompany}}" />
+		        					<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" id="activeCompany" name="activeCompany" type="text" th:value="*{{activeCompany}}" />
+		        					
+		        				</td>
+		        				<td th:if="${activeCompanyException}"><div class="alert alert-error" th:text="#{${activeCompanyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.companyActive}+': '"></b></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.companyCreate}" type="checkbox" th:field="*{active}" />
+		        		   				<input th:if="${_loggedInUser.companyCreate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+		        		   			</td>
+		        		</tr>
+
+		        	</table>
+		        	<table>		        			        			
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${companyInfo.created}' class="alert alert-info" th:text="#{label.created}">
+            </div>
+            <div th:if='${companyCreateException}' class="alert alert-error" th:text="#{label.companyCreationError}">
+            </div>
+            <div th:if='${companyValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutmaintenance :: footer"></div>    
+    </body>
+</html>

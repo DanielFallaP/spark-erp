@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.thirdModificationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	    
+	    <link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+    	<link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script th:src="@{/resources/js/bootstrap-tab.js}"></script>
+	    
+    	<script type="text/javascript">
+    	/* <![CDATA[ */
+    	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  $('#back a').trigger('click');
+	    	  }
+	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("company").focus();
+		   }
+
+		    
+		    
+		    
+		    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} ); 
+		    
+	    	$(document).ready( function () {
+	    								 
+	    				    $( "#dateEntry" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    	} );
+	    	$(document).ready( function () {
+	    								 
+	    				    $( "#dateRetirement" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    	} );
+
+		 /* ]]> */
+	     </script>
+	     
+    
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutmaintenance :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${thirdInfo}" method="post">
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/maintenance/third/searchThird}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.thirdModificationTitle}"></h3>
+		        	<br/>
+		        	
+		        	<table>
+		        		<tr>
+		        			<td ><b th:text="#{label.thirdCompany}+': '"></b></td>
+		        			<td>
+		        				<select th:if="${_loggedInUser.thirdUpdate}" id="company" onChange="companySelectedRefresh()" th:field="*{companyId}"><option th:each="reference : ${thirdInfo.companyList}" th:value="${reference.id}" th:text="${reference.companyName}"></option></select>
+		        				<select th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="company" onChange="companySelectedRefresh()" th:field="*{companyId}"><option th:each="reference : ${thirdInfo.companyList}" th:value="${reference.id}" th:text="${reference.companyName}"></option></select>
+		        			</td>
+		        			<td th:if="${companyException}"><div class="alert alert-error" th:text="#{${companyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.thirdCostCenter}+': '"></b></td>
+		        			<td>
+		        				<select th:if="${_loggedInUser.thirdUpdate}" id="costCenter" onChange="costCenterSelectedRefresh()" th:field="*{costCenterId}"><option th:each="reference : ${thirdInfo.costCenterList}" th:value="${reference.id}" th:text="${reference.nameCostCenter}"></option></select>
+		        				<select th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="costCenter" onChange="costCenterSelectedRefresh()" th:field="*{costCenterId}"><option th:each="reference : ${thirdInfo.costCenterList}" th:value="${reference.id}" th:text="${reference.nameCostCenter}"></option></select>
+		        			</td>
+		        			<td th:if="${costCenterException}"><div class="alert alert-error" th:text="#{${costCenterValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdCode}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="code" name="code" type="text" th:value="*{{code}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="code" name="code" type="text" th:value="*{{code}}" />
+		        					
+		        				</td>
+		        				<td th:if="${codeException}"><div class="alert alert-error" th:text="#{${codeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdNameThird}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="nameThird" name="nameThird" type="text" th:value="*{{nameThird}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="nameThird" name="nameThird" type="text" th:value="*{{nameThird}}" />
+		        					
+		        				</td>
+		        				<td th:if="${nameThirdException}"><div class="alert alert-error" th:text="#{${nameThirdValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdTypeThird}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="typeThird" name="typeThird" type="text" th:value="*{{typeThird}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="typeThird" name="typeThird" type="text" th:value="*{{typeThird}}" />
+		        					
+		        				</td>
+		        				<td th:if="${typeThirdException}"><div class="alert alert-error" th:text="#{${typeThirdValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdContact}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="contact" name="contact" type="text" th:value="*{{contact}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="contact" name="contact" type="text" th:value="*{{contact}}" />
+		        					
+		        				</td>
+		        				<td th:if="${contactException}"><div class="alert alert-error" th:text="#{${contactValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdAddress}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="address" name="address" type="text" th:value="*{{address}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="address" name="address" type="text" th:value="*{{address}}" />
+		        					
+		        				</td>
+		        				<td th:if="${addressException}"><div class="alert alert-error" th:text="#{${addressValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdCountry}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="country" name="country" type="text" th:value="*{{country}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="country" name="country" type="text" th:value="*{{country}}" />
+		        					
+		        				</td>
+		        				<td th:if="${countryException}"><div class="alert alert-error" th:text="#{${countryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPhoneOne}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="phoneOne" name="phoneOne" type="text" th:value="*{{phoneOne}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="phoneOne" name="phoneOne" type="text" th:value="*{{phoneOne}}" />
+		        					
+		        				</td>
+		        				<td th:if="${phoneOneException}"><div class="alert alert-error" th:text="#{${phoneOneValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdPhoneTwo}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="phoneTwo" name="phoneTwo" type="text" th:value="*{{phoneTwo}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="phoneTwo" name="phoneTwo" type="text" th:value="*{{phoneTwo}}" />
+		        					
+		        				</td>
+		        				<td th:if="${phoneTwoException}"><div class="alert alert-error" th:text="#{${phoneTwoValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdEmail}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="email" name="email" type="text" th:value="*{{email}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="email" name="email" type="text" th:value="*{{email}}" />
+		        					
+		        				</td>
+		        				<td th:if="${emailException}"><div class="alert alert-error" th:text="#{${emailValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdDateEntry}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="dateEntry" name="dateEntry" type="text" th:value="*{{dateEntry}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="dateEntry" name="dateEntry" type="text" th:value="*{{dateEntry}}" />
+		        					
+		        				</td>
+		        				<td th:if="${dateEntryException}"><div class="alert alert-error" th:text="#{${dateEntryValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdDateRetirement}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="dateRetirement" name="dateRetirement" type="text" th:value="*{{dateRetirement}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="dateRetirement" name="dateRetirement" type="text" th:value="*{{dateRetirement}}" />
+		        					
+		        				</td>
+		        				<td th:if="${dateRetirementException}"><div class="alert alert-error" th:text="#{${dateRetirementValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdComment}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="comment" name="comment" type="text" th:value="*{{comment}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="comment" name="comment" type="text" th:value="*{{comment}}" />
+		        					
+		        				</td>
+		        				<td th:if="${commentException}"><div class="alert alert-error" th:text="#{${commentValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdBigContributor}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="bigContributor" name="bigContributor" type="text" th:value="*{{bigContributor}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="bigContributor" name="bigContributor" type="text" th:value="*{{bigContributor}}" />
+		        					
+		        				</td>
+		        				<td th:if="${bigContributorException}"><div class="alert alert-error" th:text="#{${bigContributorValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdAutorretenedor}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="autorretenedor" name="autorretenedor" type="text" th:value="*{{autorretenedor}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="autorretenedor" name="autorretenedor" type="text" th:value="*{{autorretenedor}}" />
+		        					
+		        				</td>
+		        				<td th:if="${autorretenedorException}"><div class="alert alert-error" th:text="#{${autorretenedorValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdTypeRegime}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="typeRegime" name="typeRegime" type="text" th:value="*{{typeRegime}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="typeRegime" name="typeRegime" type="text" th:value="*{{typeRegime}}" />
+		        					
+		        				</td>
+		        				<td th:if="${typeRegimeException}"><div class="alert alert-error" th:text="#{${typeRegimeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdExternalAccess}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="externalAccess" name="externalAccess" type="text" th:value="*{{externalAccess}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="externalAccess" name="externalAccess" type="text" th:value="*{{externalAccess}}" />
+		        					
+		        				</td>
+		        				<td th:if="${externalAccessException}"><div class="alert alert-error" th:text="#{${externalAccessValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.thirdKeyExternalAccess}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.thirdUpdate}" id="keyExternalAccess" name="keyExternalAccess" type="text" th:value="*{{keyExternalAccess}}" />
+		        					<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" id="keyExternalAccess" name="keyExternalAccess" type="text" th:value="*{{keyExternalAccess}}" />
+		        					
+		        				</td>
+		        				<td th:if="${keyExternalAccessException}"><div class="alert alert-error" th:text="#{${keyExternalAccessValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.thirdStateThird}+': '"></b></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.thirdUpdate}" type="checkbox" th:field="*{stateThird}" />
+		        		   				<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" type="checkbox" th:field="*{stateThird}" />
+		        		   			</td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.thirdActive}+': '"></b></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.thirdUpdate}" type="checkbox" th:field="*{active}" />
+		        		   				<input th:if="${_loggedInUser.thirdUpdate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+		        		   			</td>
+		        		</tr>
+
+		        	</table>
+		        	<table>
+		        		<tr>
+		        			<td>
+		        				<input th:if="${_loggedInUser.ThirdUpdate}" type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div th:if='${thirdModificationException}' class="alert alert-error" th:text="#{label.thirdModificationError}">
+            </div>
+            <div th:if='${thirdValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutmaintenance :: footer"></div>    
+    </body>
+</html>

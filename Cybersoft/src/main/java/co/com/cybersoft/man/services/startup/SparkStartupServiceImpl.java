@@ -13,12 +13,8 @@ import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import co.com.cybersoft.man.jobs.CleanupDirectoryJob;
 import co.com.cybersoft.man.jobs.UpdateTodayRateJob;
 import co.com.cybersoft.man.services.currency.CurrencyUpdateService;
-import co.com.cybersoft.man.services.excel.ReportingService;
-import co.com.cybersoft.man.services.sequence.SequenceService;
-import co.com.cybersoft.man.services.tenancy.TenantConfigurationService;
 import co.com.cybersoft.man.services.timer.TimerService;
 
 public class SparkStartupServiceImpl implements SparkStartupService{

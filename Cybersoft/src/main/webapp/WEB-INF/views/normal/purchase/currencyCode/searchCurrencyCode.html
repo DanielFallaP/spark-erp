@@ -276,9 +276,9 @@
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisition}" th:text="#{label.requisitionsOption}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisitionDistribution}" th:text="#{label.requisitionDistributionOption}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchQuotation}" th:text="#{label.quotationOption}"></a></li>
-			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.purchaseOrders}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.Orders}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchItemReceipt}" th:text="#{label.itemReceiptOrder}"></a></li>
-<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/purchaseOrderOtherValue}" th:text="#{label.purchaseOrderOtherValueOption}"></a></li> -->
+<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/OrderOtherValue}" th:text="#{label.OrderOtherValueOption}"></a></li> -->
 									<li sec:authorize-url="/purchase"><a th:href="@{/purchase}" th:text="#{label.navbarConfiguration}"></a></li>
 			                        <li sec:authorize-url="/purchaseSettings"><a th:href="@{/purchaseSettings}" th:text="#{label.settingsOption}"></a></li>
 			                        <li sec:authorize-url="/preferences"><a th:href="@{/preferences}" th:text="#{label.languageOption}"></a></li>
@@ -306,9 +306,9 @@
 			
 			<table width="100%">
 				<tr>
-					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/purchase/currencyCode/createCurrencyCode/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:if="${_loggedInUser.currencyCodeCreate}" th:href="@{/purchase/currencyCode/createCurrencyCode/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
 					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
-					<td width="34%"><div align="right"><img style="cursor: pointer;" onclick="generateExcelFile();" th:src="@{/resources/img/excel.png}"/></div></td>
+					<td width="34%"><div align="right"><img th:if="${_loggedInUser.currencyCodeExport}" style="cursor: pointer;" onclick="generateExcelFile();" th:src="@{/resources/img/excel.png}"/></div></td>
 				</tr>
 			</table>
 			<table class="table table-striped" >

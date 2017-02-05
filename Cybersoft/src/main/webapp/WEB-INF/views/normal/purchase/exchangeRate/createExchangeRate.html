@@ -25,7 +25,10 @@
 	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
 	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
         <script th:src="@{/resources/js/bootstrap-tab.js}"></script>
-	  
+	    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	    
+		<link rel="stylesheet" type="text/css" th:href="@{/resources/css/datetimepicker.css}"/>
+		<script th:src="@{/resources/js/datetimepicker.js}"></script>  
 	    <script type="text/javascript">
 	      /* <![CDATA[ */
 	      
@@ -59,8 +62,9 @@
 			} );
 		   
 		    $(document).ready( function () {
-		    							 
-		    			    $( "#date" ).datepicker({ dateFormat: 'dd/mm/yy' });
+		    	 $('#date').datetimepicker( {timepicker:false,
+		    			 format:'d.m.Y'});
+// 		    			    $( "#date" ).datepicker({ dateFormat: 'dd/mm/yy' });
 		    } );
 
 	       /* ]]> */
@@ -81,22 +85,37 @@
 		        		<table>
 		        			<tr>
 		        				<td ><b th:text="#{label.exchangeRateLocalCurrency}+': '"></b></td>
-		        				<td><select id="localCurrency" onChange="localCurrencySelectedRefresh()" th:field="*{localCurrencyId}"><option th:each="reference : ${exchangeRateInfo.localCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        				<td>
+		        					<select th:if="${_loggedInUser.exchangeRateCreate}" id="localCurrency" onChange="localCurrencySelectedRefresh()" th:field="*{localCurrencyId}"><option th:each="reference : ${exchangeRateInfo.localCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select>
+		        					<select th:if="${_loggedInUser.exchangeRateCreate} != true" disabled="disabled" id="localCurrency" onChange="localCurrencySelectedRefresh()" th:field="*{localCurrencyId}"><option th:each="reference : ${exchangeRateInfo.localCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select>
+		        				</td>
 		        				<td th:if="${localCurrencyException}"><div class="alert alert-error" th:text="#{${localCurrencyValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        				<td ><b th:text="#{label.exchangeRateForeignCurrency}+': '"></b></td>
-		        				<td><select id="foreignCurrency" onChange="foreignCurrencySelectedRefresh()" th:field="*{foreignCurrencyId}"><option th:each="reference : ${exchangeRateInfo.foreignCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        				<td>
+		        					<select th:if="${_loggedInUser.exchangeRateCreate}" id="foreignCurrency" onChange="foreignCurrencySelectedRefresh()" th:field="*{foreignCurrencyId}"><option th:each="reference : ${exchangeRateInfo.foreignCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select>
+		        					<select th:if="${_loggedInUser.exchangeRateCreate} != true" disabled="disabled" id="foreignCurrency" onChange="foreignCurrencySelectedRefresh()" th:field="*{foreignCurrencyId}"><option th:each="reference : ${exchangeRateInfo.foreignCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select>
+		        				</td>
 		        				<td th:if="${foreignCurrencyException}"><div class="alert alert-error" th:text="#{${foreignCurrencyValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        					<td ><b th:text="#{label.exchangeRateDate}+': '"></b></td>
-		        					<td><input id="date" name="date" type="text" th:value="*{{date}}" /></td>
+		        					<td>
+		        					
+		        							<input th:if="${_loggedInUser.exchangeRateCreate}" id="date" name="date" type="text" th:value="*{{date}}" />
+<!-- 						                    <input type='text' class="form-control" /> -->
+<!-- 		        						<input th:if="${_loggedInUser.exchangeRateCreate} != true" disabled="disabled" id="date" name="date" type="text" th:value="*{{date}}" /> -->
+		        					</td>
 		        					<td th:if="${dateException}"><div class="alert alert-error" th:text="#{${dateValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        					<td ><b th:text="#{label.exchangeRateExchangeRate}+': '"></b></td>
-		        					<td><input id="exchangeRate" name="exchangeRate" type="text" th:value="*{{exchangeRate}}" /></td>
+		        					<td>
+		        						<input th:if="${_loggedInUser.exchangeRateCreate}" id="exchangeRate" name="exchangeRate" type="text" th:value="*{{exchangeRate}}" />
+		        						<input th:if="${_loggedInUser.exchangeRateCreate} != true" disabled="disabled" id="exchangeRate" name="exchangeRate" type="text" th:value="*{{exchangeRate}}" />
+		        						
+		        					</td>
 		        					<td th:if="${exchangeRateException}"><div class="alert alert-error" th:text="#{${exchangeRateValidationErrorMessage}}"></div></td>
 		        			</tr>
 
@@ -105,12 +124,19 @@
 		        		<table>
 		        			<tr>
 		        					<td ><b th:text="#{label.exchangeRateVariation}+': '"></b></td>
-		        					<td><input id="variation" name="variation" type="text" th:value="*{{variation}}" /></td>
+		        					<td>
+		        						<input th:if="${_loggedInUser.exchangeRateCreate}" id="variation" name="variation" type="text" th:value="*{{variation}}" />
+		        						<input th:if="${_loggedInUser.exchangeRateCreate} != true" disabled="disabled" id="variation" name="variation" type="text" th:value="*{{variation}}" />
+		        						
+		        					</td>
 		        					<td th:if="${variationException}"><div class="alert alert-error" th:text="#{${variationValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        			 			<td ><b th:text="#{label.exchangeRateActive}+': '"></b></td>
-		        			   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.exchangeRateCreate}" type="checkbox" th:field="*{active}" />
+		        			   				<input th:if="${_loggedInUser.exchangeRateCreate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+		        			   			</td>
 		        			</tr>
 
 		        		</table>

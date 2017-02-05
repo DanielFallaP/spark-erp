@@ -1,10 +1,13 @@
 package co.com.cybersoft.purchase.tables.web.controller.continent;
 
+import co.com.cybersoft.purchase.tables.core.domain.ContinentDetails;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
+import org.springframework.ui.Model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,8 +54,10 @@ public class ContinentCreationController {
 	
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String continentCreation() throws Exception {
+	public String modification(Model model, HttpServletRequest request){
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		return "/purchase/continent/createContinent";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -64,6 +69,9 @@ public class ContinentCreationController {
 		continentDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		continentDetails.setDateOfCreation(new Date());
 		continentDetails.setDateOfModification(new Date());
+		//continentDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		request.getSession().setAttribute("continentInfo", continentInfo);
 		continentService.createContinent(new CreateContinentEvent(continentDetails));

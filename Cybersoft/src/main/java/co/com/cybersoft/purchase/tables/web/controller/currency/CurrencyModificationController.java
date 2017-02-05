@@ -5,9 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import org.springframework.transaction.annotation.Transactional;
-
 
 import org.springframework.ui.Model;
 import org.slf4j.Logger;
@@ -25,16 +23,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import co.com.cybersoft.purchase.tables.core.domain.CurrencyDetails;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
 import co.com.cybersoft.purchase.tables.core.domain.CurrencyDetails;
-import co.com.cybersoft.purchase.tables.core.domain.UsersDetails;
 import co.com.cybersoft.purchase.tables.core.services.currency.CurrencyService;
 import co.com.cybersoft.purchase.tables.events.currency.CurrencyDetailsEvent;
 import co.com.cybersoft.purchase.tables.events.currency.CurrencyModificationEvent;
 import co.com.cybersoft.purchase.tables.events.currency.RequestCurrencyDetailsEvent;
-import co.com.cybersoft.purchase.tables.persistence.domain.Users;
 import co.com.cybersoft.purchase.tables.web.domain.currency.CurrencyInfo;
 import co.com.cybersoft.purchase.tables.core.services.currencyCode.CurrencyCodeService;
 import co.com.cybersoft.purchase.tables.events.currencyCode.CurrencyCodePageEvent;
@@ -62,21 +59,22 @@ public class CurrencyModificationController {
 	@RequestMapping(method=RequestMethod.GET)
 	public String modification(Model model, HttpServletRequest request){
 		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
-
 		return "/purchase/currency/modifyCurrency";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@Transactional(readOnly=false)
-	public String modifyCurrency(Model model,@PathVariable("id") Long id, @Valid @ModelAttribute("currencyInfo") CurrencyInfo currencyInfo, HttpServletRequest request) throws Exception {
+	public String modifyCurrency(Model model, @PathVariable("id") Long id, @Valid @ModelAttribute("currencyInfo") CurrencyInfo currencyInfo, HttpServletRequest request) throws Exception {
 		
 		CurrencyDetails currencyDetails = createCurrencyDetails(currencyInfo);
 		currencyDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		currencyDetails.setDateOfModification(new Date());
-		currencyDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+		//currencyDetails.set_companyId(((CurrencyDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
 
 		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
-
+		
+		
 		request.getSession().setAttribute("currencyInfo", currencyInfo);
 		currencyService.modifyCurrency(new CurrencyModificationEvent(currencyDetails));
 		return "redirect:/purchase/currency/searchCurrency";

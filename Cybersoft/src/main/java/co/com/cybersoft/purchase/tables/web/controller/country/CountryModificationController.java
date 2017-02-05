@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import org.springframework.ui.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import co.com.cybersoft.purchase.tables.core.domain.CountryDetails;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
@@ -56,17 +57,23 @@ public class CountryModificationController {
 	
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String modification(){
+	public String modification(Model model, HttpServletRequest request){
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		return "/purchase/country/modifyCountry";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@Transactional(readOnly=false)
-	public String modifyCountry(@PathVariable("id") Long id, @Valid @ModelAttribute("countryInfo") CountryInfo countryInfo, HttpServletRequest request) throws Exception {
+	public String modifyCountry(Model model, @PathVariable("id") Long id, @Valid @ModelAttribute("countryInfo") CountryInfo countryInfo, HttpServletRequest request) throws Exception {
 		
 		CountryDetails countryDetails = createCountryDetails(countryInfo);
 		countryDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		countryDetails.setDateOfModification(new Date());
+		//countryDetails.set_companyId(((CountryDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
+		
 		
 		request.getSession().setAttribute("countryInfo", countryInfo);
 		countryService.modifyCountry(new CountryModificationEvent(countryDetails));

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags">
+ <head>
+<meta charset="UTF-8"/>
+<title th:text="#{label.conceptKardexInfo}"></title>
+
+<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	        .page-selection{background-color:#fff!important;border:1px #fff!important;box-shadow:inset 0 1px 1px transparent!important;transition:border linear .2s,box-shadow linear .2s!important;display:inline-block!important;height:12px!important;padding:4px 6px!important;margin:-4px -11px -3px!important;font-size:14px!important;line-height:0!important;color:#555!important;vertical-align:middle!important;border-radius:0!important;width:23px!important;text-align:right}
+	    </style>
+	     <link th:href="@{/resources/css/cybersystems.css}" rel="stylesheet" />
+	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+		 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		 <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	     <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+ 	     <script th:src="@{/resources/js/bootstrap-alert.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-collapse.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-dropdown.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-modal.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-transitions.js}"></script>
+	     
+	     
+	     <script type="text/javascript">
+	     	/* <![CDATA[ */
+	     	
+	     function resetPageValue(){
+	    	 document.getElementById("_page").value=document.getElementById("_currentPage").value;
+	     }
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 13 && document.getElementById("_page") === document.activeElement) {
+	    		/*if (	document.getElementById("_page").value== null
+	    			  	|| document.getElementById("_page").value == ""
+	    				|| isNaN(document.getElementById("_page").value) 
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_page").value <= 0)
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_totalPages").value < document.getElementById("_page").value)
+	    			){
+					alert('Invalid page number');
+					resetPageValue();
+	    		}
+	    		else{*/
+		    		var path=window.location.pathname.split("/");
+	 	    		var prefix="";
+	 	    		if (path[1].localeCompare("configuration")!=0){
+	 	    			prefix="/"+path[1];	
+	 	    		}
+					submitFilterPage(document.getElementById("_page").value);	 	    		
+	    		//}
+	    	  }
+	    		else if (e.which == 13 && (document.getElementById("createdBy") === document.activeElement || document.getElementById("userName") === document.activeElement || 
+	    		document.getElementById("dateOfModification") === document.activeElement || document.getElementById("dateOfCreation") === document.activeElement  || document.getElementById("company") === document.activeElement
+ || document.getElementById("store") === document.activeElement
+ || document.getElementById("numberConceptKardex") === document.activeElement
+ || document.getElementById("nameConceptKardex") === document.activeElement
+ || document.getElementById("typeConceptKardex") === document.activeElement
+ || document.getElementById("indicatorTransfers") === document.activeElement
+ || document.getElementById("workOrderConceptKardex") === document.activeElement
+ || document.getElementById("defaultIndicatorConcept") === document.activeElement
+ || document.getElementById("subtypeConceptKardex") === document.activeElement
+ || document.getElementById("deliveryConceptContractor") === document.activeElement
+ || document.getElementById("active") === document.activeElement
+)){
+	    		  submitFilter(1);
+	    		}
+	    	});
+	     	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+		       }
+	    	});
+	    	
+	    $(document).keyup(function(e) {
+	    	  if(e.which == 27 ) {
+	  			$('#back a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 107) {
+	     		  $('#new a').trigger('click');
+	    	  }
+	    	});
+	    	
+	       $(document).keyup(function(e) {
+	    	  if(e.which == 34) {
+	    	  //if(e.which == 39 || e.which == 34) {
+	     		  $('#_nextPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 33) {
+//	    	  if(e.which == 37 || e.which == 33) {
+	     		  $('#_previousPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 35) {
+	     		  $('#_lastPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 36) {
+	     		  $('#_firstPage a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	    $(window).load(function(){
+		$('#search tr').hover(function() {
+		    $(this).addClass('hover');
+		}, function() {
+		    $(this).removeClass('hover');
+		});
+		});
+
+		function submitFilter(page){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+			form.submit();
+	    }
+	    
+		function submitAction(action){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["aaaaction"].value=action;
+    	 	form.elements["selectedFilterPage"].value=1;
+    	 	form.submit();
+	    }
+	    
+	    function addFilter(){
+	    	if(document.getElementById('company')!=undefined)document.getElementById('company').value='';
+	    	if(document.getElementById('store')!=undefined)document.getElementById('store').value='';
+	    	if(document.getElementById('numberConceptKardex')!=undefined)document.getElementById('numberConceptKardex').value='';
+	    	if(document.getElementById('nameConceptKardex')!=undefined)document.getElementById('nameConceptKardex').value='';
+	    	if(document.getElementById('typeConceptKardex')!=undefined)document.getElementById('typeConceptKardex').value='';
+	    	if(document.getElementById('indicatorTransfers')!=undefined)document.getElementById('indicatorTransfers').value='';
+	    	if(document.getElementById('workOrderConceptKardex')!=undefined)document.getElementById('workOrderConceptKardex').value='';
+	    	if(document.getElementById('defaultIndicatorConcept')!=undefined)document.getElementById('defaultIndicatorConcept').value='';
+	    	if(document.getElementById('subtypeConceptKardex')!=undefined)document.getElementById('subtypeConceptKardex').value='';
+	    	if(document.getElementById('deliveryConceptContractor')!=undefined)document.getElementById('deliveryConceptContractor').value='';
+	    	if(document.getElementById('active')!=undefined)document.getElementById('active').value='';
+
+	    	document.getElementById('dateOfModification').value='';		    	
+	    	document.getElementById('userName').value='';		    	
+	    	document.getElementById('dateOfCreation').value='';		    	
+	    	document.getElementById('createdBy').value='';		    	
+	    	
+	    
+		 	var form=document.forms['filter-form'];
+    	 	form.elements["aaddFilter"].value=true;
+    	 	form.elements["fffilterNature"].value='UNION';
+		}
+		
+	    function addFilterSubstract(){
+        	if(document.getElementById('company')!=undefined)document.getElementById('company').value='';
+        	if(document.getElementById('store')!=undefined)document.getElementById('store').value='';
+        	if(document.getElementById('numberConceptKardex')!=undefined)document.getElementById('numberConceptKardex').value='';
+        	if(document.getElementById('nameConceptKardex')!=undefined)document.getElementById('nameConceptKardex').value='';
+        	if(document.getElementById('typeConceptKardex')!=undefined)document.getElementById('typeConceptKardex').value='';
+        	if(document.getElementById('indicatorTransfers')!=undefined)document.getElementById('indicatorTransfers').value='';
+        	if(document.getElementById('workOrderConceptKardex')!=undefined)document.getElementById('workOrderConceptKardex').value='';
+        	if(document.getElementById('defaultIndicatorConcept')!=undefined)document.getElementById('defaultIndicatorConcept').value='';
+        	if(document.getElementById('subtypeConceptKardex')!=undefined)document.getElementById('subtypeConceptKardex').value='';
+        	if(document.getElementById('deliveryConceptContractor')!=undefined)document.getElementById('deliveryConceptContractor').value='';
+        	if(document.getElementById('active')!=undefined)document.getElementById('active').value='';
+
+	    	document.getElementById('dateOfModification').value='';		    	
+	    	document.getElementById('userName').value='';		    	
+	    	document.getElementById('dateOfCreation').value='';		    	
+	    	document.getElementById('createdBy').value='';		    	
+	    	
+	    
+		 	var form=document.forms['filter-form'];
+    	 	form.elements["aaddFilter"].value=true;
+    		form.elements["fffilterNature"].value='SUBSTRACT';
+	    }
+		
+		function submitFilterPage(page,field,changeDirection){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+    	 	if (field!=null)
+    	 		form.elements["selectedFilterField"].value=field;
+   	 		form.elements["changeSortingFieldDirection"].value=changeDirection!=null?true:false;
+    	 	form.submit();
+	    }
+
+	    function buildURL(id){
+	    	var path=window.location.pathname.split("/");
+  	    	var prefix="";
+  	    	if (path[1].localeCompare("configuration")!=0){
+  	    		prefix="/"+path[1];	
+  	    	}
+	    	var url=prefix+"/maintenance/conceptKardex/modifyConceptKardex/"+id;
+	    	document.location=url;
+	    }
+	    
+	    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );   	
+	    	
+	    function generateExcelFile(){
+
+	    	var path=window.location.pathname.split("/");
+  	    	var prefix="";
+  	    	if (path[1].localeCompare("configuration")!=0){
+  	    		prefix="/"+path[1];	
+  	    	}
+  	    	var url=prefix+'/maintenance/conceptKardex/export';
+
+	    	        $.ajax({
+	    	            url: url,
+	    	            type: 'post',
+	    	            dataType: 'json',
+	    	            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+	    	            success : function(result, a,b,c){
+	    	            	window.open(prefix+result.url, "_blank");
+	    	            },
+	    	            error: function(a,b,c,d){
+	    	            },
+	    	            async: true
+	    	            
+	    	        });
+	    }
+ 		       /* ]]> */
+	     </script>
+	    
+</head>
+<body>
+	<div th:fragment="header">
+		    <div class="navbar navbar-inverse navbar-fixed-top">
+		        <div class="navbar-inner">
+		            <div class="container-fluid">
+					<form hidden="" id="navBar" th:action="@{/logout}" method="post">
+						<input id="logoutURL" type="hidden" th:value="@{/logout}"/>
+					</form>
+		                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                </a>
+		                <a class="brand" th:href="@{/}" ><img alt="" th:src="@{/resources/img/spark.png}" /></a>
+			                <div class="nav-collapse collapse">
+			                    <p class="navbar-text pull-right">
+			
+			                    </p>
+			                    <ul class="nav" id="navigationBar">
+				                    
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisition}" th:text="#{label.requisitionsOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisitionDistribution}" th:text="#{label.requisitionDistributionOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchQuotation}" th:text="#{label.quotationOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.Orders}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchItemReceipt}" th:text="#{label.itemReceiptOrder}"></a></li>
+<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/OrderOtherValue}" th:text="#{label.OrderOtherValueOption}"></a></li> -->
+									<li sec:authorize-url="/maintenance"><a th:href="@{/maintenance}" th:text="#{label.navbarConfiguration}"></a></li>
+			                        <li sec:authorize-url="/maintenanceSettings"><a th:href="@{/maintenanceSettings}" th:text="#{label.settingsOption}"></a></li>
+			                        <li sec:authorize-url="/preferences"><a th:href="@{/preferences}" th:text="#{label.languageOption}"></a></li>
+			                        <li><a id="about-ajax-popup" class="about-ajax-popup" th:href="@{/about}" th:text="#{label.aboutOption}"></a></li>
+			                        <li><a href=""><img onclick="var url=$('#logoutURL').val();$.ajax({type: 'POST',url: url});" th:src="@{/resources/img/logout.png}"/></a></li>
+			                    </ul>
+			                </div> <!--/.nav-collapse -->
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	<div class="container-fluid">	
+		<div class="row-fluid">
+			<div id="back"><a th:text="#{label.back}" th:href="@{/maintenance}"></a></div>
+			<h3 th:text="#{label.conceptKardexInfo}"> </h3>
+			<form id="filter-form" th:object="${conceptKardexFilterInfo}" method="post" >
+		  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
+		  	<input id="aaaaction" type="hidden" th:field="*{aaaaction}"/>
+			<input id="aaddFilter" type="hidden" th:field="*{aaddFilter}"/>
+			<input id="fffilterNature" type="hidden" th:field="*{fffilterNature}"/>
+			<input id="selectedFilterField" type="hidden" th:field="*{selectedFilterField}"/>
+		  	<input id="changeSortingFieldDirection" type="hidden" th:field="*{changeSortingFieldDirection}"/>
+			<div style="float:left;"><b id="filterAsText" th:text="'Filter: '+${ffilterAsText}"></b></div><div style="float:right;margin-top: 0;margin-bottom: 0;" id="unionOp" class='pagination pagination-left'><ul><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilterSubstract();">-</label></a></li><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilter();">U</label></a></li></ul></div>
+			
+			
+			<table width="100%">
+				<tr>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:if="${_loggedInUser.conceptKardexCreate}" th:href="@{/maintenance/conceptKardex/createConceptKardex/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
+					<td width="34%"><div align="right"><img th:if="${_loggedInUser.conceptKardexExport}" style="cursor: pointer;" onclick="generateExcelFile();" th:src="@{/resources/img/excel.png}"/></div></td>
+				</tr>
+			</table>
+			<table class="table table-striped" >
+				<thead>
+					<tr>
+						<th >
+							<div><input style="width:100%;" id="company" name="company" type="text" th:value="*{{company}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="store" name="store" type="text" th:value="*{{store}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="numberConceptKardex" name="numberConceptKardex" type="text" th:value="*{{numberConceptKardex}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="nameConceptKardex" name="nameConceptKardex" type="text" th:value="*{{nameConceptKardex}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="typeConceptKardex" name="typeConceptKardex" type="text" th:value="*{{typeConceptKardex}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="indicatorTransfers" name="indicatorTransfers" type="text" th:value="*{{indicatorTransfers}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="workOrderConceptKardex" name="workOrderConceptKardex" type="text" th:value="*{{workOrderConceptKardex}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="defaultIndicatorConcept" name="defaultIndicatorConcept" type="text" th:value="*{{defaultIndicatorConcept}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="subtypeConceptKardex" name="subtypeConceptKardex" type="text" th:value="*{{subtypeConceptKardex}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="deliveryConceptContractor" name="deliveryConceptContractor" type="text" th:value="*{{deliveryConceptContractor}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="active" name="active" type="text" th:value="*{{active}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateOfModification" name="dateOfModification" type="text" th:value="*{{dateOfModification}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="userName" name="userName" type="text" th:value="*{{userName}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateOfCreation" name="dateOfCreation" type="text" th:value="*{{dateOfCreation}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="createdBy" name="createdBy" type="text" th:value="*{{createdBy}}" /></div>
+						</th>
+
+					</tr>
+					<tr>
+						<th >
+							<div>
+								<a th:if="${_field} == 'company' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'company\',true)'" th:text="'&uarr;'+#{label.conceptKardexCompany}"></a>
+								<a th:if="${_field} == 'company' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'company\',true)'" th:text="'&darr;'+#{label.conceptKardexCompany}"></a>
+								<a th:if="${_field} != 'company'" th:href="'javascript:submitFilterPage(1,\'company\',true)'" th:text="#{label.conceptKardexCompany}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'store' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'store\',true)'" th:text="'&uarr;'+#{label.conceptKardexStore}"></a>
+								<a th:if="${_field} == 'store' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'store\',true)'" th:text="'&darr;'+#{label.conceptKardexStore}"></a>
+								<a th:if="${_field} != 'store'" th:href="'javascript:submitFilterPage(1,\'store\',true)'" th:text="#{label.conceptKardexStore}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'numberConceptKardex' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'numberConceptKardex\',true)'" th:text="'&uarr;'+#{label.conceptKardexNumberConceptKardex}"></a>
+								<a th:if="${_field} == 'numberConceptKardex' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'numberConceptKardex\',true)'" th:text="'&darr;'+#{label.conceptKardexNumberConceptKardex}"></a>
+								<a th:if="${_field} != 'numberConceptKardex'" th:href="'javascript:submitFilterPage(1,\'numberConceptKardex\',true)'" th:text="#{label.conceptKardexNumberConceptKardex}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'nameConceptKardex' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'nameConceptKardex\',true)'" th:text="'&uarr;'+#{label.conceptKardexNameConceptKardex}"></a>
+								<a th:if="${_field} == 'nameConceptKardex' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'nameConceptKardex\',true)'" th:text="'&darr;'+#{label.conceptKardexNameConceptKardex}"></a>
+								<a th:if="${_field} != 'nameConceptKardex'" th:href="'javascript:submitFilterPage(1,\'nameConceptKardex\',true)'" th:text="#{label.conceptKardexNameConceptKardex}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'typeConceptKardex' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'typeConceptKardex\',true)'" th:text="'&uarr;'+#{label.conceptKardexTypeConceptKardex}"></a>
+								<a th:if="${_field} == 'typeConceptKardex' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'typeConceptKardex\',true)'" th:text="'&darr;'+#{label.conceptKardexTypeConceptKardex}"></a>
+								<a th:if="${_field} != 'typeConceptKardex'" th:href="'javascript:submitFilterPage(1,\'typeConceptKardex\',true)'" th:text="#{label.conceptKardexTypeConceptKardex}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'indicatorTransfers' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'indicatorTransfers\',true)'" th:text="'&uarr;'+#{label.conceptKardexIndicatorTransfers}"></a>
+								<a th:if="${_field} == 'indicatorTransfers' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'indicatorTransfers\',true)'" th:text="'&darr;'+#{label.conceptKardexIndicatorTransfers}"></a>
+								<a th:if="${_field} != 'indicatorTransfers'" th:href="'javascript:submitFilterPage(1,\'indicatorTransfers\',true)'" th:text="#{label.conceptKardexIndicatorTransfers}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'workOrderConceptKardex' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'workOrderConceptKardex\',true)'" th:text="'&uarr;'+#{label.conceptKardexWorkOrderConceptKardex}"></a>
+								<a th:if="${_field} == 'workOrderConceptKardex' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'workOrderConceptKardex\',true)'" th:text="'&darr;'+#{label.conceptKardexWorkOrderConceptKardex}"></a>
+								<a th:if="${_field} != 'workOrderConceptKardex'" th:href="'javascript:submitFilterPage(1,\'workOrderConceptKardex\',true)'" th:text="#{label.conceptKardexWorkOrderConceptKardex}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'defaultIndicatorConcept' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'defaultIndicatorConcept\',true)'" th:text="'&uarr;'+#{label.conceptKardexDefaultIndicatorConcept}"></a>
+								<a th:if="${_field} == 'defaultIndicatorConcept' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'defaultIndicatorConcept\',true)'" th:text="'&darr;'+#{label.conceptKardexDefaultIndicatorConcept}"></a>
+								<a th:if="${_field} != 'defaultIndicatorConcept'" th:href="'javascript:submitFilterPage(1,\'defaultIndicatorConcept\',true)'" th:text="#{label.conceptKardexDefaultIndicatorConcept}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'subtypeConceptKardex' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'subtypeConceptKardex\',true)'" th:text="'&uarr;'+#{label.conceptKardexSubtypeConceptKardex}"></a>
+								<a th:if="${_field} == 'subtypeConceptKardex' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'subtypeConceptKardex\',true)'" th:text="'&darr;'+#{label.conceptKardexSubtypeConceptKardex}"></a>
+								<a th:if="${_field} != 'subtypeConceptKardex'" th:href="'javascript:submitFilterPage(1,\'subtypeConceptKardex\',true)'" th:text="#{label.conceptKardexSubtypeConceptKardex}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'deliveryConceptContractor' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'deliveryConceptContractor\',true)'" th:text="'&uarr;'+#{label.conceptKardexDeliveryConceptContractor}"></a>
+								<a th:if="${_field} == 'deliveryConceptContractor' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'deliveryConceptContractor\',true)'" th:text="'&darr;'+#{label.conceptKardexDeliveryConceptContractor}"></a>
+								<a th:if="${_field} != 'deliveryConceptContractor'" th:href="'javascript:submitFilterPage(1,\'deliveryConceptContractor\',true)'" th:text="#{label.conceptKardexDeliveryConceptContractor}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'active' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'active\',true)'" th:text="'&uarr;'+#{label.conceptKardexActive}"></a>
+								<a th:if="${_field} == 'active' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'active\',true)'" th:text="'&darr;'+#{label.conceptKardexActive}"></a>
+								<a th:if="${_field} != 'active'" th:href="'javascript:submitFilterPage(1,\'active\',true)'" th:text="#{label.conceptKardexActive}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateOfModification' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="'&uarr;'+#{label.dateOfModification}"></a>
+								<a th:if="${_field} == 'dateOfModification' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="'&darr;'+#{label.dateOfModification}"></a>
+								<a th:if="${_field} != 'dateOfModification'" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="#{label.dateOfModification}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'userName' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="'&uarr;'+#{label.userOfModification}"></a>
+								<a th:if="${_field} == 'userName' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="'&darr;'+#{label.userOfModification}"></a>
+								<a th:if="${_field} != 'userName'" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="#{label.userOfModification}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateOfCreation' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="'&uarr;'+#{label.dateOfCreation}"></a>
+								<a th:if="${_field} == 'dateOfCreation' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="'&darr;'+#{label.dateOfCreation}"></a>
+								<a th:if="${_field} != 'dateOfCreation'" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="#{label.dateOfCreation}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'createdBy' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="'&uarr;'+#{label.createdBy}"></a>
+								<a th:if="${_field} == 'createdBy' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="'&darr;'+#{label.createdBy}"></a>
+								<a th:if="${_field} != 'createdBy'" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="#{label.createdBy}"></a>
+							</div>
+						</th>
+
+					</tr>
+				</thead>
+				<tbody id="search">
+					<tr th:each="object: ${list}" th:onClick="'buildURL(\''+${object.id}+'\')'">
+						<td th:text="${object.company.companyName}"></td>
+						<td th:text="${object.store.storeName}"></td>
+						<td th:text="${object.numberConceptKardex}"></td>
+						<td th:text="${object.nameConceptKardex}"></td>
+						<td th:text="${object.typeConceptKardex.typeConceptKardex}"></td>
+						<td th:text="#{${'label.'+object.indicatorTransfers}}"></td>
+						<td th:text="${object.workOrderConceptKardex}"></td>
+						<td th:text="#{${'label.'+object.defaultIndicatorConcept}}"></td>
+						<td th:text="#{${'label.'+object.subtypeConceptKardex}}"></td>
+						<td th:text="#{${'label.'+object.deliveryConceptContractor}}"></td>
+						<td th:text="#{${'label.'+object.active}}"></td>
+						<td th:text="${#calendars.format(object.dateOfModification,'dd/MM/yyyy HH:mm')}" ></td>
+						<td th:text="${object.userName}"></td>
+						<td th:text="${#calendars.format(object.dateOfCreation,'dd/MM/yyyy HH:mm')}" ></td>
+						<td th:text="${object.createdBy}"></td>
+
+					</tr>
+				</tbody>
+			</table>
+			</form>
+			<table width="100%">
+				<tr>
+					<td width="33%"></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
+					<td width="34%"><span th:text="${page.totalElements}+'/'+${_totalCount}"></span></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="container-fluid" th:include="normal/layoutmaintenance :: footer"></div>
+</body>
+</html>

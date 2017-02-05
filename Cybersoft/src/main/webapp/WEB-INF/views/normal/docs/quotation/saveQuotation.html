@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.quotationInfo}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	        td.right { text-align:right; }
+	        .hideANDseek
+			{
+			    display: none;
+			}
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+
+		<script th:src="@{/resources/js/util.js}"></script>
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		<script th:src="@{/resources/js/jquery.dataTables.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/jquery.dataTables.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	                   
+	      var popupVisible=false;
+	      
+	      function newEntry(){
+			   $('.popup-with-form').click();
+			   popupVisible=true;
+		   		document.getElementById("thirdParty").focus();
+		   }
+
+		   $(document).keyup(function(e) {
+	    	  if(e.which == 27 && !popupVisible) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("docs")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/docs/searchQuotation","_self");
+	    	  }
+	    	});
+	      
+	      $.magnificPopup.instance.close = function () {
+				popupVisible=false;
+			   $.magnificPopup.proto.close.call(this);
+	      }; 
+	      
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 107 && document.getElementById("newEntry")!=null) {
+  				newEntry();
+	    	  }
+	    	});
+	    	
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#date" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#quotationBodyModificationInfo\\.date" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#deliveryDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#quotationBodyModificationInfo\\.deliveryDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#proposalDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#quotationBodyModificationInfo\\.proposalDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+
+		
+			function submitDeletion(){
+				var deletion="";
+				$("#quotationBodyList").find('tr').each(function (i){
+					if ($(this).find("td:first").find('div').find('input').is(':checked')){
+						deletion+=$(this).prop( 'id' )+",";
+					}
+				});
+				var form=document.forms['header-form'];
+				form.elements["_deletion"].value=deletion;
+				form.elements["_deletionSubmit"].value="deletion";
+				form.submit();
+			}
+			
+		  function setFocus(){
+		   		document.getElementById("city").focus();
+		   }
+		  
+		function submitCreation(){
+			var form=document.forms['quotation-body-form'];
+			form.elements["_submit"].value="creation";
+			form.submit();
+		}
+		
+		function submitHeader(){
+			var form=document.forms['header-form'];
+			form.elements["_submit"].value="header";
+			form.submit();
+		}
+		
+		function submitModification(){
+			var form=document.forms['quotation-body-modification-form'];
+			form.elements["_modificationSubmit"].value="modification";
+			$( "#quotationBodyModificationInfo\\.item" ).prop( "disabled", false );
+			$( "#quotationBodyModificationInfo\\.itemDescription" ).prop( "disabled", false );
+			$( "#quotationBodyModificationInfo\\.unit" ).prop( "disabled", false );
+			$( "#quotationBodyModificationInfo\\.quantity" ).prop( "disabled", false );
+
+			form.submit();
+		}
+		   
+   
+		function setModificationFormValues(id){
+					   var selectedRow="#"+id;
+					   var link=$("#quotation-body-modification-form");
+					   var identification="#_id";
+					   var disable=false;
+					   $(identification).val(id);
+					   $(selectedRow).find('td').each(function (i){
+					   		if (i==0){
+							   			var field="#quotationBodyModificationInfo\\._enableDeletion";
+							   		 	if ($(this).has("input[type='checkbox']").length!=0){
+							   		 		$(field).prop('checked', true);
+							   		 		disable=false;
+							   		 	}
+							   		 	else{
+							   		 		$(field).prop('checked', false);
+							   		 		disable=true;
+							   		 	}
+							}
+					   		if (i==1){
+					   			var field="#quotationBodyModificationInfo\\.item";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}if (i==2){
+					   			var field="#quotationBodyModificationInfo\\.itemDescription";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}if (i==3){
+					   			var field="#quotationBodyModificationInfo\\.unit";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}if (i==4){
+					   			var field="#quotationBodyModificationInfo\\.quantity";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}if (i==5){
+					   			var field="#quotationBodyModificationInfo\\.thirdParty";
+					   			$(field).val($(this).html());	 
+					   		}if (i==6){
+					   			var field="#quotationBodyModificationInfo\\.providerReference";
+					   			$(field).val($(this).html());	 
+					   		}if (i==7){
+					   			var field="#quotationBodyModificationInfo\\.providerItemCode";
+					   			$(field).val($(this).html());	 
+					   		}if (i==8){
+					   			var field="#quotationBodyModificationInfo\\.itemTradeMark";
+					   			$(field).val($(this).html());	 
+					   		}if (i==9){
+					   			var field="#quotationBodyModificationInfo\\.deliveryDate";
+					   			$(field).val($(this).html());	 
+					   		}if (i==10){
+					   			var field="#quotationBodyModificationInfo\\.quotedQuantity";
+					   			$(field).val($(this).html());	 
+					   		}if (i==11){
+					   			var field="#quotationBodyModificationInfo\\.localCurrencyUnitValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==12){
+					   			var field="#quotationBodyModificationInfo\\.localCurrencyTotalValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==13){
+					   			var field="#quotationBodyModificationInfo\\.foreignCurrencyUnitValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==14){
+					   			var field="#quotationBodyModificationInfo\\.foreignCurrencyTotalValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==15){
+					   			var field="#quotationBodyModificationInfo\\.proposalDate";
+					   			$(field).val($(this).html());	 
+					   		}if (i==16){
+					   			var field="#quotationBodyModificationInfo\\.remarks";
+					   			$(field).val($(this).html());	 
+					   		}if (i==17){
+					   			var field="#quotationBodyModificationInfo\\.accepted";
+					   			$(field).prop('checked', $(this).html()==document.getElementById("_trueValue").value);	 
+					   		}
+					   });
+					$('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+				   }
+
+		$(function(){
+				     $("#city").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/docSite/getListByPopulatedPlaceReturnPopulatedPlace?populatedPlace="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#requisitionNumber").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/docs/requisition/getRequisitionList?numericId="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 1,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    		submitHeader();
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#thirdParty").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/thirdParty/getListByThirdPartyReturnThirdParty?thirdParty="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#quotationBodyModificationInfo\\.thirdParty").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/thirdParty/getListByThirdPartyReturnThirdParty?thirdParty="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+			  			$("#item").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#quantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#itemDescription").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#quantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#unit").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#quantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#quantity").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#quantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#quotationBodyModificationInfo\\.item").change(function(){
+			  				$('#quotationBodyModificationInfo\\.item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#quotationBodyModificationInfo\\.itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#quotationBodyModificationInfo\\.unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#quotationBodyModificationInfo\\.itemDescription").change(function(){
+			  				$('#quotationBodyModificationInfo\\.item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#quotationBodyModificationInfo\\.itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#quotationBodyModificationInfo\\.unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#quotationBodyModificationInfo\\.unit").change(function(){
+			  				$('#quotationBodyModificationInfo\\.item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#quotationBodyModificationInfo\\.itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#quotationBodyModificationInfo\\.unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+
+			
+		   $(document).ready( function () {
+				$('#quotationBodyList').dataTable();
+
+			} );
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form2').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$("#header-form :input").change(function() {
+					document.getElementById("_savedAlert").style.display='none';
+				});
+			});
+		   
+		   function checkExceptions(){
+			   if (document.getElementById("_AdditionFormException")!=null){
+				   newEntry();
+			   }
+			   
+			   if (document.getElementById("_ModificationFormException")!=null){
+			   	   setModificationFormValues(document.getElementById("_ModificationFormExceptionId").value);
+				   $('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+			   }
+		   }
+		   
+	       /* ]]> */
+	     </script>
+
+    </head>
+    <body onload="checkExceptions();setFocus();">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form id="header-form" th:object="${quotationInfo}" method="post" >
+		        	<input id="_submit" hidden="" th:field="*{quotationBodyModificationInfo.submit}"></input>
+		        	<input id="_documentName" type="hidden" value="quotation"></input>
+		        	<input th:if='${quotationInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<div ><a id="back" th:text="#{label.back}" th:href="@{/docs/searchQuotation}"></a></div>
+		        	
+		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
+		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{quotationBodyModificationInfo.submit}"></input>
+		        	<input id="_trueValue" th:value="#{label.true}" type="hidden" />
+		        	
+		        	<table width="100%">
+						<tr>
+							<td width="33%"><h3 th:if='${quotationInfo.numericId==null}' th:text="#{label.quotationInfo}"></h3>
+		        			<h3 th:if='${quotationInfo.numericId!=null}' th:text="#{label.quotationInfo}+' '+${quotationInfo.numericId}"></h3></td>
+							<td width="33%"></td>
+							<td width="34%"><div align="right"><a th:if='${quotationInfo.showBody}' th:href="@{/docs/quotation/export?id=}+${quotationInfo.numericId}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
+						</tr>
+					</table>
+		        	<table>
+		        		<tr th:if="${cityException} or ${dateException} or ${receivingWarehouseException}">
+		        				        			<td th:if="!${cityException}" colspan="2"></td>
+		        				        			<td th:if="${cityException}" colspan="2"><div class="alert alert-error" th:text="#{${cityValidationErrorMessage}}"></div></td><td th:if="!${dateException}" colspan="2"></td>
+		        				        			<td th:if="${dateException}" colspan="2"><div class="alert alert-error" th:text="#{${dateValidationErrorMessage}}"></div></td><td th:if="!${receivingWarehouseException}" colspan="2"></td>
+		        				        			<td th:if="${receivingWarehouseException}" colspan="2"><div class="alert alert-error" th:text="#{${receivingWarehouseValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.quotationCity}+': '"></b></td>
+		        				        			<td><input id="city" type="text" th:field="*{city}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.quotationDate}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="date" name="date" type="text" th:value="*{{date}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.quotationReceivingWarehouse}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="receivingWarehouse" name="receivingWarehouse" type="text" th:value="*{{receivingWarehouse}}" /></td>
+
+		        				        		</tr><tr th:if="${requisitionNumberException} or ${importedException} or ${readyException}">
+		        				        			<td th:if="!${requisitionNumberException}" colspan="2"></td>
+		        				        			<td th:if="${requisitionNumberException}" colspan="2"><div class="alert alert-error" th:text="#{${requisitionNumberValidationErrorMessage}}"></div></td><td th:if="!${importedException}" colspan="2"></td>
+		        				        			<td th:if="${importedException}" colspan="2"><div class="alert alert-error" th:text="#{${importedValidationErrorMessage}}"></div></td><td th:if="!${readyException}" colspan="2"></td>
+		        				        			<td th:if="${readyException}" colspan="2"><div class="alert alert-error" th:text="#{${readyValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.quotationRequisitionNumber}+': '"></b></td>
+		        				        			<td><input  id="requisitionNumber" name="requisitionNumber" type="text" th:value="*{{requisitionNumber}}" /></td><td style="padding:0 15px;"><b th:text="#{label.quotationImported}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{imported}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.quotationReady}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{ready}" /></td>
+
+		        				        		</tr><tr th:if="${sendNotificationsException} or ${activeException}">
+		        				        			<td th:if="!${sendNotificationsException}" colspan="2"></td>
+		        				        			<td th:if="${sendNotificationsException}" colspan="2"><div class="alert alert-error" th:text="#{${sendNotificationsValidationErrorMessage}}"></div></td><td th:if="!${activeException}" colspan="2"></td>
+		        				        			<td th:if="${activeException}" colspan="2"><div class="alert alert-error" th:text="#{${activeValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.quotationSendNotifications}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{sendNotifications}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.quotationActive}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{active}" /></td>
+
+		        				        		</tr>
+		        	</table>
+		        	<br/>
+		        	<br/>
+		        	<table th:if='${quotationInfo.showBody}' id="quotationBodyList" class="table table-striped">
+		        		<thead>
+							<tr>
+								<th ></th>
+								<th   align="center" th:text="#{label.requisitionItem}"></th><th   align="center" th:text="#{label.requisitionItemDescription}"></th><th   align="center" th:text="#{label.requisitionUnit}"></th><th   align="center" th:text="#{label.requisitionQuantity}"></th><th   align="center" th:text="#{label.quotationThirdParty}"></th><th class="hideANDseek"  align="center" th:text="#{label.quotationProviderReference}"></th><th class="hideANDseek"  align="center" th:text="#{label.quotationProviderItemCode}"></th><th class="hideANDseek"  align="center" th:text="#{label.quotationItemTradeMark}"></th><th   align="center" th:text="#{label.quotationDeliveryDate}"></th><th   align="center" th:text="#{label.quotationQuotedQuantity}"></th><th   align="center" th:text="#{label.quotationLocalCurrencyUnitValue}+' ('+${quotationBodyInfo._append_localCurrency}+')'"></th><th   align="center" th:text="#{label.quotationLocalCurrencyTotalValue}+' ('+${quotationBodyInfo._append_localCurrency}+')'"></th><th   align="center" th:text="#{label.quotationForeignCurrencyUnitValue}+' ('+${quotationBodyInfo._append_foreignCurrency}+')'"></th><th   align="center" th:text="#{label.quotationForeignCurrencyTotalValue}+' ('+${quotationBodyInfo._append_foreignCurrency}+')'"></th><th class="hideANDseek"  align="center" th:text="#{label.quotationProposalDate}"></th><th class="hideANDseek"  align="center" th:text="#{label.quotationRemarks}"></th><th   align="center" th:text="#{label.quotationAccepted}"></th>
+							</tr>
+						</thead>
+						<tbody id="quotationBodyList">
+							<tr th:each="object: ${quotationBodyList}" th:id="${object.id}"  >
+								<td><div align="center" ><input th:if="${object._enableDeletion}" type="checkbox" /></div></td>
+								<td   th:text="${{object.item}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td   th:text="${{object.itemDescription}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td   th:text="${{object.unit}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.quantity}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td   th:text="${{object.thirdParty}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td class="hideANDseek"  th:text="${{object.providerReference}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td class="hideANDseek"  th:text="${{object.providerItemCode}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td class="hideANDseek"  th:text="${{object.itemTradeMark}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td   th:text="${{object.deliveryDate}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.quotedQuantity}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.localCurrencyUnitValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.localCurrencyTotalValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.foreignCurrencyUnitValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.foreignCurrencyTotalValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td class="hideANDseek"  th:text="${{object.proposalDate}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td class="hideANDseek"  th:text="${{object.remarks}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  th:text="#{${'label.'+object.accepted}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'" ></td>
+							</tr>
+						</tbody>
+		        	</table>
+		        	<button th:if='${quotationInfo.showBody} and !${quotationInfo.ready}'  th:text="#{label.newEntryDocTable}" onclick="newEntry();return false;"></button>
+		        	<input th:if='${quotationInfo.showBody} and !${quotationInfo.ready}' type="button" th:value="#{label.deleteSelection}" onclick="submitDeletion();"/>
+					<a class="popup-with-form" href="#quotation-body-form" hidden=""></a>
+       				<a class="popup-with-form2" href="#quotation-body-modification-form" hidden=""></a>
+							        				
+       				<div align="right" ><input type="button" th:value="#{label.save}" onclick="submitHeader();"/></div>
+		        </form>
+					<input th:if='${quotationInfo.showBody}' id="newEntry" hidden=""/>
+			 <!-- Custom form for adding new records -->
+			 <form id="quotation-body-form" class="white-popup mfp-hide"  th:object="${quotationBodyInfo}" method="post">
+		        	<h3 th:text="#{label.newRecord}"></h3>
+		        	<input id="_submit" hidden="" th:field="*{quotationBodyModificationInfo.submit}"></input>
+		        	<input th:if='${quotationInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_AdditionFormException}" id="_AdditionFormException" hidden=""></input> 
+		        	<table>
+		        		<tr>
+		        			<td ><b th:text="#{label.quotationItem}+': '"></b></td>
+		        			<td><select id="item" th:field="*{item}"><option value=""></option><option th:each="reference : ${quotationInfo.quotationBodyList}" th:value="${reference.item}" th:text="${reference.item}"></option></select></td>
+		        			<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.quotationItemDescription}+': '"></b></td>
+		        			<td><select id="itemDescription" th:field="*{itemDescription}"><option value=""></option><option th:each="reference : ${quotationInfo.quotationBodyList}" th:value="${reference.itemDescription}" th:text="${reference.itemDescription}"></option></select></td>
+		        			<td th:if="${itemDescriptionException}"><div class="alert alert-error" th:text="#{${itemDescriptionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.quotationUnit}+': '"></b></td>
+		        			<td><select id="unit" th:field="*{unit}"><option value=""></option><option th:each="reference : ${quotationInfo.quotationBodyList}" th:value="${reference.unit}" th:text="${reference.unit}"></option></select></td>
+		        			<td th:if="${unitException}"><div class="alert alert-error" th:text="#{${unitValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.quotationQuantity}+': '"></b></td>
+		        			<td><select id="quantity" th:field="*{quantity}"><option value=""></option><option th:each="reference : ${quotationInfo.quotationBodyList}" th:value="${reference.quantity}" th:text="${reference.quantity}"></option></select></td>
+		        			<td th:if="${quantityException}"><div class="alert alert-error" th:text="#{${quantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.quotationThirdParty}+': '"></b></td>
+		        			<td><input id="thirdParty" type="text" th:field="*{thirdParty}" /></td>
+		        			<td th:if="${thirdPartyException}"><div class="alert alert-error" th:text="#{${thirdPartyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationProviderReference}+': '"></b></td>
+		        				<td><input  id="providerReference" name="providerReference" type="text" th:value="*{{providerReference}}" /></td>
+		        				<td th:if="${providerReferenceException}"><div class="alert alert-error" th:text="#{${providerReferenceValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationProviderItemCode}+': '"></b></td>
+		        				<td><input  id="providerItemCode" name="providerItemCode" type="text" th:value="*{{providerItemCode}}" /></td>
+		        				<td th:if="${providerItemCodeException}"><div class="alert alert-error" th:text="#{${providerItemCodeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationItemTradeMark}+': '"></b></td>
+		        				<td><input  id="itemTradeMark" name="itemTradeMark" type="text" th:value="*{{itemTradeMark}}" /></td>
+		        				<td th:if="${itemTradeMarkException}"><div class="alert alert-error" th:text="#{${itemTradeMarkValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationDeliveryDate}+': '"></b></td>
+		        				<td><input  id="deliveryDate" name="deliveryDate" type="text" th:value="*{{deliveryDate}}" /></td>
+		        				<td th:if="${deliveryDateException}"><div class="alert alert-error" th:text="#{${deliveryDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationQuotedQuantity}+': '"></b></td>
+		        				<td><input  id="quotedQuantity" name="quotedQuantity" type="text" th:value="*{{quotedQuantity}}" /></td>
+		        				<td th:if="${quotedQuantityException}"><div class="alert alert-error" th:text="#{${quotedQuantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationLocalCurrencyUnitValue}+' ('+${quotationBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input  id="localCurrencyUnitValue" name="localCurrencyUnitValue" type="text" th:value="*{{localCurrencyUnitValue}}" /></td>
+		        				<td th:if="${localCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${localCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationLocalCurrencyTotalValue}+' ('+${quotationBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="localCurrencyTotalValue" name="localCurrencyTotalValue" type="text" th:value="*{{localCurrencyTotalValue}}" /></td>
+		        				<td th:if="${localCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${localCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationForeignCurrencyUnitValue}+' ('+${quotationBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input  id="foreignCurrencyUnitValue" name="foreignCurrencyUnitValue" type="text" th:value="*{{foreignCurrencyUnitValue}}" /></td>
+		        				<td th:if="${foreignCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationForeignCurrencyTotalValue}+' ('+${quotationBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="foreignCurrencyTotalValue" name="foreignCurrencyTotalValue" type="text" th:value="*{{foreignCurrencyTotalValue}}" /></td>
+		        				<td th:if="${foreignCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationProposalDate}+': '"></b></td>
+		        				<td><input readonly="readonly" id="proposalDate" name="proposalDate" type="text" th:value="*{{proposalDate}}" /></td>
+		        				<td th:if="${proposalDateException}"><div class="alert alert-error" th:text="#{${proposalDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				        				<td ><b th:text="#{label.quotationRemarks}+': '"></b></td>
+		        				        				<td><textarea  id="remarks" th:field="*{remarks}" ></textarea></td>
+		        										<td th:if="${remarksException}"><div class="alert alert-error" th:text="#{${remarksValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.Accepted}+': '"></b></td>
+		        		   			<td ><input  type="checkbox" id="accepted" th:field="*{accepted}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${quotationInfo.ready}' type="button" th:value="#{label.save}" onclick="submitCreation();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		        
+		        <form id="quotation-body-modification-form" class="white-popup mfp-hide" th:object="${quotationBodyModificationInfo}" method="post">
+		        	<h3 th:text="#{label.recordModification}"></h3>
+		        	<input id="_id" hidden="" th:field="*{quotationBodyModificationInfo.id}"></input>
+		        	<input id="_modificationSubmit" hidden="hidden" th:field="*{quotationBodyModificationInfo.submit}"></input>
+		        	<input th:if='${quotationInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormException" hidden=""></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormExceptionId" th:value="${_ModifiedId}" hidden=""></input>
+		        	
+		        	<table >
+		        		<tr>
+		        			<td ><b th:text="#{label.quotationItem}+': '"></b></td>
+		        			<td><select id="quotationBodyModificationInfo.item" th:field="*{quotationBodyModificationInfo.item}"><option value=""></option><option th:each="reference : ${quotationInfo.quotationBodyList}" th:value="${reference.item}" th:text="${reference.item}"></option></select></td>
+		        			<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.quotationItemDescription}+': '"></b></td>
+		        			<td><select id="quotationBodyModificationInfo.itemDescription" th:field="*{quotationBodyModificationInfo.itemDescription}"><option value=""></option><option th:each="reference : ${quotationInfo.quotationBodyList}" th:value="${reference.itemDescription}" th:text="${reference.itemDescription}"></option></select></td>
+		        			<td th:if="${itemDescriptionException}"><div class="alert alert-error" th:text="#{${itemDescriptionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.quotationUnit}+': '"></b></td>
+		        			<td><select id="quotationBodyModificationInfo.unit" th:field="*{quotationBodyModificationInfo.unit}"><option value=""></option><option th:each="reference : ${quotationInfo.quotationBodyList}" th:value="${reference.unit}" th:text="${reference.unit}"></option></select></td>
+		        			<td th:if="${unitException}"><div class="alert alert-error" th:text="#{${unitValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationQuantity}+': '"></b></td>
+		        				<td><input  id="quotationBodyModificationInfo.quantity" name="quotationBodyModificationInfo.quantity" type="text" th:value="*{{quotationBodyModificationInfo.quantity}}" /></td>
+		        				<td th:if="${quantityException}"><div class="alert alert-error" th:text="#{${quantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.quotationThirdParty}+': '"></b></td>
+		        			<td><input id="quotationBodyModificationInfo.thirdParty" type="text" th:field="*{quotationBodyModificationInfo.thirdParty}" /></td>
+		        			<td th:if="${thirdPartyException}"><div class="alert alert-error" th:text="#{${thirdPartyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationProviderReference}+': '"></b></td>
+		        				<td><input  id="quotationBodyModificationInfo.providerReference" name="quotationBodyModificationInfo.providerReference" type="text" th:value="*{{quotationBodyModificationInfo.providerReference}}" /></td>
+		        				<td th:if="${providerReferenceException}"><div class="alert alert-error" th:text="#{${providerReferenceValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationProviderItemCode}+': '"></b></td>
+		        				<td><input  id="quotationBodyModificationInfo.providerItemCode" name="quotationBodyModificationInfo.providerItemCode" type="text" th:value="*{{quotationBodyModificationInfo.providerItemCode}}" /></td>
+		        				<td th:if="${providerItemCodeException}"><div class="alert alert-error" th:text="#{${providerItemCodeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationItemTradeMark}+': '"></b></td>
+		        				<td><input  id="quotationBodyModificationInfo.itemTradeMark" name="quotationBodyModificationInfo.itemTradeMark" type="text" th:value="*{{quotationBodyModificationInfo.itemTradeMark}}" /></td>
+		        				<td th:if="${itemTradeMarkException}"><div class="alert alert-error" th:text="#{${itemTradeMarkValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationDeliveryDate}+': '"></b></td>
+		        				<td><input  id="quotationBodyModificationInfo.deliveryDate" name="quotationBodyModificationInfo.deliveryDate" type="text" th:value="*{{quotationBodyModificationInfo.deliveryDate}}" /></td>
+		        				<td th:if="${deliveryDateException}"><div class="alert alert-error" th:text="#{${deliveryDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationQuotedQuantity}+': '"></b></td>
+		        				<td><input  id="quotationBodyModificationInfo.quotedQuantity" name="quotationBodyModificationInfo.quotedQuantity" type="text" th:value="*{{quotationBodyModificationInfo.quotedQuantity}}" /></td>
+		        				<td th:if="${quotedQuantityException}"><div class="alert alert-error" th:text="#{${quotedQuantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationLocalCurrencyUnitValue}+' ('+${quotationBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input  id="quotationBodyModificationInfo.localCurrencyUnitValue" name="quotationBodyModificationInfo.localCurrencyUnitValue" type="text" th:value="*{{quotationBodyModificationInfo.localCurrencyUnitValue}}" /></td>
+		        				<td th:if="${localCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${localCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationLocalCurrencyTotalValue}+' ('+${quotationBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="quotationBodyModificationInfo.localCurrencyTotalValue" name="quotationBodyModificationInfo.localCurrencyTotalValue" type="text" th:value="*{{quotationBodyModificationInfo.localCurrencyTotalValue}}" /></td>
+		        				<td th:if="${localCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${localCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationForeignCurrencyUnitValue}+' ('+${quotationBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input  id="quotationBodyModificationInfo.foreignCurrencyUnitValue" name="quotationBodyModificationInfo.foreignCurrencyUnitValue" type="text" th:value="*{{quotationBodyModificationInfo.foreignCurrencyUnitValue}}" /></td>
+		        				<td th:if="${foreignCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationForeignCurrencyTotalValue}+' ('+${quotationBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="quotationBodyModificationInfo.foreignCurrencyTotalValue" name="quotationBodyModificationInfo.foreignCurrencyTotalValue" type="text" th:value="*{{quotationBodyModificationInfo.foreignCurrencyTotalValue}}" /></td>
+		        				<td th:if="${foreignCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.quotationProposalDate}+': '"></b></td>
+		        				<td><input readonly="readonly" id="quotationBodyModificationInfo.proposalDate" name="quotationBodyModificationInfo.proposalDate" type="text" th:value="*{{quotationBodyModificationInfo.proposalDate}}" /></td>
+		        				<td th:if="${proposalDateException}"><div class="alert alert-error" th:text="#{${proposalDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				        				<td ><b th:text="#{label.quotationRemarks}+': '"></b></td>
+		        				        				<td><textarea  id="quotationBodyModificationInfo.remarks" th:field="*{quotationBodyModificationInfo.remarks}" ></textarea></td>
+		        										<td th:if="${remarksException}"><div class="alert alert-error" th:text="#{${remarksValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.Accepted}+': '"></b></td>
+		        		   			<td ><input  type="checkbox" id="quotationBodyModificationInfo.accepted" th:field="*{quotationBodyModificationInfo.accepted}" /></td>
+		        		</tr>
+
+		        		<tr hidden="">
+		        		 			<td ></td>
+		        		   			<td ><input  type="checkbox" id="quotationBodyModificationInfo._enableDeletion" th:field="*{quotationBodyModificationInfo._enableDeletion}" /></td>
+		        		</tr>
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${quotationInfo.ready}' type="button" th:value="#{label.save}" onclick="submitModification();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${quotationInfo._toSave}' class="alert alert-info" th:text="#{label.saved}">
+            </div>
+            <div th:if='${quotationCreateException}' class="alert alert-error" th:text="#{label.docCreationError}">
+            </div>
+            <div th:if='${quotationValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>
+    </body>
+</html>

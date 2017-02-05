@@ -78,36 +78,50 @@
 		        	<table>
 		        		<tr>
 		        				<td ><b th:text="#{label.customerTenancySoftwareTradeMark}+': '"></b></td>
-		        				<td><input id="softwareTradeMark" name="softwareTradeMark" type="text" th:value="*{{softwareTradeMark}}" /></td>
+		        				<td>
+		        					<input id="softwareTradeMark" name="softwareTradeMark" type="text" th:value="*{{softwareTradeMark}}" />
+		        				</td>
 		        				<td th:if="${softwareTradeMarkException}"><div class="alert alert-error" th:text="#{${softwareTradeMarkValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        				<td ><b th:text="#{label.customerTenancySoftwareVersion}+': '"></b></td>
-		        				<td><input id="softwareVersion" name="softwareVersion" type="text" th:value="*{{softwareVersion}}" /></td>
+		        				<td>
+		        					<input id="softwareVersion" name="softwareVersion" type="text" th:value="*{{softwareVersion}}" />
+		        				</td>
 		        				<td th:if="${softwareVersionException}"><div class="alert alert-error" th:text="#{${softwareVersionValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        				<td ><b th:text="#{label.customerTenancySoftwareSerialNo}+': '"></b></td>
-		        				<td><input id="softwareSerialNo" name="softwareSerialNo" type="text" th:value="*{{softwareSerialNo}}" /></td>
+		        				<td>
+		        					<input id="softwareSerialNo" name="softwareSerialNo" type="text" th:value="*{{softwareSerialNo}}" />
+		        				</td>
 		        				<td th:if="${softwareSerialNoException}"><div class="alert alert-error" th:text="#{${softwareSerialNoValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        		 			<td ><b th:text="#{label.customerTenancyDoubleCurrency}+': '"></b></td>
-		        		   			<td ><input type="checkbox" th:field="*{doubleCurrency}" /></td>
+		        		   			<td >
+		        		   				<input type="checkbox" th:field="*{doubleCurrency}" />
+		        		   			</td>
 		        		</tr>
 		        		<tr>
 		        			<td ><b th:text="#{label.customerTenancyLocalCurrency}+': '"></b></td>
-		        			<td><select id="localCurrency" onChange="localCurrencySelectedRefresh()" th:field="*{localCurrencyId}"><option value=""></option><option th:each="reference : ${customerTenancyInfo.localCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        			<td>
+		        				<select id="localCurrency" onChange="localCurrencySelectedRefresh()" th:field="*{localCurrencyId}"><option value=""></option><option th:each="reference : ${customerTenancyInfo.localCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select>
+		        			</td>
 		        			<td th:if="${localCurrencyException}"><div class="alert alert-error" th:text="#{${localCurrencyValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        			<td ><b th:text="#{label.customerTenancyForeignCurrency}+': '"></b></td>
-		        			<td><select id="foreignCurrency" onChange="foreignCurrencySelectedRefresh()" th:field="*{foreignCurrencyId}"><option value=""></option><option th:each="reference : ${customerTenancyInfo.foreignCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        			<td>
+		        				<select id="foreignCurrency" onChange="foreignCurrencySelectedRefresh()" th:field="*{foreignCurrencyId}"><option value=""></option><option th:each="reference : ${customerTenancyInfo.foreignCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select>
+		        			</td>
 		        			<td th:if="${foreignCurrencyException}"><div class="alert alert-error" th:text="#{${foreignCurrencyValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        		 			<td ><b th:text="#{label.customerTenancyActive}+': '"></b></td>
-		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		   			<td >
+		        		   				<input type="checkbox" th:field="*{active}" />
+		        		   			</td>
 		        		</tr>
 
 		        		<tr>

@@ -183,6 +183,7 @@ public class CurrencyCode {
 	
 	public CurrencyCode fromCurrencyCodeDetails(CurrencyCodeDetails details){
 		BeanUtils.copyProperties(details, this);
+		
 
 		Country country0=new Country();country0.setId(details.getCountryId());this.country=country0; 
 		

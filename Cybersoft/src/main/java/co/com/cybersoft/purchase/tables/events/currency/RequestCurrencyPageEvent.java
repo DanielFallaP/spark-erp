@@ -1,8 +1,6 @@
 package co.com.cybersoft.purchase.tables.events.currency;
 
 import org.springframework.data.domain.Pageable;
-
-import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
 import co.com.cybersoft.purchase.tables.web.domain.currency.CurrencyFilterInfo;
 
 /**
@@ -14,21 +12,12 @@ public class RequestCurrencyPageEvent {
 
 	private Pageable pageable;
 	private CurrencyFilterInfo filter;
-	private Long companyId;
 	
 	public RequestCurrencyPageEvent(Pageable pageable, CurrencyFilterInfo filter){
 		this.pageable=pageable;
 		this.filter=filter;
 	}
 	
-	public Long getCompanyId() {
-		return companyId;
-	}
-
-	public void setCompanyId(Long companyId) {
-		this.companyId = companyId;
-	}
-
 	public RequestCurrencyPageEvent(Pageable pageable){
 		this.pageable=pageable;
 	}

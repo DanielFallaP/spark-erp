@@ -1,10 +1,13 @@
 package co.com.cybersoft.purchase.tables.web.controller.currencyCode;
 
+import co.com.cybersoft.purchase.tables.core.domain.CurrencyCodeDetails;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
+import org.springframework.ui.Model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +61,10 @@ public class CurrencyCodeCreationController {
 
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String currencyCodeCreation() throws Exception {
+	public String modification(Model model, HttpServletRequest request){
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		return "/purchase/currencyCode/createCurrencyCode";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -71,6 +76,9 @@ public class CurrencyCodeCreationController {
 		currencyCodeDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		currencyCodeDetails.setDateOfCreation(new Date());
 		currencyCodeDetails.setDateOfModification(new Date());
+		//currencyCodeDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		request.getSession().setAttribute("currencyCodeInfo", currencyCodeInfo);
 		currencyCodeService.createCurrencyCode(new CreateCurrencyCodeEvent(currencyCodeDetails));

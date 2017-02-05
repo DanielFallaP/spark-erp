@@ -25,20 +25,19 @@ public class ExchangeRateManServiceImpl implements ExchangeRateManService{
 	private MongoOperations mongo;
 	
 	
-	@Override
 	public Double getTodayLocalToForeignExchangeRate() {
-		Calendar cal = new GregorianCalendar();
-		cal.setTime(new Date());
-		List<CustomerTenancy> tenancyList = customerTenancyRepository.findAll();
-		if (!tenancyList.isEmpty()){
-			//Check if the rate for today already exists
-			cal.set(Calendar.HOUR_OF_DAY, 0);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-			cal.set(Calendar.MILLISECOND, 0);
-			ExchangeRate exchangeR = exchangeRateRepo.findByDate(cal.getTime());
-			return exchangeR.getExchangeRate();
-		}
+//		Calendar cal = new GregorianCalendar();
+//		cal.setTime(new Date());
+//		List<CustomerTenancy> tenancyList = customerTenancyRepository.findAll();
+//		if (!tenancyList.isEmpty()){
+//			//Check if the rate for today already exists
+//			cal.set(Calendar.HOUR_OF_DAY, 0);
+//			cal.set(Calendar.MINUTE, 0);
+//			cal.set(Calendar.SECOND, 0);
+//			cal.set(Calendar.MILLISECOND, 0);
+//			ExchangeRate exchangeR = exchangeRateRepo.findByDate(cal.getTime());
+//			return exchangeR.getExchangeRate();
+//		}
 		
 		return null;
 	}

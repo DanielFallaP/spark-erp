@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags">
+ <head>
+<meta charset="UTF-8"/>
+<title th:text="#{label.thirdInfo}"></title>
+
+<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	        .page-selection{background-color:#fff!important;border:1px #fff!important;box-shadow:inset 0 1px 1px transparent!important;transition:border linear .2s,box-shadow linear .2s!important;display:inline-block!important;height:12px!important;padding:4px 6px!important;margin:-4px -11px -3px!important;font-size:14px!important;line-height:0!important;color:#555!important;vertical-align:middle!important;border-radius:0!important;width:23px!important;text-align:right}
+	    </style>
+	     <link th:href="@{/resources/css/cybersystems.css}" rel="stylesheet" />
+	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+		 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		 <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	     <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+ 	     <script th:src="@{/resources/js/bootstrap-alert.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-collapse.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-dropdown.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-modal.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-transitions.js}"></script>
+	     
+	     
+	     <script type="text/javascript">
+	     	/* <![CDATA[ */
+	     	
+	     function resetPageValue(){
+	    	 document.getElementById("_page").value=document.getElementById("_currentPage").value;
+	     }
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 13 && document.getElementById("_page") === document.activeElement) {
+	    		/*if (	document.getElementById("_page").value== null
+	    			  	|| document.getElementById("_page").value == ""
+	    				|| isNaN(document.getElementById("_page").value) 
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_page").value <= 0)
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_totalPages").value < document.getElementById("_page").value)
+	    			){
+					alert('Invalid page number');
+					resetPageValue();
+	    		}
+	    		else{*/
+		    		var path=window.location.pathname.split("/");
+	 	    		var prefix="";
+	 	    		if (path[1].localeCompare("configuration")!=0){
+	 	    			prefix="/"+path[1];	
+	 	    		}
+					submitFilterPage(document.getElementById("_page").value);	 	    		
+	    		//}
+	    	  }
+	    		else if (e.which == 13 && (document.getElementById("createdBy") === document.activeElement || document.getElementById("userName") === document.activeElement || 
+	    		document.getElementById("dateOfModification") === document.activeElement || document.getElementById("dateOfCreation") === document.activeElement  || document.getElementById("company") === document.activeElement
+ || document.getElementById("costCenter") === document.activeElement
+ || document.getElementById("code") === document.activeElement
+ || document.getElementById("nameThird") === document.activeElement
+ || document.getElementById("typeThird") === document.activeElement
+ || document.getElementById("contact") === document.activeElement
+ || document.getElementById("address") === document.activeElement
+ || document.getElementById("country") === document.activeElement
+ || document.getElementById("phoneOne") === document.activeElement
+ || document.getElementById("phoneTwo") === document.activeElement
+ || document.getElementById("email") === document.activeElement
+ || document.getElementById("dateEntry") === document.activeElement
+ || document.getElementById("dateRetirement") === document.activeElement
+ || document.getElementById("comment") === document.activeElement
+ || document.getElementById("bigContributor") === document.activeElement
+ || document.getElementById("autorretenedor") === document.activeElement
+ || document.getElementById("typeRegime") === document.activeElement
+ || document.getElementById("externalAccess") === document.activeElement
+ || document.getElementById("keyExternalAccess") === document.activeElement
+ || document.getElementById("stateThird") === document.activeElement
+ || document.getElementById("active") === document.activeElement
+)){
+	    		  submitFilter(1);
+	    		}
+	    	});
+	     	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+		       }
+	    	});
+	    	
+	    $(document).keyup(function(e) {
+	    	  if(e.which == 27 ) {
+	  			$('#back a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 107) {
+	     		  $('#new a').trigger('click');
+	    	  }
+	    	});
+	    	
+	       $(document).keyup(function(e) {
+	    	  if(e.which == 34) {
+	    	  //if(e.which == 39 || e.which == 34) {
+	     		  $('#_nextPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 33) {
+//	    	  if(e.which == 37 || e.which == 33) {
+	     		  $('#_previousPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 35) {
+	     		  $('#_lastPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 36) {
+	     		  $('#_firstPage a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	    $(window).load(function(){
+		$('#search tr').hover(function() {
+		    $(this).addClass('hover');
+		}, function() {
+		    $(this).removeClass('hover');
+		});
+		});
+
+		function submitFilter(page){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+			form.submit();
+	    }
+	    
+		function submitAction(action){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["aaaaction"].value=action;
+    	 	form.elements["selectedFilterPage"].value=1;
+    	 	form.submit();
+	    }
+	    
+	    function addFilter(){
+	    	if(document.getElementById('company')!=undefined)document.getElementById('company').value='';
+	    	if(document.getElementById('costCenter')!=undefined)document.getElementById('costCenter').value='';
+	    	if(document.getElementById('code')!=undefined)document.getElementById('code').value='';
+	    	if(document.getElementById('nameThird')!=undefined)document.getElementById('nameThird').value='';
+	    	if(document.getElementById('typeThird')!=undefined)document.getElementById('typeThird').value='';
+	    	if(document.getElementById('contact')!=undefined)document.getElementById('contact').value='';
+	    	if(document.getElementById('address')!=undefined)document.getElementById('address').value='';
+	    	if(document.getElementById('country')!=undefined)document.getElementById('country').value='';
+	    	if(document.getElementById('phoneOne')!=undefined)document.getElementById('phoneOne').value='';
+	    	if(document.getElementById('phoneTwo')!=undefined)document.getElementById('phoneTwo').value='';
+	    	if(document.getElementById('email')!=undefined)document.getElementById('email').value='';
+	    	if(document.getElementById('dateEntry')!=undefined)document.getElementById('dateEntry').value='';
+	    	if(document.getElementById('dateRetirement')!=undefined)document.getElementById('dateRetirement').value='';
+	    	if(document.getElementById('comment')!=undefined)document.getElementById('comment').value='';
+	    	if(document.getElementById('bigContributor')!=undefined)document.getElementById('bigContributor').value='';
+	    	if(document.getElementById('autorretenedor')!=undefined)document.getElementById('autorretenedor').value='';
+	    	if(document.getElementById('typeRegime')!=undefined)document.getElementById('typeRegime').value='';
+	    	if(document.getElementById('externalAccess')!=undefined)document.getElementById('externalAccess').value='';
+	    	if(document.getElementById('keyExternalAccess')!=undefined)document.getElementById('keyExternalAccess').value='';
+	    	if(document.getElementById('stateThird')!=undefined)document.getElementById('stateThird').value='';
+	    	if(document.getElementById('active')!=undefined)document.getElementById('active').value='';
+
+	    	document.getElementById('dateOfModification').value='';		    	
+	    	document.getElementById('userName').value='';		    	
+	    	document.getElementById('dateOfCreation').value='';		    	
+	    	document.getElementById('createdBy').value='';		    	
+	    	
+	    
+		 	var form=document.forms['filter-form'];
+    	 	form.elements["aaddFilter"].value=true;
+    	 	form.elements["fffilterNature"].value='UNION';
+		}
+		
+	    function addFilterSubstract(){
+        	if(document.getElementById('company')!=undefined)document.getElementById('company').value='';
+        	if(document.getElementById('costCenter')!=undefined)document.getElementById('costCenter').value='';
+        	if(document.getElementById('code')!=undefined)document.getElementById('code').value='';
+        	if(document.getElementById('nameThird')!=undefined)document.getElementById('nameThird').value='';
+        	if(document.getElementById('typeThird')!=undefined)document.getElementById('typeThird').value='';
+        	if(document.getElementById('contact')!=undefined)document.getElementById('contact').value='';
+        	if(document.getElementById('address')!=undefined)document.getElementById('address').value='';
+        	if(document.getElementById('country')!=undefined)document.getElementById('country').value='';
+        	if(document.getElementById('phoneOne')!=undefined)document.getElementById('phoneOne').value='';
+        	if(document.getElementById('phoneTwo')!=undefined)document.getElementById('phoneTwo').value='';
+        	if(document.getElementById('email')!=undefined)document.getElementById('email').value='';
+        	if(document.getElementById('dateEntry')!=undefined)document.getElementById('dateEntry').value='';
+        	if(document.getElementById('dateRetirement')!=undefined)document.getElementById('dateRetirement').value='';
+        	if(document.getElementById('comment')!=undefined)document.getElementById('comment').value='';
+        	if(document.getElementById('bigContributor')!=undefined)document.getElementById('bigContributor').value='';
+        	if(document.getElementById('autorretenedor')!=undefined)document.getElementById('autorretenedor').value='';
+        	if(document.getElementById('typeRegime')!=undefined)document.getElementById('typeRegime').value='';
+        	if(document.getElementById('externalAccess')!=undefined)document.getElementById('externalAccess').value='';
+        	if(document.getElementById('keyExternalAccess')!=undefined)document.getElementById('keyExternalAccess').value='';
+        	if(document.getElementById('stateThird')!=undefined)document.getElementById('stateThird').value='';
+        	if(document.getElementById('active')!=undefined)document.getElementById('active').value='';
+
+	    	document.getElementById('dateOfModification').value='';		    	
+	    	document.getElementById('userName').value='';		    	
+	    	document.getElementById('dateOfCreation').value='';		    	
+	    	document.getElementById('createdBy').value='';		    	
+	    	
+	    
+		 	var form=document.forms['filter-form'];
+    	 	form.elements["aaddFilter"].value=true;
+    		form.elements["fffilterNature"].value='SUBSTRACT';
+	    }
+		
+		function submitFilterPage(page,field,changeDirection){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+    	 	if (field!=null)
+    	 		form.elements["selectedFilterField"].value=field;
+   	 		form.elements["changeSortingFieldDirection"].value=changeDirection!=null?true:false;
+    	 	form.submit();
+	    }
+
+	    function buildURL(id){
+	    	var path=window.location.pathname.split("/");
+  	    	var prefix="";
+  	    	if (path[1].localeCompare("configuration")!=0){
+  	    		prefix="/"+path[1];	
+  	    	}
+	    	var url=prefix+"/maintenance/third/modifyThird/"+id;
+	    	document.location=url;
+	    }
+	    
+	    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );   	
+	    	
+	    function generateExcelFile(){
+
+	    	var path=window.location.pathname.split("/");
+  	    	var prefix="";
+  	    	if (path[1].localeCompare("configuration")!=0){
+  	    		prefix="/"+path[1];	
+  	    	}
+  	    	var url=prefix+'/maintenance/third/export';
+
+	    	        $.ajax({
+	    	            url: url,
+	    	            type: 'post',
+	    	            dataType: 'json',
+	    	            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+	    	            success : function(result, a,b,c){
+	    	            	window.open(prefix+result.url, "_blank");
+	    	            },
+	    	            error: function(a,b,c,d){
+	    	            },
+	    	            async: true
+	    	            
+	    	        });
+	    }
+ 		       /* ]]> */
+	     </script>
+	    
+</head>
+<body>
+	<div th:fragment="header">
+		    <div class="navbar navbar-inverse navbar-fixed-top">
+		        <div class="navbar-inner">
+		            <div class="container-fluid">
+					<form hidden="" id="navBar" th:action="@{/logout}" method="post">
+						<input id="logoutURL" type="hidden" th:value="@{/logout}"/>
+					</form>
+		                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                </a>
+		                <a class="brand" th:href="@{/}" ><img alt="" th:src="@{/resources/img/spark.png}" /></a>
+			                <div class="nav-collapse collapse">
+			                    <p class="navbar-text pull-right">
+			
+			                    </p>
+			                    <ul class="nav" id="navigationBar">
+				                    
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisition}" th:text="#{label.requisitionsOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisitionDistribution}" th:text="#{label.requisitionDistributionOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchQuotation}" th:text="#{label.quotationOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.Orders}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchItemReceipt}" th:text="#{label.itemReceiptOrder}"></a></li>
+<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/OrderOtherValue}" th:text="#{label.OrderOtherValueOption}"></a></li> -->
+									<li sec:authorize-url="/maintenance"><a th:href="@{/maintenance}" th:text="#{label.navbarConfiguration}"></a></li>
+			                        <li sec:authorize-url="/maintenanceSettings"><a th:href="@{/maintenanceSettings}" th:text="#{label.settingsOption}"></a></li>
+			                        <li sec:authorize-url="/preferences"><a th:href="@{/preferences}" th:text="#{label.languageOption}"></a></li>
+			                        <li><a id="about-ajax-popup" class="about-ajax-popup" th:href="@{/about}" th:text="#{label.aboutOption}"></a></li>
+			                        <li><a href=""><img onclick="var url=$('#logoutURL').val();$.ajax({type: 'POST',url: url});" th:src="@{/resources/img/logout.png}"/></a></li>
+			                    </ul>
+			                </div> <!--/.nav-collapse -->
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	<div class="container-fluid">	
+		<div class="row-fluid">
+			<div id="back"><a th:text="#{label.back}" th:href="@{/maintenance}"></a></div>
+			<h3 th:text="#{label.thirdInfo}"> </h3>
+			<form id="filter-form" th:object="${thirdFilterInfo}" method="post" >
+		  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
+		  	<input id="aaaaction" type="hidden" th:field="*{aaaaction}"/>
+			<input id="aaddFilter" type="hidden" th:field="*{aaddFilter}"/>
+			<input id="fffilterNature" type="hidden" th:field="*{fffilterNature}"/>
+			<input id="selectedFilterField" type="hidden" th:field="*{selectedFilterField}"/>
+		  	<input id="changeSortingFieldDirection" type="hidden" th:field="*{changeSortingFieldDirection}"/>
+			<div style="float:left;"><b id="filterAsText" th:text="'Filter: '+${ffilterAsText}"></b></div><div style="float:right;margin-top: 0;margin-bottom: 0;" id="unionOp" class='pagination pagination-left'><ul><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilterSubstract();">-</label></a></li><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilter();">U</label></a></li></ul></div>
+			
+			
+			<table width="100%">
+				<tr>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:if="${_loggedInUser.thirdCreate}" th:href="@{/maintenance/third/createThird/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
+					<td width="34%"><div align="right"><img th:if="${_loggedInUser.thirdExport}" style="cursor: pointer;" onclick="generateExcelFile();" th:src="@{/resources/img/excel.png}"/></div></td>
+				</tr>
+			</table>
+			<table class="table table-striped" >
+				<thead>
+					<tr>
+						<th >
+							<div><input style="width:100%;" id="company" name="company" type="text" th:value="*{{company}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="costCenter" name="costCenter" type="text" th:value="*{{costCenter}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="code" name="code" type="text" th:value="*{{code}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="nameThird" name="nameThird" type="text" th:value="*{{nameThird}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="typeThird" name="typeThird" type="text" th:value="*{{typeThird}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="contact" name="contact" type="text" th:value="*{{contact}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="address" name="address" type="text" th:value="*{{address}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="country" name="country" type="text" th:value="*{{country}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="phoneOne" name="phoneOne" type="text" th:value="*{{phoneOne}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="phoneTwo" name="phoneTwo" type="text" th:value="*{{phoneTwo}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="email" name="email" type="text" th:value="*{{email}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateEntry" name="dateEntry" type="text" th:value="*{{dateEntry}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateRetirement" name="dateRetirement" type="text" th:value="*{{dateRetirement}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="comment" name="comment" type="text" th:value="*{{comment}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="bigContributor" name="bigContributor" type="text" th:value="*{{bigContributor}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="autorretenedor" name="autorretenedor" type="text" th:value="*{{autorretenedor}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="typeRegime" name="typeRegime" type="text" th:value="*{{typeRegime}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="externalAccess" name="externalAccess" type="text" th:value="*{{externalAccess}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="keyExternalAccess" name="keyExternalAccess" type="text" th:value="*{{keyExternalAccess}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="stateThird" name="stateThird" type="text" th:value="*{{stateThird}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="active" name="active" type="text" th:value="*{{active}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateOfModification" name="dateOfModification" type="text" th:value="*{{dateOfModification}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="userName" name="userName" type="text" th:value="*{{userName}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateOfCreation" name="dateOfCreation" type="text" th:value="*{{dateOfCreation}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="createdBy" name="createdBy" type="text" th:value="*{{createdBy}}" /></div>
+						</th>
+
+					</tr>
+					<tr>
+						<th >
+							<div>
+								<a th:if="${_field} == 'company' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'company\',true)'" th:text="'&uarr;'+#{label.thirdCompany}"></a>
+								<a th:if="${_field} == 'company' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'company\',true)'" th:text="'&darr;'+#{label.thirdCompany}"></a>
+								<a th:if="${_field} != 'company'" th:href="'javascript:submitFilterPage(1,\'company\',true)'" th:text="#{label.thirdCompany}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'costCenter' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'costCenter\',true)'" th:text="'&uarr;'+#{label.thirdCostCenter}"></a>
+								<a th:if="${_field} == 'costCenter' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'costCenter\',true)'" th:text="'&darr;'+#{label.thirdCostCenter}"></a>
+								<a th:if="${_field} != 'costCenter'" th:href="'javascript:submitFilterPage(1,\'costCenter\',true)'" th:text="#{label.thirdCostCenter}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'code' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'code\',true)'" th:text="'&uarr;'+#{label.thirdCode}"></a>
+								<a th:if="${_field} == 'code' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'code\',true)'" th:text="'&darr;'+#{label.thirdCode}"></a>
+								<a th:if="${_field} != 'code'" th:href="'javascript:submitFilterPage(1,\'code\',true)'" th:text="#{label.thirdCode}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'nameThird' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'nameThird\',true)'" th:text="'&uarr;'+#{label.thirdNameThird}"></a>
+								<a th:if="${_field} == 'nameThird' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'nameThird\',true)'" th:text="'&darr;'+#{label.thirdNameThird}"></a>
+								<a th:if="${_field} != 'nameThird'" th:href="'javascript:submitFilterPage(1,\'nameThird\',true)'" th:text="#{label.thirdNameThird}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'typeThird' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'typeThird\',true)'" th:text="'&uarr;'+#{label.thirdTypeThird}"></a>
+								<a th:if="${_field} == 'typeThird' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'typeThird\',true)'" th:text="'&darr;'+#{label.thirdTypeThird}"></a>
+								<a th:if="${_field} != 'typeThird'" th:href="'javascript:submitFilterPage(1,\'typeThird\',true)'" th:text="#{label.thirdTypeThird}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'contact' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'contact\',true)'" th:text="'&uarr;'+#{label.thirdContact}"></a>
+								<a th:if="${_field} == 'contact' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'contact\',true)'" th:text="'&darr;'+#{label.thirdContact}"></a>
+								<a th:if="${_field} != 'contact'" th:href="'javascript:submitFilterPage(1,\'contact\',true)'" th:text="#{label.thirdContact}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'address' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'address\',true)'" th:text="'&uarr;'+#{label.thirdAddress}"></a>
+								<a th:if="${_field} == 'address' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'address\',true)'" th:text="'&darr;'+#{label.thirdAddress}"></a>
+								<a th:if="${_field} != 'address'" th:href="'javascript:submitFilterPage(1,\'address\',true)'" th:text="#{label.thirdAddress}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'country' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'country\',true)'" th:text="'&uarr;'+#{label.thirdCountry}"></a>
+								<a th:if="${_field} == 'country' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'country\',true)'" th:text="'&darr;'+#{label.thirdCountry}"></a>
+								<a th:if="${_field} != 'country'" th:href="'javascript:submitFilterPage(1,\'country\',true)'" th:text="#{label.thirdCountry}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'phoneOne' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'phoneOne\',true)'" th:text="'&uarr;'+#{label.thirdPhoneOne}"></a>
+								<a th:if="${_field} == 'phoneOne' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'phoneOne\',true)'" th:text="'&darr;'+#{label.thirdPhoneOne}"></a>
+								<a th:if="${_field} != 'phoneOne'" th:href="'javascript:submitFilterPage(1,\'phoneOne\',true)'" th:text="#{label.thirdPhoneOne}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'phoneTwo' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'phoneTwo\',true)'" th:text="'&uarr;'+#{label.thirdPhoneTwo}"></a>
+								<a th:if="${_field} == 'phoneTwo' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'phoneTwo\',true)'" th:text="'&darr;'+#{label.thirdPhoneTwo}"></a>
+								<a th:if="${_field} != 'phoneTwo'" th:href="'javascript:submitFilterPage(1,\'phoneTwo\',true)'" th:text="#{label.thirdPhoneTwo}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'email' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'email\',true)'" th:text="'&uarr;'+#{label.thirdEmail}"></a>
+								<a th:if="${_field} == 'email' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'email\',true)'" th:text="'&darr;'+#{label.thirdEmail}"></a>
+								<a th:if="${_field} != 'email'" th:href="'javascript:submitFilterPage(1,\'email\',true)'" th:text="#{label.thirdEmail}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateEntry' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'dateEntry\',true)'" th:text="'&uarr;'+#{label.thirdDateEntry}"></a>
+								<a th:if="${_field} == 'dateEntry' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'dateEntry\',true)'" th:text="'&darr;'+#{label.thirdDateEntry}"></a>
+								<a th:if="${_field} != 'dateEntry'" th:href="'javascript:submitFilterPage(1,\'dateEntry\',true)'" th:text="#{label.thirdDateEntry}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateRetirement' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'dateRetirement\',true)'" th:text="'&uarr;'+#{label.thirdDateRetirement}"></a>
+								<a th:if="${_field} == 'dateRetirement' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'dateRetirement\',true)'" th:text="'&darr;'+#{label.thirdDateRetirement}"></a>
+								<a th:if="${_field} != 'dateRetirement'" th:href="'javascript:submitFilterPage(1,\'dateRetirement\',true)'" th:text="#{label.thirdDateRetirement}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'comment' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'comment\',true)'" th:text="'&uarr;'+#{label.thirdComment}"></a>
+								<a th:if="${_field} == 'comment' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'comment\',true)'" th:text="'&darr;'+#{label.thirdComment}"></a>
+								<a th:if="${_field} != 'comment'" th:href="'javascript:submitFilterPage(1,\'comment\',true)'" th:text="#{label.thirdComment}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'bigContributor' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'bigContributor\',true)'" th:text="'&uarr;'+#{label.thirdBigContributor}"></a>
+								<a th:if="${_field} == 'bigContributor' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'bigContributor\',true)'" th:text="'&darr;'+#{label.thirdBigContributor}"></a>
+								<a th:if="${_field} != 'bigContributor'" th:href="'javascript:submitFilterPage(1,\'bigContributor\',true)'" th:text="#{label.thirdBigContributor}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'autorretenedor' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'autorretenedor\',true)'" th:text="'&uarr;'+#{label.thirdAutorretenedor}"></a>
+								<a th:if="${_field} == 'autorretenedor' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'autorretenedor\',true)'" th:text="'&darr;'+#{label.thirdAutorretenedor}"></a>
+								<a th:if="${_field} != 'autorretenedor'" th:href="'javascript:submitFilterPage(1,\'autorretenedor\',true)'" th:text="#{label.thirdAutorretenedor}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'typeRegime' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'typeRegime\',true)'" th:text="'&uarr;'+#{label.thirdTypeRegime}"></a>
+								<a th:if="${_field} == 'typeRegime' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'typeRegime\',true)'" th:text="'&darr;'+#{label.thirdTypeRegime}"></a>
+								<a th:if="${_field} != 'typeRegime'" th:href="'javascript:submitFilterPage(1,\'typeRegime\',true)'" th:text="#{label.thirdTypeRegime}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'externalAccess' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'externalAccess\',true)'" th:text="'&uarr;'+#{label.thirdExternalAccess}"></a>
+								<a th:if="${_field} == 'externalAccess' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'externalAccess\',true)'" th:text="'&darr;'+#{label.thirdExternalAccess}"></a>
+								<a th:if="${_field} != 'externalAccess'" th:href="'javascript:submitFilterPage(1,\'externalAccess\',true)'" th:text="#{label.thirdExternalAccess}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'keyExternalAccess' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'keyExternalAccess\',true)'" th:text="'&uarr;'+#{label.thirdKeyExternalAccess}"></a>
+								<a th:if="${_field} == 'keyExternalAccess' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'keyExternalAccess\',true)'" th:text="'&darr;'+#{label.thirdKeyExternalAccess}"></a>
+								<a th:if="${_field} != 'keyExternalAccess'" th:href="'javascript:submitFilterPage(1,\'keyExternalAccess\',true)'" th:text="#{label.thirdKeyExternalAccess}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'stateThird' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'stateThird\',true)'" th:text="'&uarr;'+#{label.thirdStateThird}"></a>
+								<a th:if="${_field} == 'stateThird' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'stateThird\',true)'" th:text="'&darr;'+#{label.thirdStateThird}"></a>
+								<a th:if="${_field} != 'stateThird'" th:href="'javascript:submitFilterPage(1,\'stateThird\',true)'" th:text="#{label.thirdStateThird}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'active' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'active\',true)'" th:text="'&uarr;'+#{label.thirdActive}"></a>
+								<a th:if="${_field} == 'active' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'active\',true)'" th:text="'&darr;'+#{label.thirdActive}"></a>
+								<a th:if="${_field} != 'active'" th:href="'javascript:submitFilterPage(1,\'active\',true)'" th:text="#{label.thirdActive}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateOfModification' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="'&uarr;'+#{label.dateOfModification}"></a>
+								<a th:if="${_field} == 'dateOfModification' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="'&darr;'+#{label.dateOfModification}"></a>
+								<a th:if="${_field} != 'dateOfModification'" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="#{label.dateOfModification}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'userName' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="'&uarr;'+#{label.userOfModification}"></a>
+								<a th:if="${_field} == 'userName' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="'&darr;'+#{label.userOfModification}"></a>
+								<a th:if="${_field} != 'userName'" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="#{label.userOfModification}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateOfCreation' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="'&uarr;'+#{label.dateOfCreation}"></a>
+								<a th:if="${_field} == 'dateOfCreation' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="'&darr;'+#{label.dateOfCreation}"></a>
+								<a th:if="${_field} != 'dateOfCreation'" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="#{label.dateOfCreation}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'createdBy' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="'&uarr;'+#{label.createdBy}"></a>
+								<a th:if="${_field} == 'createdBy' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="'&darr;'+#{label.createdBy}"></a>
+								<a th:if="${_field} != 'createdBy'" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="#{label.createdBy}"></a>
+							</div>
+						</th>
+
+					</tr>
+				</thead>
+				<tbody id="search">
+					<tr th:each="object: ${list}" th:onClick="'buildURL(\''+${object.id}+'\')'">
+						<td th:text="${object.company.companyName}"></td>
+						<td th:text="${object.costCenter.nameCostCenter}"></td>
+						<td th:text="${object.code}"></td>
+						<td th:text="${object.nameThird}"></td>
+						<td th:text="${object.typeThird}"></td>
+						<td th:text="${object.contact}"></td>
+						<td th:text="${object.address}"></td>
+						<td th:text="${object.country}"></td>
+						<td th:text="${object.phoneOne}"></td>
+						<td th:text="${object.phoneTwo}"></td>
+						<td th:text="${object.email}"></td>
+						<td th:text="${{object.dateEntry}}"></td>
+						<td th:text="${{object.dateRetirement}}"></td>
+						<td th:text="${object.comment}"></td>
+						<td th:text="${object.bigContributor}"></td>
+						<td th:text="${object.autorretenedor}"></td>
+						<td th:text="${object.typeRegime}"></td>
+						<td th:text="${object.externalAccess}"></td>
+						<td th:text="${object.keyExternalAccess}"></td>
+						<td th:text="#{${'label.'+object.stateThird}}"></td>
+						<td th:text="#{${'label.'+object.active}}"></td>
+						<td th:text="${#calendars.format(object.dateOfModification,'dd/MM/yyyy HH:mm')}" ></td>
+						<td th:text="${object.userName}"></td>
+						<td th:text="${#calendars.format(object.dateOfCreation,'dd/MM/yyyy HH:mm')}" ></td>
+						<td th:text="${object.createdBy}"></td>
+
+					</tr>
+				</tbody>
+			</table>
+			</form>
+			<table width="100%">
+				<tr>
+					<td width="33%"></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
+					<td width="34%"><span th:text="${page.totalElements}+'/'+${_totalCount}"></span></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="container-fluid" th:include="normal/layoutmaintenance :: footer"></div>
+</body>
+</html>

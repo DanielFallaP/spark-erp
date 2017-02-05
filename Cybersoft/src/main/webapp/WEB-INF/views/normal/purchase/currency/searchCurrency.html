@@ -252,9 +252,9 @@
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisition}" th:text="#{label.requisitionsOption}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisitionDistribution}" th:text="#{label.requisitionDistributionOption}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchQuotation}" th:text="#{label.quotationOption}"></a></li>
-			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.purchaseOrders}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.Orders}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchItemReceipt}" th:text="#{label.itemReceiptOrder}"></a></li>
-<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/purchaseOrderOtherValue}" th:text="#{label.purchaseOrderOtherValueOption}"></a></li> -->
+<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/OrderOtherValue}" th:text="#{label.OrderOtherValueOption}"></a></li> -->
 									<li sec:authorize-url="/purchase"><a th:href="@{/purchase}" th:text="#{label.navbarConfiguration}"></a></li>
 			                        <li sec:authorize-url="/purchaseSettings"><a th:href="@{/purchaseSettings}" th:text="#{label.settingsOption}"></a></li>
 			                        <li sec:authorize-url="/preferences"><a th:href="@{/preferences}" th:text="#{label.languageOption}"></a></li>
@@ -377,7 +377,6 @@
 						<td th:text="${object.createdBy}"></td>
 
 					</tr>
-					
 				</tbody>
 			</table>
 			</form>

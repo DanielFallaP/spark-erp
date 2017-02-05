@@ -16,14 +16,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
-import co.com.cybersoft.maintenance.tables.persistence.domain.Company;
-import co.com.cybersoft.purchase.tables.core.domain.UsersDetails;
 import co.com.cybersoft.purchase.tables.core.services.currency.CurrencyService;
 import co.com.cybersoft.util.PageWrapper;
 import co.com.cybersoft.purchase.tables.events.currency.CurrencyPageEvent;
 import co.com.cybersoft.purchase.tables.events.currency.RequestCurrencyPageEvent;
 import co.com.cybersoft.purchase.tables.persistence.domain.Currency;
-import co.com.cybersoft.purchase.tables.persistence.domain.Users;
 import co.com.cybersoft.purchase.tables.web.domain.currency.CurrencyFilterInfo;
 
 /**
@@ -65,9 +62,7 @@ public class CurrencySearchController {
 		PageRequest pageRequest=null;
 		if (field==null && request.getSession().getAttribute("currencyField")==null){
 			pageRequest = new PageRequest(pageable.getPageNumber(),pageable.getPageSize(), Direction.DESC, "id");
-			RequestCurrencyPageEvent requestCurrencyPageEvent = new RequestCurrencyPageEvent(pageRequest);
-			requestCurrencyPageEvent.setCompanyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
-			details = currencyService.requestCurrencyPage(requestCurrencyPageEvent);
+			details = currencyService.requestCurrencyPage(new RequestCurrencyPageEvent(pageRequest));
 		}
 		else{
 			if (request.getSession().getAttribute("currencyAscending")!=null){
@@ -75,9 +70,7 @@ public class CurrencySearchController {
 				direction=(Boolean) request.getSession().getAttribute("currencyAscending");
 				pageRequest = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) (field==null?request.getSession().getAttribute("currencyField"):field));
 			}
-			RequestCurrencyPageEvent requestCurrencyPageEvent = new RequestCurrencyPageEvent(pageRequest);
-			requestCurrencyPageEvent.setCompanyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
-			details = currencyService.requestCurrencyPage(requestCurrencyPageEvent);
+			details = currencyService.requestCurrencyPage(new RequestCurrencyPageEvent(pageRequest));
 		}
 		
 		PageWrapper<Currency> page=new PageWrapper<Currency>(details.getCurrencyPage(),"/purchase/currency/searchCurrency");
@@ -122,15 +115,12 @@ public class CurrencySearchController {
 		if ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))&& request.getSession().getAttribute("currencyField")==null){
 			pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), Direction.DESC,"id");
 			pageEvent = new RequestCurrencyPageEvent(pageRequest,filter);
-			pageEvent.setCompanyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
 		}
 		else {
 			if (request.getSession().getAttribute("currencyAscending")!=null){
 				direction=(Boolean) request.getSession().getAttribute("currencyAscending");
 				pageRequest = new PageRequest(filter.getSelectedFilterPage()-1, pageable.getPageSize(), direction?Direction.ASC:Direction.DESC, (String) ((filter.getSelectedFilterField()==null || filter.getSelectedFilterField().equals(""))?request.getSession().getAttribute("currencyField"):filter.getSelectedFilterField()));
-				pageEvent = new RequestCurrencyPageEvent(pageRequest,filter);			
-				pageEvent.setCompanyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
-			}
+				pageEvent = new RequestCurrencyPageEvent(pageRequest,filter);			}
 		}
 		
 		CurrencyPageEvent details = currencyService.requestCurrencyFilterPage(pageEvent);

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.sexCreationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	      
+	      function hideAlert(){
+	    	  document.getElementById("_savedAlert").style.display='none';
+	      }
+	     
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("configuration")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/payroll/sex/searchSex","_self");
+	    	  }
+	    	});
+	        	     
+		   
+		     
+		  function setFocus(){
+		   		document.getElementById("code").focus();
+		   } 
+		   
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+	       /* ]]> */
+	     </script>
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutpayroll :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${sexInfo}" method="post" onchange="hideAlert();">
+		        	<div id="back"><a th:if="${sexInfo.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/payroll/sex/searchSex}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.sexCreationTitle}"></h3>
+		        	<br/>
+		        	<table>		        			        			
+		        		<tr>
+		        				<td ><b th:text="#{label.sexCode}+': '"></b></td>
+		        				<td><input id="code" name="code" type="text" th:value="*{{code}}" /></td>
+		        				<td th:if="${codeException}"><div class="alert alert-error" th:text="#{${codeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.sexSex}+': '"></b></td>
+		        				<td><input id="sex" name="sex" type="text" th:value="*{{sex}}" /></td>
+		        				<td th:if="${sexException}"><div class="alert alert-error" th:text="#{${sexValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.sexAccount}+': '"></b></td>
+		        			<td><select id="account" onChange="accountSelectedRefresh()" th:field="*{account}"><option th:each="reference : ${sexInfo.accountList}" th:value="${reference.code}" th:text="${reference.code}"></option></select></td>
+		        			<td th:if="${accountException}"><div class="alert alert-error" th:text="#{${accountValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.sexActive}+': '"></b></td>
+		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${sexInfo.created}' class="alert alert-info" th:text="#{label.created}">
+            </div>
+            <div th:if='${sexCreateException}' class="alert alert-error" th:text="#{label.sexCreationError}">
+            </div>
+            <div th:if='${sexValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpayroll :: footer"></div>    
+    </body>
+</html>

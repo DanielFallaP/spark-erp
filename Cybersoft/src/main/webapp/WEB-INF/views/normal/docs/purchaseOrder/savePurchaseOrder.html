@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.purchaseOrderInfo}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	        td.right { text-align:right; }
+	        .hideANDseek
+			{
+			    display: none;
+			}
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+
+		<script th:src="@{/resources/js/util.js}"></script>
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		<script th:src="@{/resources/js/jquery.dataTables.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/jquery.dataTables.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	                   
+	      var popupVisible=false;
+	      
+	      function newEntry(){
+			   $('.popup-with-form').click();
+			   popupVisible=true;
+		   		document.getElementById("item").focus();
+		   }
+
+		   $(document).keyup(function(e) {
+	    	  if(e.which == 27 && !popupVisible) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("docs")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/docs/searchPurchaseOrder","_self");
+	    	  }
+	    	});
+	      
+	      $.magnificPopup.instance.close = function () {
+				popupVisible=false;
+			   $.magnificPopup.proto.close.call(this);
+	      }; 
+	      
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 107 && document.getElementById("newEntry")!=null) {
+  				newEntry();
+	    	  }
+	    	});
+	    	
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#date" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#purchaseOrderBodyModificationInfo\\.date" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+
+		
+			function submitDeletion(){
+				var deletion="";
+				$("#purchaseOrderBodyList").find('tr').each(function (i){
+					if ($(this).find("td:first").find('div').find('input').is(':checked')){
+						deletion+=$(this).prop( 'id' )+",";
+					}
+				});
+				var form=document.forms['header-form'];
+				form.elements["_deletion"].value=deletion;
+				form.elements["_deletionSubmit"].value="deletion";
+				form.submit();
+			}
+			
+		  function setFocus(){
+		   		document.getElementById("city").focus();
+		   }
+		  
+		function submitCreation(){
+			var form=document.forms['purchaseOrder-body-form'];
+			form.elements["_submit"].value="creation";
+			form.submit();
+		}
+		
+		function submitHeader(){
+			var form=document.forms['header-form'];
+			form.elements["_submit"].value="header";
+			form.submit();
+		}
+		
+		function submitModification(){
+			var form=document.forms['purchaseOrder-body-modification-form'];
+			form.elements["_modificationSubmit"].value="modification";
+			form.submit();
+		}
+		   
+   
+		function setModificationFormValues(id){
+					   var selectedRow="#"+id;
+					   var link=$("#purchaseOrder-body-modification-form");
+					   var identification="#_id";
+					   var disable=false;
+					   $(identification).val(id);
+					   $(selectedRow).find('td').each(function (i){
+					   		if (i==0){
+							   			var field="#purchaseOrderBodyModificationInfo\\._enableDeletion";
+							   		 	if ($(this).has("input[type='checkbox']").length!=0){
+							   		 		$(field).prop('checked', true);
+							   		 		disable=false;
+							   		 	}
+							   		 	else{
+							   		 		$(field).prop('checked', false);
+							   		 		disable=true;
+							   		 	}
+							}
+					   		if (i==0){
+					   			var field="#purchaseOrderBodyModificationInfo\\.item";
+					   			$(field).val($(this).html());	 
+					   		}if (i==1){
+					   			var field="#purchaseOrderBodyModificationInfo\\.itemDescription";
+					   			$(field).val($(this).html());	 
+					   		}if (i==2){
+					   			var field="#purchaseOrderBodyModificationInfo\\.unit";
+					   			$(field).val($(this).html());	 
+					   		}if (i==3){
+					   			var field="#purchaseOrderBodyModificationInfo\\.orderedQuantity";
+					   			$(field).val($(this).html());	 
+					   		}if (i==4){
+					   			var field="#purchaseOrderBodyModificationInfo\\.localCurrencyUnitValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==5){
+					   			var field="#purchaseOrderBodyModificationInfo\\.localCurrencyTotalValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==6){
+					   			var field="#purchaseOrderBodyModificationInfo\\.foreignCurrencyUnitValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==7){
+					   			var field="#purchaseOrderBodyModificationInfo\\.foreignCurrencyTotalValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==8){
+					   			var field="#purchaseOrderBodyModificationInfo\\.receivedQuantity";
+					   			$(field).val($(this).html());	 
+					   		}
+					   });
+					$('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+				   }
+
+		$(function(){
+				     $("#city").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/docSite/getListByPopulatedPlaceReturnPopulatedPlace?populatedPlace="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#thirdParty").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/thirdParty/getListByThirdPartyReturnThirdParty?thirdParty="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#quotationNumber").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/docs/quotation/getQuotationList?numericId="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 1,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+			
+		   $(document).ready( function () {
+				$('#purchaseOrderBodyList').dataTable();
+
+			} );
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form2').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$("#header-form :input").change(function() {
+					document.getElementById("_savedAlert").style.display='none';
+				});
+			});
+		   
+		   function checkExceptions(){
+			   if (document.getElementById("_AdditionFormException")!=null){
+				   newEntry();
+			   }
+			   
+			   if (document.getElementById("_ModificationFormException")!=null){
+			   	   setModificationFormValues(document.getElementById("_ModificationFormExceptionId").value);
+				   $('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+			   }
+		   }
+		   
+	       /* ]]> */
+	     </script>
+
+    </head>
+    <body onload="checkExceptions();setFocus();">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form id="header-form" th:object="${purchaseOrderInfo}" method="post" >
+		        	<input id="_submit" hidden="" th:field="*{purchaseOrderBodyModificationInfo.submit}"></input>
+		        	<input id="_documentName" type="hidden" value="purchaseOrder"></input>
+		        	<input th:if='${purchaseOrderInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<div ><a id="back" th:text="#{label.back}" th:href="@{/docs/searchPurchaseOrder}"></a></div>
+		        	
+		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
+		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{purchaseOrderBodyModificationInfo.submit}"></input>
+		        	<input id="_trueValue" th:value="#{label.true}" type="hidden" />
+		        	
+		        	<table width="100%">
+						<tr>
+							<td width="33%"><h3 th:if='${purchaseOrderInfo.numericId==null}' th:text="#{label.purchaseOrderInfo}"></h3>
+		        			<h3 th:if='${purchaseOrderInfo.numericId!=null}' th:text="#{label.purchaseOrderInfo}+' '+${purchaseOrderInfo.numericId}"></h3></td>
+							<td width="33%"></td>
+							<td width="34%"><div align="right"><a th:if='${purchaseOrderInfo.showBody}' th:href="@{/docs/purchaseOrder/export?id=}+${purchaseOrderInfo.numericId}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
+						</tr>
+					</table>
+		        	<table>
+		        		<tr th:if="${cityException} or ${dateException} or ${exchangeRateException}">
+		        				        			<td th:if="!${cityException}" colspan="2"></td>
+		        				        			<td th:if="${cityException}" colspan="2"><div class="alert alert-error" th:text="#{${cityValidationErrorMessage}}"></div></td><td th:if="!${dateException}" colspan="2"></td>
+		        				        			<td th:if="${dateException}" colspan="2"><div class="alert alert-error" th:text="#{${dateValidationErrorMessage}}"></div></td><td th:if="!${exchangeRateException}" colspan="2"></td>
+		        				        			<td th:if="${exchangeRateException}" colspan="2"><div class="alert alert-error" th:text="#{${exchangeRateValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderCity}+': '"></b></td>
+		        				        			<td><input id="city" type="text" th:field="*{city}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderDate}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="date" name="date" type="text" th:value="*{{date}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderExchangeRate}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="exchangeRate" name="exchangeRate" type="text" th:value="*{{exchangeRate}}" /></td>
+
+		        				        		</tr><tr th:if="${thirdPartyException} or ${thirdPartyPersonException} or ${methodOfPaymentException}">
+		        				        			<td th:if="!${thirdPartyException}" colspan="2"></td>
+		        				        			<td th:if="${thirdPartyException}" colspan="2"><div class="alert alert-error" th:text="#{${thirdPartyValidationErrorMessage}}"></div></td><td th:if="!${thirdPartyPersonException}" colspan="2"></td>
+		        				        			<td th:if="${thirdPartyPersonException}" colspan="2"><div class="alert alert-error" th:text="#{${thirdPartyPersonValidationErrorMessage}}"></div></td><td th:if="!${methodOfPaymentException}" colspan="2"></td>
+		        				        			<td th:if="${methodOfPaymentException}" colspan="2"><div class="alert alert-error" th:text="#{${methodOfPaymentValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderThirdParty}+': '"></b></td>
+		        				        			<td><input id="thirdParty" type="text" th:field="*{thirdParty}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderThirdPartyPerson}+': '"></b></td>
+		        				        			<td><input  id="thirdPartyPerson" name="thirdPartyPerson" type="text" th:value="*{{thirdPartyPerson}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderMethodOfPayment}+': '"></b></td>
+		        				        			<td><select id="methodOfPayment" onChange="methodOfPaymentSelectedRefresh()" th:field="*{methodOfPayment}"><option value=""></option><option th:each="reference : ${purchaseOrderInfo.methodOfPaymentList}" th:value="${reference.methodOfPayment}" th:text="${reference.methodOfPayment}"></option></select></td>
+
+		        				        		</tr><tr th:if="${paymentCurrencyException} or ${contractException} or ${deliveryTypeException}">
+		        				        			<td th:if="!${paymentCurrencyException}" colspan="2"></td>
+		        				        			<td th:if="${paymentCurrencyException}" colspan="2"><div class="alert alert-error" th:text="#{${paymentCurrencyValidationErrorMessage}}"></div></td><td th:if="!${contractException}" colspan="2"></td>
+		        				        			<td th:if="${contractException}" colspan="2"><div class="alert alert-error" th:text="#{${contractValidationErrorMessage}}"></div></td><td th:if="!${deliveryTypeException}" colspan="2"></td>
+		        				        			<td th:if="${deliveryTypeException}" colspan="2"><div class="alert alert-error" th:text="#{${deliveryTypeValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderPaymentCurrency}+': '"></b></td>
+		        				        			<td><select id="paymentCurrency" onChange="paymentCurrencySelectedRefresh()" th:field="*{paymentCurrency}"><option value=""></option><option th:each="reference : ${purchaseOrderInfo.paymentCurrencyList}" th:value="${reference.code}" th:text="${reference.code}"></option></select></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderContract}+': '"></b></td>
+		        				        			<td><select id="contract" onChange="contractSelectedRefresh()" th:field="*{contract}"><option value=""></option><option th:each="reference : ${purchaseOrderInfo.contractList}" th:value="${reference.contract}" th:text="${reference.contract}"></option></select></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderDeliveryType}+': '"></b></td>
+		        				        			<td><input  id="deliveryType" name="deliveryType" type="text" th:value="*{{deliveryType}}" /></td>
+
+		        				        		</tr><tr th:if="${priorityException} or ${requisitionNumberException} or ${receivingWarehouseException}">
+		        				        			<td th:if="!${priorityException}" colspan="2"></td>
+		        				        			<td th:if="${priorityException}" colspan="2"><div class="alert alert-error" th:text="#{${priorityValidationErrorMessage}}"></div></td><td th:if="!${requisitionNumberException}" colspan="2"></td>
+		        				        			<td th:if="${requisitionNumberException}" colspan="2"><div class="alert alert-error" th:text="#{${requisitionNumberValidationErrorMessage}}"></div></td><td th:if="!${receivingWarehouseException}" colspan="2"></td>
+		        				        			<td th:if="${receivingWarehouseException}" colspan="2"><div class="alert alert-error" th:text="#{${receivingWarehouseValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderPriority}+': '"></b></td>
+		        				        			<td><select id="priority" onChange="prioritySelectedRefresh()" th:field="*{priority}"><option value=""></option><option th:each="reference : ${purchaseOrderInfo.priorityList}" th:value="${reference.priority}" th:text="${reference.priority}"></option></select></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderRequisitionNumber}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="requisitionNumber" name="requisitionNumber" type="text" th:value="*{{requisitionNumber}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderReceivingWarehouse}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="receivingWarehouse" name="receivingWarehouse" type="text" th:value="*{{receivingWarehouse}}" /></td>
+
+		        				        		</tr><tr th:if="${quotationNumberException} or ${printCounterException} or ${statusException}">
+		        				        			<td th:if="!${quotationNumberException}" colspan="2"></td>
+		        				        			<td th:if="${quotationNumberException}" colspan="2"><div class="alert alert-error" th:text="#{${quotationNumberValidationErrorMessage}}"></div></td><td th:if="!${printCounterException}" colspan="2"></td>
+		        				        			<td th:if="${printCounterException}" colspan="2"><div class="alert alert-error" th:text="#{${printCounterValidationErrorMessage}}"></div></td><td th:if="!${statusException}" colspan="2"></td>
+		        				        			<td th:if="${statusException}" colspan="2"><div class="alert alert-error" th:text="#{${statusValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderQuotationNumber}+': '"></b></td>
+		        				        			<td><input  id="quotationNumber" name="quotationNumber" type="text" th:value="*{{quotationNumber}}" /></td><td style="padding:0 15px;"><b th:text="#{label.purchaseOrderPrintCounter}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="printCounter" name="printCounter" type="text" th:value="*{{printCounter}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderStatus}+': '"></b></td>
+		        				        			<td><input  id="status" name="status" type="text" th:value="*{{status}}" /></td>
+
+		        				        		</tr><tr th:if="${remarksException} or ${readyException} or ${activeException}">
+		        				        			<td th:if="!${remarksException}" colspan="2"></td>
+		        				        			<td th:if="${remarksException}" colspan="2"><div class="alert alert-error" th:text="#{${remarksValidationErrorMessage}}"></div></td><td th:if="!${readyException}" colspan="2"></td>
+		        				        			<td th:if="${readyException}" colspan="2"><div class="alert alert-error" th:text="#{${readyValidationErrorMessage}}"></div></td><td th:if="!${activeException}" colspan="2"></td>
+		        				        			<td th:if="${activeException}" colspan="2"><div class="alert alert-error" th:text="#{${activeValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderRemarks}+': '"></b></td>
+		        				        			<td><textarea  th:field="*{remarks}" ></textarea></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderReady}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{ready}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderActive}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{active}" /></td>
+
+		        				        		</tr>
+		        	</table>
+		        	<br/>
+		        	<br/>
+		        	<table th:if='${purchaseOrderInfo.showBody}' id="purchaseOrderBodyList" class="table table-striped">
+		        		<thead>
+							<tr>
+								<th   align="center" th:text="#{label.purchaseOrderItem}"></th><th   align="center" th:text="#{label.purchaseOrderItemDescription}"></th><th   align="center" th:text="#{label.purchaseOrderUnit}"></th><th   align="center" th:text="#{label.purchaseOrderOrderedQuantity}"></th><th   align="center" th:text="#{label.purchaseOrderLocalCurrencyUnitValue}+' ('+${purchaseOrderBodyInfo._append_localCurrency}+')'"></th><th   align="center" th:text="#{label.purchaseOrderLocalCurrencyTotalValue}+' ('+${purchaseOrderBodyInfo._append_localCurrency}+')'"></th><th   align="center" th:text="#{label.purchaseOrderForeignCurrencyUnitValue}+' ('+${purchaseOrderBodyInfo._append_foreignCurrency}+')'"></th><th   align="center" th:text="#{label.purchaseOrderForeignCurrencyTotalValue}+' ('+${purchaseOrderBodyInfo._append_foreignCurrency}+')'"></th><th   align="center" th:text="#{label.purchaseOrderReceivedQuantity}"></th>
+							</tr>
+						</thead>
+						<tbody id="purchaseOrderBodyList">
+							<tr th:each="object: ${purchaseOrderBodyList}" th:id="${object.id}"  >
+								<td   th:text="${{object.item}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td   th:text="${{object.itemDescription}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td   th:text="${{object.unit}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.orderedQuantity}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.localCurrencyUnitValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.localCurrencyTotalValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.foreignCurrencyUnitValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.foreignCurrencyTotalValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.receivedQuantity}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td>
+							</tr>
+						</tbody>
+		        	</table>
+					<a class="popup-with-form" href="#purchaseOrder-body-form" hidden=""></a>
+       				<a class="popup-with-form2" href="#purchaseOrder-body-modification-form" hidden=""></a>
+							        				
+       				<div align="right" ><input type="button" th:value="#{label.save}" onclick="submitHeader();"/></div>
+		        </form>
+					<input th:if='${purchaseOrderInfo.showBody}' id="newEntry" hidden=""/>
+			 <!-- Custom form for adding new records -->
+			 <form id="purchaseOrder-body-form" class="white-popup mfp-hide"  th:object="${purchaseOrderBodyInfo}" method="post">
+		        	<h3 th:text="#{label.newRecord}"></h3>
+		        	<input id="_submit" hidden="" th:field="*{purchaseOrderBodyModificationInfo.submit}"></input>
+		        	<input th:if='${purchaseOrderInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_AdditionFormException}" id="_AdditionFormException" hidden=""></input> 
+		        	<table>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderItem}+': '"></b></td>
+		        				<td><input readonly="readonly" id="item" name="item" type="text" th:value="*{{item}}" /></td>
+		        				<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderItemDescription}+': '"></b></td>
+		        				<td><input readonly="readonly" id="itemDescription" name="itemDescription" type="text" th:value="*{{itemDescription}}" /></td>
+		        				<td th:if="${itemDescriptionException}"><div class="alert alert-error" th:text="#{${itemDescriptionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderUnit}+': '"></b></td>
+		        				<td><input readonly="readonly" id="unit" name="unit" type="text" th:value="*{{unit}}" /></td>
+		        				<td th:if="${unitException}"><div class="alert alert-error" th:text="#{${unitValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderOrderedQuantity}+': '"></b></td>
+		        				<td><input readonly="readonly" id="orderedQuantity" name="orderedQuantity" type="text" th:value="*{{orderedQuantity}}" /></td>
+		        				<td th:if="${orderedQuantityException}"><div class="alert alert-error" th:text="#{${orderedQuantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderLocalCurrencyUnitValue}+' ('+${purchaseOrderBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="localCurrencyUnitValue" name="localCurrencyUnitValue" type="text" th:value="*{{localCurrencyUnitValue}}" /></td>
+		        				<td th:if="${localCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${localCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderLocalCurrencyTotalValue}+' ('+${purchaseOrderBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="localCurrencyTotalValue" name="localCurrencyTotalValue" type="text" th:value="*{{localCurrencyTotalValue}}" /></td>
+		        				<td th:if="${localCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${localCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderForeignCurrencyUnitValue}+' ('+${purchaseOrderBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="foreignCurrencyUnitValue" name="foreignCurrencyUnitValue" type="text" th:value="*{{foreignCurrencyUnitValue}}" /></td>
+		        				<td th:if="${foreignCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderForeignCurrencyTotalValue}+' ('+${purchaseOrderBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="foreignCurrencyTotalValue" name="foreignCurrencyTotalValue" type="text" th:value="*{{foreignCurrencyTotalValue}}" /></td>
+		        				<td th:if="${foreignCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderReceivedQuantity}+': '"></b></td>
+		        				<td><input readonly="readonly" id="receivedQuantity" name="receivedQuantity" type="text" th:value="*{{receivedQuantity}}" /></td>
+		        				<td th:if="${receivedQuantityException}"><div class="alert alert-error" th:text="#{${receivedQuantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${purchaseOrderInfo.ready}' type="button" th:value="#{label.save}" onclick="submitCreation();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		        
+		        <form id="purchaseOrder-body-modification-form" class="white-popup mfp-hide" th:object="${purchaseOrderBodyModificationInfo}" method="post">
+		        	<h3 th:text="#{label.recordModification}"></h3>
+		        	<input id="_id" hidden="" th:field="*{purchaseOrderBodyModificationInfo.id}"></input>
+		        	<input id="_modificationSubmit" hidden="hidden" th:field="*{purchaseOrderBodyModificationInfo.submit}"></input>
+		        	<input th:if='${purchaseOrderInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormException" hidden=""></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormExceptionId" th:value="${_ModifiedId}" hidden=""></input>
+		        	
+		        	<table >
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderItem}+': '"></b></td>
+		        				<td><input readonly="readonly" id="purchaseOrderBodyModificationInfo.item" name="purchaseOrderBodyModificationInfo.item" type="text" th:value="*{{purchaseOrderBodyModificationInfo.item}}" /></td>
+		        				<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderItemDescription}+': '"></b></td>
+		        				<td><input readonly="readonly" id="purchaseOrderBodyModificationInfo.itemDescription" name="purchaseOrderBodyModificationInfo.itemDescription" type="text" th:value="*{{purchaseOrderBodyModificationInfo.itemDescription}}" /></td>
+		        				<td th:if="${itemDescriptionException}"><div class="alert alert-error" th:text="#{${itemDescriptionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderUnit}+': '"></b></td>
+		        				<td><input readonly="readonly" id="purchaseOrderBodyModificationInfo.unit" name="purchaseOrderBodyModificationInfo.unit" type="text" th:value="*{{purchaseOrderBodyModificationInfo.unit}}" /></td>
+		        				<td th:if="${unitException}"><div class="alert alert-error" th:text="#{${unitValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderOrderedQuantity}+': '"></b></td>
+		        				<td><input readonly="readonly" id="purchaseOrderBodyModificationInfo.orderedQuantity" name="purchaseOrderBodyModificationInfo.orderedQuantity" type="text" th:value="*{{purchaseOrderBodyModificationInfo.orderedQuantity}}" /></td>
+		        				<td th:if="${orderedQuantityException}"><div class="alert alert-error" th:text="#{${orderedQuantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderLocalCurrencyUnitValue}+' ('+${purchaseOrderBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="purchaseOrderBodyModificationInfo.localCurrencyUnitValue" name="purchaseOrderBodyModificationInfo.localCurrencyUnitValue" type="text" th:value="*{{purchaseOrderBodyModificationInfo.localCurrencyUnitValue}}" /></td>
+		        				<td th:if="${localCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${localCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderLocalCurrencyTotalValue}+' ('+${purchaseOrderBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="purchaseOrderBodyModificationInfo.localCurrencyTotalValue" name="purchaseOrderBodyModificationInfo.localCurrencyTotalValue" type="text" th:value="*{{purchaseOrderBodyModificationInfo.localCurrencyTotalValue}}" /></td>
+		        				<td th:if="${localCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${localCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderForeignCurrencyUnitValue}+' ('+${purchaseOrderBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="purchaseOrderBodyModificationInfo.foreignCurrencyUnitValue" name="purchaseOrderBodyModificationInfo.foreignCurrencyUnitValue" type="text" th:value="*{{purchaseOrderBodyModificationInfo.foreignCurrencyUnitValue}}" /></td>
+		        				<td th:if="${foreignCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderForeignCurrencyTotalValue}+' ('+${purchaseOrderBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="purchaseOrderBodyModificationInfo.foreignCurrencyTotalValue" name="purchaseOrderBodyModificationInfo.foreignCurrencyTotalValue" type="text" th:value="*{{purchaseOrderBodyModificationInfo.foreignCurrencyTotalValue}}" /></td>
+		        				<td th:if="${foreignCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderReceivedQuantity}+': '"></b></td>
+		        				<td><input readonly="readonly" id="purchaseOrderBodyModificationInfo.receivedQuantity" name="purchaseOrderBodyModificationInfo.receivedQuantity" type="text" th:value="*{{purchaseOrderBodyModificationInfo.receivedQuantity}}" /></td>
+		        				<td th:if="${receivedQuantityException}"><div class="alert alert-error" th:text="#{${receivedQuantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+
+		        		<tr hidden="">
+		        		 			<td ></td>
+		        		   			<td ><input  type="checkbox" id="purchaseOrderBodyModificationInfo._enableDeletion" th:field="*{purchaseOrderBodyModificationInfo._enableDeletion}" /></td>
+		        		</tr>
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${purchaseOrderInfo.ready}' type="button" th:value="#{label.save}" onclick="submitModification();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${purchaseOrderInfo._toSave}' class="alert alert-info" th:text="#{label.saved}">
+            </div>
+            <div th:if='${purchaseOrderCreateException}' class="alert alert-error" th:text="#{label.docCreationError}">
+            </div>
+            <div th:if='${purchaseOrderValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>
+    </body>
+</html>

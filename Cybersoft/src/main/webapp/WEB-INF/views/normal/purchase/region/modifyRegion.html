@@ -85,24 +85,34 @@
 		        	<table>
 		        		<tr>
 		        			<td ><b th:text="#{label.regionContinent}+': '"></b></td>
-		        			<td><select id="continent" onChange="continentSelectedRefresh()" th:field="*{continentId}"><option th:each="reference : ${regionInfo.continentList}" th:value="${reference.id}" th:text="${reference.continent}"></option></select></td>
+		        			<td>
+		        				<select th:if="${_loggedInUser.regionUpdate}" id="continent" onChange="continentSelectedRefresh()" th:field="*{continentId}"><option th:each="reference : ${regionInfo.continentList}" th:value="${reference.id}" th:text="${reference.continent}"></option></select>
+		        				<select th:if="${_loggedInUser.regionUpdate} != true" disabled="disabled" id="continent" onChange="continentSelectedRefresh()" th:field="*{continentId}"><option th:each="reference : ${regionInfo.continentList}" th:value="${reference.id}" th:text="${reference.continent}"></option></select>
+		        			</td>
 		        			<td th:if="${continentException}"><div class="alert alert-error" th:text="#{${continentValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        				<td ><b th:text="#{label.regionRegion}+': '"></b></td>
-		        				<td><input id="region" name="region" type="text" th:value="*{{region}}" /></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.regionUpdate}" id="region" name="region" type="text" th:value="*{{region}}" />
+		        					<input th:if="${_loggedInUser.regionUpdate} != true" disabled="disabled" id="region" name="region" type="text" th:value="*{{region}}" />
+		        					
+		        				</td>
 		        				<td th:if="${regionException}"><div class="alert alert-error" th:text="#{${regionValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        		 			<td ><b th:text="#{label.regionActive}+': '"></b></td>
-		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.regionUpdate}" type="checkbox" th:field="*{active}" />
+		        		   				<input th:if="${_loggedInUser.regionUpdate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+		        		   			</td>
 		        		</tr>
 
 		        	</table>
 		        	<table>
 		        		<tr>
 		        			<td>
-		        				<input type="submit" th:value="#{label.save}" />
+		        				<input th:if="${_loggedInUser.RegionUpdate}" type="submit" th:value="#{label.save}" />
 		        			</td>
 		        		</tr>
 		        	</table>

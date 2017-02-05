@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.purchaseOrderOtherValueInfo}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	        td.right { text-align:right; }
+	        .hideANDseek
+			{
+			    display: none;
+			}
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+
+		<script th:src="@{/resources/js/util.js}"></script>
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		<script th:src="@{/resources/js/jquery.dataTables.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/jquery.dataTables.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	                   
+	      var popupVisible=false;
+	      
+	      function newEntry(){
+			   $('.popup-with-form').click();
+			   popupVisible=true;
+		   		document.getElementById("otherPurchaseValue").focus();
+		   }
+
+		   $(document).keyup(function(e) {
+	    	  if(e.which == 27 && !popupVisible) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("docs")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/docs/searchPurchaseOrderOtherValue","_self");
+	    	  }
+	    	});
+	      
+	      $.magnificPopup.instance.close = function () {
+				popupVisible=false;
+			   $.magnificPopup.proto.close.call(this);
+	      }; 
+	      
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 107 && document.getElementById("newEntry")!=null) {
+  				newEntry();
+	    	  }
+	    	});
+	    	
+		
+			function submitDeletion(){
+				var deletion="";
+				$("#purchaseOrderOtherValueBodyList").find('tr').each(function (i){
+					if ($(this).find("td:first").find('div').find('input').is(':checked')){
+						deletion+=$(this).prop( 'id' )+",";
+					}
+				});
+				var form=document.forms['header-form'];
+				form.elements["_deletion"].value=deletion;
+				form.elements["_deletionSubmit"].value="deletion";
+				form.submit();
+			}
+			
+		  function setFocus(){
+		   		document.getElementById("purchaseOrder").focus();
+		   }
+		  
+		function submitCreation(){
+			var form=document.forms['purchaseOrderOtherValue-body-form'];
+			form.elements["_submit"].value="creation";
+			form.submit();
+		}
+		
+		function submitHeader(){
+			var form=document.forms['header-form'];
+			form.elements["_submit"].value="header";
+			form.submit();
+		}
+		
+		function submitModification(){
+			var form=document.forms['purchaseOrderOtherValue-body-modification-form'];
+			form.elements["_modificationSubmit"].value="modification";
+			form.submit();
+		}
+		   
+   
+		function setModificationFormValues(id){
+					   var selectedRow="#"+id;
+					   var link=$("#purchaseOrderOtherValue-body-modification-form");
+					   var identification="#_id";
+					   var disable=false;
+					   $(identification).val(id);
+					   $(selectedRow).find('td').each(function (i){
+					   		if (i==0){
+							   			var field="#purchaseOrderOtherValueBodyModificationInfo\\._enableDeletion";
+							   		 	if ($(this).has("input[type='checkbox']").length!=0){
+							   		 		$(field).prop('checked', true);
+							   		 		disable=false;
+							   		 	}
+							   		 	else{
+							   		 		$(field).prop('checked', false);
+							   		 		disable=true;
+							   		 	}
+							}
+					   		if (i==1){
+					   			var field="#purchaseOrderOtherValueBodyModificationInfo\\.otherPurchaseValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==2){
+					   			var field="#purchaseOrderOtherValueBodyModificationInfo\\.localCurrencyValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==3){
+					   			var field="#purchaseOrderOtherValueBodyModificationInfo\\.foreignCurrencyValue";
+					   			$(field).val($(this).html());	 
+					   		}
+					   });
+					$('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+				   }
+			
+		   $(document).ready( function () {
+				$('#purchaseOrderOtherValueBodyList').dataTable();
+
+			} );
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form2').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$("#header-form :input").change(function() {
+					document.getElementById("_savedAlert").style.display='none';
+				});
+			});
+		   
+		   function checkExceptions(){
+			   if (document.getElementById("_AdditionFormException")!=null){
+				   newEntry();
+			   }
+			   
+			   if (document.getElementById("_ModificationFormException")!=null){
+			   	   setModificationFormValues(document.getElementById("_ModificationFormExceptionId").value);
+				   $('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+			   }
+		   }
+		   
+	       /* ]]> */
+	     </script>
+
+    </head>
+    <body onload="checkExceptions();setFocus();">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form id="header-form" th:object="${purchaseOrderOtherValueInfo}" method="post" >
+		        	<input id="_submit" hidden="" th:field="*{purchaseOrderOtherValueBodyModificationInfo.submit}"></input>
+		        	<input id="_documentName" type="hidden" value="purchaseOrderOtherValue"></input>
+		        	<input th:if='${purchaseOrderOtherValueInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<div ><a id="back" th:text="#{label.back}" th:href="@{/docs/searchPurchaseOrderOtherValue}"></a></div>
+		        	
+		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
+		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{purchaseOrderOtherValueBodyModificationInfo.submit}"></input>
+		        	<input id="_trueValue" th:value="#{label.true}" type="hidden" />
+		        	
+		        	<table width="100%">
+						<tr>
+							<td width="33%"><h3 th:if='${purchaseOrderOtherValueInfo.numericId==null}' th:text="#{label.purchaseOrderOtherValueInfo}"></h3>
+		        			<h3 th:if='${purchaseOrderOtherValueInfo.numericId!=null}' th:text="#{label.purchaseOrderOtherValueInfo}+' '+${purchaseOrderOtherValueInfo.numericId}"></h3></td>
+							<td width="33%"></td>
+							<td width="34%"><div align="right"><a th:if='${purchaseOrderOtherValueInfo.showBody}' th:href="@{/docs/purchaseOrderOtherValue/export?id=}+${purchaseOrderOtherValueInfo.numericId}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
+						</tr>
+					</table>
+		        	<table>
+		        		<tr th:if="${purchaseOrderException} or ${readyException} or ${activeException}">
+		        				        			<td th:if="!${purchaseOrderException}" colspan="2"></td>
+		        				        			<td th:if="${purchaseOrderException}" colspan="2"><div class="alert alert-error" th:text="#{${purchaseOrderValidationErrorMessage}}"></div></td><td th:if="!${readyException}" colspan="2"></td>
+		        				        			<td th:if="${readyException}" colspan="2"><div class="alert alert-error" th:text="#{${readyValidationErrorMessage}}"></div></td><td th:if="!${activeException}" colspan="2"></td>
+		        				        			<td th:if="${activeException}" colspan="2"><div class="alert alert-error" th:text="#{${activeValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderOtherValuePurchaseOrder}+': '"></b></td>
+		        				        			<td><input  id="purchaseOrder" name="purchaseOrder" type="text" th:value="*{{purchaseOrder}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderOtherValueReady}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{ready}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.purchaseOrderOtherValueActive}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{active}" /></td>
+
+		        				        		</tr>
+		        	</table>
+		        	<br/>
+		        	<br/>
+		        	<table th:if='${purchaseOrderOtherValueInfo.showBody}' id="purchaseOrderOtherValueBodyList" class="table table-striped">
+		        		<thead>
+							<tr>
+								<th ></th>
+								<th   align="center" th:text="#{label.purchaseOrderOtherValueOtherPurchaseValue}"></th><th   align="center" th:text="#{label.purchaseOrderOtherValueLocalCurrencyValue}"></th><th   align="center" th:text="#{label.purchaseOrderOtherValueForeignCurrencyValue}"></th>
+							</tr>
+						</thead>
+						<tbody id="purchaseOrderOtherValueBodyList">
+							<tr th:each="object: ${purchaseOrderOtherValueBodyList}" th:id="${object.id}"  >
+								<td><div align="center" ><input type="checkbox" /></div></td>
+								<td   th:text="${{object.otherPurchaseValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.localCurrencyValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.foreignCurrencyValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td>
+							</tr>
+						</tbody>
+		        	</table>
+		        	<button th:if='${purchaseOrderOtherValueInfo.showBody} and !${purchaseOrderOtherValueInfo.ready}'  th:text="#{label.newEntryDocTable}" onclick="newEntry();return false;"></button>
+		        	<input th:if='${purchaseOrderOtherValueInfo.showBody} and !${purchaseOrderOtherValueInfo.ready}' type="button" th:value="#{label.deleteSelection}" onclick="submitDeletion();"/>
+					<a class="popup-with-form" href="#purchaseOrderOtherValue-body-form" hidden=""></a>
+       				<a class="popup-with-form2" href="#purchaseOrderOtherValue-body-modification-form" hidden=""></a>
+							        				
+       				<div align="right" ><input type="button" th:value="#{label.save}" onclick="submitHeader();"/></div>
+		        </form>
+					<input th:if='${purchaseOrderOtherValueInfo.showBody}' id="newEntry" hidden=""/>
+			 <!-- Custom form for adding new records -->
+			 <form id="purchaseOrderOtherValue-body-form" class="white-popup mfp-hide"  th:object="${purchaseOrderOtherValueBodyInfo}" method="post">
+		        	<h3 th:text="#{label.newRecord}"></h3>
+		        	<input id="_submit" hidden="" th:field="*{purchaseOrderOtherValueBodyModificationInfo.submit}"></input>
+		        	<input th:if='${purchaseOrderOtherValueInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_AdditionFormException}" id="_AdditionFormException" hidden=""></input> 
+		        	<table>
+		        		<tr>
+		        			<td ><b th:text="#{label.purchaseOrderOtherValueOtherPurchaseValue}+': '"></b></td>
+		        			<td><select id="otherPurchaseValue" onChange="otherPurchaseValueSelectedRefresh()" th:field="*{otherPurchaseValue}"><option value=""></option><option th:each="reference : ${purchaseOrderOtherValueBodyInfo.otherPurchaseValueList}" th:value="${reference.value}" th:text="${reference.value}"></option></select></td>
+		        			<td th:if="${otherPurchaseValueException}"><div class="alert alert-error" th:text="#{${otherPurchaseValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderOtherValueLocalCurrencyValue}+': '"></b></td>
+		        				<td><input  id="localCurrencyValue" name="localCurrencyValue" type="text" th:value="*{{localCurrencyValue}}" /></td>
+		        				<td th:if="${localCurrencyValueException}"><div class="alert alert-error" th:text="#{${localCurrencyValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderOtherValueForeignCurrencyValue}+': '"></b></td>
+		        				<td><input  id="foreignCurrencyValue" name="foreignCurrencyValue" type="text" th:value="*{{foreignCurrencyValue}}" /></td>
+		        				<td th:if="${foreignCurrencyValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${purchaseOrderOtherValueInfo.ready}' type="button" th:value="#{label.save}" onclick="submitCreation();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		        
+		        <form id="purchaseOrderOtherValue-body-modification-form" class="white-popup mfp-hide" th:object="${purchaseOrderOtherValueBodyModificationInfo}" method="post">
+		        	<h3 th:text="#{label.recordModification}"></h3>
+		        	<input id="_id" hidden="" th:field="*{purchaseOrderOtherValueBodyModificationInfo.id}"></input>
+		        	<input id="_modificationSubmit" hidden="hidden" th:field="*{purchaseOrderOtherValueBodyModificationInfo.submit}"></input>
+		        	<input th:if='${purchaseOrderOtherValueInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormException" hidden=""></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormExceptionId" th:value="${_ModifiedId}" hidden=""></input>
+		        	
+		        	<table >
+		        		<tr>
+		        			<td ><b th:text="#{label.purchaseOrderOtherValueOtherPurchaseValue}+': '"></b></td>
+		        			<td><select id="purchaseOrderOtherValueBodyModificationInfo.otherPurchaseValue" onChange="otherPurchaseValueSelectedRefresh()" th:field="*{purchaseOrderOtherValueBodyModificationInfo.otherPurchaseValue}"><option value=""></option><option th:each="reference : ${purchaseOrderOtherValueBodyInfo.otherPurchaseValueList}" th:value="${reference.value}" th:text="${reference.value}"></option></select></td>
+		        			<td th:if="${otherPurchaseValueException}"><div class="alert alert-error" th:text="#{${otherPurchaseValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderOtherValueLocalCurrencyValue}+': '"></b></td>
+		        				<td><input  id="purchaseOrderOtherValueBodyModificationInfo.localCurrencyValue" name="purchaseOrderOtherValueBodyModificationInfo.localCurrencyValue" type="text" th:value="*{{purchaseOrderOtherValueBodyModificationInfo.localCurrencyValue}}" /></td>
+		        				<td th:if="${localCurrencyValueException}"><div class="alert alert-error" th:text="#{${localCurrencyValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.purchaseOrderOtherValueForeignCurrencyValue}+': '"></b></td>
+		        				<td><input  id="purchaseOrderOtherValueBodyModificationInfo.foreignCurrencyValue" name="purchaseOrderOtherValueBodyModificationInfo.foreignCurrencyValue" type="text" th:value="*{{purchaseOrderOtherValueBodyModificationInfo.foreignCurrencyValue}}" /></td>
+		        				<td th:if="${foreignCurrencyValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+
+		        		<tr hidden="">
+		        		 			<td ></td>
+		        		   			<td ><input  type="checkbox" id="purchaseOrderOtherValueBodyModificationInfo._enableDeletion" th:field="*{purchaseOrderOtherValueBodyModificationInfo._enableDeletion}" /></td>
+		        		</tr>
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${purchaseOrderOtherValueInfo.ready}' type="button" th:value="#{label.save}" onclick="submitModification();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${purchaseOrderOtherValueInfo._toSave}' class="alert alert-info" th:text="#{label.saved}">
+            </div>
+            <div th:if='${purchaseOrderOtherValueCreateException}' class="alert alert-error" th:text="#{label.docCreationError}">
+            </div>
+            <div th:if='${purchaseOrderOtherValueValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>
+    </body>
+</html>

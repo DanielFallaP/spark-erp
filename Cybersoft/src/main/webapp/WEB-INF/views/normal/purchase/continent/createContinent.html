@@ -104,12 +104,19 @@
 		        	<table>
 		        		<tr>
 		        				<td ><b th:text="#{label.continentContinent}+': '"></b></td>
-		        				<td><input id="continent" name="continent" type="text" th:value="*{{continent}}" /></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.continentCreate}" id="continent" name="continent" type="text" th:value="*{{continent}}" />
+		        					<input th:if="${_loggedInUser.continentCreate} != true" disabled="disabled" id="continent" name="continent" type="text" th:value="*{{continent}}" />
+		        					
+		        				</td>
 		        				<td th:if="${continentException}"><div class="alert alert-error" th:text="#{${continentValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        		 			<td ><b th:text="#{label.continentActive}+': '"></b></td>
-		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.continentCreate}" type="checkbox" th:field="*{active}" />
+		        		   				<input th:if="${_loggedInUser.continentCreate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+		        		   			</td>
 		        		</tr>
 
 		        	</table>

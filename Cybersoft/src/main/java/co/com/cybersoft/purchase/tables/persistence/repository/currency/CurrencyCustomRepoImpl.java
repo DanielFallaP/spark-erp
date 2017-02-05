@@ -142,7 +142,6 @@ public class CurrencyCustomRepoImpl implements CurrencyCustomRepo {
 		if (filter.getUserName()!=null && !filter.getUserName().equals(""))queryString+=" AND LOWER(p.userName) LIKE LOWER('"+filter.getUserName()+"')";
 		if (filter.getCreatedBy()!=null && !filter.getCreatedBy().equals(""))queryString+=" AND LOWER(p.createdBy) LIKE LOWER('"+filter.getCreatedBy()+"')";
 	
-		queryString+=" AND p.currency._company.id ="+filter.get_company();
 		return queryString+")";
 	}
 

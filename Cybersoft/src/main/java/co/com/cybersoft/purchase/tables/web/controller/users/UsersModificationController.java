@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import org.springframework.ui.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import co.com.cybersoft.purchase.tables.core.domain.UsersDetails;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
@@ -56,17 +57,23 @@ public class UsersModificationController {
 	
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String modification(){
+	public String modification(Model model, HttpServletRequest request){
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		return "/purchase/users/modifyUsers";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@Transactional(readOnly=false)
-	public String modifyUsers(@PathVariable("id") Long id, @Valid @ModelAttribute("usersInfo") UsersInfo usersInfo, HttpServletRequest request) throws Exception {
+	public String modifyUsers(Model model, @PathVariable("id") Long id, @Valid @ModelAttribute("usersInfo") UsersInfo usersInfo, HttpServletRequest request) throws Exception {
 		
 		UsersDetails usersDetails = createUsersDetails(usersInfo);
 		usersDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		usersDetails.setDateOfModification(new Date());
+		//usersDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
+		
 		
 		request.getSession().setAttribute("usersInfo", usersInfo);
 		usersService.modifyUsers(new UsersModificationEvent(usersDetails));

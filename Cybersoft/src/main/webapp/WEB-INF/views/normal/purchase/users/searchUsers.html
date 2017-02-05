@@ -63,11 +63,191 @@
  || document.getElementById("password") === document.activeElement
  || document.getElementById("role") === document.activeElement
  || document.getElementById("company") === document.activeElement
- || document.getElementById("currencyRead") === document.activeElement
+ || document.getElementById("active") === document.activeElement
+ || document.getElementById("companyCreate") === document.activeElement
+ || document.getElementById("companyRead") === document.activeElement
+ || document.getElementById("companyUpdate") === document.activeElement
+ || document.getElementById("companyExport") === document.activeElement
+ || document.getElementById("stateCreate") === document.activeElement
+ || document.getElementById("stateRead") === document.activeElement
+ || document.getElementById("stateUpdate") === document.activeElement
+ || document.getElementById("stateExport") === document.activeElement
+ || document.getElementById("measurementUnitCreate") === document.activeElement
+ || document.getElementById("measurementUnitRead") === document.activeElement
+ || document.getElementById("measurementUnitUpdate") === document.activeElement
+ || document.getElementById("measurementUnitExport") === document.activeElement
+ || document.getElementById("typeSorterCreate") === document.activeElement
+ || document.getElementById("typeSorterRead") === document.activeElement
+ || document.getElementById("typeSorterUpdate") === document.activeElement
+ || document.getElementById("typeSorterExport") === document.activeElement
+ || document.getElementById("sorterCreate") === document.activeElement
+ || document.getElementById("sorterRead") === document.activeElement
+ || document.getElementById("sorterUpdate") === document.activeElement
+ || document.getElementById("sorterExport") === document.activeElement
+ || document.getElementById("operationCreate") === document.activeElement
+ || document.getElementById("operationRead") === document.activeElement
+ || document.getElementById("operationUpdate") === document.activeElement
+ || document.getElementById("operationExport") === document.activeElement
+ || document.getElementById("referenceCreate") === document.activeElement
+ || document.getElementById("referenceRead") === document.activeElement
+ || document.getElementById("referenceUpdate") === document.activeElement
+ || document.getElementById("referenceExport") === document.activeElement
+ || document.getElementById("referenceOperationCreate") === document.activeElement
+ || document.getElementById("referenceOperationRead") === document.activeElement
+ || document.getElementById("referenceOperationUpdate") === document.activeElement
+ || document.getElementById("referenceOperationExport") === document.activeElement
+ || document.getElementById("technicalActionCreate") === document.activeElement
+ || document.getElementById("technicalActionRead") === document.activeElement
+ || document.getElementById("technicalActionUpdate") === document.activeElement
+ || document.getElementById("technicalActionExport") === document.activeElement
+ || document.getElementById("effectFailCreate") === document.activeElement
+ || document.getElementById("effectFailRead") === document.activeElement
+ || document.getElementById("effectFailUpdate") === document.activeElement
+ || document.getElementById("effectFailExport") === document.activeElement
+ || document.getElementById("effectFailTechnicalActionCreate") === document.activeElement
+ || document.getElementById("effectFailTechnicalActionRead") === document.activeElement
+ || document.getElementById("effectFailTechnicalActionUpdate") === document.activeElement
+ || document.getElementById("effectFailTechnicalActionExport") === document.activeElement
+ || document.getElementById("failureCauseCreate") === document.activeElement
+ || document.getElementById("failureCauseRead") === document.activeElement
+ || document.getElementById("failureCauseUpdate") === document.activeElement
+ || document.getElementById("failureCauseExport") === document.activeElement
+ || document.getElementById("failureCauseTechnicalactionCreate") === document.activeElement
+ || document.getElementById("failureCauseTechnicalactionRead") === document.activeElement
+ || document.getElementById("failureCauseTechnicalactionUpdate") === document.activeElement
+ || document.getElementById("failureCauseTechnicalactionExport") === document.activeElement
+ || document.getElementById("typeCauseCloseCreate") === document.activeElement
+ || document.getElementById("typeCauseCloseRead") === document.activeElement
+ || document.getElementById("typeCauseCloseUpdate") === document.activeElement
+ || document.getElementById("typeCauseCloseExport") === document.activeElement
+ || document.getElementById("causeCloseCreate") === document.activeElement
+ || document.getElementById("causeCloseRead") === document.activeElement
+ || document.getElementById("causeCloseUpdate") === document.activeElement
+ || document.getElementById("causeCloseExport") === document.activeElement
+ || document.getElementById("maintenanceActivityCreate") === document.activeElement
+ || document.getElementById("maintenanceActivityRead") === document.activeElement
+ || document.getElementById("maintenanceActivityUpdate") === document.activeElement
+ || document.getElementById("maintenanceActivityExport") === document.activeElement
+ || document.getElementById("maintenanceWorkCreate") === document.activeElement
+ || document.getElementById("maintenanceWorkRead") === document.activeElement
+ || document.getElementById("maintenanceWorkUpdate") === document.activeElement
+ || document.getElementById("maintenanceWorkExport") === document.activeElement
+ || document.getElementById("typeMaintenanceCreate") === document.activeElement
+ || document.getElementById("typeMaintenanceRead") === document.activeElement
+ || document.getElementById("typeMaintenanceUpdate") === document.activeElement
+ || document.getElementById("typeMaintenanceExport") === document.activeElement
+ || document.getElementById("causePendingCreate") === document.activeElement
+ || document.getElementById("causePendingRead") === document.activeElement
+ || document.getElementById("causePendingUpdate") === document.activeElement
+ || document.getElementById("causePendingExport") === document.activeElement
+ || document.getElementById("typeWorkCreate") === document.activeElement
+ || document.getElementById("typeWorkRead") === document.activeElement
+ || document.getElementById("typeWorkUpdate") === document.activeElement
+ || document.getElementById("typeWorkExport") === document.activeElement
+ || document.getElementById("otherConceptsCreate") === document.activeElement
+ || document.getElementById("otherConceptsRead") === document.activeElement
+ || document.getElementById("otherConceptsUpdate") === document.activeElement
+ || document.getElementById("otherConceptsExport") === document.activeElement
+ || document.getElementById("stateCostCentersCreate") === document.activeElement
+ || document.getElementById("stateCostCentersRead") === document.activeElement
+ || document.getElementById("stateCostCentersUpdate") === document.activeElement
+ || document.getElementById("stateCostCentersExport") === document.activeElement
+ || document.getElementById("costCentersCustomersCreate") === document.activeElement
+ || document.getElementById("costCentersCustomersRead") === document.activeElement
+ || document.getElementById("costCentersCustomersUpdate") === document.activeElement
+ || document.getElementById("costCentersCustomersExport") === document.activeElement
+ || document.getElementById("responsibleCenterCreate") === document.activeElement
+ || document.getElementById("responsibleCenterRead") === document.activeElement
+ || document.getElementById("responsibleCenterUpdate") === document.activeElement
+ || document.getElementById("responsibleCenterExport") === document.activeElement
+ || document.getElementById("jobCreate") === document.activeElement
+ || document.getElementById("jobRead") === document.activeElement
+ || document.getElementById("jobUpdate") === document.activeElement
+ || document.getElementById("jobExport") === document.activeElement
+ || document.getElementById("thirdCreate") === document.activeElement
+ || document.getElementById("thirdRead") === document.activeElement
+ || document.getElementById("thirdUpdate") === document.activeElement
+ || document.getElementById("thirdExport") === document.activeElement
+ || document.getElementById("jobThirdCreate") === document.activeElement
+ || document.getElementById("jobThirdRead") === document.activeElement
+ || document.getElementById("jobThirdUpdate") === document.activeElement
+ || document.getElementById("jobThirdExport") === document.activeElement
+ || document.getElementById("responsibleCreate") === document.activeElement
+ || document.getElementById("responsibleRead") === document.activeElement
+ || document.getElementById("responsibleUpdate") === document.activeElement
+ || document.getElementById("responsibleExport") === document.activeElement
+ || document.getElementById("authorizerCostCenterCreate") === document.activeElement
+ || document.getElementById("authorizerCostCenterRead") === document.activeElement
+ || document.getElementById("authorizerCostCenterUpdate") === document.activeElement
+ || document.getElementById("authorizerCostCenterExport") === document.activeElement
+ || document.getElementById("characteristicCreate") === document.activeElement
+ || document.getElementById("characteristicRead") === document.activeElement
+ || document.getElementById("characteristicUpdate") === document.activeElement
+ || document.getElementById("characteristicExport") === document.activeElement
+ || document.getElementById("accountantCreate") === document.activeElement
+ || document.getElementById("accountantRead") === document.activeElement
+ || document.getElementById("accountantUpdate") === document.activeElement
+ || document.getElementById("accountantExport") === document.activeElement
+ || document.getElementById("physicalLocationCreate") === document.activeElement
+ || document.getElementById("physicalLocationRead") === document.activeElement
+ || document.getElementById("physicalLocationUpdate") === document.activeElement
+ || document.getElementById("physicalLocationExport") === document.activeElement
+ || document.getElementById("storeTypeCreate") === document.activeElement
+ || document.getElementById("storeTypeRead") === document.activeElement
+ || document.getElementById("storeTypeUpdate") === document.activeElement
+ || document.getElementById("storeTypeExport") === document.activeElement
+ || document.getElementById("costingTypeCreate") === document.activeElement
+ || document.getElementById("costingTypeRead") === document.activeElement
+ || document.getElementById("costingTypeUpdate") === document.activeElement
+ || document.getElementById("costingTypeExport") === document.activeElement
+ || document.getElementById("warehouseCreate") === document.activeElement
+ || document.getElementById("warehouseRead") === document.activeElement
+ || document.getElementById("warehouseUpdate") === document.activeElement
+ || document.getElementById("warehouseExport") === document.activeElement
+ || document.getElementById("coinCreate") === document.activeElement
+ || document.getElementById("coinRead") === document.activeElement
+ || document.getElementById("coinUpdate") === document.activeElement
+ || document.getElementById("coinExport") === document.activeElement
+ || document.getElementById("typeConceptKardexCreate") === document.activeElement
+ || document.getElementById("typeConceptKardexRead") === document.activeElement
+ || document.getElementById("typeConceptKardexUpdate") === document.activeElement
+ || document.getElementById("typeConceptKardexExport") === document.activeElement
+ || document.getElementById("conceptKardexCreate") === document.activeElement
+ || document.getElementById("conceptKardexRead") === document.activeElement
+ || document.getElementById("conceptKardexUpdate") === document.activeElement
+ || document.getElementById("conceptKardexExport") === document.activeElement
+ || document.getElementById("contractCreate") === document.activeElement
+ || document.getElementById("contractRead") === document.activeElement
+ || document.getElementById("contractUpdate") === document.activeElement
+ || document.getElementById("contractExport") === document.activeElement
+ || document.getElementById("usersCreate") === document.activeElement
+ || document.getElementById("usersRead") === document.activeElement
+ || document.getElementById("usersUpdate") === document.activeElement
+ || document.getElementById("usersExport") === document.activeElement
  || document.getElementById("currencyCreate") === document.activeElement
+ || document.getElementById("currencyRead") === document.activeElement
  || document.getElementById("currencyUpdate") === document.activeElement
  || document.getElementById("currencyExport") === document.activeElement
- || document.getElementById("active") === document.activeElement
+ || document.getElementById("exchangeRateCreate") === document.activeElement
+ || document.getElementById("exchangeRateRead") === document.activeElement
+ || document.getElementById("exchangeRateUpdate") === document.activeElement
+ || document.getElementById("exchangeRateExport") === document.activeElement
+ || document.getElementById("continentCreate") === document.activeElement
+ || document.getElementById("continentRead") === document.activeElement
+ || document.getElementById("continentUpdate") === document.activeElement
+ || document.getElementById("continentExport") === document.activeElement
+ || document.getElementById("regionCreate") === document.activeElement
+ || document.getElementById("regionRead") === document.activeElement
+ || document.getElementById("regionUpdate") === document.activeElement
+ || document.getElementById("regionExport") === document.activeElement
+ || document.getElementById("currencyCodeCreate") === document.activeElement
+ || document.getElementById("currencyCodeRead") === document.activeElement
+ || document.getElementById("currencyCodeUpdate") === document.activeElement
+ || document.getElementById("currencyCodeExport") === document.activeElement
+ || document.getElementById("countryCreate") === document.activeElement
+ || document.getElementById("countryRead") === document.activeElement
+ || document.getElementById("countryUpdate") === document.activeElement
+ || document.getElementById("countryExport") === document.activeElement
 )){
 	    		  submitFilter(1);
 	    		}
@@ -155,11 +335,191 @@
 	    	if(document.getElementById('password')!=undefined)document.getElementById('password').value='';
 	    	if(document.getElementById('role')!=undefined)document.getElementById('role').value='';
 	    	if(document.getElementById('company')!=undefined)document.getElementById('company').value='';
-	    	if(document.getElementById('currencyRead')!=undefined)document.getElementById('currencyRead').value='';
+	    	if(document.getElementById('active')!=undefined)document.getElementById('active').value='';
+	    	if(document.getElementById('companyCreate')!=undefined)document.getElementById('companyCreate').value='';
+	    	if(document.getElementById('companyRead')!=undefined)document.getElementById('companyRead').value='';
+	    	if(document.getElementById('companyUpdate')!=undefined)document.getElementById('companyUpdate').value='';
+	    	if(document.getElementById('companyExport')!=undefined)document.getElementById('companyExport').value='';
+	    	if(document.getElementById('stateCreate')!=undefined)document.getElementById('stateCreate').value='';
+	    	if(document.getElementById('stateRead')!=undefined)document.getElementById('stateRead').value='';
+	    	if(document.getElementById('stateUpdate')!=undefined)document.getElementById('stateUpdate').value='';
+	    	if(document.getElementById('stateExport')!=undefined)document.getElementById('stateExport').value='';
+	    	if(document.getElementById('measurementUnitCreate')!=undefined)document.getElementById('measurementUnitCreate').value='';
+	    	if(document.getElementById('measurementUnitRead')!=undefined)document.getElementById('measurementUnitRead').value='';
+	    	if(document.getElementById('measurementUnitUpdate')!=undefined)document.getElementById('measurementUnitUpdate').value='';
+	    	if(document.getElementById('measurementUnitExport')!=undefined)document.getElementById('measurementUnitExport').value='';
+	    	if(document.getElementById('typeSorterCreate')!=undefined)document.getElementById('typeSorterCreate').value='';
+	    	if(document.getElementById('typeSorterRead')!=undefined)document.getElementById('typeSorterRead').value='';
+	    	if(document.getElementById('typeSorterUpdate')!=undefined)document.getElementById('typeSorterUpdate').value='';
+	    	if(document.getElementById('typeSorterExport')!=undefined)document.getElementById('typeSorterExport').value='';
+	    	if(document.getElementById('sorterCreate')!=undefined)document.getElementById('sorterCreate').value='';
+	    	if(document.getElementById('sorterRead')!=undefined)document.getElementById('sorterRead').value='';
+	    	if(document.getElementById('sorterUpdate')!=undefined)document.getElementById('sorterUpdate').value='';
+	    	if(document.getElementById('sorterExport')!=undefined)document.getElementById('sorterExport').value='';
+	    	if(document.getElementById('operationCreate')!=undefined)document.getElementById('operationCreate').value='';
+	    	if(document.getElementById('operationRead')!=undefined)document.getElementById('operationRead').value='';
+	    	if(document.getElementById('operationUpdate')!=undefined)document.getElementById('operationUpdate').value='';
+	    	if(document.getElementById('operationExport')!=undefined)document.getElementById('operationExport').value='';
+	    	if(document.getElementById('referenceCreate')!=undefined)document.getElementById('referenceCreate').value='';
+	    	if(document.getElementById('referenceRead')!=undefined)document.getElementById('referenceRead').value='';
+	    	if(document.getElementById('referenceUpdate')!=undefined)document.getElementById('referenceUpdate').value='';
+	    	if(document.getElementById('referenceExport')!=undefined)document.getElementById('referenceExport').value='';
+	    	if(document.getElementById('referenceOperationCreate')!=undefined)document.getElementById('referenceOperationCreate').value='';
+	    	if(document.getElementById('referenceOperationRead')!=undefined)document.getElementById('referenceOperationRead').value='';
+	    	if(document.getElementById('referenceOperationUpdate')!=undefined)document.getElementById('referenceOperationUpdate').value='';
+	    	if(document.getElementById('referenceOperationExport')!=undefined)document.getElementById('referenceOperationExport').value='';
+	    	if(document.getElementById('technicalActionCreate')!=undefined)document.getElementById('technicalActionCreate').value='';
+	    	if(document.getElementById('technicalActionRead')!=undefined)document.getElementById('technicalActionRead').value='';
+	    	if(document.getElementById('technicalActionUpdate')!=undefined)document.getElementById('technicalActionUpdate').value='';
+	    	if(document.getElementById('technicalActionExport')!=undefined)document.getElementById('technicalActionExport').value='';
+	    	if(document.getElementById('effectFailCreate')!=undefined)document.getElementById('effectFailCreate').value='';
+	    	if(document.getElementById('effectFailRead')!=undefined)document.getElementById('effectFailRead').value='';
+	    	if(document.getElementById('effectFailUpdate')!=undefined)document.getElementById('effectFailUpdate').value='';
+	    	if(document.getElementById('effectFailExport')!=undefined)document.getElementById('effectFailExport').value='';
+	    	if(document.getElementById('effectFailTechnicalActionCreate')!=undefined)document.getElementById('effectFailTechnicalActionCreate').value='';
+	    	if(document.getElementById('effectFailTechnicalActionRead')!=undefined)document.getElementById('effectFailTechnicalActionRead').value='';
+	    	if(document.getElementById('effectFailTechnicalActionUpdate')!=undefined)document.getElementById('effectFailTechnicalActionUpdate').value='';
+	    	if(document.getElementById('effectFailTechnicalActionExport')!=undefined)document.getElementById('effectFailTechnicalActionExport').value='';
+	    	if(document.getElementById('failureCauseCreate')!=undefined)document.getElementById('failureCauseCreate').value='';
+	    	if(document.getElementById('failureCauseRead')!=undefined)document.getElementById('failureCauseRead').value='';
+	    	if(document.getElementById('failureCauseUpdate')!=undefined)document.getElementById('failureCauseUpdate').value='';
+	    	if(document.getElementById('failureCauseExport')!=undefined)document.getElementById('failureCauseExport').value='';
+	    	if(document.getElementById('failureCauseTechnicalactionCreate')!=undefined)document.getElementById('failureCauseTechnicalactionCreate').value='';
+	    	if(document.getElementById('failureCauseTechnicalactionRead')!=undefined)document.getElementById('failureCauseTechnicalactionRead').value='';
+	    	if(document.getElementById('failureCauseTechnicalactionUpdate')!=undefined)document.getElementById('failureCauseTechnicalactionUpdate').value='';
+	    	if(document.getElementById('failureCauseTechnicalactionExport')!=undefined)document.getElementById('failureCauseTechnicalactionExport').value='';
+	    	if(document.getElementById('typeCauseCloseCreate')!=undefined)document.getElementById('typeCauseCloseCreate').value='';
+	    	if(document.getElementById('typeCauseCloseRead')!=undefined)document.getElementById('typeCauseCloseRead').value='';
+	    	if(document.getElementById('typeCauseCloseUpdate')!=undefined)document.getElementById('typeCauseCloseUpdate').value='';
+	    	if(document.getElementById('typeCauseCloseExport')!=undefined)document.getElementById('typeCauseCloseExport').value='';
+	    	if(document.getElementById('causeCloseCreate')!=undefined)document.getElementById('causeCloseCreate').value='';
+	    	if(document.getElementById('causeCloseRead')!=undefined)document.getElementById('causeCloseRead').value='';
+	    	if(document.getElementById('causeCloseUpdate')!=undefined)document.getElementById('causeCloseUpdate').value='';
+	    	if(document.getElementById('causeCloseExport')!=undefined)document.getElementById('causeCloseExport').value='';
+	    	if(document.getElementById('maintenanceActivityCreate')!=undefined)document.getElementById('maintenanceActivityCreate').value='';
+	    	if(document.getElementById('maintenanceActivityRead')!=undefined)document.getElementById('maintenanceActivityRead').value='';
+	    	if(document.getElementById('maintenanceActivityUpdate')!=undefined)document.getElementById('maintenanceActivityUpdate').value='';
+	    	if(document.getElementById('maintenanceActivityExport')!=undefined)document.getElementById('maintenanceActivityExport').value='';
+	    	if(document.getElementById('maintenanceWorkCreate')!=undefined)document.getElementById('maintenanceWorkCreate').value='';
+	    	if(document.getElementById('maintenanceWorkRead')!=undefined)document.getElementById('maintenanceWorkRead').value='';
+	    	if(document.getElementById('maintenanceWorkUpdate')!=undefined)document.getElementById('maintenanceWorkUpdate').value='';
+	    	if(document.getElementById('maintenanceWorkExport')!=undefined)document.getElementById('maintenanceWorkExport').value='';
+	    	if(document.getElementById('typeMaintenanceCreate')!=undefined)document.getElementById('typeMaintenanceCreate').value='';
+	    	if(document.getElementById('typeMaintenanceRead')!=undefined)document.getElementById('typeMaintenanceRead').value='';
+	    	if(document.getElementById('typeMaintenanceUpdate')!=undefined)document.getElementById('typeMaintenanceUpdate').value='';
+	    	if(document.getElementById('typeMaintenanceExport')!=undefined)document.getElementById('typeMaintenanceExport').value='';
+	    	if(document.getElementById('causePendingCreate')!=undefined)document.getElementById('causePendingCreate').value='';
+	    	if(document.getElementById('causePendingRead')!=undefined)document.getElementById('causePendingRead').value='';
+	    	if(document.getElementById('causePendingUpdate')!=undefined)document.getElementById('causePendingUpdate').value='';
+	    	if(document.getElementById('causePendingExport')!=undefined)document.getElementById('causePendingExport').value='';
+	    	if(document.getElementById('typeWorkCreate')!=undefined)document.getElementById('typeWorkCreate').value='';
+	    	if(document.getElementById('typeWorkRead')!=undefined)document.getElementById('typeWorkRead').value='';
+	    	if(document.getElementById('typeWorkUpdate')!=undefined)document.getElementById('typeWorkUpdate').value='';
+	    	if(document.getElementById('typeWorkExport')!=undefined)document.getElementById('typeWorkExport').value='';
+	    	if(document.getElementById('otherConceptsCreate')!=undefined)document.getElementById('otherConceptsCreate').value='';
+	    	if(document.getElementById('otherConceptsRead')!=undefined)document.getElementById('otherConceptsRead').value='';
+	    	if(document.getElementById('otherConceptsUpdate')!=undefined)document.getElementById('otherConceptsUpdate').value='';
+	    	if(document.getElementById('otherConceptsExport')!=undefined)document.getElementById('otherConceptsExport').value='';
+	    	if(document.getElementById('stateCostCentersCreate')!=undefined)document.getElementById('stateCostCentersCreate').value='';
+	    	if(document.getElementById('stateCostCentersRead')!=undefined)document.getElementById('stateCostCentersRead').value='';
+	    	if(document.getElementById('stateCostCentersUpdate')!=undefined)document.getElementById('stateCostCentersUpdate').value='';
+	    	if(document.getElementById('stateCostCentersExport')!=undefined)document.getElementById('stateCostCentersExport').value='';
+	    	if(document.getElementById('costCentersCustomersCreate')!=undefined)document.getElementById('costCentersCustomersCreate').value='';
+	    	if(document.getElementById('costCentersCustomersRead')!=undefined)document.getElementById('costCentersCustomersRead').value='';
+	    	if(document.getElementById('costCentersCustomersUpdate')!=undefined)document.getElementById('costCentersCustomersUpdate').value='';
+	    	if(document.getElementById('costCentersCustomersExport')!=undefined)document.getElementById('costCentersCustomersExport').value='';
+	    	if(document.getElementById('responsibleCenterCreate')!=undefined)document.getElementById('responsibleCenterCreate').value='';
+	    	if(document.getElementById('responsibleCenterRead')!=undefined)document.getElementById('responsibleCenterRead').value='';
+	    	if(document.getElementById('responsibleCenterUpdate')!=undefined)document.getElementById('responsibleCenterUpdate').value='';
+	    	if(document.getElementById('responsibleCenterExport')!=undefined)document.getElementById('responsibleCenterExport').value='';
+	    	if(document.getElementById('jobCreate')!=undefined)document.getElementById('jobCreate').value='';
+	    	if(document.getElementById('jobRead')!=undefined)document.getElementById('jobRead').value='';
+	    	if(document.getElementById('jobUpdate')!=undefined)document.getElementById('jobUpdate').value='';
+	    	if(document.getElementById('jobExport')!=undefined)document.getElementById('jobExport').value='';
+	    	if(document.getElementById('thirdCreate')!=undefined)document.getElementById('thirdCreate').value='';
+	    	if(document.getElementById('thirdRead')!=undefined)document.getElementById('thirdRead').value='';
+	    	if(document.getElementById('thirdUpdate')!=undefined)document.getElementById('thirdUpdate').value='';
+	    	if(document.getElementById('thirdExport')!=undefined)document.getElementById('thirdExport').value='';
+	    	if(document.getElementById('jobThirdCreate')!=undefined)document.getElementById('jobThirdCreate').value='';
+	    	if(document.getElementById('jobThirdRead')!=undefined)document.getElementById('jobThirdRead').value='';
+	    	if(document.getElementById('jobThirdUpdate')!=undefined)document.getElementById('jobThirdUpdate').value='';
+	    	if(document.getElementById('jobThirdExport')!=undefined)document.getElementById('jobThirdExport').value='';
+	    	if(document.getElementById('responsibleCreate')!=undefined)document.getElementById('responsibleCreate').value='';
+	    	if(document.getElementById('responsibleRead')!=undefined)document.getElementById('responsibleRead').value='';
+	    	if(document.getElementById('responsibleUpdate')!=undefined)document.getElementById('responsibleUpdate').value='';
+	    	if(document.getElementById('responsibleExport')!=undefined)document.getElementById('responsibleExport').value='';
+	    	if(document.getElementById('authorizerCostCenterCreate')!=undefined)document.getElementById('authorizerCostCenterCreate').value='';
+	    	if(document.getElementById('authorizerCostCenterRead')!=undefined)document.getElementById('authorizerCostCenterRead').value='';
+	    	if(document.getElementById('authorizerCostCenterUpdate')!=undefined)document.getElementById('authorizerCostCenterUpdate').value='';
+	    	if(document.getElementById('authorizerCostCenterExport')!=undefined)document.getElementById('authorizerCostCenterExport').value='';
+	    	if(document.getElementById('characteristicCreate')!=undefined)document.getElementById('characteristicCreate').value='';
+	    	if(document.getElementById('characteristicRead')!=undefined)document.getElementById('characteristicRead').value='';
+	    	if(document.getElementById('characteristicUpdate')!=undefined)document.getElementById('characteristicUpdate').value='';
+	    	if(document.getElementById('characteristicExport')!=undefined)document.getElementById('characteristicExport').value='';
+	    	if(document.getElementById('accountantCreate')!=undefined)document.getElementById('accountantCreate').value='';
+	    	if(document.getElementById('accountantRead')!=undefined)document.getElementById('accountantRead').value='';
+	    	if(document.getElementById('accountantUpdate')!=undefined)document.getElementById('accountantUpdate').value='';
+	    	if(document.getElementById('accountantExport')!=undefined)document.getElementById('accountantExport').value='';
+	    	if(document.getElementById('physicalLocationCreate')!=undefined)document.getElementById('physicalLocationCreate').value='';
+	    	if(document.getElementById('physicalLocationRead')!=undefined)document.getElementById('physicalLocationRead').value='';
+	    	if(document.getElementById('physicalLocationUpdate')!=undefined)document.getElementById('physicalLocationUpdate').value='';
+	    	if(document.getElementById('physicalLocationExport')!=undefined)document.getElementById('physicalLocationExport').value='';
+	    	if(document.getElementById('storeTypeCreate')!=undefined)document.getElementById('storeTypeCreate').value='';
+	    	if(document.getElementById('storeTypeRead')!=undefined)document.getElementById('storeTypeRead').value='';
+	    	if(document.getElementById('storeTypeUpdate')!=undefined)document.getElementById('storeTypeUpdate').value='';
+	    	if(document.getElementById('storeTypeExport')!=undefined)document.getElementById('storeTypeExport').value='';
+	    	if(document.getElementById('costingTypeCreate')!=undefined)document.getElementById('costingTypeCreate').value='';
+	    	if(document.getElementById('costingTypeRead')!=undefined)document.getElementById('costingTypeRead').value='';
+	    	if(document.getElementById('costingTypeUpdate')!=undefined)document.getElementById('costingTypeUpdate').value='';
+	    	if(document.getElementById('costingTypeExport')!=undefined)document.getElementById('costingTypeExport').value='';
+	    	if(document.getElementById('warehouseCreate')!=undefined)document.getElementById('warehouseCreate').value='';
+	    	if(document.getElementById('warehouseRead')!=undefined)document.getElementById('warehouseRead').value='';
+	    	if(document.getElementById('warehouseUpdate')!=undefined)document.getElementById('warehouseUpdate').value='';
+	    	if(document.getElementById('warehouseExport')!=undefined)document.getElementById('warehouseExport').value='';
+	    	if(document.getElementById('coinCreate')!=undefined)document.getElementById('coinCreate').value='';
+	    	if(document.getElementById('coinRead')!=undefined)document.getElementById('coinRead').value='';
+	    	if(document.getElementById('coinUpdate')!=undefined)document.getElementById('coinUpdate').value='';
+	    	if(document.getElementById('coinExport')!=undefined)document.getElementById('coinExport').value='';
+	    	if(document.getElementById('typeConceptKardexCreate')!=undefined)document.getElementById('typeConceptKardexCreate').value='';
+	    	if(document.getElementById('typeConceptKardexRead')!=undefined)document.getElementById('typeConceptKardexRead').value='';
+	    	if(document.getElementById('typeConceptKardexUpdate')!=undefined)document.getElementById('typeConceptKardexUpdate').value='';
+	    	if(document.getElementById('typeConceptKardexExport')!=undefined)document.getElementById('typeConceptKardexExport').value='';
+	    	if(document.getElementById('conceptKardexCreate')!=undefined)document.getElementById('conceptKardexCreate').value='';
+	    	if(document.getElementById('conceptKardexRead')!=undefined)document.getElementById('conceptKardexRead').value='';
+	    	if(document.getElementById('conceptKardexUpdate')!=undefined)document.getElementById('conceptKardexUpdate').value='';
+	    	if(document.getElementById('conceptKardexExport')!=undefined)document.getElementById('conceptKardexExport').value='';
+	    	if(document.getElementById('contractCreate')!=undefined)document.getElementById('contractCreate').value='';
+	    	if(document.getElementById('contractRead')!=undefined)document.getElementById('contractRead').value='';
+	    	if(document.getElementById('contractUpdate')!=undefined)document.getElementById('contractUpdate').value='';
+	    	if(document.getElementById('contractExport')!=undefined)document.getElementById('contractExport').value='';
+	    	if(document.getElementById('usersCreate')!=undefined)document.getElementById('usersCreate').value='';
+	    	if(document.getElementById('usersRead')!=undefined)document.getElementById('usersRead').value='';
+	    	if(document.getElementById('usersUpdate')!=undefined)document.getElementById('usersUpdate').value='';
+	    	if(document.getElementById('usersExport')!=undefined)document.getElementById('usersExport').value='';
 	    	if(document.getElementById('currencyCreate')!=undefined)document.getElementById('currencyCreate').value='';
+	    	if(document.getElementById('currencyRead')!=undefined)document.getElementById('currencyRead').value='';
 	    	if(document.getElementById('currencyUpdate')!=undefined)document.getElementById('currencyUpdate').value='';
 	    	if(document.getElementById('currencyExport')!=undefined)document.getElementById('currencyExport').value='';
-	    	if(document.getElementById('active')!=undefined)document.getElementById('active').value='';
+	    	if(document.getElementById('exchangeRateCreate')!=undefined)document.getElementById('exchangeRateCreate').value='';
+	    	if(document.getElementById('exchangeRateRead')!=undefined)document.getElementById('exchangeRateRead').value='';
+	    	if(document.getElementById('exchangeRateUpdate')!=undefined)document.getElementById('exchangeRateUpdate').value='';
+	    	if(document.getElementById('exchangeRateExport')!=undefined)document.getElementById('exchangeRateExport').value='';
+	    	if(document.getElementById('continentCreate')!=undefined)document.getElementById('continentCreate').value='';
+	    	if(document.getElementById('continentRead')!=undefined)document.getElementById('continentRead').value='';
+	    	if(document.getElementById('continentUpdate')!=undefined)document.getElementById('continentUpdate').value='';
+	    	if(document.getElementById('continentExport')!=undefined)document.getElementById('continentExport').value='';
+	    	if(document.getElementById('regionCreate')!=undefined)document.getElementById('regionCreate').value='';
+	    	if(document.getElementById('regionRead')!=undefined)document.getElementById('regionRead').value='';
+	    	if(document.getElementById('regionUpdate')!=undefined)document.getElementById('regionUpdate').value='';
+	    	if(document.getElementById('regionExport')!=undefined)document.getElementById('regionExport').value='';
+	    	if(document.getElementById('currencyCodeCreate')!=undefined)document.getElementById('currencyCodeCreate').value='';
+	    	if(document.getElementById('currencyCodeRead')!=undefined)document.getElementById('currencyCodeRead').value='';
+	    	if(document.getElementById('currencyCodeUpdate')!=undefined)document.getElementById('currencyCodeUpdate').value='';
+	    	if(document.getElementById('currencyCodeExport')!=undefined)document.getElementById('currencyCodeExport').value='';
+	    	if(document.getElementById('countryCreate')!=undefined)document.getElementById('countryCreate').value='';
+	    	if(document.getElementById('countryRead')!=undefined)document.getElementById('countryRead').value='';
+	    	if(document.getElementById('countryUpdate')!=undefined)document.getElementById('countryUpdate').value='';
+	    	if(document.getElementById('countryExport')!=undefined)document.getElementById('countryExport').value='';
 
 	    	document.getElementById('dateOfModification').value='';		    	
 	    	document.getElementById('userName').value='';		    	
@@ -177,11 +537,191 @@
         	if(document.getElementById('password')!=undefined)document.getElementById('password').value='';
         	if(document.getElementById('role')!=undefined)document.getElementById('role').value='';
         	if(document.getElementById('company')!=undefined)document.getElementById('company').value='';
-        	if(document.getElementById('currencyRead')!=undefined)document.getElementById('currencyRead').value='';
+        	if(document.getElementById('active')!=undefined)document.getElementById('active').value='';
+        	if(document.getElementById('companyCreate')!=undefined)document.getElementById('companyCreate').value='';
+        	if(document.getElementById('companyRead')!=undefined)document.getElementById('companyRead').value='';
+        	if(document.getElementById('companyUpdate')!=undefined)document.getElementById('companyUpdate').value='';
+        	if(document.getElementById('companyExport')!=undefined)document.getElementById('companyExport').value='';
+        	if(document.getElementById('stateCreate')!=undefined)document.getElementById('stateCreate').value='';
+        	if(document.getElementById('stateRead')!=undefined)document.getElementById('stateRead').value='';
+        	if(document.getElementById('stateUpdate')!=undefined)document.getElementById('stateUpdate').value='';
+        	if(document.getElementById('stateExport')!=undefined)document.getElementById('stateExport').value='';
+        	if(document.getElementById('measurementUnitCreate')!=undefined)document.getElementById('measurementUnitCreate').value='';
+        	if(document.getElementById('measurementUnitRead')!=undefined)document.getElementById('measurementUnitRead').value='';
+        	if(document.getElementById('measurementUnitUpdate')!=undefined)document.getElementById('measurementUnitUpdate').value='';
+        	if(document.getElementById('measurementUnitExport')!=undefined)document.getElementById('measurementUnitExport').value='';
+        	if(document.getElementById('typeSorterCreate')!=undefined)document.getElementById('typeSorterCreate').value='';
+        	if(document.getElementById('typeSorterRead')!=undefined)document.getElementById('typeSorterRead').value='';
+        	if(document.getElementById('typeSorterUpdate')!=undefined)document.getElementById('typeSorterUpdate').value='';
+        	if(document.getElementById('typeSorterExport')!=undefined)document.getElementById('typeSorterExport').value='';
+        	if(document.getElementById('sorterCreate')!=undefined)document.getElementById('sorterCreate').value='';
+        	if(document.getElementById('sorterRead')!=undefined)document.getElementById('sorterRead').value='';
+        	if(document.getElementById('sorterUpdate')!=undefined)document.getElementById('sorterUpdate').value='';
+        	if(document.getElementById('sorterExport')!=undefined)document.getElementById('sorterExport').value='';
+        	if(document.getElementById('operationCreate')!=undefined)document.getElementById('operationCreate').value='';
+        	if(document.getElementById('operationRead')!=undefined)document.getElementById('operationRead').value='';
+        	if(document.getElementById('operationUpdate')!=undefined)document.getElementById('operationUpdate').value='';
+        	if(document.getElementById('operationExport')!=undefined)document.getElementById('operationExport').value='';
+        	if(document.getElementById('referenceCreate')!=undefined)document.getElementById('referenceCreate').value='';
+        	if(document.getElementById('referenceRead')!=undefined)document.getElementById('referenceRead').value='';
+        	if(document.getElementById('referenceUpdate')!=undefined)document.getElementById('referenceUpdate').value='';
+        	if(document.getElementById('referenceExport')!=undefined)document.getElementById('referenceExport').value='';
+        	if(document.getElementById('referenceOperationCreate')!=undefined)document.getElementById('referenceOperationCreate').value='';
+        	if(document.getElementById('referenceOperationRead')!=undefined)document.getElementById('referenceOperationRead').value='';
+        	if(document.getElementById('referenceOperationUpdate')!=undefined)document.getElementById('referenceOperationUpdate').value='';
+        	if(document.getElementById('referenceOperationExport')!=undefined)document.getElementById('referenceOperationExport').value='';
+        	if(document.getElementById('technicalActionCreate')!=undefined)document.getElementById('technicalActionCreate').value='';
+        	if(document.getElementById('technicalActionRead')!=undefined)document.getElementById('technicalActionRead').value='';
+        	if(document.getElementById('technicalActionUpdate')!=undefined)document.getElementById('technicalActionUpdate').value='';
+        	if(document.getElementById('technicalActionExport')!=undefined)document.getElementById('technicalActionExport').value='';
+        	if(document.getElementById('effectFailCreate')!=undefined)document.getElementById('effectFailCreate').value='';
+        	if(document.getElementById('effectFailRead')!=undefined)document.getElementById('effectFailRead').value='';
+        	if(document.getElementById('effectFailUpdate')!=undefined)document.getElementById('effectFailUpdate').value='';
+        	if(document.getElementById('effectFailExport')!=undefined)document.getElementById('effectFailExport').value='';
+        	if(document.getElementById('effectFailTechnicalActionCreate')!=undefined)document.getElementById('effectFailTechnicalActionCreate').value='';
+        	if(document.getElementById('effectFailTechnicalActionRead')!=undefined)document.getElementById('effectFailTechnicalActionRead').value='';
+        	if(document.getElementById('effectFailTechnicalActionUpdate')!=undefined)document.getElementById('effectFailTechnicalActionUpdate').value='';
+        	if(document.getElementById('effectFailTechnicalActionExport')!=undefined)document.getElementById('effectFailTechnicalActionExport').value='';
+        	if(document.getElementById('failureCauseCreate')!=undefined)document.getElementById('failureCauseCreate').value='';
+        	if(document.getElementById('failureCauseRead')!=undefined)document.getElementById('failureCauseRead').value='';
+        	if(document.getElementById('failureCauseUpdate')!=undefined)document.getElementById('failureCauseUpdate').value='';
+        	if(document.getElementById('failureCauseExport')!=undefined)document.getElementById('failureCauseExport').value='';
+        	if(document.getElementById('failureCauseTechnicalactionCreate')!=undefined)document.getElementById('failureCauseTechnicalactionCreate').value='';
+        	if(document.getElementById('failureCauseTechnicalactionRead')!=undefined)document.getElementById('failureCauseTechnicalactionRead').value='';
+        	if(document.getElementById('failureCauseTechnicalactionUpdate')!=undefined)document.getElementById('failureCauseTechnicalactionUpdate').value='';
+        	if(document.getElementById('failureCauseTechnicalactionExport')!=undefined)document.getElementById('failureCauseTechnicalactionExport').value='';
+        	if(document.getElementById('typeCauseCloseCreate')!=undefined)document.getElementById('typeCauseCloseCreate').value='';
+        	if(document.getElementById('typeCauseCloseRead')!=undefined)document.getElementById('typeCauseCloseRead').value='';
+        	if(document.getElementById('typeCauseCloseUpdate')!=undefined)document.getElementById('typeCauseCloseUpdate').value='';
+        	if(document.getElementById('typeCauseCloseExport')!=undefined)document.getElementById('typeCauseCloseExport').value='';
+        	if(document.getElementById('causeCloseCreate')!=undefined)document.getElementById('causeCloseCreate').value='';
+        	if(document.getElementById('causeCloseRead')!=undefined)document.getElementById('causeCloseRead').value='';
+        	if(document.getElementById('causeCloseUpdate')!=undefined)document.getElementById('causeCloseUpdate').value='';
+        	if(document.getElementById('causeCloseExport')!=undefined)document.getElementById('causeCloseExport').value='';
+        	if(document.getElementById('maintenanceActivityCreate')!=undefined)document.getElementById('maintenanceActivityCreate').value='';
+        	if(document.getElementById('maintenanceActivityRead')!=undefined)document.getElementById('maintenanceActivityRead').value='';
+        	if(document.getElementById('maintenanceActivityUpdate')!=undefined)document.getElementById('maintenanceActivityUpdate').value='';
+        	if(document.getElementById('maintenanceActivityExport')!=undefined)document.getElementById('maintenanceActivityExport').value='';
+        	if(document.getElementById('maintenanceWorkCreate')!=undefined)document.getElementById('maintenanceWorkCreate').value='';
+        	if(document.getElementById('maintenanceWorkRead')!=undefined)document.getElementById('maintenanceWorkRead').value='';
+        	if(document.getElementById('maintenanceWorkUpdate')!=undefined)document.getElementById('maintenanceWorkUpdate').value='';
+        	if(document.getElementById('maintenanceWorkExport')!=undefined)document.getElementById('maintenanceWorkExport').value='';
+        	if(document.getElementById('typeMaintenanceCreate')!=undefined)document.getElementById('typeMaintenanceCreate').value='';
+        	if(document.getElementById('typeMaintenanceRead')!=undefined)document.getElementById('typeMaintenanceRead').value='';
+        	if(document.getElementById('typeMaintenanceUpdate')!=undefined)document.getElementById('typeMaintenanceUpdate').value='';
+        	if(document.getElementById('typeMaintenanceExport')!=undefined)document.getElementById('typeMaintenanceExport').value='';
+        	if(document.getElementById('causePendingCreate')!=undefined)document.getElementById('causePendingCreate').value='';
+        	if(document.getElementById('causePendingRead')!=undefined)document.getElementById('causePendingRead').value='';
+        	if(document.getElementById('causePendingUpdate')!=undefined)document.getElementById('causePendingUpdate').value='';
+        	if(document.getElementById('causePendingExport')!=undefined)document.getElementById('causePendingExport').value='';
+        	if(document.getElementById('typeWorkCreate')!=undefined)document.getElementById('typeWorkCreate').value='';
+        	if(document.getElementById('typeWorkRead')!=undefined)document.getElementById('typeWorkRead').value='';
+        	if(document.getElementById('typeWorkUpdate')!=undefined)document.getElementById('typeWorkUpdate').value='';
+        	if(document.getElementById('typeWorkExport')!=undefined)document.getElementById('typeWorkExport').value='';
+        	if(document.getElementById('otherConceptsCreate')!=undefined)document.getElementById('otherConceptsCreate').value='';
+        	if(document.getElementById('otherConceptsRead')!=undefined)document.getElementById('otherConceptsRead').value='';
+        	if(document.getElementById('otherConceptsUpdate')!=undefined)document.getElementById('otherConceptsUpdate').value='';
+        	if(document.getElementById('otherConceptsExport')!=undefined)document.getElementById('otherConceptsExport').value='';
+        	if(document.getElementById('stateCostCentersCreate')!=undefined)document.getElementById('stateCostCentersCreate').value='';
+        	if(document.getElementById('stateCostCentersRead')!=undefined)document.getElementById('stateCostCentersRead').value='';
+        	if(document.getElementById('stateCostCentersUpdate')!=undefined)document.getElementById('stateCostCentersUpdate').value='';
+        	if(document.getElementById('stateCostCentersExport')!=undefined)document.getElementById('stateCostCentersExport').value='';
+        	if(document.getElementById('costCentersCustomersCreate')!=undefined)document.getElementById('costCentersCustomersCreate').value='';
+        	if(document.getElementById('costCentersCustomersRead')!=undefined)document.getElementById('costCentersCustomersRead').value='';
+        	if(document.getElementById('costCentersCustomersUpdate')!=undefined)document.getElementById('costCentersCustomersUpdate').value='';
+        	if(document.getElementById('costCentersCustomersExport')!=undefined)document.getElementById('costCentersCustomersExport').value='';
+        	if(document.getElementById('responsibleCenterCreate')!=undefined)document.getElementById('responsibleCenterCreate').value='';
+        	if(document.getElementById('responsibleCenterRead')!=undefined)document.getElementById('responsibleCenterRead').value='';
+        	if(document.getElementById('responsibleCenterUpdate')!=undefined)document.getElementById('responsibleCenterUpdate').value='';
+        	if(document.getElementById('responsibleCenterExport')!=undefined)document.getElementById('responsibleCenterExport').value='';
+        	if(document.getElementById('jobCreate')!=undefined)document.getElementById('jobCreate').value='';
+        	if(document.getElementById('jobRead')!=undefined)document.getElementById('jobRead').value='';
+        	if(document.getElementById('jobUpdate')!=undefined)document.getElementById('jobUpdate').value='';
+        	if(document.getElementById('jobExport')!=undefined)document.getElementById('jobExport').value='';
+        	if(document.getElementById('thirdCreate')!=undefined)document.getElementById('thirdCreate').value='';
+        	if(document.getElementById('thirdRead')!=undefined)document.getElementById('thirdRead').value='';
+        	if(document.getElementById('thirdUpdate')!=undefined)document.getElementById('thirdUpdate').value='';
+        	if(document.getElementById('thirdExport')!=undefined)document.getElementById('thirdExport').value='';
+        	if(document.getElementById('jobThirdCreate')!=undefined)document.getElementById('jobThirdCreate').value='';
+        	if(document.getElementById('jobThirdRead')!=undefined)document.getElementById('jobThirdRead').value='';
+        	if(document.getElementById('jobThirdUpdate')!=undefined)document.getElementById('jobThirdUpdate').value='';
+        	if(document.getElementById('jobThirdExport')!=undefined)document.getElementById('jobThirdExport').value='';
+        	if(document.getElementById('responsibleCreate')!=undefined)document.getElementById('responsibleCreate').value='';
+        	if(document.getElementById('responsibleRead')!=undefined)document.getElementById('responsibleRead').value='';
+        	if(document.getElementById('responsibleUpdate')!=undefined)document.getElementById('responsibleUpdate').value='';
+        	if(document.getElementById('responsibleExport')!=undefined)document.getElementById('responsibleExport').value='';
+        	if(document.getElementById('authorizerCostCenterCreate')!=undefined)document.getElementById('authorizerCostCenterCreate').value='';
+        	if(document.getElementById('authorizerCostCenterRead')!=undefined)document.getElementById('authorizerCostCenterRead').value='';
+        	if(document.getElementById('authorizerCostCenterUpdate')!=undefined)document.getElementById('authorizerCostCenterUpdate').value='';
+        	if(document.getElementById('authorizerCostCenterExport')!=undefined)document.getElementById('authorizerCostCenterExport').value='';
+        	if(document.getElementById('characteristicCreate')!=undefined)document.getElementById('characteristicCreate').value='';
+        	if(document.getElementById('characteristicRead')!=undefined)document.getElementById('characteristicRead').value='';
+        	if(document.getElementById('characteristicUpdate')!=undefined)document.getElementById('characteristicUpdate').value='';
+        	if(document.getElementById('characteristicExport')!=undefined)document.getElementById('characteristicExport').value='';
+        	if(document.getElementById('accountantCreate')!=undefined)document.getElementById('accountantCreate').value='';
+        	if(document.getElementById('accountantRead')!=undefined)document.getElementById('accountantRead').value='';
+        	if(document.getElementById('accountantUpdate')!=undefined)document.getElementById('accountantUpdate').value='';
+        	if(document.getElementById('accountantExport')!=undefined)document.getElementById('accountantExport').value='';
+        	if(document.getElementById('physicalLocationCreate')!=undefined)document.getElementById('physicalLocationCreate').value='';
+        	if(document.getElementById('physicalLocationRead')!=undefined)document.getElementById('physicalLocationRead').value='';
+        	if(document.getElementById('physicalLocationUpdate')!=undefined)document.getElementById('physicalLocationUpdate').value='';
+        	if(document.getElementById('physicalLocationExport')!=undefined)document.getElementById('physicalLocationExport').value='';
+        	if(document.getElementById('storeTypeCreate')!=undefined)document.getElementById('storeTypeCreate').value='';
+        	if(document.getElementById('storeTypeRead')!=undefined)document.getElementById('storeTypeRead').value='';
+        	if(document.getElementById('storeTypeUpdate')!=undefined)document.getElementById('storeTypeUpdate').value='';
+        	if(document.getElementById('storeTypeExport')!=undefined)document.getElementById('storeTypeExport').value='';
+        	if(document.getElementById('costingTypeCreate')!=undefined)document.getElementById('costingTypeCreate').value='';
+        	if(document.getElementById('costingTypeRead')!=undefined)document.getElementById('costingTypeRead').value='';
+        	if(document.getElementById('costingTypeUpdate')!=undefined)document.getElementById('costingTypeUpdate').value='';
+        	if(document.getElementById('costingTypeExport')!=undefined)document.getElementById('costingTypeExport').value='';
+        	if(document.getElementById('warehouseCreate')!=undefined)document.getElementById('warehouseCreate').value='';
+        	if(document.getElementById('warehouseRead')!=undefined)document.getElementById('warehouseRead').value='';
+        	if(document.getElementById('warehouseUpdate')!=undefined)document.getElementById('warehouseUpdate').value='';
+        	if(document.getElementById('warehouseExport')!=undefined)document.getElementById('warehouseExport').value='';
+        	if(document.getElementById('coinCreate')!=undefined)document.getElementById('coinCreate').value='';
+        	if(document.getElementById('coinRead')!=undefined)document.getElementById('coinRead').value='';
+        	if(document.getElementById('coinUpdate')!=undefined)document.getElementById('coinUpdate').value='';
+        	if(document.getElementById('coinExport')!=undefined)document.getElementById('coinExport').value='';
+        	if(document.getElementById('typeConceptKardexCreate')!=undefined)document.getElementById('typeConceptKardexCreate').value='';
+        	if(document.getElementById('typeConceptKardexRead')!=undefined)document.getElementById('typeConceptKardexRead').value='';
+        	if(document.getElementById('typeConceptKardexUpdate')!=undefined)document.getElementById('typeConceptKardexUpdate').value='';
+        	if(document.getElementById('typeConceptKardexExport')!=undefined)document.getElementById('typeConceptKardexExport').value='';
+        	if(document.getElementById('conceptKardexCreate')!=undefined)document.getElementById('conceptKardexCreate').value='';
+        	if(document.getElementById('conceptKardexRead')!=undefined)document.getElementById('conceptKardexRead').value='';
+        	if(document.getElementById('conceptKardexUpdate')!=undefined)document.getElementById('conceptKardexUpdate').value='';
+        	if(document.getElementById('conceptKardexExport')!=undefined)document.getElementById('conceptKardexExport').value='';
+        	if(document.getElementById('contractCreate')!=undefined)document.getElementById('contractCreate').value='';
+        	if(document.getElementById('contractRead')!=undefined)document.getElementById('contractRead').value='';
+        	if(document.getElementById('contractUpdate')!=undefined)document.getElementById('contractUpdate').value='';
+        	if(document.getElementById('contractExport')!=undefined)document.getElementById('contractExport').value='';
+        	if(document.getElementById('usersCreate')!=undefined)document.getElementById('usersCreate').value='';
+        	if(document.getElementById('usersRead')!=undefined)document.getElementById('usersRead').value='';
+        	if(document.getElementById('usersUpdate')!=undefined)document.getElementById('usersUpdate').value='';
+        	if(document.getElementById('usersExport')!=undefined)document.getElementById('usersExport').value='';
         	if(document.getElementById('currencyCreate')!=undefined)document.getElementById('currencyCreate').value='';
+        	if(document.getElementById('currencyRead')!=undefined)document.getElementById('currencyRead').value='';
         	if(document.getElementById('currencyUpdate')!=undefined)document.getElementById('currencyUpdate').value='';
         	if(document.getElementById('currencyExport')!=undefined)document.getElementById('currencyExport').value='';
-        	if(document.getElementById('active')!=undefined)document.getElementById('active').value='';
+        	if(document.getElementById('exchangeRateCreate')!=undefined)document.getElementById('exchangeRateCreate').value='';
+        	if(document.getElementById('exchangeRateRead')!=undefined)document.getElementById('exchangeRateRead').value='';
+        	if(document.getElementById('exchangeRateUpdate')!=undefined)document.getElementById('exchangeRateUpdate').value='';
+        	if(document.getElementById('exchangeRateExport')!=undefined)document.getElementById('exchangeRateExport').value='';
+        	if(document.getElementById('continentCreate')!=undefined)document.getElementById('continentCreate').value='';
+        	if(document.getElementById('continentRead')!=undefined)document.getElementById('continentRead').value='';
+        	if(document.getElementById('continentUpdate')!=undefined)document.getElementById('continentUpdate').value='';
+        	if(document.getElementById('continentExport')!=undefined)document.getElementById('continentExport').value='';
+        	if(document.getElementById('regionCreate')!=undefined)document.getElementById('regionCreate').value='';
+        	if(document.getElementById('regionRead')!=undefined)document.getElementById('regionRead').value='';
+        	if(document.getElementById('regionUpdate')!=undefined)document.getElementById('regionUpdate').value='';
+        	if(document.getElementById('regionExport')!=undefined)document.getElementById('regionExport').value='';
+        	if(document.getElementById('currencyCodeCreate')!=undefined)document.getElementById('currencyCodeCreate').value='';
+        	if(document.getElementById('currencyCodeRead')!=undefined)document.getElementById('currencyCodeRead').value='';
+        	if(document.getElementById('currencyCodeUpdate')!=undefined)document.getElementById('currencyCodeUpdate').value='';
+        	if(document.getElementById('currencyCodeExport')!=undefined)document.getElementById('currencyCodeExport').value='';
+        	if(document.getElementById('countryCreate')!=undefined)document.getElementById('countryCreate').value='';
+        	if(document.getElementById('countryRead')!=undefined)document.getElementById('countryRead').value='';
+        	if(document.getElementById('countryUpdate')!=undefined)document.getElementById('countryUpdate').value='';
+        	if(document.getElementById('countryExport')!=undefined)document.getElementById('countryExport').value='';
 
 	    	document.getElementById('dateOfModification').value='';		    	
 	    	document.getElementById('userName').value='';		    	
@@ -270,9 +810,9 @@
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisition}" th:text="#{label.requisitionsOption}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisitionDistribution}" th:text="#{label.requisitionDistributionOption}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchQuotation}" th:text="#{label.quotationOption}"></a></li>
-			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.purchaseOrders}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.Orders}"></a></li>
 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchItemReceipt}" th:text="#{label.itemReceiptOrder}"></a></li>
-<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/purchaseOrderOtherValue}" th:text="#{label.purchaseOrderOtherValueOption}"></a></li> -->
+<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/OrderOtherValue}" th:text="#{label.OrderOtherValueOption}"></a></li> -->
 									<li sec:authorize-url="/purchase"><a th:href="@{/purchase}" th:text="#{label.navbarConfiguration}"></a></li>
 			                        <li sec:authorize-url="/purchaseSettings"><a th:href="@{/purchaseSettings}" th:text="#{label.settingsOption}"></a></li>
 			                        <li sec:authorize-url="/preferences"><a th:href="@{/preferences}" th:text="#{label.languageOption}"></a></li>
@@ -300,9 +840,9 @@
 			
 			<table width="100%">
 				<tr>
-					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:href="@{/purchase/users/createUsers/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:if="${_loggedInUser.usersCreate}" th:href="@{/purchase/users/createUsers/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
 					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
-					<td width="34%"><div align="right"><img style="cursor: pointer;" onclick="generateExcelFile();" th:src="@{/resources/img/excel.png}"/></div></td>
+					<td width="34%"><div align="right"><img th:if="${_loggedInUser.usersExport}" style="cursor: pointer;" onclick="generateExcelFile();" th:src="@{/resources/img/excel.png}"/></div></td>
 				</tr>
 			</table>
 			<table class="table table-striped" >

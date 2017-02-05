@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.jobCreationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+        <script th:src="@{/resources/js/bootstrap-tab.js}"></script>
+	  
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	      
+	      function hideAlert(){
+	    	  document.getElementById("_savedAlert").style.display='none';
+	      }
+	     
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("configuration")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/maintenance/job/searchJob","_self");
+	    	  }
+	    	});
+	        	     
+		   
+		     
+		  function setFocus(){
+		   		document.getElementById("responsibleCenter").focus();
+		   } 
+		   
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+	       /* ]]> */
+	     </script>
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutmaintenance :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${jobInfo}" method="post" onchange="hideAlert();">
+		        	<div id="back"><a th:if="${jobInfo.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/maintenance/job/searchJob}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.jobCreationTitle}"></h3>
+		        	<br/>
+		        	
+		        	<table>
+		        		<tr>
+		        			<td ><b th:text="#{label.jobResponsibleCenter}+': '"></b></td>
+		        			<td>
+		        				<select th:if="${_loggedInUser.jobCreate}" id="responsibleCenter" onChange="responsibleCenterSelectedRefresh()" th:field="*{responsibleCenterId}"><option th:each="reference : ${jobInfo.responsibleCenterList}" th:value="${reference.id}" th:text="${reference.nameResponsibleCenter}"></option></select>
+		        				<select th:if="${_loggedInUser.jobCreate} != true" disabled="disabled" id="responsibleCenter" onChange="responsibleCenterSelectedRefresh()" th:field="*{responsibleCenterId}"><option th:each="reference : ${jobInfo.responsibleCenterList}" th:value="${reference.id}" th:text="${reference.nameResponsibleCenter}"></option></select>
+		        			</td>
+		        			<td th:if="${responsibleCenterException}"><div class="alert alert-error" th:text="#{${responsibleCenterValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.jobNameJob}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.jobCreate}" id="nameJob" name="nameJob" type="text" th:value="*{{nameJob}}" />
+		        					<input th:if="${_loggedInUser.jobCreate} != true" disabled="disabled" id="nameJob" name="nameJob" type="text" th:value="*{{nameJob}}" />
+		        					
+		        				</td>
+		        				<td th:if="${nameJobException}"><div class="alert alert-error" th:text="#{${nameJobValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.jobValueTime1}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.jobCreate}" id="valueTime1" name="valueTime1" type="text" th:value="*{{valueTime1}}" />
+		        					<input th:if="${_loggedInUser.jobCreate} != true" disabled="disabled" id="valueTime1" name="valueTime1" type="text" th:value="*{{valueTime1}}" />
+		        					
+		        				</td>
+		        				<td th:if="${valueTime1Exception}"><div class="alert alert-error" th:text="#{${valueTime1ValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.jobValueTime2}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.jobCreate}" id="valueTime2" name="valueTime2" type="text" th:value="*{{valueTime2}}" />
+		        					<input th:if="${_loggedInUser.jobCreate} != true" disabled="disabled" id="valueTime2" name="valueTime2" type="text" th:value="*{{valueTime2}}" />
+		        					
+		        				</td>
+		        				<td th:if="${valueTime2Exception}"><div class="alert alert-error" th:text="#{${valueTime2ValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.jobValueTime3}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.jobCreate}" id="valueTime3" name="valueTime3" type="text" th:value="*{{valueTime3}}" />
+		        					<input th:if="${_loggedInUser.jobCreate} != true" disabled="disabled" id="valueTime3" name="valueTime3" type="text" th:value="*{{valueTime3}}" />
+		        					
+		        				</td>
+		        				<td th:if="${valueTime3Exception}"><div class="alert alert-error" th:text="#{${valueTime3ValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.jobTypeWork}+': '"></b></td>
+		        			<td>
+		        				<select th:if="${_loggedInUser.jobCreate}" id="typeWork" onChange="typeWorkSelectedRefresh()" th:field="*{typeWorkId}"><option th:each="reference : ${jobInfo.typeWorkList}" th:value="${reference.id}" th:text="${reference.typeWork}"></option></select>
+		        				<select th:if="${_loggedInUser.jobCreate} != true" disabled="disabled" id="typeWork" onChange="typeWorkSelectedRefresh()" th:field="*{typeWorkId}"><option th:each="reference : ${jobInfo.typeWorkList}" th:value="${reference.id}" th:text="${reference.typeWork}"></option></select>
+		        			</td>
+		        			<td th:if="${typeWorkException}"><div class="alert alert-error" th:text="#{${typeWorkValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.jobActive}+': '"></b></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.jobCreate}" type="checkbox" th:field="*{active}" />
+		        		   				<input th:if="${_loggedInUser.jobCreate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+		        		   			</td>
+		        		</tr>
+
+		        	</table>
+		        	<table>		        			        			
+		        		<tr>
+		        			<td>
+		        				<input type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${jobInfo.created}' class="alert alert-info" th:text="#{label.created}">
+            </div>
+            <div th:if='${jobCreateException}' class="alert alert-error" th:text="#{label.jobCreationError}">
+            </div>
+            <div th:if='${jobValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutmaintenance :: footer"></div>    
+    </body>
+</html>

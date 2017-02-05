@@ -162,27 +162,45 @@
 		        	<table>
 		        		<tr>
 		        			<td ><b th:text="#{label.countryRegion}+': '"></b></td>
-		        			<td><select id="region" onChange="regionSelectedRefresh()" th:field="*{regionId}"><option th:each="reference : ${countryInfo.regionList}" th:value="${reference.id}" th:text="${reference.region}"></option></select></td>
+		        			<td>
+		        				<select th:if="${_loggedInUser.countryCreate}" id="region" onChange="regionSelectedRefresh()" th:field="*{regionId}"><option th:each="reference : ${countryInfo.regionList}" th:value="${reference.id}" th:text="${reference.region}"></option></select>
+		        				<select th:if="${_loggedInUser.countryCreate} != true" disabled="disabled" id="region" onChange="regionSelectedRefresh()" th:field="*{regionId}"><option th:each="reference : ${countryInfo.regionList}" th:value="${reference.id}" th:text="${reference.region}"></option></select>
+		        			</td>
 		        			<td th:if="${regionException}"><div class="alert alert-error" th:text="#{${regionValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        				<td ><b th:text="#{label.countryCountry}+': '"></b></td>
-		        				<td><input id="country" name="country" type="text" th:value="*{{country}}" /></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.countryCreate}" id="country" name="country" type="text" th:value="*{{country}}" />
+		        					<input th:if="${_loggedInUser.countryCreate} != true" disabled="disabled" id="country" name="country" type="text" th:value="*{{country}}" />
+		        					
+		        				</td>
 		        				<td th:if="${countryException}"><div class="alert alert-error" th:text="#{${countryValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        				<td ><b th:text="#{label.countryLocalName}+': '"></b></td>
-		        				<td><input id="localName" name="localName" type="text" th:value="*{{localName}}" /></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.countryCreate}" id="localName" name="localName" type="text" th:value="*{{localName}}" />
+		        					<input th:if="${_loggedInUser.countryCreate} != true" disabled="disabled" id="localName" name="localName" type="text" th:value="*{{localName}}" />
+		        					
+		        				</td>
 		        				<td th:if="${localNameException}"><div class="alert alert-error" th:text="#{${localNameValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        				<td ><b th:text="#{label.countryFrenchName}+': '"></b></td>
-		        				<td><input id="frenchName" name="frenchName" type="text" th:value="*{{frenchName}}" /></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.countryCreate}" id="frenchName" name="frenchName" type="text" th:value="*{{frenchName}}" />
+		        					<input th:if="${_loggedInUser.countryCreate} != true" disabled="disabled" id="frenchName" name="frenchName" type="text" th:value="*{{frenchName}}" />
+		        					
+		        				</td>
 		        				<td th:if="${frenchNameException}"><div class="alert alert-error" th:text="#{${frenchNameValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        		 			<td ><b th:text="#{label.countryActive}+': '"></b></td>
-		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.countryCreate}" type="checkbox" th:field="*{active}" />
+		        		   				<input th:if="${_loggedInUser.countryCreate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+		        		   			</td>
 		        		</tr>
 
 		        	</table>

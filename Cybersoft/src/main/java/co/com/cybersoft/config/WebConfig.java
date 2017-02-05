@@ -121,7 +121,8 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		registry.addViewController("/home").setViewName("home");
 		registry.addViewController("/").setViewName("redirect:/home");
 		registry.addViewController("/settings").setViewName("settings");
-		registry.addViewController("/maintenance").setViewName("maintenance");registry.addViewController("/maintenanceSettings").setViewName("maintenanceSettings");registry.addViewController("/purchaseSettings").setViewName("purchaseSettings");
+		registry.addViewController("/globalSettings").setViewName("globalSettings");
+		registry.addViewController("/maintenanceSettings").setViewName("maintenanceSettings");registry.addViewController("/purchaseSettings").setViewName("purchaseSettings");
 		registry.addViewController("/preferences").setViewName("language");
 		registry.addViewController("/login").setViewName("man/login");
 		registry.addViewController("/about").setViewName("man/about");

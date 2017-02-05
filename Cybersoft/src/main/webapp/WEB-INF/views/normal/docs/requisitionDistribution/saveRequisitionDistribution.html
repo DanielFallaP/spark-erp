@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.requisitionDistributionInfo}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	        td.right { text-align:right; }
+	        .hideANDseek
+			{
+			    display: none;
+			}
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+
+		<script th:src="@{/resources/js/util.js}"></script>
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		<script th:src="@{/resources/js/jquery.dataTables.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/jquery.dataTables.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	                   
+	      var popupVisible=false;
+	      
+	      function newEntry(){
+			   $('.popup-with-form').click();
+			   popupVisible=true;
+		   		document.getElementById("inventoryAccount").focus();
+		   }
+
+		   $(document).keyup(function(e) {
+	    	  if(e.which == 27 && !popupVisible) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("docs")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/docs/searchRequisitionDistribution","_self");
+	    	  }
+	    	});
+	      
+	      $.magnificPopup.instance.close = function () {
+				popupVisible=false;
+			   $.magnificPopup.proto.close.call(this);
+	      }; 
+	      
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 107 && document.getElementById("newEntry")!=null) {
+  				newEntry();
+	    	  }
+	    	});
+	    	
+		
+			function submitDeletion(){
+				var deletion="";
+				$("#requisitionDistributionBodyList").find('tr').each(function (i){
+					if ($(this).find("td:first").find('div').find('input').is(':checked')){
+						deletion+=$(this).prop( 'id' )+",";
+					}
+				});
+				var form=document.forms['header-form'];
+				form.elements["_deletion"].value=deletion;
+				form.elements["_deletionSubmit"].value="deletion";
+				form.submit();
+			}
+			
+		  function setFocus(){
+		   		document.getElementById("requisitionNumber").focus();
+		   }
+		  
+		function submitCreation(){
+			var form=document.forms['requisitionDistribution-body-form'];
+			form.elements["_submit"].value="creation";
+			form.submit();
+		}
+		
+		function submitHeader(){
+			var form=document.forms['header-form'];
+			form.elements["_submit"].value="header";
+			form.submit();
+		}
+		
+		function submitModification(){
+			var form=document.forms['requisitionDistribution-body-modification-form'];
+			form.elements["_modificationSubmit"].value="modification";
+			form.submit();
+		}
+		   
+   
+		function setModificationFormValues(id){
+					   var selectedRow="#"+id;
+					   var link=$("#requisitionDistribution-body-modification-form");
+					   var identification="#_id";
+					   var disable=false;
+					   $(identification).val(id);
+					   $(selectedRow).find('td').each(function (i){
+					   		if (i==0){
+							   			var field="#requisitionDistributionBodyModificationInfo\\._enableDeletion";
+							   		 	if ($(this).has("input[type='checkbox']").length!=0){
+							   		 		$(field).prop('checked', true);
+							   		 		disable=false;
+							   		 	}
+							   		 	else{
+							   		 		$(field).prop('checked', false);
+							   		 		disable=true;
+							   		 	}
+							}
+					   		if (i==1){
+					   			var field="#requisitionDistributionBodyModificationInfo\\.inventoryAccount";
+					   			$(field).val($(this).html());	 
+					   		}if (i==2){
+					   			var field="#requisitionDistributionBodyModificationInfo\\.afe";
+					   			$(field).val($(this).html());	 
+					   		}if (i==3){
+					   			var field="#requisitionDistributionBodyModificationInfo\\.distributionPercentage";
+					   			$(field).val($(this).html());	 
+					   		}
+					   });
+					$('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+				   }
+
+		$(function(){
+				     $("#requisitionNumber").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/docs/requisition/getRequisitionList?numericId="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 1,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#inventoryAccount").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/inventoryAccount/getListByCodeReturnCode?code="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#requisitionDistributionBodyModificationInfo\\.inventoryAccount").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/inventoryAccount/getListByCodeReturnCode?code="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#afe").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/afe/getListByAfeReturnAfe?afe="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#requisitionDistributionBodyModificationInfo\\.afe").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/afe/getListByAfeReturnAfe?afe="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+			
+		   $(document).ready( function () {
+				$('#requisitionDistributionBodyList').dataTable();
+
+			} );
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form2').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$("#header-form :input").change(function() {
+					document.getElementById("_savedAlert").style.display='none';
+				});
+			});
+		   
+		   function checkExceptions(){
+			   if (document.getElementById("_AdditionFormException")!=null){
+				   newEntry();
+			   }
+			   
+			   if (document.getElementById("_ModificationFormException")!=null){
+			   	   setModificationFormValues(document.getElementById("_ModificationFormExceptionId").value);
+				   $('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+			   }
+		   }
+		   
+	       /* ]]> */
+	     </script>
+
+    </head>
+    <body onload="checkExceptions();setFocus();">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form id="header-form" th:object="${requisitionDistributionInfo}" method="post" >
+		        	<input id="_submit" hidden="" th:field="*{requisitionDistributionBodyModificationInfo.submit}"></input>
+		        	<input id="_documentName" type="hidden" value="requisitionDistribution"></input>
+		        	<input th:if='${requisitionDistributionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<div ><a id="back" th:text="#{label.back}" th:href="@{/docs/searchRequisitionDistribution}"></a></div>
+		        	
+		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
+		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{requisitionDistributionBodyModificationInfo.submit}"></input>
+		        	<input id="_trueValue" th:value="#{label.true}" type="hidden" />
+		        	
+		        	<table width="100%">
+						<tr>
+							<td width="33%"><h3 th:if='${requisitionDistributionInfo.numericId==null}' th:text="#{label.requisitionDistributionInfo}"></h3>
+		        			<h3 th:if='${requisitionDistributionInfo.numericId!=null}' th:text="#{label.requisitionDistributionInfo}+' '+${requisitionDistributionInfo.numericId}"></h3></td>
+							<td width="33%"></td>
+							<td width="34%"><div align="right"><a th:if='${requisitionDistributionInfo.showBody}' th:href="@{/docs/requisitionDistribution/export?id=}+${requisitionDistributionInfo.numericId}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
+						</tr>
+					</table>
+		        	<table>
+		        		<tr th:if="${requisitionNumberException} or ${readyException} or ${activeException}">
+		        				        			<td th:if="!${requisitionNumberException}" colspan="2"></td>
+		        				        			<td th:if="${requisitionNumberException}" colspan="2"><div class="alert alert-error" th:text="#{${requisitionNumberValidationErrorMessage}}"></div></td><td th:if="!${readyException}" colspan="2"></td>
+		        				        			<td th:if="${readyException}" colspan="2"><div class="alert alert-error" th:text="#{${readyValidationErrorMessage}}"></div></td><td th:if="!${activeException}" colspan="2"></td>
+		        				        			<td th:if="${activeException}" colspan="2"><div class="alert alert-error" th:text="#{${activeValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionDistributionRequisitionNumber}+': '"></b></td>
+		        				        			<td><input  id="requisitionNumber" name="requisitionNumber" type="text" th:value="*{{requisitionNumber}}" /></td><td style="padding:0 15px;"><b th:text="#{label.requisitionDistributionReady}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{ready}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionDistributionActive}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{active}" /></td>
+
+		        				        		</tr>
+		        	</table>
+		        	<br/>
+		        	<br/>
+		        	<table th:if='${requisitionDistributionInfo.showBody}' id="requisitionDistributionBodyList" class="table table-striped">
+		        		<thead>
+							<tr>
+								<th ></th>
+								<th   align="center" th:text="#{label.requisitionDistributionInventoryAccount}"></th><th   align="center" th:text="#{label.requisitionDistributionAfe}"></th><th   align="center" th:text="#{label.requisitionDistributionDistributionPercentage}"></th>
+							</tr>
+						</thead>
+						<tbody id="requisitionDistributionBodyList">
+							<tr th:each="object: ${requisitionDistributionBodyList}" th:id="${object.id}"  >
+								<td><div align="center" ><input type="checkbox" /></div></td>
+								<td   th:text="${{object.inventoryAccount}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td   th:text="${{object.afe}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.distributionPercentage}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td>
+							</tr>
+						</tbody>
+		        	</table>
+		        	<button th:if='${requisitionDistributionInfo.showBody} and !${requisitionDistributionInfo.ready}'  th:text="#{label.newEntryDocTable}" onclick="newEntry();return false;"></button>
+		        	<input th:if='${requisitionDistributionInfo.showBody} and !${requisitionDistributionInfo.ready}' type="button" th:value="#{label.deleteSelection}" onclick="submitDeletion();"/>
+					<a class="popup-with-form" href="#requisitionDistribution-body-form" hidden=""></a>
+       				<a class="popup-with-form2" href="#requisitionDistribution-body-modification-form" hidden=""></a>
+							        				
+       				<div align="right" ><input type="button" th:value="#{label.save}" onclick="submitHeader();"/></div>
+		        </form>
+					<input th:if='${requisitionDistributionInfo.showBody}' id="newEntry" hidden=""/>
+			 <!-- Custom form for adding new records -->
+			 <form id="requisitionDistribution-body-form" class="white-popup mfp-hide"  th:object="${requisitionDistributionBodyInfo}" method="post">
+		        	<h3 th:text="#{label.newRecord}"></h3>
+		        	<input id="_submit" hidden="" th:field="*{requisitionDistributionBodyModificationInfo.submit}"></input>
+		        	<input th:if='${requisitionDistributionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_AdditionFormException}" id="_AdditionFormException" hidden=""></input> 
+		        	<table>
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionDistributionInventoryAccount}+': '"></b></td>
+		        			<td><input id="inventoryAccount" type="text" th:field="*{inventoryAccount}" /></td>
+		        			<td th:if="${inventoryAccountException}"><div class="alert alert-error" th:text="#{${inventoryAccountValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionDistributionAfe}+': '"></b></td>
+		        			<td><input id="afe" type="text" th:field="*{afe}" /></td>
+		        			<td th:if="${afeException}"><div class="alert alert-error" th:text="#{${afeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionDistributionDistributionPercentage}+': '"></b></td>
+		        				<td><input  id="distributionPercentage" name="distributionPercentage" type="text" th:value="*{{distributionPercentage}}" /></td>
+		        				<td th:if="${distributionPercentageException}"><div class="alert alert-error" th:text="#{${distributionPercentageValidationErrorMessage}}"></div></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${requisitionDistributionInfo.ready}' type="button" th:value="#{label.save}" onclick="submitCreation();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		        
+		        <form id="requisitionDistribution-body-modification-form" class="white-popup mfp-hide" th:object="${requisitionDistributionBodyModificationInfo}" method="post">
+		        	<h3 th:text="#{label.recordModification}"></h3>
+		        	<input id="_id" hidden="" th:field="*{requisitionDistributionBodyModificationInfo.id}"></input>
+		        	<input id="_modificationSubmit" hidden="hidden" th:field="*{requisitionDistributionBodyModificationInfo.submit}"></input>
+		        	<input th:if='${requisitionDistributionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormException" hidden=""></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormExceptionId" th:value="${_ModifiedId}" hidden=""></input>
+		        	
+		        	<table >
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionDistributionInventoryAccount}+': '"></b></td>
+		        			<td><input id="requisitionDistributionBodyModificationInfo.inventoryAccount" type="text" th:field="*{requisitionDistributionBodyModificationInfo.inventoryAccount}" /></td>
+		        			<td th:if="${inventoryAccountException}"><div class="alert alert-error" th:text="#{${inventoryAccountValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionDistributionAfe}+': '"></b></td>
+		        			<td><input id="requisitionDistributionBodyModificationInfo.afe" type="text" th:field="*{requisitionDistributionBodyModificationInfo.afe}" /></td>
+		        			<td th:if="${afeException}"><div class="alert alert-error" th:text="#{${afeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionDistributionDistributionPercentage}+': '"></b></td>
+		        				<td><input  id="requisitionDistributionBodyModificationInfo.distributionPercentage" name="requisitionDistributionBodyModificationInfo.distributionPercentage" type="text" th:value="*{{requisitionDistributionBodyModificationInfo.distributionPercentage}}" /></td>
+		        				<td th:if="${distributionPercentageException}"><div class="alert alert-error" th:text="#{${distributionPercentageValidationErrorMessage}}"></div></td>
+		        		</tr>
+
+		        		<tr hidden="">
+		        		 			<td ></td>
+		        		   			<td ><input  type="checkbox" id="requisitionDistributionBodyModificationInfo._enableDeletion" th:field="*{requisitionDistributionBodyModificationInfo._enableDeletion}" /></td>
+		        		</tr>
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${requisitionDistributionInfo.ready}' type="button" th:value="#{label.save}" onclick="submitModification();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${requisitionDistributionInfo._toSave}' class="alert alert-info" th:text="#{label.saved}">
+            </div>
+            <div th:if='${requisitionDistributionCreateException}' class="alert alert-error" th:text="#{label.docCreationError}">
+            </div>
+            <div th:if='${requisitionDistributionValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>
+    </body>
+</html>

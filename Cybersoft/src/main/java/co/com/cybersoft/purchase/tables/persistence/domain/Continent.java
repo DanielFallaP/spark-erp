@@ -97,6 +97,7 @@ public class Continent {
 	
 	public Continent fromContinentDetails(ContinentDetails details){
 		BeanUtils.copyProperties(details, this);
+		
 
 		
 		return this;

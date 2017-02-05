@@ -1,10 +1,13 @@
 package co.com.cybersoft.purchase.tables.web.controller.country;
 
+import co.com.cybersoft.purchase.tables.core.domain.CountryDetails;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
+import org.springframework.ui.Model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +61,10 @@ public class CountryCreationController {
 
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String countryCreation() throws Exception {
+	public String modification(Model model, HttpServletRequest request){
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		return "/purchase/country/createCountry";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -71,6 +76,9 @@ public class CountryCreationController {
 		countryDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		countryDetails.setDateOfCreation(new Date());
 		countryDetails.setDateOfModification(new Date());
+		//countryDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		request.getSession().setAttribute("countryInfo", countryInfo);
 		countryService.createCountry(new CreateCountryEvent(countryDetails));

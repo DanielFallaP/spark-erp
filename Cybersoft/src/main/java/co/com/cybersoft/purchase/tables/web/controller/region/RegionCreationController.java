@@ -1,10 +1,13 @@
 package co.com.cybersoft.purchase.tables.web.controller.region;
 
+import co.com.cybersoft.purchase.tables.core.domain.RegionDetails;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
+import org.springframework.ui.Model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +61,10 @@ public class RegionCreationController {
 
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String regionCreation() throws Exception {
+	public String modification(Model model, HttpServletRequest request){
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		return "/purchase/region/createRegion";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -71,6 +76,9 @@ public class RegionCreationController {
 		regionDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		regionDetails.setDateOfCreation(new Date());
 		regionDetails.setDateOfModification(new Date());
+		//regionDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		request.getSession().setAttribute("regionInfo", regionInfo);
 		regionService.createRegion(new CreateRegionEvent(regionDetails));

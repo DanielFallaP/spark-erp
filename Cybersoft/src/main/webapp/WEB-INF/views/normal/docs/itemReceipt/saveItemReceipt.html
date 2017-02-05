@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.itemReceiptInfo}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	        td.right { text-align:right; }
+	        .hideANDseek
+			{
+			    display: none;
+			}
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+
+		<script th:src="@{/resources/js/util.js}"></script>
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		<script th:src="@{/resources/js/jquery.dataTables.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/jquery.dataTables.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	                   
+	      var popupVisible=false;
+	      
+	      function newEntry(){
+			   $('.popup-with-form').click();
+			   popupVisible=true;
+		   		document.getElementById("").focus();
+		   }
+
+		   $(document).keyup(function(e) {
+	    	  if(e.which == 27 && !popupVisible) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("docs")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/docs/searchItemReceipt","_self");
+	    	  }
+	    	});
+	      
+	      $.magnificPopup.instance.close = function () {
+				popupVisible=false;
+			   $.magnificPopup.proto.close.call(this);
+	      }; 
+	      
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 107 && document.getElementById("newEntry")!=null) {
+  				newEntry();
+	    	  }
+	    	});
+	    	
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#date" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#itemReceiptBodyModificationInfo\\.date" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+
+		
+			function submitDeletion(){
+				var deletion="";
+				$("#itemReceiptBodyList").find('tr').each(function (i){
+					if ($(this).find("td:first").find('div').find('input').is(':checked')){
+						deletion+=$(this).prop( 'id' )+",";
+					}
+				});
+				var form=document.forms['header-form'];
+				form.elements["_deletion"].value=deletion;
+				form.elements["_deletionSubmit"].value="deletion";
+				form.submit();
+			}
+			
+		  function setFocus(){
+		   		document.getElementById("city").focus();
+		   }
+		  
+		function submitCreation(){
+			var form=document.forms['itemReceipt-body-form'];
+			form.elements["_submit"].value="creation";
+			form.submit();
+		}
+		
+		function submitHeader(){
+			var form=document.forms['header-form'];
+			form.elements["_submit"].value="header";
+			form.submit();
+		}
+		
+		function submitModification(){
+			var form=document.forms['itemReceipt-body-modification-form'];
+			form.elements["_modificationSubmit"].value="modification";
+			$( "#itemReceiptBodyModificationInfo\\.item" ).prop( "disabled", false );
+			$( "#itemReceiptBodyModificationInfo\\.itemDescription" ).prop( "disabled", false );
+			$( "#itemReceiptBodyModificationInfo\\.unit" ).prop( "disabled", false );
+			$( "#itemReceiptBodyModificationInfo\\.orderedQuantity" ).prop( "disabled", false );
+			$( "#itemReceiptBodyModificationInfo\\.localCurrencyUnitValue" ).prop( "disabled", false );
+			$( "#itemReceiptBodyModificationInfo\\.localCurrencyTotalValue" ).prop( "disabled", false );
+			$( "#itemReceiptBodyModificationInfo\\.foreignCurrencyUnitValue" ).prop( "disabled", false );
+			$( "#itemReceiptBodyModificationInfo\\.foreignCurrencyTotalValue" ).prop( "disabled", false );
+
+			form.submit();
+		}
+		   
+   
+		function setModificationFormValues(id){
+					   var selectedRow="#"+id;
+					   var link=$("#itemReceipt-body-modification-form");
+					   var identification="#_id";
+					   var disable=false;
+					   $(identification).val(id);
+					   $(selectedRow).find('td').each(function (i){
+					   		if (i==0){
+							   			var field="#itemReceiptBodyModificationInfo\\._enableDeletion";
+							   		 	if ($(this).has("input[type='checkbox']").length!=0){
+							   		 		$(field).prop('checked', true);
+							   		 		disable=false;
+							   		 	}
+							   		 	else{
+							   		 		$(field).prop('checked', false);
+							   		 		disable=true;
+							   		 	}
+							}
+					   		if (i==1){
+					   			var field="#itemReceiptBodyModificationInfo\\.item";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}if (i==2){
+					   			var field="#itemReceiptBodyModificationInfo\\.itemDescription";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}if (i==3){
+					   			var field="#itemReceiptBodyModificationInfo\\.unit";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}if (i==4){
+					   			var field="#itemReceiptBodyModificationInfo\\.orderedQuantity";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}if (i==5){
+					   			var field="#itemReceiptBodyModificationInfo\\.localCurrencyUnitValue";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}if (i==6){
+					   			var field="#itemReceiptBodyModificationInfo\\.localCurrencyTotalValue";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}if (i==7){
+					   			var field="#itemReceiptBodyModificationInfo\\.foreignCurrencyUnitValue";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}if (i==8){
+					   			var field="#itemReceiptBodyModificationInfo\\.foreignCurrencyTotalValue";
+					   			$(field).val($(this).html());$(field).prop( "disabled", disable );	 
+					   		}
+					   });
+					$('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+				   }
+
+		$(function(){
+				     $("#city").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/docSite/getListByPopulatedPlaceReturnPopulatedPlace?populatedPlace="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#thirdParty").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/thirdParty/getListByIdentificationReturnIdentification?identification="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#purchaseOrderNumber").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/docs/purchaseOrder/getPurchaseOrderList?numericId="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 1,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    		submitHeader();
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+			  			$("#item").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#orderedQuantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#itemDescription").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#orderedQuantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#unit").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#orderedQuantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#orderedQuantity").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#orderedQuantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#localCurrencyUnitValue").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#orderedQuantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#localCurrencyTotalValue").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#orderedQuantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#foreignCurrencyUnitValue").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#orderedQuantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#foreignCurrencyTotalValue").change(function(){
+			  				$('#item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#orderedQuantity :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#localCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyUnitValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#foreignCurrencyTotalValue :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#itemReceiptBodyModificationInfo\\.item").change(function(){
+			  				$('#itemReceiptBodyModificationInfo\\.item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemReceiptBodyModificationInfo\\.itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemReceiptBodyModificationInfo\\.unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#itemReceiptBodyModificationInfo\\.itemDescription").change(function(){
+			  				$('#itemReceiptBodyModificationInfo\\.item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemReceiptBodyModificationInfo\\.itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemReceiptBodyModificationInfo\\.unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+		$(function(){
+			  			$("#itemReceiptBodyModificationInfo\\.unit").change(function(){
+			  				$('#itemReceiptBodyModificationInfo\\.item :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemReceiptBodyModificationInfo\\.itemDescription :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+			  				$('#itemReceiptBodyModificationInfo\\.unit :nth-child('+($(this)[0].selectedIndex+1)+')').prop('selected', true);
+		  	 		  
+			  	 		  });
+					});
+
+			
+		   $(document).ready( function () {
+				$('#itemReceiptBodyList').dataTable();
+
+			} );
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form2').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$("#header-form :input").change(function() {
+					document.getElementById("_savedAlert").style.display='none';
+				});
+			});
+		   
+		   function checkExceptions(){
+			   if (document.getElementById("_AdditionFormException")!=null){
+				   newEntry();
+			   }
+			   
+			   if (document.getElementById("_ModificationFormException")!=null){
+			   	   setModificationFormValues(document.getElementById("_ModificationFormExceptionId").value);
+				   $('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+			   }
+		   }
+		   
+	       /* ]]> */
+	     </script>
+
+    </head>
+    <body onload="checkExceptions();setFocus();">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form id="header-form" th:object="${itemReceiptInfo}" method="post" >
+		        	<input id="_submit" hidden="" th:field="*{itemReceiptBodyModificationInfo.submit}"></input>
+		        	<input id="_documentName" type="hidden" value="itemReceipt"></input>
+		        	<input th:if='${itemReceiptInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<div ><a id="back" th:text="#{label.back}" th:href="@{/docs/searchItemReceipt}"></a></div>
+		        	
+		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
+		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{itemReceiptBodyModificationInfo.submit}"></input>
+		        	<input id="_trueValue" th:value="#{label.true}" type="hidden" />
+		        	
+		        	<table width="100%">
+						<tr>
+							<td width="33%"><h3 th:if='${itemReceiptInfo.numericId==null}' th:text="#{label.itemReceiptInfo}"></h3>
+		        			<h3 th:if='${itemReceiptInfo.numericId!=null}' th:text="#{label.itemReceiptInfo}+' '+${itemReceiptInfo.numericId}"></h3></td>
+							<td width="33%"></td>
+							<td width="34%"><div align="right"><a th:if='${itemReceiptInfo.showBody}' th:href="@{/docs/itemReceipt/export?id=}+${itemReceiptInfo.numericId}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
+						</tr>
+					</table>
+		        	<table>
+		        		<tr th:if="${cityException} or ${dateException} or ${exchangeRateException}">
+		        				        			<td th:if="!${cityException}" colspan="2"></td>
+		        				        			<td th:if="${cityException}" colspan="2"><div class="alert alert-error" th:text="#{${cityValidationErrorMessage}}"></div></td><td th:if="!${dateException}" colspan="2"></td>
+		        				        			<td th:if="${dateException}" colspan="2"><div class="alert alert-error" th:text="#{${dateValidationErrorMessage}}"></div></td><td th:if="!${exchangeRateException}" colspan="2"></td>
+		        				        			<td th:if="${exchangeRateException}" colspan="2"><div class="alert alert-error" th:text="#{${exchangeRateValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptCity}+': '"></b></td>
+		        				        			<td><input id="city" type="text" th:field="*{city}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptDate}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="date" name="date" type="text" th:value="*{{date}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptExchangeRate}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="exchangeRate" name="exchangeRate" type="text" th:value="*{{exchangeRate}}" /></td>
+
+		        				        		</tr><tr th:if="${thirdPartyException} or ${requisitionNumberException} or ${receivingWarehouseException}">
+		        				        			<td th:if="!${thirdPartyException}" colspan="2"></td>
+		        				        			<td th:if="${thirdPartyException}" colspan="2"><div class="alert alert-error" th:text="#{${thirdPartyValidationErrorMessage}}"></div></td><td th:if="!${requisitionNumberException}" colspan="2"></td>
+		        				        			<td th:if="${requisitionNumberException}" colspan="2"><div class="alert alert-error" th:text="#{${requisitionNumberValidationErrorMessage}}"></div></td><td th:if="!${receivingWarehouseException}" colspan="2"></td>
+		        				        			<td th:if="${receivingWarehouseException}" colspan="2"><div class="alert alert-error" th:text="#{${receivingWarehouseValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptThirdParty}+': '"></b></td>
+		        				        			<td><input id="thirdParty" type="text" th:field="*{thirdParty}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptRequisitionNumber}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="requisitionNumber" name="requisitionNumber" type="text" th:value="*{{requisitionNumber}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptReceivingWarehouse}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="receivingWarehouse" name="receivingWarehouse" type="text" th:value="*{{receivingWarehouse}}" /></td>
+
+		        				        		</tr><tr th:if="${quotationNumberException} or ${purchaseOrderNumberException} or ${remisionNumberException}">
+		        				        			<td th:if="!${quotationNumberException}" colspan="2"></td>
+		        				        			<td th:if="${quotationNumberException}" colspan="2"><div class="alert alert-error" th:text="#{${quotationNumberValidationErrorMessage}}"></div></td><td th:if="!${purchaseOrderNumberException}" colspan="2"></td>
+		        				        			<td th:if="${purchaseOrderNumberException}" colspan="2"><div class="alert alert-error" th:text="#{${purchaseOrderNumberValidationErrorMessage}}"></div></td><td th:if="!${remisionNumberException}" colspan="2"></td>
+		        				        			<td th:if="${remisionNumberException}" colspan="2"><div class="alert alert-error" th:text="#{${remisionNumberValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptQuotationNumber}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="quotationNumber" name="quotationNumber" type="text" th:value="*{{quotationNumber}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptPurchaseOrderNumber}+': '"></b></td>
+		        				        			<td><input  id="purchaseOrderNumber" name="purchaseOrderNumber" type="text" th:value="*{{purchaseOrderNumber}}" /></td><td style="padding:0 15px;"><b th:text="#{label.itemReceiptRemisionNumber}+': '"></b></td>
+		        				        			<td><input  id="remisionNumber" name="remisionNumber" type="text" th:value="*{{remisionNumber}}" /></td>
+
+		        				        		</tr><tr th:if="${printCounterException} or ${statusException} or ${remarksException}">
+		        				        			<td th:if="!${printCounterException}" colspan="2"></td>
+		        				        			<td th:if="${printCounterException}" colspan="2"><div class="alert alert-error" th:text="#{${printCounterValidationErrorMessage}}"></div></td><td th:if="!${statusException}" colspan="2"></td>
+		        				        			<td th:if="${statusException}" colspan="2"><div class="alert alert-error" th:text="#{${statusValidationErrorMessage}}"></div></td><td th:if="!${remarksException}" colspan="2"></td>
+		        				        			<td th:if="${remarksException}" colspan="2"><div class="alert alert-error" th:text="#{${remarksValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptPrintCounter}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="printCounter" name="printCounter" type="text" th:value="*{{printCounter}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptStatus}+': '"></b></td>
+		        				        			<td><input  id="status" name="status" type="text" th:value="*{{status}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptRemarks}+': '"></b></td>
+		        				        			<td><textarea  th:field="*{remarks}" ></textarea></td>
+
+		        				        		</tr><tr th:if="${readyException} or ${activeException}">
+		        				        			<td th:if="!${readyException}" colspan="2"></td>
+		        				        			<td th:if="${readyException}" colspan="2"><div class="alert alert-error" th:text="#{${readyValidationErrorMessage}}"></div></td><td th:if="!${activeException}" colspan="2"></td>
+		        				        			<td th:if="${activeException}" colspan="2"><div class="alert alert-error" th:text="#{${activeValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptReady}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{ready}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.itemReceiptActive}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{active}" /></td>
+
+		        				        		</tr>
+		        	</table>
+		        	<br/>
+		        	<br/>
+		        	<table th:if='${itemReceiptInfo.showBody}' id="itemReceiptBodyList" class="table table-striped">
+		        		<thead>
+							<tr>
+								<th ></th>
+								<th   align="center" th:text="#{label.purchaseOrderItem}"></th><th   align="center" th:text="#{label.purchaseOrderItemDescription}"></th><th   align="center" th:text="#{label.purchaseOrderUnit}"></th><th   align="center" th:text="#{label.purchaseOrderOrderedQuantity}"></th><th   align="center" th:text="#{label.purchaseOrderLocalCurrencyUnitValue}"></th><th   align="center" th:text="#{label.purchaseOrderLocalCurrencyTotalValue}"></th><th   align="center" th:text="#{label.purchaseOrderForeignCurrencyUnitValue}"></th><th   align="center" th:text="#{label.purchaseOrderForeignCurrencyTotalValue}"></th>
+							</tr>
+						</thead>
+						<tbody id="itemReceiptBodyList">
+							<tr th:each="object: ${itemReceiptBodyList}" th:id="${object.id}"  >
+								<td><div align="center" ><input type="checkbox" /></div></td>
+								<td   th:text="${{object.item}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td   th:text="${{object.itemDescription}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td   th:text="${{object.unit}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.orderedQuantity}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.localCurrencyUnitValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.localCurrencyTotalValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.foreignCurrencyUnitValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.foreignCurrencyTotalValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td>
+							</tr>
+						</tbody>
+		        	</table>
+		        	<button th:if='${itemReceiptInfo.showBody} and !${itemReceiptInfo.ready}'  th:text="#{label.newEntryDocTable}" onclick="newEntry();return false;"></button>
+		        	<input th:if='${itemReceiptInfo.showBody} and !${itemReceiptInfo.ready}' type="button" th:value="#{label.deleteSelection}" onclick="submitDeletion();"/>
+					<a class="popup-with-form" href="#itemReceipt-body-form" hidden=""></a>
+       				<a class="popup-with-form2" href="#itemReceipt-body-modification-form" hidden=""></a>
+							        				
+       				<div align="right" ><input type="button" th:value="#{label.save}" onclick="submitHeader();"/></div>
+		        </form>
+					<input th:if='${itemReceiptInfo.showBody}' id="newEntry" hidden=""/>
+			 <!-- Custom form for adding new records -->
+			 <form id="itemReceipt-body-form" class="white-popup mfp-hide"  th:object="${itemReceiptBodyInfo}" method="post">
+		        	<h3 th:text="#{label.newRecord}"></h3>
+		        	<input id="_submit" hidden="" th:field="*{itemReceiptBodyModificationInfo.submit}"></input>
+		        	<input th:if='${itemReceiptInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_AdditionFormException}" id="_AdditionFormException" hidden=""></input> 
+		        	<table>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemReceiptItem}+': '"></b></td>
+		        			<td><select id="item" th:field="*{item}"><option value=""></option><option th:each="reference : ${itemReceiptInfo.itemReceiptBodyList}" th:value="${reference.item}" th:text="${reference.item}"></option></select></td>
+		        			<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemReceiptItemDescription}+': '"></b></td>
+		        			<td><select id="itemDescription" th:field="*{itemDescription}"><option value=""></option><option th:each="reference : ${itemReceiptInfo.itemReceiptBodyList}" th:value="${reference.itemDescription}" th:text="${reference.itemDescription}"></option></select></td>
+		        			<td th:if="${itemDescriptionException}"><div class="alert alert-error" th:text="#{${itemDescriptionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemReceiptUnit}+': '"></b></td>
+		        			<td><select id="unit" th:field="*{unit}"><option value=""></option><option th:each="reference : ${itemReceiptInfo.itemReceiptBodyList}" th:value="${reference.unit}" th:text="${reference.unit}"></option></select></td>
+		        			<td th:if="${unitException}"><div class="alert alert-error" th:text="#{${unitValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemReceiptOrderedQuantity}+': '"></b></td>
+		        			<td><select id="orderedQuantity" th:field="*{orderedQuantity}"><option value=""></option><option th:each="reference : ${itemReceiptInfo.itemReceiptBodyList}" th:value="${reference.orderedQuantity}" th:text="${reference.orderedQuantity}"></option></select></td>
+		        			<td th:if="${orderedQuantityException}"><div class="alert alert-error" th:text="#{${orderedQuantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemReceiptLocalCurrencyUnitValue}+': '"></b></td>
+		        			<td><select id="localCurrencyUnitValue" th:field="*{localCurrencyUnitValue}"><option value=""></option><option th:each="reference : ${itemReceiptInfo.itemReceiptBodyList}" th:value="${reference.localCurrencyUnitValue}" th:text="${reference.localCurrencyUnitValue}"></option></select></td>
+		        			<td th:if="${localCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${localCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemReceiptLocalCurrencyTotalValue}+': '"></b></td>
+		        			<td><select id="localCurrencyTotalValue" th:field="*{localCurrencyTotalValue}"><option value=""></option><option th:each="reference : ${itemReceiptInfo.itemReceiptBodyList}" th:value="${reference.localCurrencyTotalValue}" th:text="${reference.localCurrencyTotalValue}"></option></select></td>
+		        			<td th:if="${localCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${localCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemReceiptForeignCurrencyUnitValue}+': '"></b></td>
+		        			<td><select id="foreignCurrencyUnitValue" th:field="*{foreignCurrencyUnitValue}"><option value=""></option><option th:each="reference : ${itemReceiptInfo.itemReceiptBodyList}" th:value="${reference.foreignCurrencyUnitValue}" th:text="${reference.foreignCurrencyUnitValue}"></option></select></td>
+		        			<td th:if="${foreignCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemReceiptForeignCurrencyTotalValue}+': '"></b></td>
+		        			<td><select id="foreignCurrencyTotalValue" th:field="*{foreignCurrencyTotalValue}"><option value=""></option><option th:each="reference : ${itemReceiptInfo.itemReceiptBodyList}" th:value="${reference.foreignCurrencyTotalValue}" th:text="${reference.foreignCurrencyTotalValue}"></option></select></td>
+		        			<td th:if="${foreignCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${itemReceiptInfo.ready}' type="button" th:value="#{label.save}" onclick="submitCreation();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		        
+		        <form id="itemReceipt-body-modification-form" class="white-popup mfp-hide" th:object="${itemReceiptBodyModificationInfo}" method="post">
+		        	<h3 th:text="#{label.recordModification}"></h3>
+		        	<input id="_id" hidden="" th:field="*{itemReceiptBodyModificationInfo.id}"></input>
+		        	<input id="_modificationSubmit" hidden="hidden" th:field="*{itemReceiptBodyModificationInfo.submit}"></input>
+		        	<input th:if='${itemReceiptInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormException" hidden=""></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormExceptionId" th:value="${_ModifiedId}" hidden=""></input>
+		        	
+		        	<table >
+		        		<tr>
+		        			<td ><b th:text="#{label.itemReceiptItem}+': '"></b></td>
+		        			<td><select id="itemReceiptBodyModificationInfo.item" th:field="*{itemReceiptBodyModificationInfo.item}"><option value=""></option><option th:each="reference : ${itemReceiptInfo.itemReceiptBodyList}" th:value="${reference.item}" th:text="${reference.item}"></option></select></td>
+		        			<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemReceiptItemDescription}+': '"></b></td>
+		        			<td><select id="itemReceiptBodyModificationInfo.itemDescription" th:field="*{itemReceiptBodyModificationInfo.itemDescription}"><option value=""></option><option th:each="reference : ${itemReceiptInfo.itemReceiptBodyList}" th:value="${reference.itemDescription}" th:text="${reference.itemDescription}"></option></select></td>
+		        			<td th:if="${itemDescriptionException}"><div class="alert alert-error" th:text="#{${itemDescriptionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.itemReceiptUnit}+': '"></b></td>
+		        			<td><select id="itemReceiptBodyModificationInfo.unit" th:field="*{itemReceiptBodyModificationInfo.unit}"><option value=""></option><option th:each="reference : ${itemReceiptInfo.itemReceiptBodyList}" th:value="${reference.unit}" th:text="${reference.unit}"></option></select></td>
+		        			<td th:if="${unitException}"><div class="alert alert-error" th:text="#{${unitValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemReceiptOrderedQuantity}+': '"></b></td>
+		        				<td><input  id="itemReceiptBodyModificationInfo.orderedQuantity" name="itemReceiptBodyModificationInfo.orderedQuantity" type="text" th:value="*{{itemReceiptBodyModificationInfo.orderedQuantity}}" /></td>
+		        				<td th:if="${orderedQuantityException}"><div class="alert alert-error" th:text="#{${orderedQuantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemReceiptLocalCurrencyUnitValue}+': '"></b></td>
+		        				<td><input  id="itemReceiptBodyModificationInfo.localCurrencyUnitValue" name="itemReceiptBodyModificationInfo.localCurrencyUnitValue" type="text" th:value="*{{itemReceiptBodyModificationInfo.localCurrencyUnitValue}}" /></td>
+		        				<td th:if="${localCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${localCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemReceiptLocalCurrencyTotalValue}+': '"></b></td>
+		        				<td><input  id="itemReceiptBodyModificationInfo.localCurrencyTotalValue" name="itemReceiptBodyModificationInfo.localCurrencyTotalValue" type="text" th:value="*{{itemReceiptBodyModificationInfo.localCurrencyTotalValue}}" /></td>
+		        				<td th:if="${localCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${localCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemReceiptForeignCurrencyUnitValue}+': '"></b></td>
+		        				<td><input  id="itemReceiptBodyModificationInfo.foreignCurrencyUnitValue" name="itemReceiptBodyModificationInfo.foreignCurrencyUnitValue" type="text" th:value="*{{itemReceiptBodyModificationInfo.foreignCurrencyUnitValue}}" /></td>
+		        				<td th:if="${foreignCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.itemReceiptForeignCurrencyTotalValue}+': '"></b></td>
+		        				<td><input  id="itemReceiptBodyModificationInfo.foreignCurrencyTotalValue" name="itemReceiptBodyModificationInfo.foreignCurrencyTotalValue" type="text" th:value="*{{itemReceiptBodyModificationInfo.foreignCurrencyTotalValue}}" /></td>
+		        				<td th:if="${foreignCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+
+		        		<tr hidden="">
+		        		 			<td ></td>
+		        		   			<td ><input  type="checkbox" id="itemReceiptBodyModificationInfo._enableDeletion" th:field="*{itemReceiptBodyModificationInfo._enableDeletion}" /></td>
+		        		</tr>
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${itemReceiptInfo.ready}' type="button" th:value="#{label.save}" onclick="submitModification();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${itemReceiptInfo._toSave}' class="alert alert-info" th:text="#{label.saved}">
+            </div>
+            <div th:if='${itemReceiptCreateException}' class="alert alert-error" th:text="#{label.docCreationError}">
+            </div>
+            <div th:if='${itemReceiptValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>
+    </body>
+</html>

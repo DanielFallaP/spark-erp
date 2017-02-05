@@ -69,54 +69,1348 @@
 		        	<div id="back"><a th:if="${usersInfo.calledFrom=='fromList'}" th:text="#{label.back}" th:href="@{/purchase/users/searchUsers}"></a></div>
 		        	<div align="center">
 		        	<h3 th:text="#{label.usersCreationTitle}"></h3>
-	        			 <ul class="nav nav-tabs">   <li class="active"><a data-toggle="tab" href="#General">General</a></li><li><a data-toggle="tab" href="#Infrastructure">Infrastructure</a></li></ul>
+	        			 <ul class="nav nav-tabs">   <li class="active"><a data-toggle="tab" href="#General">General</a></li><li><a data-toggle="tab" href="#Maintenance">Maintenance</a></li><li><a data-toggle="tab" href="#Purchase">Purchase</a></li></ul>
 		        	<br/>
 		        	
 		        	<div class="tab-content"><div id="General" class="tab-pane fade in active">
 		        		<table>
 		        			<tr>
 		        					<td ><b th:text="#{label.usersLogin}+': '"></b></td>
-		        					<td><input id="login" name="login" type="text" th:value="*{{login}}" /></td>
+		        					<td>
+		        						<input th:if="${_loggedInUser.usersCreate}" id="login" name="login" type="text" th:value="*{{login}}" />
+		        						<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" id="login" name="login" type="text" th:value="*{{login}}" />
+		        						
+		        					</td>
 		        					<td th:if="${loginException}"><div class="alert alert-error" th:text="#{${loginValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        					<td ><b th:text="#{label.usersPassword}+': '"></b></td>
-		        					<td><input id="password" name="password" type="text" th:value="*{{password}}" /></td>
+		        					<td>
+		        						<input th:if="${_loggedInUser.usersCreate}" id="password" name="password" type="text" th:value="*{{password}}" />
+		        						<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" id="password" name="password" type="text" th:value="*{{password}}" />
+		        						
+		        					</td>
 		        					<td th:if="${passwordException}"><div class="alert alert-error" th:text="#{${passwordValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        					<td ><b th:text="#{label.usersRole}+': '"></b></td>
-		        					<td><input id="role" name="role" type="text" th:value="*{{role}}" /></td>
+		        					<td>
+		        						<input th:if="${_loggedInUser.usersCreate}" id="role" name="role" type="text" th:value="*{{role}}" />
+		        						<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" id="role" name="role" type="text" th:value="*{{role}}" />
+		        						
+		        					</td>
 		        					<td th:if="${roleException}"><div class="alert alert-error" th:text="#{${roleValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        				<td ><b th:text="#{label.usersCompany}+': '"></b></td>
-		        				<td><select id="company" onChange="companySelectedRefresh()" th:field="*{companyId}"><option th:each="reference : ${usersInfo.companyList}" th:value="${reference.id}" th:text="${reference.companyName}"></option></select></td>
+		        				<td>
+		        					<select th:if="${_loggedInUser.usersCreate}" id="company" onChange="companySelectedRefresh()" th:field="*{companyId}"><option th:each="reference : ${usersInfo.companyList}" th:value="${reference.id}" th:text="${reference.companyName}"></option></select>
+		        					<select th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" id="company" onChange="companySelectedRefresh()" th:field="*{companyId}"><option th:each="reference : ${usersInfo.companyList}" th:value="${reference.id}" th:text="${reference.companyName}"></option></select>
+		        				</td>
 		        				<td th:if="${companyException}"><div class="alert alert-error" th:text="#{${companyValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        			 			<td ><b th:text="#{label.usersActive}+': '"></b></td>
-		        			   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{active}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+		        			   			</td>
 		        			</tr>
 
 		        		</table>
-		        	</div><div id="Infrastructure" class="tab-pane fade ">
+		        	</div><div id="Maintenance" class="tab-pane fade ">
 		        		<table>
 		        			<tr>
-		        			 			<td ><b th:text="#{label.usersCurrencyRead}+': '"></b></td>
-		        			   			<td ><input type="checkbox" th:field="*{currencyRead}" /></td>
+		        			 			<td ><b th:text="#{label.usersCompanyCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{companyCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{companyCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCompanyRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{companyRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{companyRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCompanyUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{companyUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{companyUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCompanyExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{companyExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{companyExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStateCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{stateCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{stateCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStateRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{stateRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{stateRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStateUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{stateUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{stateUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStateExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{stateExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{stateExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMeasurementUnitCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{measurementUnitCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{measurementUnitCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMeasurementUnitRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{measurementUnitRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{measurementUnitRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMeasurementUnitUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{measurementUnitUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{measurementUnitUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMeasurementUnitExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{measurementUnitExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{measurementUnitExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeSorterCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeSorterCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeSorterCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeSorterRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeSorterRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeSorterRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeSorterUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeSorterUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeSorterUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeSorterExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeSorterExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeSorterExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersSorterCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{sorterCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{sorterCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersSorterRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{sorterRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{sorterRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersSorterUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{sorterUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{sorterUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersSorterExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{sorterExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{sorterExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersOperationCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{operationCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{operationCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersOperationRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{operationRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{operationRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersOperationUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{operationUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{operationUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersOperationExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{operationExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{operationExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersReferenceCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{referenceCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{referenceCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersReferenceRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{referenceRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{referenceRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersReferenceUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{referenceUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{referenceUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersReferenceExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{referenceExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{referenceExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersReferenceOperationCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{referenceOperationCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{referenceOperationCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersReferenceOperationRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{referenceOperationRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{referenceOperationRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersReferenceOperationUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{referenceOperationUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{referenceOperationUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersReferenceOperationExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{referenceOperationExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{referenceOperationExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTechnicalActionCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{technicalActionCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{technicalActionCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTechnicalActionRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{technicalActionRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{technicalActionRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTechnicalActionUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{technicalActionUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{technicalActionUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTechnicalActionExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{technicalActionExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{technicalActionExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersEffectFailCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{effectFailCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{effectFailCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersEffectFailRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{effectFailRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{effectFailRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersEffectFailUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{effectFailUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{effectFailUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersEffectFailExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{effectFailExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{effectFailExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersEffectFailTechnicalActionCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{effectFailTechnicalActionCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{effectFailTechnicalActionCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersEffectFailTechnicalActionRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{effectFailTechnicalActionRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{effectFailTechnicalActionRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersEffectFailTechnicalActionUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{effectFailTechnicalActionUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{effectFailTechnicalActionUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersEffectFailTechnicalActionExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{effectFailTechnicalActionExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{effectFailTechnicalActionExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersFailureCauseCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{failureCauseCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{failureCauseCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersFailureCauseRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{failureCauseRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{failureCauseRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersFailureCauseUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{failureCauseUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{failureCauseUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersFailureCauseExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{failureCauseExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{failureCauseExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersFailureCauseTechnicalactionCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{failureCauseTechnicalactionCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{failureCauseTechnicalactionCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersFailureCauseTechnicalactionRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{failureCauseTechnicalactionRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{failureCauseTechnicalactionRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersFailureCauseTechnicalactionUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{failureCauseTechnicalactionUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{failureCauseTechnicalactionUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersFailureCauseTechnicalactionExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{failureCauseTechnicalactionExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{failureCauseTechnicalactionExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeCauseCloseCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeCauseCloseCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeCauseCloseCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeCauseCloseRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeCauseCloseRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeCauseCloseRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeCauseCloseUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeCauseCloseUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeCauseCloseUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeCauseCloseExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeCauseCloseExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeCauseCloseExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCauseCloseCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{causeCloseCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{causeCloseCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCauseCloseRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{causeCloseRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{causeCloseRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCauseCloseUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{causeCloseUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{causeCloseUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCauseCloseExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{causeCloseExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{causeCloseExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMaintenanceActivityCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{maintenanceActivityCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{maintenanceActivityCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMaintenanceActivityRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{maintenanceActivityRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{maintenanceActivityRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMaintenanceActivityUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{maintenanceActivityUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{maintenanceActivityUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMaintenanceActivityExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{maintenanceActivityExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{maintenanceActivityExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMaintenanceWorkCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{maintenanceWorkCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{maintenanceWorkCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMaintenanceWorkRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{maintenanceWorkRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{maintenanceWorkRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMaintenanceWorkUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{maintenanceWorkUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{maintenanceWorkUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersMaintenanceWorkExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{maintenanceWorkExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{maintenanceWorkExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeMaintenanceCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeMaintenanceCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeMaintenanceCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeMaintenanceRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeMaintenanceRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeMaintenanceRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeMaintenanceUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeMaintenanceUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeMaintenanceUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeMaintenanceExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeMaintenanceExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeMaintenanceExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCausePendingCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{causePendingCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{causePendingCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCausePendingRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{causePendingRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{causePendingRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCausePendingUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{causePendingUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{causePendingUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCausePendingExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{causePendingExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{causePendingExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeWorkCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeWorkCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeWorkCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeWorkRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeWorkRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeWorkRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeWorkUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeWorkUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeWorkUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeWorkExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeWorkExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeWorkExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersOtherConceptsCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{otherConceptsCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{otherConceptsCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersOtherConceptsRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{otherConceptsRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{otherConceptsRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersOtherConceptsUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{otherConceptsUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{otherConceptsUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersOtherConceptsExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{otherConceptsExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{otherConceptsExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStateCostCentersCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{stateCostCentersCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{stateCostCentersCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStateCostCentersRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{stateCostCentersRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{stateCostCentersRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStateCostCentersUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{stateCostCentersUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{stateCostCentersUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStateCostCentersExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{stateCostCentersExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{stateCostCentersExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCostCentersCustomersCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{costCentersCustomersCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{costCentersCustomersCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCostCentersCustomersRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{costCentersCustomersRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{costCentersCustomersRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCostCentersCustomersUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{costCentersCustomersUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{costCentersCustomersUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCostCentersCustomersExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{costCentersCustomersExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{costCentersCustomersExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersResponsibleCenterCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{responsibleCenterCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{responsibleCenterCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersResponsibleCenterRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{responsibleCenterRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{responsibleCenterRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersResponsibleCenterUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{responsibleCenterUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{responsibleCenterUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersResponsibleCenterExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{responsibleCenterExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{responsibleCenterExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersJobCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{jobCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{jobCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersJobRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{jobRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{jobRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersJobUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{jobUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{jobUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersJobExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{jobExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{jobExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersThirdCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{thirdCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{thirdCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersThirdRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{thirdRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{thirdRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersThirdUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{thirdUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{thirdUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersThirdExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{thirdExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{thirdExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersJobThirdCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{jobThirdCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{jobThirdCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersJobThirdRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{jobThirdRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{jobThirdRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersJobThirdUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{jobThirdUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{jobThirdUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersJobThirdExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{jobThirdExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{jobThirdExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersResponsibleCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{responsibleCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{responsibleCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersResponsibleRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{responsibleRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{responsibleRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersResponsibleUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{responsibleUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{responsibleUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersResponsibleExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{responsibleExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{responsibleExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersAuthorizerCostCenterCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{authorizerCostCenterCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{authorizerCostCenterCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersAuthorizerCostCenterRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{authorizerCostCenterRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{authorizerCostCenterRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersAuthorizerCostCenterUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{authorizerCostCenterUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{authorizerCostCenterUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersAuthorizerCostCenterExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{authorizerCostCenterExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{authorizerCostCenterExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCharacteristicCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{characteristicCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{characteristicCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCharacteristicRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{characteristicRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{characteristicRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCharacteristicUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{characteristicUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{characteristicUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCharacteristicExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{characteristicExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{characteristicExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersAccountantCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{accountantCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{accountantCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersAccountantRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{accountantRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{accountantRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersAccountantUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{accountantUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{accountantUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersAccountantExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{accountantExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{accountantExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersPhysicalLocationCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{physicalLocationCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{physicalLocationCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersPhysicalLocationRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{physicalLocationRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{physicalLocationRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersPhysicalLocationUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{physicalLocationUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{physicalLocationUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersPhysicalLocationExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{physicalLocationExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{physicalLocationExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStoreTypeCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{storeTypeCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{storeTypeCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStoreTypeRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{storeTypeRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{storeTypeRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStoreTypeUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{storeTypeUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{storeTypeUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersStoreTypeExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{storeTypeExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{storeTypeExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCostingTypeCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{costingTypeCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{costingTypeCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCostingTypeRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{costingTypeRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{costingTypeRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCostingTypeUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{costingTypeUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{costingTypeUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCostingTypeExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{costingTypeExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{costingTypeExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersWarehouseCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{warehouseCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{warehouseCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersWarehouseRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{warehouseRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{warehouseRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersWarehouseUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{warehouseUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{warehouseUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersWarehouseExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{warehouseExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{warehouseExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCoinCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{coinCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{coinCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCoinRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{coinRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{coinRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCoinUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{coinUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{coinUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCoinExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{coinExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{coinExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeConceptKardexCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeConceptKardexCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeConceptKardexCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeConceptKardexRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeConceptKardexRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeConceptKardexRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeConceptKardexUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeConceptKardexUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeConceptKardexUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersTypeConceptKardexExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{typeConceptKardexExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{typeConceptKardexExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersConceptKardexCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{conceptKardexCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{conceptKardexCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersConceptKardexRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{conceptKardexRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{conceptKardexRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersConceptKardexUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{conceptKardexUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{conceptKardexUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersConceptKardexExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{conceptKardexExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{conceptKardexExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersContractCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{contractCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{contractCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersContractRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{contractRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{contractRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersContractUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{contractUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{contractUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersContractExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{contractExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{contractExport}" />
+		        			   			</td>
+		        			</tr>
+
+		        		</table>
+		        	</div><div id="Purchase" class="tab-pane fade ">
+		        		<table>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersUsersCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{usersCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{usersCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersUsersRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{usersRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{usersRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersUsersUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{usersUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{usersUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersUsersExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{usersExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{usersExport}" />
+		        			   			</td>
 		        			</tr>
 		        			<tr>
 		        			 			<td ><b th:text="#{label.usersCurrencyCreate}+': '"></b></td>
-		        			   			<td ><input type="checkbox" th:field="*{currencyCreate}" /></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{currencyCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{currencyCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCurrencyRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{currencyRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{currencyRead}" />
+		        			   			</td>
 		        			</tr>
 		        			<tr>
 		        			 			<td ><b th:text="#{label.usersCurrencyUpdate}+': '"></b></td>
-		        			   			<td ><input type="checkbox" th:field="*{currencyUpdate}" /></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{currencyUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{currencyUpdate}" />
+		        			   			</td>
 		        			</tr>
 		        			<tr>
 		        			 			<td ><b th:text="#{label.usersCurrencyExport}+': '"></b></td>
-		        			   			<td ><input type="checkbox" th:field="*{currencyExport}" /></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{currencyExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{currencyExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersExchangeRateCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{exchangeRateCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{exchangeRateCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersExchangeRateRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{exchangeRateRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{exchangeRateRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersExchangeRateUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{exchangeRateUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{exchangeRateUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersExchangeRateExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{exchangeRateExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{exchangeRateExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersContinentCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{continentCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{continentCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersContinentRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{continentRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{continentRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersContinentUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{continentUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{continentUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersContinentExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{continentExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{continentExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersRegionCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{regionCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{regionCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersRegionRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{regionRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{regionRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersRegionUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{regionUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{regionUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersRegionExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{regionExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{regionExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCurrencyCodeCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{currencyCodeCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{currencyCodeCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCurrencyCodeRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{currencyCodeRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{currencyCodeRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCurrencyCodeUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{currencyCodeUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{currencyCodeUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCurrencyCodeExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{currencyCodeExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{currencyCodeExport}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCountryCreate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{countryCreate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{countryCreate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCountryRead}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{countryRead}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{countryRead}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCountryUpdate}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{countryUpdate}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{countryUpdate}" />
+		        			   			</td>
+		        			</tr>
+		        			<tr>
+		        			 			<td ><b th:text="#{label.usersCountryExport}+': '"></b></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.usersCreate}" type="checkbox" th:field="*{countryExport}" />
+		        			   				<input th:if="${_loggedInUser.usersCreate} != true" disabled="disabled" type="checkbox" th:field="*{countryExport}" />
+		        			   			</td>
 		        			</tr>
 
 		        		</table>

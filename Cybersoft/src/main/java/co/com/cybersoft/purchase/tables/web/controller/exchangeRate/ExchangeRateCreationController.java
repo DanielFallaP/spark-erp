@@ -1,10 +1,13 @@
 package co.com.cybersoft.purchase.tables.web.controller.exchangeRate;
 
+import co.com.cybersoft.purchase.tables.core.domain.ExchangeRateDetails;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
+import org.springframework.ui.Model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +61,10 @@ public class ExchangeRateCreationController {
 
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String exchangeRateCreation() throws Exception {
+	public String modification(Model model, HttpServletRequest request){
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		return "/purchase/exchangeRate/createExchangeRate";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -71,6 +76,9 @@ public class ExchangeRateCreationController {
 		exchangeRateDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		exchangeRateDetails.setDateOfCreation(new Date());
 		exchangeRateDetails.setDateOfModification(new Date());
+		//exchangeRateDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		request.getSession().setAttribute("exchangeRateInfo", exchangeRateInfo);
 		exchangeRateService.createExchangeRate(new CreateExchangeRateEvent(exchangeRateDetails));

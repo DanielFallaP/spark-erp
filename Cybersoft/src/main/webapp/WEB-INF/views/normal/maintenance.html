@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+<head>
+	<meta charset="UTF-8"/>
+	<title  th:text="#{label.configurationTitle}"></title>
+	<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }.sidebar-nav {
+	            padding: 9px 0;
+	        }	        
+	         .inheritBackground{background-color:inherit;}
+	    </style>
+	 <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+	 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	 <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	 <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	 <script type="text/javascript">
+	      /* <![CDATA[ */
+	      	$(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );  
+			
+				function setFocus(){
+		   		document.getElementById("company").focus();
+		   }
+			 
+	      /* ]]> */
+	 </script>
+</head>
+<body onload="setFocus()">
+	<div th:include="normal/layoutmaintenance :: header" ></div>
+	<div class="container-fluid">	
+			<div class="hero-unit">
+				<table class="inheritBackground" align="center">
+					<tr>
+							        			<td style="padding:0 40px;"><b id="company" th:if="${_loggedInUser.companyRead} != true" th:href="@{/maintenance/company/searchCompany}" th:text="#{label.companyConfiguration}"></b><a id="company" th:if="${_loggedInUser.companyRead}" th:href="@{/maintenance/company/searchCompany}" th:text="#{label.companyConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="state" th:if="${_loggedInUser.stateRead} != true" th:href="@{/maintenance/state/searchState}" th:text="#{label.stateConfiguration}"></b><a id="state" th:if="${_loggedInUser.stateRead}" th:href="@{/maintenance/state/searchState}" th:text="#{label.stateConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="measurementUnit" th:if="${_loggedInUser.measurementUnitRead} != true" th:href="@{/maintenance/measurementUnit/searchMeasurementUnit}" th:text="#{label.measurementUnitConfiguration}"></b><a id="measurementUnit" th:if="${_loggedInUser.measurementUnitRead}" th:href="@{/maintenance/measurementUnit/searchMeasurementUnit}" th:text="#{label.measurementUnitConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="typeSorter" th:if="${_loggedInUser.typeSorterRead} != true" th:href="@{/maintenance/typeSorter/searchTypeSorter}" th:text="#{label.typeSorterConfiguration}"></b><a id="typeSorter" th:if="${_loggedInUser.typeSorterRead}" th:href="@{/maintenance/typeSorter/searchTypeSorter}" th:text="#{label.typeSorterConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="sorter" th:if="${_loggedInUser.sorterRead} != true" th:href="@{/maintenance/sorter/searchSorter}" th:text="#{label.sorterConfiguration}"></b><a id="sorter" th:if="${_loggedInUser.sorterRead}" th:href="@{/maintenance/sorter/searchSorter}" th:text="#{label.sorterConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="operation" th:if="${_loggedInUser.operationRead} != true" th:href="@{/maintenance/operation/searchOperation}" th:text="#{label.operationConfiguration}"></b><a id="operation" th:if="${_loggedInUser.operationRead}" th:href="@{/maintenance/operation/searchOperation}" th:text="#{label.operationConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="reference" th:if="${_loggedInUser.referenceRead} != true" th:href="@{/maintenance/reference/searchReference}" th:text="#{label.referenceConfiguration}"></b><a id="reference" th:if="${_loggedInUser.referenceRead}" th:href="@{/maintenance/reference/searchReference}" th:text="#{label.referenceConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="referenceOperation" th:if="${_loggedInUser.referenceOperationRead} != true" th:href="@{/maintenance/referenceOperation/searchReferenceOperation}" th:text="#{label.referenceOperationConfiguration}"></b><a id="referenceOperation" th:if="${_loggedInUser.referenceOperationRead}" th:href="@{/maintenance/referenceOperation/searchReferenceOperation}" th:text="#{label.referenceOperationConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="technicalAction" th:if="${_loggedInUser.technicalActionRead} != true" th:href="@{/maintenance/technicalAction/searchTechnicalAction}" th:text="#{label.technicalActionConfiguration}"></b><a id="technicalAction" th:if="${_loggedInUser.technicalActionRead}" th:href="@{/maintenance/technicalAction/searchTechnicalAction}" th:text="#{label.technicalActionConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="effectFail" th:if="${_loggedInUser.effectFailRead} != true" th:href="@{/maintenance/effectFail/searchEffectFail}" th:text="#{label.effectFailConfiguration}"></b><a id="effectFail" th:if="${_loggedInUser.effectFailRead}" th:href="@{/maintenance/effectFail/searchEffectFail}" th:text="#{label.effectFailConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="effectFailTechnicalAction" th:if="${_loggedInUser.effectFailTechnicalActionRead} != true" th:href="@{/maintenance/effectFailTechnicalAction/searchEffectFailTechnicalAction}" th:text="#{label.effectFailTechnicalActionConfiguration}"></b><a id="effectFailTechnicalAction" th:if="${_loggedInUser.effectFailTechnicalActionRead}" th:href="@{/maintenance/effectFailTechnicalAction/searchEffectFailTechnicalAction}" th:text="#{label.effectFailTechnicalActionConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="failureCause" th:if="${_loggedInUser.failureCauseRead} != true" th:href="@{/maintenance/failureCause/searchFailureCause}" th:text="#{label.failureCauseConfiguration}"></b><a id="failureCause" th:if="${_loggedInUser.failureCauseRead}" th:href="@{/maintenance/failureCause/searchFailureCause}" th:text="#{label.failureCauseConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="failureCauseTechnicalaction" th:if="${_loggedInUser.failureCauseTechnicalactionRead} != true" th:href="@{/maintenance/failureCauseTechnicalaction/searchFailureCauseTechnicalaction}" th:text="#{label.failureCauseTechnicalactionConfiguration}"></b><a id="failureCauseTechnicalaction" th:if="${_loggedInUser.failureCauseTechnicalactionRead}" th:href="@{/maintenance/failureCauseTechnicalaction/searchFailureCauseTechnicalaction}" th:text="#{label.failureCauseTechnicalactionConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="typeCauseClose" th:if="${_loggedInUser.typeCauseCloseRead} != true" th:href="@{/maintenance/typeCauseClose/searchTypeCauseClose}" th:text="#{label.typeCauseCloseConfiguration}"></b><a id="typeCauseClose" th:if="${_loggedInUser.typeCauseCloseRead}" th:href="@{/maintenance/typeCauseClose/searchTypeCauseClose}" th:text="#{label.typeCauseCloseConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="causeClose" th:if="${_loggedInUser.causeCloseRead} != true" th:href="@{/maintenance/causeClose/searchCauseClose}" th:text="#{label.causeCloseConfiguration}"></b><a id="causeClose" th:if="${_loggedInUser.causeCloseRead}" th:href="@{/maintenance/causeClose/searchCauseClose}" th:text="#{label.causeCloseConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="maintenanceActivity" th:if="${_loggedInUser.maintenanceActivityRead} != true" th:href="@{/maintenance/maintenanceActivity/searchMaintenanceActivity}" th:text="#{label.maintenanceActivityConfiguration}"></b><a id="maintenanceActivity" th:if="${_loggedInUser.maintenanceActivityRead}" th:href="@{/maintenance/maintenanceActivity/searchMaintenanceActivity}" th:text="#{label.maintenanceActivityConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="maintenanceWork" th:if="${_loggedInUser.maintenanceWorkRead} != true" th:href="@{/maintenance/maintenanceWork/searchMaintenanceWork}" th:text="#{label.maintenanceWorkConfiguration}"></b><a id="maintenanceWork" th:if="${_loggedInUser.maintenanceWorkRead}" th:href="@{/maintenance/maintenanceWork/searchMaintenanceWork}" th:text="#{label.maintenanceWorkConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="typeMaintenance" th:if="${_loggedInUser.typeMaintenanceRead} != true" th:href="@{/maintenance/typeMaintenance/searchTypeMaintenance}" th:text="#{label.typeMaintenanceConfiguration}"></b><a id="typeMaintenance" th:if="${_loggedInUser.typeMaintenanceRead}" th:href="@{/maintenance/typeMaintenance/searchTypeMaintenance}" th:text="#{label.typeMaintenanceConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="causePending" th:if="${_loggedInUser.causePendingRead} != true" th:href="@{/maintenance/causePending/searchCausePending}" th:text="#{label.causePendingConfiguration}"></b><a id="causePending" th:if="${_loggedInUser.causePendingRead}" th:href="@{/maintenance/causePending/searchCausePending}" th:text="#{label.causePendingConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="typeWork" th:if="${_loggedInUser.typeWorkRead} != true" th:href="@{/maintenance/typeWork/searchTypeWork}" th:text="#{label.typeWorkConfiguration}"></b><a id="typeWork" th:if="${_loggedInUser.typeWorkRead}" th:href="@{/maintenance/typeWork/searchTypeWork}" th:text="#{label.typeWorkConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="otherConcepts" th:if="${_loggedInUser.otherConceptsRead} != true" th:href="@{/maintenance/otherConcepts/searchOtherConcepts}" th:text="#{label.otherConceptsConfiguration}"></b><a id="otherConcepts" th:if="${_loggedInUser.otherConceptsRead}" th:href="@{/maintenance/otherConcepts/searchOtherConcepts}" th:text="#{label.otherConceptsConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="stateCostCenters" th:if="${_loggedInUser.stateCostCentersRead} != true" th:href="@{/maintenance/stateCostCenters/searchStateCostCenters}" th:text="#{label.stateCostCentersConfiguration}"></b><a id="stateCostCenters" th:if="${_loggedInUser.stateCostCentersRead}" th:href="@{/maintenance/stateCostCenters/searchStateCostCenters}" th:text="#{label.stateCostCentersConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="costCentersCustomers" th:if="${_loggedInUser.costCentersCustomersRead} != true" th:href="@{/maintenance/costCentersCustomers/searchCostCentersCustomers}" th:text="#{label.costCentersCustomersConfiguration}"></b><a id="costCentersCustomers" th:if="${_loggedInUser.costCentersCustomersRead}" th:href="@{/maintenance/costCentersCustomers/searchCostCentersCustomers}" th:text="#{label.costCentersCustomersConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="responsibleCenter" th:if="${_loggedInUser.responsibleCenterRead} != true" th:href="@{/maintenance/responsibleCenter/searchResponsibleCenter}" th:text="#{label.responsibleCenterConfiguration}"></b><a id="responsibleCenter" th:if="${_loggedInUser.responsibleCenterRead}" th:href="@{/maintenance/responsibleCenter/searchResponsibleCenter}" th:text="#{label.responsibleCenterConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="job" th:if="${_loggedInUser.jobRead} != true" th:href="@{/maintenance/job/searchJob}" th:text="#{label.jobConfiguration}"></b><a id="job" th:if="${_loggedInUser.jobRead}" th:href="@{/maintenance/job/searchJob}" th:text="#{label.jobConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="third" th:if="${_loggedInUser.thirdRead} != true" th:href="@{/maintenance/third/searchThird}" th:text="#{label.thirdConfiguration}"></b><a id="third" th:if="${_loggedInUser.thirdRead}" th:href="@{/maintenance/third/searchThird}" th:text="#{label.thirdConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="jobThird" th:if="${_loggedInUser.jobThirdRead} != true" th:href="@{/maintenance/jobThird/searchJobThird}" th:text="#{label.jobThirdConfiguration}"></b><a id="jobThird" th:if="${_loggedInUser.jobThirdRead}" th:href="@{/maintenance/jobThird/searchJobThird}" th:text="#{label.jobThirdConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="responsible" th:if="${_loggedInUser.responsibleRead} != true" th:href="@{/maintenance/responsible/searchResponsible}" th:text="#{label.responsibleConfiguration}"></b><a id="responsible" th:if="${_loggedInUser.responsibleRead}" th:href="@{/maintenance/responsible/searchResponsible}" th:text="#{label.responsibleConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="authorizerCostCenter" th:if="${_loggedInUser.authorizerCostCenterRead} != true" th:href="@{/maintenance/authorizerCostCenter/searchAuthorizerCostCenter}" th:text="#{label.authorizerCostCenterConfiguration}"></b><a id="authorizerCostCenter" th:if="${_loggedInUser.authorizerCostCenterRead}" th:href="@{/maintenance/authorizerCostCenter/searchAuthorizerCostCenter}" th:text="#{label.authorizerCostCenterConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="characteristic" th:if="${_loggedInUser.characteristicRead} != true" th:href="@{/maintenance/characteristic/searchCharacteristic}" th:text="#{label.characteristicConfiguration}"></b><a id="characteristic" th:if="${_loggedInUser.characteristicRead}" th:href="@{/maintenance/characteristic/searchCharacteristic}" th:text="#{label.characteristicConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="accountant" th:if="${_loggedInUser.accountantRead} != true" th:href="@{/maintenance/accountant/searchAccountant}" th:text="#{label.accountantConfiguration}"></b><a id="accountant" th:if="${_loggedInUser.accountantRead}" th:href="@{/maintenance/accountant/searchAccountant}" th:text="#{label.accountantConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="physicalLocation" th:if="${_loggedInUser.physicalLocationRead} != true" th:href="@{/maintenance/physicalLocation/searchPhysicalLocation}" th:text="#{label.physicalLocationConfiguration}"></b><a id="physicalLocation" th:if="${_loggedInUser.physicalLocationRead}" th:href="@{/maintenance/physicalLocation/searchPhysicalLocation}" th:text="#{label.physicalLocationConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="storeType" th:if="${_loggedInUser.storeTypeRead} != true" th:href="@{/maintenance/storeType/searchStoreType}" th:text="#{label.storeTypeConfiguration}"></b><a id="storeType" th:if="${_loggedInUser.storeTypeRead}" th:href="@{/maintenance/storeType/searchStoreType}" th:text="#{label.storeTypeConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="costingType" th:if="${_loggedInUser.costingTypeRead} != true" th:href="@{/maintenance/costingType/searchCostingType}" th:text="#{label.costingTypeConfiguration}"></b><a id="costingType" th:if="${_loggedInUser.costingTypeRead}" th:href="@{/maintenance/costingType/searchCostingType}" th:text="#{label.costingTypeConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="warehouse" th:if="${_loggedInUser.warehouseRead} != true" th:href="@{/maintenance/warehouse/searchWarehouse}" th:text="#{label.warehouseConfiguration}"></b><a id="warehouse" th:if="${_loggedInUser.warehouseRead}" th:href="@{/maintenance/warehouse/searchWarehouse}" th:text="#{label.warehouseConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="coin" th:if="${_loggedInUser.coinRead} != true" th:href="@{/maintenance/coin/searchCoin}" th:text="#{label.coinConfiguration}"></b><a id="coin" th:if="${_loggedInUser.coinRead}" th:href="@{/maintenance/coin/searchCoin}" th:text="#{label.coinConfiguration}"></a></td>
+
+							        		</tr><tr>
+							        			<td style="padding:0 40px;"><b id="typeConceptKardex" th:if="${_loggedInUser.typeConceptKardexRead} != true" th:href="@{/maintenance/typeConceptKardex/searchTypeConceptKardex}" th:text="#{label.typeConceptKardexConfiguration}"></b><a id="typeConceptKardex" th:if="${_loggedInUser.typeConceptKardexRead}" th:href="@{/maintenance/typeConceptKardex/searchTypeConceptKardex}" th:text="#{label.typeConceptKardexConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="conceptKardex" th:if="${_loggedInUser.conceptKardexRead} != true" th:href="@{/maintenance/conceptKardex/searchConceptKardex}" th:text="#{label.conceptKardexConfiguration}"></b><a id="conceptKardex" th:if="${_loggedInUser.conceptKardexRead}" th:href="@{/maintenance/conceptKardex/searchConceptKardex}" th:text="#{label.conceptKardexConfiguration}"></a></td>
+							        			<td style="padding:0 40px;"><b id="contract" th:if="${_loggedInUser.contractRead} != true" th:href="@{/maintenance/contract/searchContract}" th:text="#{label.contractConfiguration}"></b><a id="contract" th:if="${_loggedInUser.contractRead}" th:href="@{/maintenance/contract/searchContract}" th:text="#{label.contractConfiguration}"></a></td>
+
+							        		</tr>
+				</table>
+			</div>
+	</div>
+	<div class="container-fluid" th:include="normal/layoutmaintenance :: footer"></div>
+</body>
+</html>

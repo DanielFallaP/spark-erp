@@ -19,8 +19,6 @@ import co.com.cybersoft.purchase.tables.persistence.repository.currency.Currency
 //import co.com.cybersoft.man.services.security.SessionLogger;
 
 
-import co.com.cybersoft.purchase.tables.web.domain.currency.CurrencyFilterInfo;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,11 +58,7 @@ public class CurrencyPersistenceServiceImpl implements CurrencyPersistenceServic
 	}*/
 
 	public CurrencyPageEvent requestCurrencyPage(RequestCurrencyPageEvent event) throws Exception {
-		CurrencyFilterInfo filter=new CurrencyFilterInfo();
-		filter.set_company(event.getCompanyId().toString());
-		
-		Page<Currency> currencys = currencyCustomRepo.findAll(event.getPageable(), filter);
-
+		Page<Currency> currencys = currencyRepository.findAll(event.getPageable());
 		return new CurrencyPageEvent(currencys);
 	}
 

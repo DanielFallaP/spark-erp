@@ -1,10 +1,13 @@
 package co.com.cybersoft.purchase.tables.web.controller.users;
 
+import co.com.cybersoft.purchase.tables.core.domain.UsersDetails;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
+import org.springframework.ui.Model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +61,10 @@ public class UsersCreationController {
 
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String usersCreation() throws Exception {
+	public String modification(Model model, HttpServletRequest request){
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		return "/purchase/users/createUsers";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -71,6 +76,9 @@ public class UsersCreationController {
 		usersDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		usersDetails.setDateOfCreation(new Date());
 		usersDetails.setDateOfModification(new Date());
+		//usersDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		request.getSession().setAttribute("usersInfo", usersInfo);
 		usersService.createUsers(new CreateUsersEvent(usersDetails));
@@ -83,6 +91,10 @@ public class UsersCreationController {
 
 		
 		usersInfo.setActive(true);
+		usersInfo.setUsersCreate(true);
+		usersInfo.setUsersRead(true);
+		usersInfo.setUsersUpdate(true);
+		usersInfo.setUsersExport(true);
 
 		
 		model.addAttribute("usersInfo", usersInfo);
@@ -119,6 +131,10 @@ public class UsersCreationController {
 		
 		usersInfo.setId(null);
 		usersInfo.setActive(true);
+		usersInfo.setUsersCreate(true);
+		usersInfo.setUsersRead(true);
+		usersInfo.setUsersUpdate(true);
+		usersInfo.setUsersExport(true);
 
 		
 		usersInfo.setCalledFrom(calledFrom);

@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.requisitionInfo}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	        td.right { text-align:right; }
+	        .hideANDseek
+			{
+			    display: none;
+			}
+	    </style>
+	   	<link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+
+		<script th:src="@{/resources/js/peerCompletion.js}"></script>
+		<script th:src="@{/resources/js/peerCompletion.js}"></script>
+
+		<script th:src="@{/resources/js/util.js}"></script>
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		<script th:src="@{/resources/js/jquery.dataTables.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/jquery.dataTables.css}" rel="stylesheet" />
+	    <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script type="text/javascript">
+	      /* <![CDATA[ */
+	                   
+	      var popupVisible=false;
+	      
+	      function newEntry(){
+			   $('.popup-with-form').click();
+			   popupVisible=true;
+		   		document.getElementById("item").focus();
+		   }
+
+		   $(document).keyup(function(e) {
+	    	  if(e.which == 27 && !popupVisible) {
+	    		var path=window.location.pathname.split("/");
+  	    		var prefix="";
+  	    		if (path[1].localeCompare("docs")!=0){
+  	    			prefix="/"+path[1];	
+  	    		}
+	     		 window.open(prefix+"/docs/searchRequisition","_self");
+	    	  }
+	    	});
+	      
+	      $.magnificPopup.instance.close = function () {
+				popupVisible=false;
+			   $.magnificPopup.proto.close.call(this);
+	      }; 
+	      
+	      $(document).keyup(function(e) {
+	    	  if(e.which == 107 && document.getElementById("newEntry")!=null) {
+  				newEntry();
+	    	  }
+	    	});
+	    	
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#date" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#requisitionBodyModificationInfo\\.date" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#requiredOnDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#requisitionBodyModificationInfo\\.requiredOnDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#requiredOnDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#requisitionBodyModificationInfo\\.requiredOnDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#lastPurchaseDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+	    $(document).ready( function () {
+	    							 
+	    			    $( "#requisitionBodyModificationInfo\\.lastPurchaseDate" ).datepicker({ dateFormat: 'dd/mm/yy' });
+	    } );
+
+		
+			function submitDeletion(){
+				var deletion="";
+				$("#requisitionBodyList").find('tr').each(function (i){
+					if ($(this).find("td:first").find('div').find('input').is(':checked')){
+						deletion+=$(this).prop( 'id' )+",";
+					}
+				});
+				var form=document.forms['header-form'];
+				form.elements["_deletion"].value=deletion;
+				form.elements["_deletionSubmit"].value="deletion";
+				form.submit();
+			}
+			
+		  function setFocus(){
+		   		document.getElementById("city").focus();
+		   }
+		  
+		function submitCreation(){
+			var form=document.forms['requisition-body-form'];
+			form.elements["_submit"].value="creation";
+			form.submit();
+		}
+		
+		function submitHeader(){
+			var form=document.forms['header-form'];
+			form.elements["_submit"].value="header";
+			form.submit();
+		}
+		
+		function submitModification(){
+			var form=document.forms['requisition-body-modification-form'];
+			form.elements["_modificationSubmit"].value="modification";
+			form.submit();
+		}
+		   
+   
+		function setModificationFormValues(id){
+					   var selectedRow="#"+id;
+					   var link=$("#requisition-body-modification-form");
+					   var identification="#_id";
+					   var disable=false;
+					   $(identification).val(id);
+					   $(selectedRow).find('td').each(function (i){
+					   		if (i==0){
+							   			var field="#requisitionBodyModificationInfo\\._enableDeletion";
+							   		 	if ($(this).has("input[type='checkbox']").length!=0){
+							   		 		$(field).prop('checked', true);
+							   		 		disable=false;
+							   		 	}
+							   		 	else{
+							   		 		$(field).prop('checked', false);
+							   		 		disable=true;
+							   		 	}
+							}
+					   		if (i==1){
+					   			var field="#requisitionBodyModificationInfo\\.item";
+					   			$(field).val($(this).html());	 
+					   		}if (i==2){
+					   			var field="#requisitionBodyModificationInfo\\.itemDescription";
+					   			$(field).val($(this).html());	 
+					   		}if (i==3){
+					   			var field="#requisitionBodyModificationInfo\\.unit";
+					   			$(field).val($(this).html());	 
+					   		}if (i==4){
+					   			var field="#requisitionBodyModificationInfo\\.requiredOnDate";
+					   			$(field).val($(this).html());	 
+					   		}if (i==5){
+					   			var field="#requisitionBodyModificationInfo\\.priority";
+					   			$(field).val($(this).html());	 
+					   		}if (i==6){
+					   			var field="#requisitionBodyModificationInfo\\.quantity";
+					   			$(field).val($(this).html());	 
+					   		}if (i==7){
+					   			var field="#requisitionBodyModificationInfo\\.localCurrencyUnitValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==8){
+					   			var field="#requisitionBodyModificationInfo\\.localCurrencyTotalValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==9){
+					   			var field="#requisitionBodyModificationInfo\\.foreignCurrencyUnitValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==10){
+					   			var field="#requisitionBodyModificationInfo\\.foreignCurrencyTotalValue";
+					   			$(field).val($(this).html());	 
+					   		}if (i==11){
+					   			var field="#requisitionBodyModificationInfo\\.lastPurchaseDate";
+					   			$(field).val($(this).html());	 
+					   		}if (i==12){
+					   			var field="#requisitionBodyModificationInfo\\.remarks";
+					   			$(field).val($(this).html());	 
+					   		}
+					   });
+					$('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+				   }
+
+		$(function(){
+				     $("#city").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/docSite/getListByPopulatedPlaceReturnPopulatedPlace?populatedPlace="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#item").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/item/getListByCodeReturnCode?code="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		var otherFields = ["unit"];
+			    	    		peerCompletion(b,"itemDescription","getListByCodeReturnDescription","item","code",otherFields,"");
+			    	    										var path=window.location.pathname.split("/");
+			    	    					    	    		var prefix="";
+			    	    					   	  	 		   	if (path[1].localeCompare("docs")!=0){
+			    	    					   	  	 		   			prefix="/"+path[1];	
+			    	    					   	  	 		   	}
+			    	    					   	  	 		   	var url=prefix+"/custom/itemHistory/lastPurchase?item="+b.item.value;
+			    	    						   	  	 		 $.ajax({
+			    	    						   		  	 		  url: url,
+			    	    						   		  	 		  beforeSend: function(xhr) {
+			    	    						   		  	            xhr.setRequestHeader("Accept", "application/json");
+			    	    						   		  	        }
+			    	    						   		  	 		 }).done(function(info){
+			    	    						   		  	 			var purchaseDate=info.purchaseDate;
+			    	    						   		  	 			var localCurrencyValue=info.localCurrencyValue;
+			    	    						   		  	 			var foreignCurrencyValue=info.foreignCurrencyValue;
+			    	    						   		  	 			if (info.purchaseDate!=null){
+			    	    						   		  	 				var lastPurchaseDate=dateFormat(new Date(info.purchaseDate));				   		  	 			
+			    	    						   		  	 				$("#lastPurchaseDate").val(lastPurchaseDate);
+			    	    						   		  	 			}else{
+			    	    						   		  	 				$("#lastPurchaseDate").val("");
+			    	    						   		  	 			}
+			    	    						   		  	 			$("#localCurrencyUnitValue").val(localCurrencyValue);
+			    	    						   		  	 			$("#foreignCurrencyUnitValue").val(foreignCurrencyValue);
+
+			    	    						   		  	 		 });
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#requisitionBodyModificationInfo\\.item").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/item/getListByCodeReturnCode?code="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		var otherFields = ["unit"];
+			    	    		peerCompletion(b,"requisitionBodyModificationInfo\\.itemDescription","getListByCodeReturnDescription","item","code",otherFields,"requisitionBodyModificationInfo\\.");
+			    	    										var path=window.location.pathname.split("/");
+			    	    					    	    		var prefix="";
+			    	    					   	  	 		   	if (path[1].localeCompare("docs")!=0){
+			    	    					   	  	 		   			prefix="/"+path[1];	
+			    	    					   	  	 		   	}
+			    	    					   	  	 		   	var url=prefix+"/custom/itemHistory/lastPurchase?item="+b.item.value;
+			    	    						   	  	 		 $.ajax({
+			    	    						   		  	 		  url: url,
+			    	    						   		  	 		  beforeSend: function(xhr) {
+			    	    						   		  	            xhr.setRequestHeader("Accept", "application/json");
+			    	    						   		  	        }
+			    	    						   		  	 		 }).done(function(info){
+			    	    						   		  	 			var purchaseDate=info.purchaseDate;
+			    	    						   		  	 			var localCurrencyValue=info.localCurrencyValue;
+			    	    						   		  	 			var foreignCurrencyValue=info.foreignCurrencyValue;
+			    	    						   		  	 			var docName=document.getElementById("_documentName").value;		
+			    	    						   		  	 			if (info.purchaseDate!=null){
+			    	    						   		  	 				var lastPurchaseDate=dateFormat(new Date(info.purchaseDate));
+			    	    						   		  	 				$("#"+docName+"BodyModificationInfo\\.lastPurchaseDate").val(lastPurchaseDate);
+			    	    						   		  	 			}else{
+			    	    						   		  	 				$("#"+docName+"BodyModificationInfo\\.lastPurchaseDate").val("");
+			    	    						   		  	 			}
+			    	    						   		  	 			$("#"+docName+"BodyModificationInfo\\.localCurrencyUnitValue").val(localCurrencyValue);
+			    	    						   		  	 			$("#"+docName+"BodyModificationInfo\\.foreignCurrencyUnitValue").val(foreignCurrencyValue);
+
+			    	    						   		  	 		 });
+			    	    						   	  	 		 
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#itemDescription").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/item/getListByDescriptionReturnDescription?description="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		var otherFields = ["unit"];
+			    	    		peerCompletion(b,"item","getListByDescriptionReturnCode","item","description",otherFields,"");
+			    	    										var path=window.location.pathname.split("/");
+			    	    					    	    		var prefix="";
+			    	    					   	  	 		   	if (path[1].localeCompare("docs")!=0){
+			    	    					   	  	 		   			prefix="/"+path[1];	
+			    	    					   	  	 		   	}
+			    	    					   	  	 		   	var url=prefix+"/custom/itemHistory/lastPurchase?description="+b.item.value;
+			    	    						   	  	 		 $.ajax({
+			    	    						   		  	 		  url: url,
+			    	    						   		  	 		  beforeSend: function(xhr) {
+			    	    						   		  	            xhr.setRequestHeader("Accept", "application/json");
+			    	    						   		  	        }
+			    	    						   		  	 		 }).done(function(info){
+			    	    						   		  	 			var purchaseDate=info.purchaseDate;
+			    	    						   		  	 			var localCurrencyValue=info.localCurrencyValue;
+			    	    						   		  	 			var foreignCurrencyValue=info.foreignCurrencyValue;
+			    	    						   		  	 			if (info.purchaseDate!=null){
+			    	    						   		  	 				var lastPurchaseDate=dateFormat(new Date(info.purchaseDate));
+			    	    						   		  	 				$("#lastPurchaseDate").val(lastPurchaseDate);
+			    	    						   		  	 			}else{
+			    	    						   		  	 				$("#lastPurchaseDate").val("");
+			    	    						   		  	 			}
+			    	    						   		  	 			$("#localCurrencyUnitValue").val(localCurrencyValue);
+			    	    						   		  	 			$("#foreignCurrencyUnitValue").val(foreignCurrencyValue);
+
+			    	    						   		  	 		 });
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+		$(function(){
+				     $("#requisitionBodyModificationInfo\\.itemDescription").autocomplete({
+				    	    source: function (request, response) {
+				    	    		var path=window.location.pathname.split("/");
+				    	    		var prefix="";
+				    	    		if (path[1].localeCompare("docs")!=0){
+				    	    			prefix="/"+path[1];	
+				    	    		}
+									$.get(prefix+"/common/item/getListByDescriptionReturnDescription?description="+request.term, {}, function (data) {
+				    	            var array=data.split("/////");
+				    	            if (data!="")
+				    	            	response(array);
+				    	            else
+				    	            	response(null);
+				    	        });
+				    	    },
+				    	    minLength: 3,
+			    	    		select: function(a, b){
+			    	    		var otherFields = ["unit"];
+			    	    		peerCompletion(b,"requisitionBodyModificationInfo\\.item","getListByDescriptionReturnCode","item","description",otherFields,"requisitionBodyModificationInfo\\.");
+			    	    										var path=window.location.pathname.split("/");
+			    	    					    	    		var prefix="";
+			    	    					   	  	 		   	if (path[1].localeCompare("docs")!=0){
+			    	    					   	  	 		   			prefix="/"+path[1];	
+			    	    					   	  	 		   	}
+			    	    					   	  	 		   	var url=prefix+"/custom/itemHistory/lastPurchase?description="+b.item.value;
+			    	    						   	  	 		 $.ajax({
+			    	    						   		  	 		  url: url,
+			    	    						   		  	 		  beforeSend: function(xhr) {
+			    	    						   		  	            xhr.setRequestHeader("Accept", "application/json");
+			    	    						   		  	        }
+			    	    						   		  	 		 }).done(function(info){
+			    	    						   		  	 			var purchaseDate=info.purchaseDate;
+			    	    						   		  	 			var localCurrencyValue=info.localCurrencyValue;
+			    	    						   		  	 			var foreignCurrencyValue=info.foreignCurrencyValue;
+			    	    						   		  	 			var docName=document.getElementById("_documentName").value;		
+			    	    						   		  	 			if (info.purchaseDate!=null){
+			    	    						   		  	 				var lastPurchaseDate=dateFormat(new Date(info.purchaseDate));
+			    	    						   		  	 				$("#"+docName+"BodyModificationInfo\\.lastPurchaseDate").val(lastPurchaseDate);
+			    	    						   		  	 			}else{
+			    	    						   		  	 				$("#"+docName+"BodyModificationInfo\\.lastPurchaseDate").val("");
+			    	    						   		  	 			}
+
+			    	    						   		  	 			$("#"+docName+"BodyModificationInfo\\.localCurrencyUnitValue").val(localCurrencyValue);
+			    	    						   		  	 			$("#"+docName+"BodyModificationInfo\\.foreignCurrencyUnitValue").val(foreignCurrencyValue);
+
+			    	    						   		  	 		 });
+			    	    						   	  	 		 
+			    	    		
+			    	    		$(this).val(b.item.value);
+			    	    	}
+				    	});
+				    	 
+				     });
+			
+		   $(document).ready( function () {
+				$('#requisitionBodyList').dataTable();
+
+			} );
+		   
+		   $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );
+		   
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$('.popup-with-form2').magnificPopup({
+					type: 'inline',
+					preloader: false,
+					focus: '#name',
+
+					// When elemened is focused, some mobile browsers in some cases zoom in
+					// It looks not nice, so we disable it:
+					callbacks: {
+						beforeOpen: function() {
+							if($(window).width() < 700) {
+								this.st.focus = false;
+							} else {
+								this.st.focus = '#name';
+							}
+						}
+					}
+				});
+			});
+		   
+		   $(document).ready(function() {
+				$("#header-form :input").change(function() {
+					document.getElementById("_savedAlert").style.display='none';
+				});
+			});
+		   
+		   function checkExceptions(){
+			   if (document.getElementById("_AdditionFormException")!=null){
+				   newEntry();
+			   }
+			   
+			   if (document.getElementById("_ModificationFormException")!=null){
+			   	   setModificationFormValues(document.getElementById("_ModificationFormExceptionId").value);
+				   $('.popup-with-form2').click();
+					document.getElementById("_itemModification").focus();
+					 popupVisible=true;
+			   }
+		   }
+		   
+	       /* ]]> */
+	     </script>
+
+    </head>
+    <body onload="checkExceptions();setFocus();">
+    	<div th:include="normal/layoutpurchase :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form id="header-form" th:object="${requisitionInfo}" method="post" >
+		        	<input id="_submit" hidden="" th:field="*{requisitionBodyModificationInfo.submit}"></input>
+		        	<input id="_documentName" type="hidden" value="requisition"></input>
+		        	<input th:if='${requisitionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<div ><a id="back" th:text="#{label.back}" th:href="@{/docs/searchRequisition}"></a></div>
+		        	
+		        	<input id="_deletion" hidden="" th:field="*{deletion}"></input>
+		        	<input id="_deletionSubmit" hidden="hidden" th:field="*{requisitionBodyModificationInfo.submit}"></input>
+		        	<input id="_trueValue" th:value="#{label.true}" type="hidden" />
+		        	
+		        	<table width="100%">
+						<tr>
+							<td width="33%"><h3 th:if='${requisitionInfo.numericId==null}' th:text="#{label.requisitionInfo}"></h3>
+		        			<h3 th:if='${requisitionInfo.numericId!=null}' th:text="#{label.requisitionInfo}+' '+${requisitionInfo.numericId}"></h3></td>
+							<td width="33%"></td>
+							<td width="34%"><div align="right"><a th:if='${requisitionInfo.showBody}' th:href="@{/docs/requisition/export?id=}+${requisitionInfo.numericId}"><img alt="" th:src="@{/resources/img/excel.png}" th:title="#{label.toExcel}"/></a></div></td>
+						</tr>
+					</table>
+		        	<table>
+		        		<tr th:if="${cityException} or ${dateException} or ${stockException}">
+		        				        			<td th:if="!${cityException}" colspan="2"></td>
+		        				        			<td th:if="${cityException}" colspan="2"><div class="alert alert-error" th:text="#{${cityValidationErrorMessage}}"></div></td><td th:if="!${dateException}" colspan="2"></td>
+		        				        			<td th:if="${dateException}" colspan="2"><div class="alert alert-error" th:text="#{${dateValidationErrorMessage}}"></div></td><td th:if="!${stockException}" colspan="2"></td>
+		        				        			<td th:if="${stockException}" colspan="2"><div class="alert alert-error" th:text="#{${stockValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionCity}+': '"></b></td>
+		        				        			<td><input id="city" type="text" th:field="*{city}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionDate}+': '"></b></td>
+		        				        			<td><input readonly="readonly" id="date" name="date" type="text" th:value="*{{date}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionStock}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{stock}" /></td>
+
+		        				        		</tr><tr th:if="${requiredOnDateException} or ${priorityException} or ${requestingDepartmentException}">
+		        				        			<td th:if="!${requiredOnDateException}" colspan="2"></td>
+		        				        			<td th:if="${requiredOnDateException}" colspan="2"><div class="alert alert-error" th:text="#{${requiredOnDateValidationErrorMessage}}"></div></td><td th:if="!${priorityException}" colspan="2"></td>
+		        				        			<td th:if="${priorityException}" colspan="2"><div class="alert alert-error" th:text="#{${priorityValidationErrorMessage}}"></div></td><td th:if="!${requestingDepartmentException}" colspan="2"></td>
+		        				        			<td th:if="${requestingDepartmentException}" colspan="2"><div class="alert alert-error" th:text="#{${requestingDepartmentValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionRequiredOnDate}+': '"></b></td>
+		        				        			<td><input  id="requiredOnDate" name="requiredOnDate" type="text" th:value="*{{requiredOnDate}}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionPriority}+': '"></b></td>
+		        				        			<td><select id="priority" onChange="prioritySelectedRefresh()" th:field="*{priority}"><option value=""></option><option th:each="reference : ${requisitionInfo.priorityList}" th:value="${reference.priority}" th:text="${reference.priority}"></option></select></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionRequestingDepartment}+': '"></b></td>
+		        				        			<td><select id="requestingDepartment" onChange="requestingDepartmentSelectedRefresh()" th:field="*{requestingDepartment}"><option value=""></option><option th:each="reference : ${requisitionInfo.requestingDepartmentList}" th:value="${reference.department}" th:text="${reference.department}"></option></select></td>
+
+		        				        		</tr><tr th:if="${expenseTypeException} or ${transportationTypeException} or ${receivingWarehouseException}">
+		        				        			<td th:if="!${expenseTypeException}" colspan="2"></td>
+		        				        			<td th:if="${expenseTypeException}" colspan="2"><div class="alert alert-error" th:text="#{${expenseTypeValidationErrorMessage}}"></div></td><td th:if="!${transportationTypeException}" colspan="2"></td>
+		        				        			<td th:if="${transportationTypeException}" colspan="2"><div class="alert alert-error" th:text="#{${transportationTypeValidationErrorMessage}}"></div></td><td th:if="!${receivingWarehouseException}" colspan="2"></td>
+		        				        			<td th:if="${receivingWarehouseException}" colspan="2"><div class="alert alert-error" th:text="#{${receivingWarehouseValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionExpenseType}+': '"></b></td>
+		        				        			<td><select id="expenseType" onChange="expenseTypeSelectedRefresh()" th:field="*{expenseType}"><option value=""></option><option th:each="reference : ${requisitionInfo.expenseTypeList}" th:value="${reference.expenseType}" th:text="${reference.expenseType}"></option></select></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionTransportationType}+': '"></b></td>
+		        				        			<td><select id="transportationType" onChange="transportationTypeSelectedRefresh()" th:field="*{transportationType}"><option value=""></option><option th:each="reference : ${requisitionInfo.transportationTypeList}" th:value="${reference.transportationType}" th:text="${reference.transportationType}"></option></select></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionReceivingWarehouse}+': '"></b></td>
+		        				        			<td><select id="receivingWarehouse" onChange="receivingWarehouseSelectedRefresh()" th:field="*{receivingWarehouse}"><option value=""></option><option th:each="reference : ${requisitionInfo.receivingWarehouseList}" th:value="${reference.warehouse}" th:text="${reference.warehouse}"></option></select></td>
+
+		        				        		</tr><tr th:if="${deliveryLocationException} or ${readyException} or ${activeException}">
+		        				        			<td th:if="!${deliveryLocationException}" colspan="2"></td>
+		        				        			<td th:if="${deliveryLocationException}" colspan="2"><div class="alert alert-error" th:text="#{${deliveryLocationValidationErrorMessage}}"></div></td><td th:if="!${readyException}" colspan="2"></td>
+		        				        			<td th:if="${readyException}" colspan="2"><div class="alert alert-error" th:text="#{${readyValidationErrorMessage}}"></div></td><td th:if="!${activeException}" colspan="2"></td>
+		        				        			<td th:if="${activeException}" colspan="2"><div class="alert alert-error" th:text="#{${activeValidationErrorMessage}}"></div></td>
+		        				        		</tr>		        			        			
+		        				        		<tr>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionDeliveryLocation}+': '"></b></td>
+		        				        			<td><select id="deliveryLocation" onChange="deliveryLocationSelectedRefresh()" th:field="*{deliveryLocation}"><option value=""></option><option th:each="reference : ${requisitionInfo.deliveryLocationList}" th:value="${reference.code}" th:text="${reference.code}"></option></select></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionReady}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{ready}" /></td>
+		        				        			<td style="padding:0 15px;"><b th:text="#{label.requisitionActive}+': '"></b></td>
+		        				        			<td ><input  type="checkbox" th:field="*{active}" /></td>
+
+		        				        		</tr>
+		        	</table>
+		        	<br/>
+		        	<br/>
+		        	<table th:if='${requisitionInfo.showBody}' id="requisitionBodyList" class="table table-striped">
+		        		<thead>
+							<tr>
+								<th ></th>
+								<th   align="center" th:text="#{label.requisitionItem}"></th><th   align="center" th:text="#{label.requisitionItemDescription}"></th><th   align="center" th:text="#{label.requisitionUnit}"></th><th class="hideANDseek"  align="center" th:text="#{label.requisitionRequiredOnDate}"></th><th class="hideANDseek"  align="center" th:text="#{label.requisitionPriority}"></th><th   align="center" th:text="#{label.requisitionQuantity}"></th><th   align="center" th:text="#{label.requisitionLocalCurrencyUnitValue}+' ('+${requisitionBodyInfo._append_localCurrency}+')'"></th><th   align="center" th:text="#{label.requisitionLocalCurrencyTotalValue}+' ('+${requisitionBodyInfo._append_localCurrency}+')'"></th><th   align="center" th:text="#{label.requisitionForeignCurrencyUnitValue}+' ('+${requisitionBodyInfo._append_foreignCurrency}+')'"></th><th   align="center" th:text="#{label.requisitionForeignCurrencyTotalValue}+' ('+${requisitionBodyInfo._append_foreignCurrency}+')'"></th><th class="hideANDseek"  align="center" th:text="#{label.requisitionLastPurchaseDate}"></th><th class="hideANDseek"  align="center" th:text="#{label.requisitionRemarks}"></th>
+							</tr>
+						</thead>
+						<tbody id="requisitionBodyList">
+							<tr th:each="object: ${requisitionBodyList}" th:id="${object.id}"  >
+								<td><div align="center" ><input type="checkbox" /></div></td>
+								<td   th:text="${{object.item}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td   th:text="${{object.itemDescription}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td   th:text="${{object.unit}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td class="hideANDseek"  th:text="${{object.requiredOnDate}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td class="hideANDseek"  th:text="${{object.priority}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.quantity}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.localCurrencyUnitValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.localCurrencyTotalValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.foreignCurrencyUnitValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td  class="right" th:text="${{object.foreignCurrencyTotalValue}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td class="hideANDseek"  th:text="${{object.lastPurchaseDate}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td><td class="hideANDseek"  th:text="${{object.remarks}}" th:onClick="'setModificationFormValues(\''+${object.id}+'\')'"></td>
+							</tr>
+						</tbody>
+		        	</table>
+		        	<button th:if='${requisitionInfo.showBody} and !${requisitionInfo.ready}'  th:text="#{label.newEntryDocTable}" onclick="newEntry();return false;"></button>
+		        	<input th:if='${requisitionInfo.showBody} and !${requisitionInfo.ready}' type="button" th:value="#{label.deleteSelection}" onclick="submitDeletion();"/>
+					<a class="popup-with-form" href="#requisition-body-form" hidden=""></a>
+       				<a class="popup-with-form2" href="#requisition-body-modification-form" hidden=""></a>
+							        				
+       				<div align="right" ><input type="button" th:value="#{label.save}" onclick="submitHeader();"/></div>
+		        </form>
+					<input th:if='${requisitionInfo.showBody}' id="newEntry" hidden=""/>
+			 <!-- Custom form for adding new records -->
+			 <form id="requisition-body-form" class="white-popup mfp-hide"  th:object="${requisitionBodyInfo}" method="post">
+		        	<h3 th:text="#{label.newRecord}"></h3>
+		        	<input id="_submit" hidden="" th:field="*{requisitionBodyModificationInfo.submit}"></input>
+		        	<input th:if='${requisitionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_AdditionFormException}" id="_AdditionFormException" hidden=""></input> 
+		        	<table>
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionItem}+': '"></b></td>
+		        			<td><input id="item" type="text" th:field="*{item}" /></td>
+		        			<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionItemDescription}+': '"></b></td>
+		        			<td><input id="itemDescription" type="text" th:field="*{itemDescription}" /></td>
+		        			<td th:if="${itemDescriptionException}"><div class="alert alert-error" th:text="#{${itemDescriptionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionUnit}+': '"></b></td>
+		        				<td><input readonly="readonly" id="unit" name="unit" type="text" th:value="*{{unit}}" /></td>
+		        				<td th:if="${unitException}"><div class="alert alert-error" th:text="#{${unitValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionRequiredOnDate}+': '"></b></td>
+		        				<td><input  id="requiredOnDate" name="requiredOnDate" type="text" th:value="*{{requiredOnDate}}" /></td>
+		        				<td th:if="${requiredOnDateException}"><div class="alert alert-error" th:text="#{${requiredOnDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionPriority}+': '"></b></td>
+		        			<td><select id="priority" onChange="prioritySelectedRefresh()" th:field="*{priority}"><option value=""></option><option th:each="reference : ${requisitionBodyInfo.priorityList}" th:value="${reference.priority}" th:text="${reference.priority}"></option></select></td>
+		        			<td th:if="${priorityException}"><div class="alert alert-error" th:text="#{${priorityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionQuantity}+': '"></b></td>
+		        				<td><input  id="quantity" name="quantity" type="text" th:value="*{{quantity}}" /></td>
+		        				<td th:if="${quantityException}"><div class="alert alert-error" th:text="#{${quantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionLocalCurrencyUnitValue}+' ('+${requisitionBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="localCurrencyUnitValue" name="localCurrencyUnitValue" type="text" th:value="*{{localCurrencyUnitValue}}" /></td>
+		        				<td th:if="${localCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${localCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionLocalCurrencyTotalValue}+' ('+${requisitionBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="localCurrencyTotalValue" name="localCurrencyTotalValue" type="text" th:value="*{{localCurrencyTotalValue}}" /></td>
+		        				<td th:if="${localCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${localCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionForeignCurrencyUnitValue}+' ('+${requisitionBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="foreignCurrencyUnitValue" name="foreignCurrencyUnitValue" type="text" th:value="*{{foreignCurrencyUnitValue}}" /></td>
+		        				<td th:if="${foreignCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionForeignCurrencyTotalValue}+' ('+${requisitionBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="foreignCurrencyTotalValue" name="foreignCurrencyTotalValue" type="text" th:value="*{{foreignCurrencyTotalValue}}" /></td>
+		        				<td th:if="${foreignCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionLastPurchaseDate}+': '"></b></td>
+		        				<td><input readonly="readonly" id="lastPurchaseDate" name="lastPurchaseDate" type="text" th:value="*{{lastPurchaseDate}}" /></td>
+		        				<td th:if="${lastPurchaseDateException}"><div class="alert alert-error" th:text="#{${lastPurchaseDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				        				<td ><b th:text="#{label.requisitionRemarks}+': '"></b></td>
+		        				        				<td><textarea  id="remarks" th:field="*{remarks}" ></textarea></td>
+		        										<td th:if="${remarksException}"><div class="alert alert-error" th:text="#{${remarksValidationErrorMessage}}"></div></td>
+		        		</tr>
+
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${requisitionInfo.ready}' type="button" th:value="#{label.save}" onclick="submitCreation();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		        
+		        <form id="requisition-body-modification-form" class="white-popup mfp-hide" th:object="${requisitionBodyModificationInfo}" method="post">
+		        	<h3 th:text="#{label.recordModification}"></h3>
+		        	<input id="_id" hidden="" th:field="*{requisitionBodyModificationInfo.id}"></input>
+		        	<input id="_modificationSubmit" hidden="hidden" th:field="*{requisitionBodyModificationInfo.submit}"></input>
+		        	<input th:if='${requisitionInfo.created}' hidden="" value="true" th:field="*{created}"></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormException" hidden=""></input>
+		        	<input th:if="${_ModificationFormException}" id="_ModificationFormExceptionId" th:value="${_ModifiedId}" hidden=""></input>
+		        	
+		        	<table >
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionItem}+': '"></b></td>
+		        			<td><input id="requisitionBodyModificationInfo.item" type="text" th:field="*{requisitionBodyModificationInfo.item}" /></td>
+		        			<td th:if="${itemException}"><div class="alert alert-error" th:text="#{${itemValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionItemDescription}+': '"></b></td>
+		        			<td><input id="requisitionBodyModificationInfo.itemDescription" type="text" th:field="*{requisitionBodyModificationInfo.itemDescription}" /></td>
+		        			<td th:if="${itemDescriptionException}"><div class="alert alert-error" th:text="#{${itemDescriptionValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionUnit}+': '"></b></td>
+		        				<td><input readonly="readonly" id="requisitionBodyModificationInfo.unit" name="requisitionBodyModificationInfo.unit" type="text" th:value="*{{requisitionBodyModificationInfo.unit}}" /></td>
+		        				<td th:if="${unitException}"><div class="alert alert-error" th:text="#{${unitValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionRequiredOnDate}+': '"></b></td>
+		        				<td><input  id="requisitionBodyModificationInfo.requiredOnDate" name="requisitionBodyModificationInfo.requiredOnDate" type="text" th:value="*{{requisitionBodyModificationInfo.requiredOnDate}}" /></td>
+		        				<td th:if="${requiredOnDateException}"><div class="alert alert-error" th:text="#{${requiredOnDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.requisitionPriority}+': '"></b></td>
+		        			<td><select id="requisitionBodyModificationInfo.priority" onChange="prioritySelectedRefresh()" th:field="*{requisitionBodyModificationInfo.priority}"><option value=""></option><option th:each="reference : ${requisitionBodyInfo.priorityList}" th:value="${reference.priority}" th:text="${reference.priority}"></option></select></td>
+		        			<td th:if="${priorityException}"><div class="alert alert-error" th:text="#{${priorityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionQuantity}+': '"></b></td>
+		        				<td><input  id="requisitionBodyModificationInfo.quantity" name="requisitionBodyModificationInfo.quantity" type="text" th:value="*{{requisitionBodyModificationInfo.quantity}}" /></td>
+		        				<td th:if="${quantityException}"><div class="alert alert-error" th:text="#{${quantityValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionLocalCurrencyUnitValue}+' ('+${requisitionBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="requisitionBodyModificationInfo.localCurrencyUnitValue" name="requisitionBodyModificationInfo.localCurrencyUnitValue" type="text" th:value="*{{requisitionBodyModificationInfo.localCurrencyUnitValue}}" /></td>
+		        				<td th:if="${localCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${localCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionLocalCurrencyTotalValue}+' ('+${requisitionBodyInfo._append_localCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="requisitionBodyModificationInfo.localCurrencyTotalValue" name="requisitionBodyModificationInfo.localCurrencyTotalValue" type="text" th:value="*{{requisitionBodyModificationInfo.localCurrencyTotalValue}}" /></td>
+		        				<td th:if="${localCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${localCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionForeignCurrencyUnitValue}+' ('+${requisitionBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="requisitionBodyModificationInfo.foreignCurrencyUnitValue" name="requisitionBodyModificationInfo.foreignCurrencyUnitValue" type="text" th:value="*{{requisitionBodyModificationInfo.foreignCurrencyUnitValue}}" /></td>
+		        				<td th:if="${foreignCurrencyUnitValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyUnitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionForeignCurrencyTotalValue}+' ('+${requisitionBodyInfo._append_foreignCurrency}+')'+': '"></b></td>
+		        				<td><input readonly="readonly" id="requisitionBodyModificationInfo.foreignCurrencyTotalValue" name="requisitionBodyModificationInfo.foreignCurrencyTotalValue" type="text" th:value="*{{requisitionBodyModificationInfo.foreignCurrencyTotalValue}}" /></td>
+		        				<td th:if="${foreignCurrencyTotalValueException}"><div class="alert alert-error" th:text="#{${foreignCurrencyTotalValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.requisitionLastPurchaseDate}+': '"></b></td>
+		        				<td><input readonly="readonly" id="requisitionBodyModificationInfo.lastPurchaseDate" name="requisitionBodyModificationInfo.lastPurchaseDate" type="text" th:value="*{{requisitionBodyModificationInfo.lastPurchaseDate}}" /></td>
+		        				<td th:if="${lastPurchaseDateException}"><div class="alert alert-error" th:text="#{${lastPurchaseDateValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				        				<td ><b th:text="#{label.requisitionRemarks}+': '"></b></td>
+		        				        				<td><textarea  id="requisitionBodyModificationInfo.remarks" th:field="*{requisitionBodyModificationInfo.remarks}" ></textarea></td>
+		        										<td th:if="${remarksException}"><div class="alert alert-error" th:text="#{${remarksValidationErrorMessage}}"></div></td>
+		        		</tr>
+
+		        		<tr hidden="">
+		        		 			<td ></td>
+		        		   			<td ><input  type="checkbox" id="requisitionBodyModificationInfo._enableDeletion" th:field="*{requisitionBodyModificationInfo._enableDeletion}" /></td>
+		        		</tr>
+		        		<tr>
+		        			<td>
+		        				<input th:if='!${requisitionInfo.ready}' type="button" th:value="#{label.save}" onclick="submitModification();"/>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        </form>
+		    </div>
+		    <div id="_savedAlert" th:if='${requisitionInfo._toSave}' class="alert alert-info" th:text="#{label.saved}">
+            </div>
+            <div th:if='${requisitionCreateException}' class="alert alert-error" th:text="#{label.docCreationError}">
+            </div>
+            <div th:if='${requisitionValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutpurchase :: footer"></div>
+    </body>
+</html>

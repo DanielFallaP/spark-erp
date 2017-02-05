@@ -110,6 +110,7 @@ public class Region {
 	
 	public Region fromRegionDetails(RegionDetails details){
 		BeanUtils.copyProperties(details, this);
+		
 
 		Continent continent0=new Continent();continent0.setId(details.getContinentId());this.continent=continent0; 
 		

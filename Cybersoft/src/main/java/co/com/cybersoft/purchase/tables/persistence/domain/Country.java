@@ -130,6 +130,7 @@ public class Country {
 	
 	public Country fromCountryDetails(CountryDetails details){
 		BeanUtils.copyProperties(details, this);
+		
 
 		Region region0=new Region();region0.setId(details.getRegionId());this.region=region0; 
 		

@@ -1,10 +1,13 @@
 package co.com.cybersoft.purchase.tables.web.controller.currency;
 
+import co.com.cybersoft.purchase.tables.core.domain.CurrencyDetails;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
+import org.springframework.ui.Model;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
 import co.com.cybersoft.purchase.tables.core.domain.CurrencyDetails;
-import co.com.cybersoft.purchase.tables.core.domain.UsersDetails;
 import co.com.cybersoft.purchase.tables.core.services.currency.CurrencyService;
 import co.com.cybersoft.purchase.tables.events.currency.CreateCurrencyEvent;
-import co.com.cybersoft.purchase.tables.persistence.domain.Users;
 import co.com.cybersoft.purchase.tables.web.domain.currency.CurrencyInfo;
 import co.com.cybersoft.purchase.tables.events.currency.CurrencyDetailsEvent;
 import co.com.cybersoft.purchase.tables.events.currency.RequestCurrencyDetailsEvent;
@@ -60,8 +61,10 @@ public class CurrencyCreationController {
 
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String currencyCreation() throws Exception {
+	public String modification(Model model, HttpServletRequest request){
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		return "/purchase/currency/createCurrency";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -73,7 +76,9 @@ public class CurrencyCreationController {
 		currencyDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		currencyDetails.setDateOfCreation(new Date());
 		currencyDetails.setDateOfModification(new Date());
-		currencyDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+		//currencyDetails.set_companyId(((UsersDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		
 		request.getSession().setAttribute("currencyInfo", currencyInfo);
 		currencyService.createCurrency(new CreateCurrencyEvent(currencyDetails));

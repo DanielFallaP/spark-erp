@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -16,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import co.com.cybersoft.man.security.SparkAuthenticationSuccessHandler;
 import co.com.cybersoft.util.CyberUtils;
@@ -37,10 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	protected void configure(HttpSecurity http) throws Exception{
 		http.authorizeRequests()
-			.antMatchers("/maintenance/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')").antMatchers("/maintenanceSettings/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')").antMatchers("/purchase/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')").antMatchers("/purchaseSettings/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER')")
-			.antMatchers("/docs/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_SUPER')")
-			.antMatchers("/common/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_SUPER') or hasRole('ROLE_ADMIN')")
-			.antMatchers("/preferences/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_SUPER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/maintenance/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')").antMatchers("/maintenanceSettings/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')").antMatchers("/purchase/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')").antMatchers("/purchaseSettings/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+			.antMatchers("/docs/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_USER')")
+			.antMatchers("/common/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/preferences/**").access("hasRole('ROLE_DOCUMENT MANAGER') or hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+			.antMatchers("/globalSettings/**").access("hasRole('ROLE_ADMIN')")
 			.antMatchers("/resources/js/jquery-1.11.0.min.js","/resources/css/bootstrap-responsive.min.css", "/resources/css/bootstrap.min.css", "/resources/img/spark_large.png").permitAll()
 			.anyRequest().authenticated()
             .and()

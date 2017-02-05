@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags" >
+    <head>
+    	<meta charset="UTF-8" />
+        <title th:text="#{label.otherConceptsModificationTitle}"></title>
+        
+        <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	    </style>
+	    
+	    <link rel="stylesheet" th:href="@{/resources/css/jquery-ui-1.10.4.min.css}"/>
+<!-- 	      For production purposes, min version should be used -->
+		<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		<script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+	    <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+    	<link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	    <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+	    <script th:src="@{/resources/js/bootstrap-tab.js}"></script>
+	    
+    	<script type="text/javascript">
+    	/* <![CDATA[ */
+    	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 27) {
+	     		  $('#back a').trigger('click');
+	    	  }
+	    	});
+	    	
+	    	function setFocus(){
+		   		document.getElementById("company").focus();
+		   }
+
+		    
+		    
+		    
+		    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} ); 
+		    
+		 /* ]]> */
+	     </script>
+	     
+    
+    </head>
+    <body onload="setFocus()">
+    	<div th:include="normal/layoutmaintenance :: header" ></div>
+    	<div class="container-fluid">	
+			<div class="row-fluid">
+		        <form th:object="${otherConceptsInfo}" method="post">
+		        	<div id="back"><a th:text="#{label.back}" th:href="@{/maintenance/otherConcepts/searchOtherConcepts}"></a></div>
+		        	<div align="center">
+		        	<h3 th:text="#{label.otherConceptsModificationTitle}"></h3>
+		        	<br/>
+		        	
+		        	<table>
+		        		<tr>
+		        			<td ><b th:text="#{label.otherConceptsCompany}+': '"></b></td>
+		        			<td>
+		        				<select th:if="${_loggedInUser.otherConceptsUpdate}" id="company" onChange="companySelectedRefresh()" th:field="*{companyId}"><option th:each="reference : ${otherConceptsInfo.companyList}" th:value="${reference.id}" th:text="${reference.companyName}"></option></select>
+		        				<select th:if="${_loggedInUser.otherConceptsUpdate} != true" disabled="disabled" id="company" onChange="companySelectedRefresh()" th:field="*{companyId}"><option th:each="reference : ${otherConceptsInfo.companyList}" th:value="${reference.id}" th:text="${reference.companyName}"></option></select>
+		        			</td>
+		        			<td th:if="${companyException}"><div class="alert alert-error" th:text="#{${companyValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.otherConceptsNameOtherconcepts}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.otherConceptsUpdate}" id="nameOtherconcepts" name="nameOtherconcepts" type="text" th:value="*{{nameOtherconcepts}}" />
+		        					<input th:if="${_loggedInUser.otherConceptsUpdate} != true" disabled="disabled" id="nameOtherconcepts" name="nameOtherconcepts" type="text" th:value="*{{nameOtherconcepts}}" />
+		        					
+		        				</td>
+		        				<td th:if="${nameOtherconceptsException}"><div class="alert alert-error" th:text="#{${nameOtherconceptsValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.otherConceptsUnitValue}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.otherConceptsUpdate}" id="unitValue" name="unitValue" type="text" th:value="*{{unitValue}}" />
+		        					<input th:if="${_loggedInUser.otherConceptsUpdate} != true" disabled="disabled" id="unitValue" name="unitValue" type="text" th:value="*{{unitValue}}" />
+		        					
+		        				</td>
+		        				<td th:if="${unitValueException}"><div class="alert alert-error" th:text="#{${unitValueValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.otherConceptsUnitMeasure}+': '"></b></td>
+		        			<td>
+		        				<select th:if="${_loggedInUser.otherConceptsUpdate}" id="unitMeasure" onChange="unitMeasureSelectedRefresh()" th:field="*{unitMeasureId}"><option th:each="reference : ${otherConceptsInfo.unitMeasureList}" th:value="${reference.id}" th:text="${reference.nameUnit}"></option></select>
+		        				<select th:if="${_loggedInUser.otherConceptsUpdate} != true" disabled="disabled" id="unitMeasure" onChange="unitMeasureSelectedRefresh()" th:field="*{unitMeasureId}"><option th:each="reference : ${otherConceptsInfo.unitMeasureList}" th:value="${reference.id}" th:text="${reference.nameUnit}"></option></select>
+		        			</td>
+		        			<td th:if="${unitMeasureException}"><div class="alert alert-error" th:text="#{${unitMeasureValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        			<td ><b th:text="#{label.otherConceptsTypeWork}+': '"></b></td>
+		        			<td>
+		        				<select th:if="${_loggedInUser.otherConceptsUpdate}" id="typeWork" onChange="typeWorkSelectedRefresh()" th:field="*{typeWorkId}"><option th:each="reference : ${otherConceptsInfo.typeWorkList}" th:value="${reference.id}" th:text="${reference.typeWork}"></option></select>
+		        				<select th:if="${_loggedInUser.otherConceptsUpdate} != true" disabled="disabled" id="typeWork" onChange="typeWorkSelectedRefresh()" th:field="*{typeWorkId}"><option th:each="reference : ${otherConceptsInfo.typeWorkList}" th:value="${reference.id}" th:text="${reference.typeWork}"></option></select>
+		        			</td>
+		        			<td th:if="${typeWorkException}"><div class="alert alert-error" th:text="#{${typeWorkValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        				<td ><b th:text="#{label.otherConceptsInformative}+': '"></b></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.otherConceptsUpdate}" id="informative" name="informative" type="text" th:value="*{{informative}}" />
+		        					<input th:if="${_loggedInUser.otherConceptsUpdate} != true" disabled="disabled" id="informative" name="informative" type="text" th:value="*{{informative}}" />
+		        					
+		        				</td>
+		        				<td th:if="${informativeException}"><div class="alert alert-error" th:text="#{${informativeValidationErrorMessage}}"></div></td>
+		        		</tr>
+		        		<tr>
+		        		 			<td ><b th:text="#{label.otherConceptsActive}+': '"></b></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.otherConceptsUpdate}" type="checkbox" th:field="*{active}" />
+		        		   				<input th:if="${_loggedInUser.otherConceptsUpdate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+		        		   			</td>
+		        		</tr>
+
+		        	</table>
+		        	<table>
+		        		<tr>
+		        			<td>
+		        				<input th:if="${_loggedInUser.OtherConceptsUpdate}" type="submit" th:value="#{label.save}" />
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	</div>
+		        </form>
+		    </div>
+		    <div th:if='${otherConceptsModificationException}' class="alert alert-error" th:text="#{label.otherConceptsModificationError}">
+            </div>
+            <div th:if='${otherConceptsValidationException}' class="alert alert-error" th:text="#{label.validationError}">
+            </div>
+	    </div>
+		<div class="container-fluid" th:include="normal/layoutmaintenance :: footer"></div>    
+    </body>
+</html>

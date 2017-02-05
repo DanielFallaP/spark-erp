@@ -161,7 +161,7 @@ public class CurrencyReportingServiceImpl implements CurrencyReportingService {
 		int j=0;
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
-			if (!field.getName().equals(CyberUtils.tableIdField) && !field.getName().equals(CyberUtils.companyIdField)){
+			if (!field.getName().equals(CyberUtils.tableIdField)){
 				headerCell = headerRow.createCell(j);
 				String fieldName="";
 				
@@ -192,7 +192,7 @@ public class CurrencyReportingServiceImpl implements CurrencyReportingService {
 			int k=0;
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];
-				if (!field.getName().equals(CyberUtils.tableIdField) && !field.getName().equals(CyberUtils.companyIdField)){
+				if (!field.getName().equals(CyberUtils.tableIdField)){
 					Cell cell = row.createCell(k);
 					Method declaredMethod = detailsClass.getDeclaredMethod("get"+toUpperCamelCase(field.getName()));
 					Object object=declaredMethod.invoke(details);

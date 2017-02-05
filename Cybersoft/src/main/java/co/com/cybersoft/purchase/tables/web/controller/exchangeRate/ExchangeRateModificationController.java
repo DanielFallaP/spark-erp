@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import org.springframework.ui.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import co.com.cybersoft.purchase.tables.core.domain.ExchangeRateDetails;
 
 import co.com.cybersoft.util.CyberUtils;
 import co.com.cybersoft.util.EmbeddedField;
@@ -56,17 +57,23 @@ public class ExchangeRateModificationController {
 	
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String modification(){
+	public String modification(Model model, HttpServletRequest request){
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
 		return "/purchase/exchangeRate/modifyExchangeRate";
+		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@Transactional(readOnly=false)
-	public String modifyExchangeRate(@PathVariable("id") Long id, @Valid @ModelAttribute("exchangeRateInfo") ExchangeRateInfo exchangeRateInfo, HttpServletRequest request) throws Exception {
+	public String modifyExchangeRate(Model model, @PathVariable("id") Long id, @Valid @ModelAttribute("exchangeRateInfo") ExchangeRateInfo exchangeRateInfo, HttpServletRequest request) throws Exception {
 		
 		ExchangeRateDetails exchangeRateDetails = createExchangeRateDetails(exchangeRateInfo);
 		exchangeRateDetails.setUserName(SecurityContextHolder.getContext().getAuthentication().getName());
 		exchangeRateDetails.setDateOfModification(new Date());
+		//exchangeRateDetails.set_companyId(((ExchangeRateDetails)request.getSession().getAttribute("_loggedInUser")).getCompanyId());
+
+		model.addAttribute("_loggedInUser", request.getSession().getAttribute("_loggedInUser"));
+		
 		
 		request.getSession().setAttribute("exchangeRateInfo", exchangeRateInfo);
 		exchangeRateService.modifyExchangeRate(new ExchangeRateModificationEvent(exchangeRateDetails));

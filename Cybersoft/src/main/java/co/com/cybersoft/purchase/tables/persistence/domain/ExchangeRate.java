@@ -140,6 +140,7 @@ public class ExchangeRate {
 	
 	public ExchangeRate fromExchangeRateDetails(ExchangeRateDetails details){
 		BeanUtils.copyProperties(details, this);
+		
 
 		Currency currency0=new Currency();currency0.setId(details.getLocalCurrencyId());this.localCurrency=currency0; 
 		Currency currency1=new Currency();currency1.setId(details.getForeignCurrencyId());this.foreignCurrency=currency1; 

@@ -92,22 +92,36 @@
 		        		<table>
 		        			<tr>
 		        				<td ><b th:text="#{label.exchangeRateLocalCurrency}+': '"></b></td>
-		        				<td><select id="localCurrency" onChange="localCurrencySelectedRefresh()" th:field="*{localCurrencyId}"><option th:each="reference : ${exchangeRateInfo.localCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        				<td>
+		        					<select th:if="${_loggedInUser.exchangeRateUpdate}" id="localCurrency" onChange="localCurrencySelectedRefresh()" th:field="*{localCurrencyId}"><option th:each="reference : ${exchangeRateInfo.localCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select>
+		        					<select th:if="${_loggedInUser.exchangeRateUpdate} != true" disabled="disabled" id="localCurrency" onChange="localCurrencySelectedRefresh()" th:field="*{localCurrencyId}"><option th:each="reference : ${exchangeRateInfo.localCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select>
+		        				</td>
 		        				<td th:if="${localCurrencyException}"><div class="alert alert-error" th:text="#{${localCurrencyValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        				<td ><b th:text="#{label.exchangeRateForeignCurrency}+': '"></b></td>
-		        				<td><select id="foreignCurrency" onChange="foreignCurrencySelectedRefresh()" th:field="*{foreignCurrencyId}"><option th:each="reference : ${exchangeRateInfo.foreignCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select></td>
+		        				<td>
+		        					<select th:if="${_loggedInUser.exchangeRateUpdate}" id="foreignCurrency" onChange="foreignCurrencySelectedRefresh()" th:field="*{foreignCurrencyId}"><option th:each="reference : ${exchangeRateInfo.foreignCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select>
+		        					<select th:if="${_loggedInUser.exchangeRateUpdate} != true" disabled="disabled" id="foreignCurrency" onChange="foreignCurrencySelectedRefresh()" th:field="*{foreignCurrencyId}"><option th:each="reference : ${exchangeRateInfo.foreignCurrencyList}" th:value="${reference.id}" th:text="${reference.code}"></option></select>
+		        				</td>
 		        				<td th:if="${foreignCurrencyException}"><div class="alert alert-error" th:text="#{${foreignCurrencyValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        					<td ><b th:text="#{label.exchangeRateDate}+': '"></b></td>
-		        					<td><input id="date" name="date" type="text" th:value="*{{date}}" /></td>
+		        					<td>
+		        						<input th:if="${_loggedInUser.exchangeRateUpdate}" id="date" name="date" type="text" th:value="*{{date}}" />
+		        						<input th:if="${_loggedInUser.exchangeRateUpdate} != true" disabled="disabled" id="date" name="date" type="text" th:value="*{{date}}" />
+		        						
+		        					</td>
 		        					<td th:if="${dateException}"><div class="alert alert-error" th:text="#{${dateValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        					<td ><b th:text="#{label.exchangeRateExchangeRate}+': '"></b></td>
-		        					<td><input id="exchangeRate" name="exchangeRate" type="text" th:value="*{{exchangeRate}}" /></td>
+		        					<td>
+		        						<input th:if="${_loggedInUser.exchangeRateUpdate}" id="exchangeRate" name="exchangeRate" type="text" th:value="*{{exchangeRate}}" />
+		        						<input th:if="${_loggedInUser.exchangeRateUpdate} != true" disabled="disabled" id="exchangeRate" name="exchangeRate" type="text" th:value="*{{exchangeRate}}" />
+		        						
+		        					</td>
 		        					<td th:if="${exchangeRateException}"><div class="alert alert-error" th:text="#{${exchangeRateValidationErrorMessage}}"></div></td>
 		        			</tr>
 
@@ -116,12 +130,19 @@
 		        		<table>
 		        			<tr>
 		        					<td ><b th:text="#{label.exchangeRateVariation}+': '"></b></td>
-		        					<td><input id="variation" name="variation" type="text" th:value="*{{variation}}" /></td>
+		        					<td>
+		        						<input th:if="${_loggedInUser.exchangeRateUpdate}" id="variation" name="variation" type="text" th:value="*{{variation}}" />
+		        						<input th:if="${_loggedInUser.exchangeRateUpdate} != true" disabled="disabled" id="variation" name="variation" type="text" th:value="*{{variation}}" />
+		        						
+		        					</td>
 		        					<td th:if="${variationException}"><div class="alert alert-error" th:text="#{${variationValidationErrorMessage}}"></div></td>
 		        			</tr>
 		        			<tr>
 		        			 			<td ><b th:text="#{label.exchangeRateActive}+': '"></b></td>
-		        			   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        			   			<td >
+		        			   				<input th:if="${_loggedInUser.exchangeRateUpdate}" type="checkbox" th:field="*{active}" />
+		        			   				<input th:if="${_loggedInUser.exchangeRateUpdate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+		        			   			</td>
 		        			</tr>
 
 		        		</table>
@@ -129,7 +150,7 @@
 		        	<table>
 		        		<tr>
 		        			<td>
-		        				<input type="submit" th:value="#{label.save}" />
+		        				<input th:if="${_loggedInUser.ExchangeRateUpdate}" type="submit" th:value="#{label.save}" />
 		        			</td>
 		        		</tr>
 		        	</table>

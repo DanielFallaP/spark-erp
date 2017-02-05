@@ -38,18 +38,6 @@ public class CurrencyDetails {
 	private Date dateOfCreation;
 	
 	private String createdBy;
-
-	
-	private Long _companyId;
-	
-
-	public Long get_companyId() {
-		return _companyId;
-	}
-
-	public void set_companyId(Long _companyId) {
-		this._companyId = _companyId;
-	}
 	
 	public Long getId() {
 		return id;
@@ -133,7 +121,6 @@ public class CurrencyDetails {
 		this.code=entity.getCode().getCurrency()+_embedded;
 		this.codeId=entity.getCode().getId();
 		this.currency=currency+_embedded;
-		this._companyId=entity.get_company().getId();
 
 		return this;
 	}

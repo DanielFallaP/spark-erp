@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:spring="http://www.springframework.org/tags">
+ <head>
+<meta charset="UTF-8"/>
+<title th:text="#{label.companyInfo}"></title>
+
+<link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+		<style type="text/css">
+	        body {
+	            padding-top: 60px;
+	            padding-bottom: 40px;
+	        }
+	
+	        .sidebar-nav {
+	            padding: 9px 0;
+	        }
+	        .page-selection{background-color:#fff!important;border:1px #fff!important;box-shadow:inset 0 1px 1px transparent!important;transition:border linear .2s,box-shadow linear .2s!important;display:inline-block!important;height:12px!important;padding:4px 6px!important;margin:-4px -11px -3px!important;font-size:14px!important;line-height:0!important;color:#555!important;vertical-align:middle!important;border-radius:0!important;width:23px!important;text-align:right}
+	    </style>
+	     <link th:href="@{/resources/css/cybersystems.css}" rel="stylesheet" />
+	     <link th:href="@{/resources/css/bootstrap-responsive.min.css}" rel="stylesheet" />
+		 <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+		 <script th:src="@{/resources/js/jquery-ui-1.10.4.min.js}"></script>
+		 <link th:href="@{/resources/css/magnificPopup.css}" rel="stylesheet" />
+	     <script th:src="@{/resources/js/magnificPopup.min.js}"></script>
+ 	     <script th:src="@{/resources/js/bootstrap-alert.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-collapse.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-dropdown.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-modal.js}"></script>
+	     <script th:src="@{/resources/js/bootstrap-transitions.js}"></script>
+	     
+	     
+	     <script type="text/javascript">
+	     	/* <![CDATA[ */
+	     	
+	     function resetPageValue(){
+	    	 document.getElementById("_page").value=document.getElementById("_currentPage").value;
+	     }
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 13 && document.getElementById("_page") === document.activeElement) {
+	    		/*if (	document.getElementById("_page").value== null
+	    			  	|| document.getElementById("_page").value == ""
+	    				|| isNaN(document.getElementById("_page").value) 
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_page").value <= 0)
+	    				|| (!isNaN(document.getElementById("_page").value) && document.getElementById("_totalPages").value < document.getElementById("_page").value)
+	    			){
+					alert('Invalid page number');
+					resetPageValue();
+	    		}
+	    		else{*/
+		    		var path=window.location.pathname.split("/");
+	 	    		var prefix="";
+	 	    		if (path[1].localeCompare("configuration")!=0){
+	 	    			prefix="/"+path[1];	
+	 	    		}
+					submitFilterPage(document.getElementById("_page").value);	 	    		
+	    		//}
+	    	  }
+	    		else if (e.which == 13 && (document.getElementById("createdBy") === document.activeElement || document.getElementById("userName") === document.activeElement || 
+	    		document.getElementById("dateOfModification") === document.activeElement || document.getElementById("dateOfCreation") === document.activeElement  || document.getElementById("code") === document.activeElement
+ || document.getElementById("codeNit") === document.activeElement
+ || document.getElementById("companyName") === document.activeElement
+ || document.getElementById("companyLicense") === document.activeElement
+ || document.getElementById("comment") === document.activeElement
+ || document.getElementById("homeRangesOfDatesOfTheLastGeneration") === document.activeElement
+ || document.getElementById("endDateRangesOfTheLastGeneration") === document.activeElement
+ || document.getElementById("userLoginCompany") === document.activeElement
+ || document.getElementById("stateAnalysisCompany") === document.activeElement
+ || document.getElementById("stateGenerationCompany") === document.activeElement
+ || document.getElementById("startDateCompanyProcess") === document.activeElement
+ || document.getElementById("endDateProcessCompany") === document.activeElement
+ || document.getElementById("numberPartialWorkOrderCompany") === document.activeElement
+ || document.getElementById("totalNumberofWorkOrderintheCompany") === document.activeElement
+ || document.getElementById("cancelProcessCompany") === document.activeElement
+ || document.getElementById("userSendHistory") === document.activeElement
+ || document.getElementById("stateShippingHistory") === document.activeElement
+ || document.getElementById("startDateSendingHistory") === document.activeElement
+ || document.getElementById("endingDatelSendingHistory") === document.activeElement
+ || document.getElementById("partialNumberOfSendingHistory") === document.activeElement
+ || document.getElementById("totalNumberOfSendingHistory") === document.activeElement
+ || document.getElementById("cancelSendingHistory") === document.activeElement
+ || document.getElementById("stateCompany") === document.activeElement
+ || document.getElementById("codeOfWIN") === document.activeElement
+ || document.getElementById("inventoryConditionPermanent") === document.activeElement
+ || document.getElementById("permanentInventoryWorkOrder") === document.activeElement
+ || document.getElementById("language") === document.activeElement
+ || document.getElementById("activeCompany") === document.activeElement
+ || document.getElementById("active") === document.activeElement
+)){
+	    		  submitFilter(1);
+	    		}
+	    	});
+	     	
+	     $(document).on("click", "a", function(event){
+	     	if (event.target.id!="about-ajax-popup"){
+		    	  var link = $(this);
+		    	  var target = link.attr("target");
+		    	  if($.trim(target).length > 0)
+		    	  {
+		    	    window.open(link.attr("href"), target);
+		    	  }
+		    	  else
+		    	  {
+		    	     window.location = link.attr("href");
+		    	  }
+	
+		    	  event.preventDefault();
+		       }
+	    	});
+	    	
+	    $(document).keyup(function(e) {
+	    	  if(e.which == 27 ) {
+	  			$('#back a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 107) {
+	     		  $('#new a').trigger('click');
+	    	  }
+	    	});
+	    	
+	       $(document).keyup(function(e) {
+	    	  if(e.which == 34) {
+	    	  //if(e.which == 39 || e.which == 34) {
+	     		  $('#_nextPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 33) {
+//	    	  if(e.which == 37 || e.which == 33) {
+	     		  $('#_previousPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 35) {
+	     		  $('#_lastPage a').trigger('click');
+	    	  }
+	    	});
+	     
+	     $(document).keyup(function(e) {
+	    	  if(e.which == 36) {
+	     		  $('#_firstPage a').trigger('click');
+	    	  }
+	    	});	
+	    	
+	    $(window).load(function(){
+		$('#search tr').hover(function() {
+		    $(this).addClass('hover');
+		}, function() {
+		    $(this).removeClass('hover');
+		});
+		});
+
+		function submitFilter(page){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+			form.submit();
+	    }
+	    
+		function submitAction(action){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["aaaaction"].value=action;
+    	 	form.elements["selectedFilterPage"].value=1;
+    	 	form.submit();
+	    }
+	    
+	    function addFilter(){
+	    	if(document.getElementById('code')!=undefined)document.getElementById('code').value='';
+	    	if(document.getElementById('codeNit')!=undefined)document.getElementById('codeNit').value='';
+	    	if(document.getElementById('companyName')!=undefined)document.getElementById('companyName').value='';
+	    	if(document.getElementById('companyLicense')!=undefined)document.getElementById('companyLicense').value='';
+	    	if(document.getElementById('comment')!=undefined)document.getElementById('comment').value='';
+	    	if(document.getElementById('homeRangesOfDatesOfTheLastGeneration')!=undefined)document.getElementById('homeRangesOfDatesOfTheLastGeneration').value='';
+	    	if(document.getElementById('endDateRangesOfTheLastGeneration')!=undefined)document.getElementById('endDateRangesOfTheLastGeneration').value='';
+	    	if(document.getElementById('userLoginCompany')!=undefined)document.getElementById('userLoginCompany').value='';
+	    	if(document.getElementById('stateAnalysisCompany')!=undefined)document.getElementById('stateAnalysisCompany').value='';
+	    	if(document.getElementById('stateGenerationCompany')!=undefined)document.getElementById('stateGenerationCompany').value='';
+	    	if(document.getElementById('startDateCompanyProcess')!=undefined)document.getElementById('startDateCompanyProcess').value='';
+	    	if(document.getElementById('endDateProcessCompany')!=undefined)document.getElementById('endDateProcessCompany').value='';
+	    	if(document.getElementById('numberPartialWorkOrderCompany')!=undefined)document.getElementById('numberPartialWorkOrderCompany').value='';
+	    	if(document.getElementById('totalNumberofWorkOrderintheCompany')!=undefined)document.getElementById('totalNumberofWorkOrderintheCompany').value='';
+	    	if(document.getElementById('cancelProcessCompany')!=undefined)document.getElementById('cancelProcessCompany').value='';
+	    	if(document.getElementById('userSendHistory')!=undefined)document.getElementById('userSendHistory').value='';
+	    	if(document.getElementById('stateShippingHistory')!=undefined)document.getElementById('stateShippingHistory').value='';
+	    	if(document.getElementById('startDateSendingHistory')!=undefined)document.getElementById('startDateSendingHistory').value='';
+	    	if(document.getElementById('endingDatelSendingHistory')!=undefined)document.getElementById('endingDatelSendingHistory').value='';
+	    	if(document.getElementById('partialNumberOfSendingHistory')!=undefined)document.getElementById('partialNumberOfSendingHistory').value='';
+	    	if(document.getElementById('totalNumberOfSendingHistory')!=undefined)document.getElementById('totalNumberOfSendingHistory').value='';
+	    	if(document.getElementById('cancelSendingHistory')!=undefined)document.getElementById('cancelSendingHistory').value='';
+	    	if(document.getElementById('stateCompany')!=undefined)document.getElementById('stateCompany').value='';
+	    	if(document.getElementById('codeOfWIN')!=undefined)document.getElementById('codeOfWIN').value='';
+	    	if(document.getElementById('inventoryConditionPermanent')!=undefined)document.getElementById('inventoryConditionPermanent').value='';
+	    	if(document.getElementById('permanentInventoryWorkOrder')!=undefined)document.getElementById('permanentInventoryWorkOrder').value='';
+	    	if(document.getElementById('language')!=undefined)document.getElementById('language').value='';
+	    	if(document.getElementById('activeCompany')!=undefined)document.getElementById('activeCompany').value='';
+	    	if(document.getElementById('active')!=undefined)document.getElementById('active').value='';
+
+	    	document.getElementById('dateOfModification').value='';		    	
+	    	document.getElementById('userName').value='';		    	
+	    	document.getElementById('dateOfCreation').value='';		    	
+	    	document.getElementById('createdBy').value='';		    	
+	    	
+	    
+		 	var form=document.forms['filter-form'];
+    	 	form.elements["aaddFilter"].value=true;
+    	 	form.elements["fffilterNature"].value='UNION';
+		}
+		
+	    function addFilterSubstract(){
+        	if(document.getElementById('code')!=undefined)document.getElementById('code').value='';
+        	if(document.getElementById('codeNit')!=undefined)document.getElementById('codeNit').value='';
+        	if(document.getElementById('companyName')!=undefined)document.getElementById('companyName').value='';
+        	if(document.getElementById('companyLicense')!=undefined)document.getElementById('companyLicense').value='';
+        	if(document.getElementById('comment')!=undefined)document.getElementById('comment').value='';
+        	if(document.getElementById('homeRangesOfDatesOfTheLastGeneration')!=undefined)document.getElementById('homeRangesOfDatesOfTheLastGeneration').value='';
+        	if(document.getElementById('endDateRangesOfTheLastGeneration')!=undefined)document.getElementById('endDateRangesOfTheLastGeneration').value='';
+        	if(document.getElementById('userLoginCompany')!=undefined)document.getElementById('userLoginCompany').value='';
+        	if(document.getElementById('stateAnalysisCompany')!=undefined)document.getElementById('stateAnalysisCompany').value='';
+        	if(document.getElementById('stateGenerationCompany')!=undefined)document.getElementById('stateGenerationCompany').value='';
+        	if(document.getElementById('startDateCompanyProcess')!=undefined)document.getElementById('startDateCompanyProcess').value='';
+        	if(document.getElementById('endDateProcessCompany')!=undefined)document.getElementById('endDateProcessCompany').value='';
+        	if(document.getElementById('numberPartialWorkOrderCompany')!=undefined)document.getElementById('numberPartialWorkOrderCompany').value='';
+        	if(document.getElementById('totalNumberofWorkOrderintheCompany')!=undefined)document.getElementById('totalNumberofWorkOrderintheCompany').value='';
+        	if(document.getElementById('cancelProcessCompany')!=undefined)document.getElementById('cancelProcessCompany').value='';
+        	if(document.getElementById('userSendHistory')!=undefined)document.getElementById('userSendHistory').value='';
+        	if(document.getElementById('stateShippingHistory')!=undefined)document.getElementById('stateShippingHistory').value='';
+        	if(document.getElementById('startDateSendingHistory')!=undefined)document.getElementById('startDateSendingHistory').value='';
+        	if(document.getElementById('endingDatelSendingHistory')!=undefined)document.getElementById('endingDatelSendingHistory').value='';
+        	if(document.getElementById('partialNumberOfSendingHistory')!=undefined)document.getElementById('partialNumberOfSendingHistory').value='';
+        	if(document.getElementById('totalNumberOfSendingHistory')!=undefined)document.getElementById('totalNumberOfSendingHistory').value='';
+        	if(document.getElementById('cancelSendingHistory')!=undefined)document.getElementById('cancelSendingHistory').value='';
+        	if(document.getElementById('stateCompany')!=undefined)document.getElementById('stateCompany').value='';
+        	if(document.getElementById('codeOfWIN')!=undefined)document.getElementById('codeOfWIN').value='';
+        	if(document.getElementById('inventoryConditionPermanent')!=undefined)document.getElementById('inventoryConditionPermanent').value='';
+        	if(document.getElementById('permanentInventoryWorkOrder')!=undefined)document.getElementById('permanentInventoryWorkOrder').value='';
+        	if(document.getElementById('language')!=undefined)document.getElementById('language').value='';
+        	if(document.getElementById('activeCompany')!=undefined)document.getElementById('activeCompany').value='';
+        	if(document.getElementById('active')!=undefined)document.getElementById('active').value='';
+
+	    	document.getElementById('dateOfModification').value='';		    	
+	    	document.getElementById('userName').value='';		    	
+	    	document.getElementById('dateOfCreation').value='';		    	
+	    	document.getElementById('createdBy').value='';		    	
+	    	
+	    
+		 	var form=document.forms['filter-form'];
+    	 	form.elements["aaddFilter"].value=true;
+    		form.elements["fffilterNature"].value='SUBSTRACT';
+	    }
+		
+		function submitFilterPage(page,field,changeDirection){
+    	 	var form=document.forms['filter-form'];
+    	 	form.elements["selectedFilterPage"].value=page;
+    	 	if (field!=null)
+    	 		form.elements["selectedFilterField"].value=field;
+   	 		form.elements["changeSortingFieldDirection"].value=changeDirection!=null?true:false;
+    	 	form.submit();
+	    }
+
+	    function buildURL(id){
+	    	var path=window.location.pathname.split("/");
+  	    	var prefix="";
+  	    	if (path[1].localeCompare("configuration")!=0){
+  	    		prefix="/"+path[1];	
+  	    	}
+	    	var url=prefix+"/maintenance/company/modifyCompany/"+id;
+	    	document.location=url;
+	    }
+	    
+	    $(document).ready( function () {
+				
+				$('.about-ajax-popup').magnificPopup({
+					type: 'ajax'
+				});
+			} );   	
+	    	
+	    function generateExcelFile(){
+
+	    	var path=window.location.pathname.split("/");
+  	    	var prefix="";
+  	    	if (path[1].localeCompare("configuration")!=0){
+  	    		prefix="/"+path[1];	
+  	    	}
+  	    	var url=prefix+'/maintenance/company/export';
+
+	    	        $.ajax({
+	    	            url: url,
+	    	            type: 'post',
+	    	            dataType: 'json',
+	    	            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+	    	            success : function(result, a,b,c){
+	    	            	window.open(prefix+result.url, "_blank");
+	    	            },
+	    	            error: function(a,b,c,d){
+	    	            },
+	    	            async: true
+	    	            
+	    	        });
+	    }
+ 		       /* ]]> */
+	     </script>
+	    
+</head>
+<body>
+	<div th:fragment="header">
+		    <div class="navbar navbar-inverse navbar-fixed-top">
+		        <div class="navbar-inner">
+		            <div class="container-fluid">
+					<form hidden="" id="navBar" th:action="@{/logout}" method="post">
+						<input id="logoutURL" type="hidden" th:value="@{/logout}"/>
+					</form>
+		                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                    <span class="icon-bar"></span>
+		                </a>
+		                <a class="brand" th:href="@{/}" ><img alt="" th:src="@{/resources/img/spark.png}" /></a>
+			                <div class="nav-collapse collapse">
+			                    <p class="navbar-text pull-right">
+			
+			                    </p>
+			                    <ul class="nav" id="navigationBar">
+				                    
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisition}" th:text="#{label.requisitionsOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchRequisitionDistribution}" th:text="#{label.requisitionDistributionOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchQuotation}" th:text="#{label.quotationOption}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchPurchaseOrder}" th:text="#{label.Orders}"></a></li>
+			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/searchItemReceipt}" th:text="#{label.itemReceiptOrder}"></a></li>
+<!-- 			                        <li sec:authorize-url="/docs"><a th:href="@{/docs/OrderOtherValue}" th:text="#{label.OrderOtherValueOption}"></a></li> -->
+									<li sec:authorize-url="/maintenance"><a th:href="@{/maintenance}" th:text="#{label.navbarConfiguration}"></a></li>
+			                        <li sec:authorize-url="/maintenanceSettings"><a th:href="@{/maintenanceSettings}" th:text="#{label.settingsOption}"></a></li>
+			                        <li sec:authorize-url="/preferences"><a th:href="@{/preferences}" th:text="#{label.languageOption}"></a></li>
+			                        <li><a id="about-ajax-popup" class="about-ajax-popup" th:href="@{/about}" th:text="#{label.aboutOption}"></a></li>
+			                        <li><a href=""><img onclick="var url=$('#logoutURL').val();$.ajax({type: 'POST',url: url});" th:src="@{/resources/img/logout.png}"/></a></li>
+			                    </ul>
+			                </div> <!--/.nav-collapse -->
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	<div class="container-fluid">	
+		<div class="row-fluid">
+			<div id="back"><a th:text="#{label.back}" th:href="@{/maintenance}"></a></div>
+			<h3 th:text="#{label.companyInfo}"> </h3>
+			<form id="filter-form" th:object="${companyFilterInfo}" method="post" >
+		  	<input id="selectedFilterPage" type="hidden" th:field="*{selectedFilterPage}"/>
+		  	<input id="aaaaction" type="hidden" th:field="*{aaaaction}"/>
+			<input id="aaddFilter" type="hidden" th:field="*{aaddFilter}"/>
+			<input id="fffilterNature" type="hidden" th:field="*{fffilterNature}"/>
+			<input id="selectedFilterField" type="hidden" th:field="*{selectedFilterField}"/>
+		  	<input id="changeSortingFieldDirection" type="hidden" th:field="*{changeSortingFieldDirection}"/>
+			<div style="float:left;"><b id="filterAsText" th:text="'Filter: '+${ffilterAsText}"></b></div><div style="float:right;margin-top: 0;margin-bottom: 0;" id="unionOp" class='pagination pagination-left'><ul><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilterSubstract();">-</label></a></li><li><a href="#" th:title='#{label.addFilter}' tabindex="-1" ><label onclick="addFilter();">U</label></a></li></ul></div>
+			
+			
+			<table width="100%">
+				<tr>
+					<td width="33%"><div id="new" class='pagination pagination-left'><ul><li><a th:if="${_loggedInUser.companyCreate}" th:href="@{/maintenance/company/createCompany/fromList}" th:title='#{label.newLine}'>+</a></li></ul></div></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
+					<td width="34%"><div align="right"><img th:if="${_loggedInUser.companyExport}" style="cursor: pointer;" onclick="generateExcelFile();" th:src="@{/resources/img/excel.png}"/></div></td>
+				</tr>
+			</table>
+			<table class="table table-striped" >
+				<thead>
+					<tr>
+						<th >
+							<div><input style="width:100%;" id="code" name="code" type="text" th:value="*{{code}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="codeNit" name="codeNit" type="text" th:value="*{{codeNit}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="companyName" name="companyName" type="text" th:value="*{{companyName}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="companyLicense" name="companyLicense" type="text" th:value="*{{companyLicense}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="comment" name="comment" type="text" th:value="*{{comment}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="homeRangesOfDatesOfTheLastGeneration" name="homeRangesOfDatesOfTheLastGeneration" type="text" th:value="*{{homeRangesOfDatesOfTheLastGeneration}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="endDateRangesOfTheLastGeneration" name="endDateRangesOfTheLastGeneration" type="text" th:value="*{{endDateRangesOfTheLastGeneration}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="userLoginCompany" name="userLoginCompany" type="text" th:value="*{{userLoginCompany}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="stateAnalysisCompany" name="stateAnalysisCompany" type="text" th:value="*{{stateAnalysisCompany}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="stateGenerationCompany" name="stateGenerationCompany" type="text" th:value="*{{stateGenerationCompany}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="startDateCompanyProcess" name="startDateCompanyProcess" type="text" th:value="*{{startDateCompanyProcess}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="endDateProcessCompany" name="endDateProcessCompany" type="text" th:value="*{{endDateProcessCompany}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="numberPartialWorkOrderCompany" name="numberPartialWorkOrderCompany" type="text" th:value="*{{numberPartialWorkOrderCompany}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="totalNumberofWorkOrderintheCompany" name="totalNumberofWorkOrderintheCompany" type="text" th:value="*{{totalNumberofWorkOrderintheCompany}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="cancelProcessCompany" name="cancelProcessCompany" type="text" th:value="*{{cancelProcessCompany}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="userSendHistory" name="userSendHistory" type="text" th:value="*{{userSendHistory}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="stateShippingHistory" name="stateShippingHistory" type="text" th:value="*{{stateShippingHistory}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="startDateSendingHistory" name="startDateSendingHistory" type="text" th:value="*{{startDateSendingHistory}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="endingDatelSendingHistory" name="endingDatelSendingHistory" type="text" th:value="*{{endingDatelSendingHistory}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="partialNumberOfSendingHistory" name="partialNumberOfSendingHistory" type="text" th:value="*{{partialNumberOfSendingHistory}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="totalNumberOfSendingHistory" name="totalNumberOfSendingHistory" type="text" th:value="*{{totalNumberOfSendingHistory}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="cancelSendingHistory" name="cancelSendingHistory" type="text" th:value="*{{cancelSendingHistory}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="stateCompany" name="stateCompany" type="text" th:value="*{{stateCompany}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="codeOfWIN" name="codeOfWIN" type="text" th:value="*{{codeOfWIN}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="inventoryConditionPermanent" name="inventoryConditionPermanent" type="text" th:value="*{{inventoryConditionPermanent}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="permanentInventoryWorkOrder" name="permanentInventoryWorkOrder" type="text" th:value="*{{permanentInventoryWorkOrder}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="language" name="language" type="text" th:value="*{{language}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="activeCompany" name="activeCompany" type="text" th:value="*{{activeCompany}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="active" name="active" type="text" th:value="*{{active}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateOfModification" name="dateOfModification" type="text" th:value="*{{dateOfModification}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="userName" name="userName" type="text" th:value="*{{userName}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="dateOfCreation" name="dateOfCreation" type="text" th:value="*{{dateOfCreation}}" /></div>
+						</th>
+						<th >
+							<div><input style="width:100%;" id="createdBy" name="createdBy" type="text" th:value="*{{createdBy}}" /></div>
+						</th>
+
+					</tr>
+					<tr>
+						<th >
+							<div>
+								<a th:if="${_field} == 'code' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'code\',true)'" th:text="'&uarr;'+#{label.companyCode}"></a>
+								<a th:if="${_field} == 'code' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'code\',true)'" th:text="'&darr;'+#{label.companyCode}"></a>
+								<a th:if="${_field} != 'code'" th:href="'javascript:submitFilterPage(1,\'code\',true)'" th:text="#{label.companyCode}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'codeNit' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'codeNit\',true)'" th:text="'&uarr;'+#{label.companyCodeNit}"></a>
+								<a th:if="${_field} == 'codeNit' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'codeNit\',true)'" th:text="'&darr;'+#{label.companyCodeNit}"></a>
+								<a th:if="${_field} != 'codeNit'" th:href="'javascript:submitFilterPage(1,\'codeNit\',true)'" th:text="#{label.companyCodeNit}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'companyName' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'companyName\',true)'" th:text="'&uarr;'+#{label.companyCompanyName}"></a>
+								<a th:if="${_field} == 'companyName' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'companyName\',true)'" th:text="'&darr;'+#{label.companyCompanyName}"></a>
+								<a th:if="${_field} != 'companyName'" th:href="'javascript:submitFilterPage(1,\'companyName\',true)'" th:text="#{label.companyCompanyName}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'companyLicense' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'companyLicense\',true)'" th:text="'&uarr;'+#{label.companyCompanyLicense}"></a>
+								<a th:if="${_field} == 'companyLicense' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'companyLicense\',true)'" th:text="'&darr;'+#{label.companyCompanyLicense}"></a>
+								<a th:if="${_field} != 'companyLicense'" th:href="'javascript:submitFilterPage(1,\'companyLicense\',true)'" th:text="#{label.companyCompanyLicense}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'comment' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'comment\',true)'" th:text="'&uarr;'+#{label.companyComment}"></a>
+								<a th:if="${_field} == 'comment' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'comment\',true)'" th:text="'&darr;'+#{label.companyComment}"></a>
+								<a th:if="${_field} != 'comment'" th:href="'javascript:submitFilterPage(1,\'comment\',true)'" th:text="#{label.companyComment}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'homeRangesOfDatesOfTheLastGeneration' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'homeRangesOfDatesOfTheLastGeneration\',true)'" th:text="'&uarr;'+#{label.companyHomeRangesOfDatesOfTheLastGeneration}"></a>
+								<a th:if="${_field} == 'homeRangesOfDatesOfTheLastGeneration' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'homeRangesOfDatesOfTheLastGeneration\',true)'" th:text="'&darr;'+#{label.companyHomeRangesOfDatesOfTheLastGeneration}"></a>
+								<a th:if="${_field} != 'homeRangesOfDatesOfTheLastGeneration'" th:href="'javascript:submitFilterPage(1,\'homeRangesOfDatesOfTheLastGeneration\',true)'" th:text="#{label.companyHomeRangesOfDatesOfTheLastGeneration}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'endDateRangesOfTheLastGeneration' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'endDateRangesOfTheLastGeneration\',true)'" th:text="'&uarr;'+#{label.companyEndDateRangesOfTheLastGeneration}"></a>
+								<a th:if="${_field} == 'endDateRangesOfTheLastGeneration' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'endDateRangesOfTheLastGeneration\',true)'" th:text="'&darr;'+#{label.companyEndDateRangesOfTheLastGeneration}"></a>
+								<a th:if="${_field} != 'endDateRangesOfTheLastGeneration'" th:href="'javascript:submitFilterPage(1,\'endDateRangesOfTheLastGeneration\',true)'" th:text="#{label.companyEndDateRangesOfTheLastGeneration}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'userLoginCompany' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'userLoginCompany\',true)'" th:text="'&uarr;'+#{label.companyUserLoginCompany}"></a>
+								<a th:if="${_field} == 'userLoginCompany' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'userLoginCompany\',true)'" th:text="'&darr;'+#{label.companyUserLoginCompany}"></a>
+								<a th:if="${_field} != 'userLoginCompany'" th:href="'javascript:submitFilterPage(1,\'userLoginCompany\',true)'" th:text="#{label.companyUserLoginCompany}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'stateAnalysisCompany' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'stateAnalysisCompany\',true)'" th:text="'&uarr;'+#{label.companyStateAnalysisCompany}"></a>
+								<a th:if="${_field} == 'stateAnalysisCompany' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'stateAnalysisCompany\',true)'" th:text="'&darr;'+#{label.companyStateAnalysisCompany}"></a>
+								<a th:if="${_field} != 'stateAnalysisCompany'" th:href="'javascript:submitFilterPage(1,\'stateAnalysisCompany\',true)'" th:text="#{label.companyStateAnalysisCompany}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'stateGenerationCompany' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'stateGenerationCompany\',true)'" th:text="'&uarr;'+#{label.companyStateGenerationCompany}"></a>
+								<a th:if="${_field} == 'stateGenerationCompany' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'stateGenerationCompany\',true)'" th:text="'&darr;'+#{label.companyStateGenerationCompany}"></a>
+								<a th:if="${_field} != 'stateGenerationCompany'" th:href="'javascript:submitFilterPage(1,\'stateGenerationCompany\',true)'" th:text="#{label.companyStateGenerationCompany}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'startDateCompanyProcess' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'startDateCompanyProcess\',true)'" th:text="'&uarr;'+#{label.companyStartDateCompanyProcess}"></a>
+								<a th:if="${_field} == 'startDateCompanyProcess' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'startDateCompanyProcess\',true)'" th:text="'&darr;'+#{label.companyStartDateCompanyProcess}"></a>
+								<a th:if="${_field} != 'startDateCompanyProcess'" th:href="'javascript:submitFilterPage(1,\'startDateCompanyProcess\',true)'" th:text="#{label.companyStartDateCompanyProcess}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'endDateProcessCompany' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'endDateProcessCompany\',true)'" th:text="'&uarr;'+#{label.companyEndDateProcessCompany}"></a>
+								<a th:if="${_field} == 'endDateProcessCompany' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'endDateProcessCompany\',true)'" th:text="'&darr;'+#{label.companyEndDateProcessCompany}"></a>
+								<a th:if="${_field} != 'endDateProcessCompany'" th:href="'javascript:submitFilterPage(1,\'endDateProcessCompany\',true)'" th:text="#{label.companyEndDateProcessCompany}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'numberPartialWorkOrderCompany' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'numberPartialWorkOrderCompany\',true)'" th:text="'&uarr;'+#{label.companyNumberPartialWorkOrderCompany}"></a>
+								<a th:if="${_field} == 'numberPartialWorkOrderCompany' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'numberPartialWorkOrderCompany\',true)'" th:text="'&darr;'+#{label.companyNumberPartialWorkOrderCompany}"></a>
+								<a th:if="${_field} != 'numberPartialWorkOrderCompany'" th:href="'javascript:submitFilterPage(1,\'numberPartialWorkOrderCompany\',true)'" th:text="#{label.companyNumberPartialWorkOrderCompany}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'totalNumberofWorkOrderintheCompany' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'totalNumberofWorkOrderintheCompany\',true)'" th:text="'&uarr;'+#{label.companyTotalNumberofWorkOrderintheCompany}"></a>
+								<a th:if="${_field} == 'totalNumberofWorkOrderintheCompany' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'totalNumberofWorkOrderintheCompany\',true)'" th:text="'&darr;'+#{label.companyTotalNumberofWorkOrderintheCompany}"></a>
+								<a th:if="${_field} != 'totalNumberofWorkOrderintheCompany'" th:href="'javascript:submitFilterPage(1,\'totalNumberofWorkOrderintheCompany\',true)'" th:text="#{label.companyTotalNumberofWorkOrderintheCompany}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'cancelProcessCompany' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'cancelProcessCompany\',true)'" th:text="'&uarr;'+#{label.companyCancelProcessCompany}"></a>
+								<a th:if="${_field} == 'cancelProcessCompany' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'cancelProcessCompany\',true)'" th:text="'&darr;'+#{label.companyCancelProcessCompany}"></a>
+								<a th:if="${_field} != 'cancelProcessCompany'" th:href="'javascript:submitFilterPage(1,\'cancelProcessCompany\',true)'" th:text="#{label.companyCancelProcessCompany}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'userSendHistory' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'userSendHistory\',true)'" th:text="'&uarr;'+#{label.companyUserSendHistory}"></a>
+								<a th:if="${_field} == 'userSendHistory' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'userSendHistory\',true)'" th:text="'&darr;'+#{label.companyUserSendHistory}"></a>
+								<a th:if="${_field} != 'userSendHistory'" th:href="'javascript:submitFilterPage(1,\'userSendHistory\',true)'" th:text="#{label.companyUserSendHistory}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'stateShippingHistory' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'stateShippingHistory\',true)'" th:text="'&uarr;'+#{label.companyStateShippingHistory}"></a>
+								<a th:if="${_field} == 'stateShippingHistory' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'stateShippingHistory\',true)'" th:text="'&darr;'+#{label.companyStateShippingHistory}"></a>
+								<a th:if="${_field} != 'stateShippingHistory'" th:href="'javascript:submitFilterPage(1,\'stateShippingHistory\',true)'" th:text="#{label.companyStateShippingHistory}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'startDateSendingHistory' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'startDateSendingHistory\',true)'" th:text="'&uarr;'+#{label.companyStartDateSendingHistory}"></a>
+								<a th:if="${_field} == 'startDateSendingHistory' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'startDateSendingHistory\',true)'" th:text="'&darr;'+#{label.companyStartDateSendingHistory}"></a>
+								<a th:if="${_field} != 'startDateSendingHistory'" th:href="'javascript:submitFilterPage(1,\'startDateSendingHistory\',true)'" th:text="#{label.companyStartDateSendingHistory}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'endingDatelSendingHistory' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'endingDatelSendingHistory\',true)'" th:text="'&uarr;'+#{label.companyEndingDatelSendingHistory}"></a>
+								<a th:if="${_field} == 'endingDatelSendingHistory' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'endingDatelSendingHistory\',true)'" th:text="'&darr;'+#{label.companyEndingDatelSendingHistory}"></a>
+								<a th:if="${_field} != 'endingDatelSendingHistory'" th:href="'javascript:submitFilterPage(1,\'endingDatelSendingHistory\',true)'" th:text="#{label.companyEndingDatelSendingHistory}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'partialNumberOfSendingHistory' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'partialNumberOfSendingHistory\',true)'" th:text="'&uarr;'+#{label.companyPartialNumberOfSendingHistory}"></a>
+								<a th:if="${_field} == 'partialNumberOfSendingHistory' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'partialNumberOfSendingHistory\',true)'" th:text="'&darr;'+#{label.companyPartialNumberOfSendingHistory}"></a>
+								<a th:if="${_field} != 'partialNumberOfSendingHistory'" th:href="'javascript:submitFilterPage(1,\'partialNumberOfSendingHistory\',true)'" th:text="#{label.companyPartialNumberOfSendingHistory}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'totalNumberOfSendingHistory' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'totalNumberOfSendingHistory\',true)'" th:text="'&uarr;'+#{label.companyTotalNumberOfSendingHistory}"></a>
+								<a th:if="${_field} == 'totalNumberOfSendingHistory' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'totalNumberOfSendingHistory\',true)'" th:text="'&darr;'+#{label.companyTotalNumberOfSendingHistory}"></a>
+								<a th:if="${_field} != 'totalNumberOfSendingHistory'" th:href="'javascript:submitFilterPage(1,\'totalNumberOfSendingHistory\',true)'" th:text="#{label.companyTotalNumberOfSendingHistory}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'cancelSendingHistory' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'cancelSendingHistory\',true)'" th:text="'&uarr;'+#{label.companyCancelSendingHistory}"></a>
+								<a th:if="${_field} == 'cancelSendingHistory' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'cancelSendingHistory\',true)'" th:text="'&darr;'+#{label.companyCancelSendingHistory}"></a>
+								<a th:if="${_field} != 'cancelSendingHistory'" th:href="'javascript:submitFilterPage(1,\'cancelSendingHistory\',true)'" th:text="#{label.companyCancelSendingHistory}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'stateCompany' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'stateCompany\',true)'" th:text="'&uarr;'+#{label.companyStateCompany}"></a>
+								<a th:if="${_field} == 'stateCompany' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'stateCompany\',true)'" th:text="'&darr;'+#{label.companyStateCompany}"></a>
+								<a th:if="${_field} != 'stateCompany'" th:href="'javascript:submitFilterPage(1,\'stateCompany\',true)'" th:text="#{label.companyStateCompany}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'codeOfWIN' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'codeOfWIN\',true)'" th:text="'&uarr;'+#{label.companyCodeOfWIN}"></a>
+								<a th:if="${_field} == 'codeOfWIN' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'codeOfWIN\',true)'" th:text="'&darr;'+#{label.companyCodeOfWIN}"></a>
+								<a th:if="${_field} != 'codeOfWIN'" th:href="'javascript:submitFilterPage(1,\'codeOfWIN\',true)'" th:text="#{label.companyCodeOfWIN}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'inventoryConditionPermanent' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'inventoryConditionPermanent\',true)'" th:text="'&uarr;'+#{label.companyInventoryConditionPermanent}"></a>
+								<a th:if="${_field} == 'inventoryConditionPermanent' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'inventoryConditionPermanent\',true)'" th:text="'&darr;'+#{label.companyInventoryConditionPermanent}"></a>
+								<a th:if="${_field} != 'inventoryConditionPermanent'" th:href="'javascript:submitFilterPage(1,\'inventoryConditionPermanent\',true)'" th:text="#{label.companyInventoryConditionPermanent}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'permanentInventoryWorkOrder' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'permanentInventoryWorkOrder\',true)'" th:text="'&uarr;'+#{label.companyPermanentInventoryWorkOrder}"></a>
+								<a th:if="${_field} == 'permanentInventoryWorkOrder' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'permanentInventoryWorkOrder\',true)'" th:text="'&darr;'+#{label.companyPermanentInventoryWorkOrder}"></a>
+								<a th:if="${_field} != 'permanentInventoryWorkOrder'" th:href="'javascript:submitFilterPage(1,\'permanentInventoryWorkOrder\',true)'" th:text="#{label.companyPermanentInventoryWorkOrder}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'language' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'language\',true)'" th:text="'&uarr;'+#{label.companyLanguage}"></a>
+								<a th:if="${_field} == 'language' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'language\',true)'" th:text="'&darr;'+#{label.companyLanguage}"></a>
+								<a th:if="${_field} != 'language'" th:href="'javascript:submitFilterPage(1,\'language\',true)'" th:text="#{label.companyLanguage}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'activeCompany' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'activeCompany\',true)'" th:text="'&uarr;'+#{label.companyActiveCompany}"></a>
+								<a th:if="${_field} == 'activeCompany' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'activeCompany\',true)'" th:text="'&darr;'+#{label.companyActiveCompany}"></a>
+								<a th:if="${_field} != 'activeCompany'" th:href="'javascript:submitFilterPage(1,\'activeCompany\',true)'" th:text="#{label.companyActiveCompany}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'active' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'active\',true)'" th:text="'&uarr;'+#{label.companyActive}"></a>
+								<a th:if="${_field} == 'active' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'active\',true)'" th:text="'&darr;'+#{label.companyActive}"></a>
+								<a th:if="${_field} != 'active'" th:href="'javascript:submitFilterPage(1,\'active\',true)'" th:text="#{label.companyActive}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateOfModification' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="'&uarr;'+#{label.dateOfModification}"></a>
+								<a th:if="${_field} == 'dateOfModification' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="'&darr;'+#{label.dateOfModification}"></a>
+								<a th:if="${_field} != 'dateOfModification'" th:href="'javascript:submitFilterPage(1,\'dateOfModification\',true)'" th:text="#{label.dateOfModification}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'userName' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="'&uarr;'+#{label.userOfModification}"></a>
+								<a th:if="${_field} == 'userName' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="'&darr;'+#{label.userOfModification}"></a>
+								<a th:if="${_field} != 'userName'" th:href="'javascript:submitFilterPage(1,\'userName\',true)'" th:text="#{label.userOfModification}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'dateOfCreation' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="'&uarr;'+#{label.dateOfCreation}"></a>
+								<a th:if="${_field} == 'dateOfCreation' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="'&darr;'+#{label.dateOfCreation}"></a>
+								<a th:if="${_field} != 'dateOfCreation'" th:href="'javascript:submitFilterPage(1,\'dateOfCreation\',true)'" th:text="#{label.dateOfCreation}"></a>
+							</div>
+						</th>
+						<th >
+							<div>
+								<a th:if="${_field} == 'createdBy' and ${_direction}" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="'&uarr;'+#{label.createdBy}"></a>
+								<a th:if="${_field} == 'createdBy' and !${_direction}" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="'&darr;'+#{label.createdBy}"></a>
+								<a th:if="${_field} != 'createdBy'" th:href="'javascript:submitFilterPage(1,\'createdBy\',true)'" th:text="#{label.createdBy}"></a>
+							</div>
+						</th>
+
+					</tr>
+				</thead>
+				<tbody id="search">
+					<tr th:each="object: ${list}" th:onClick="'buildURL(\''+${object.id}+'\')'">
+						<td th:text="${object.code}"></td>
+						<td th:text="${object.codeNit}"></td>
+						<td th:text="${object.companyName}"></td>
+						<td th:text="${object.companyLicense}"></td>
+						<td th:text="${object.comment}"></td>
+						<td th:text="${{object.homeRangesOfDatesOfTheLastGeneration}}"></td>
+						<td th:text="${{object.endDateRangesOfTheLastGeneration}}"></td>
+						<td th:text="${object.userLoginCompany}"></td>
+						<td th:text="#{${'label.'+object.stateAnalysisCompany}}"></td>
+						<td th:text="#{${'label.'+object.stateGenerationCompany}}"></td>
+						<td th:text="${{object.startDateCompanyProcess}}"></td>
+						<td th:text="${{object.endDateProcessCompany}}"></td>
+						<td th:text="${object.numberPartialWorkOrderCompany}"></td>
+						<td th:text="${object.totalNumberofWorkOrderintheCompany}"></td>
+						<td th:text="#{${'label.'+object.cancelProcessCompany}}"></td>
+						<td th:text="${object.userSendHistory}"></td>
+						<td th:text="${object.stateShippingHistory}"></td>
+						<td th:text="${{object.startDateSendingHistory}}"></td>
+						<td th:text="${{object.endingDatelSendingHistory}}"></td>
+						<td th:text="${object.partialNumberOfSendingHistory}"></td>
+						<td th:text="${object.totalNumberOfSendingHistory}"></td>
+						<td th:text="#{${'label.'+object.cancelSendingHistory}}"></td>
+						<td th:text="${object.stateCompany}"></td>
+						<td th:text="${object.codeOfWIN}"></td>
+						<td th:text="${object.inventoryConditionPermanent}"></td>
+						<td th:text="${object.permanentInventoryWorkOrder}"></td>
+						<td th:text="${object.language}"></td>
+						<td th:text="${object.activeCompany}"></td>
+						<td th:text="#{${'label.'+object.active}}"></td>
+						<td th:text="${#calendars.format(object.dateOfModification,'dd/MM/yyyy HH:mm')}" ></td>
+						<td th:text="${object.userName}"></td>
+						<td th:text="${#calendars.format(object.dateOfCreation,'dd/MM/yyyy HH:mm')}" ></td>
+						<td th:text="${object.createdBy}"></td>
+
+					</tr>
+				</tbody>
+			</table>
+			</form>
+			<table width="100%">
+				<tr>
+					<td width="33%"></td>
+					<td width="33%"><div th:include="normal/filterDataTable :: paginationbar" ></div></td>
+					<td width="34%"><span th:text="${page.totalElements}+'/'+${_totalCount}"></span></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="container-fluid" th:include="normal/layoutmaintenance :: footer"></div>
+</body>
+</html>

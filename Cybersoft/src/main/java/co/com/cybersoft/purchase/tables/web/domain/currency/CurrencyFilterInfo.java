@@ -28,16 +28,7 @@ public class CurrencyFilterInfo {
 	private Boolean changeSortingFieldDirection;
 
 	private String code;
-	
-	private String _company;
-	
-	public String get_company() {
-		return _company;
-	}
 
-	public void set_company(String _company) {
-		this._company = _company;
-	}
 
 	public String getCode() {
 		return code;	

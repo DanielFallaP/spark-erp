@@ -104,17 +104,27 @@
 		        	<table>
 		        		<tr>
 		        			<td ><b th:text="#{label.currencyCode}+': '"></b></td>
-		        			<td><select id="code" onChange="codeSelectedRefresh()" th:field="*{codeId}"><option th:each="reference : ${currencyInfo.codeList}" th:value="${reference.id}" th:text="${reference.currency}"></option></select></td>
+		        			<td>
+		        				<select th:if="${_loggedInUser.currencyCreate}" id="code" onChange="codeSelectedRefresh()" th:field="*{codeId}"><option th:each="reference : ${currencyInfo.codeList}" th:value="${reference.id}" th:text="${reference.currency}"></option></select>
+		        				<select th:if="${_loggedInUser.currencyCreate} != true" disabled="disabled" id="code" onChange="codeSelectedRefresh()" th:field="*{codeId}"><option th:each="reference : ${currencyInfo.codeList}" th:value="${reference.id}" th:text="${reference.currency}"></option></select>
+		        			</td>
 		        			<td th:if="${codeException}"><div class="alert alert-error" th:text="#{${codeValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        				<td ><b th:text="#{label.currencyCurrency}+': '"></b></td>
-		        				<td><input id="currency" name="currency" type="text" th:value="*{{currency}}" /></td>
+		        				<td>
+		        					<input th:if="${_loggedInUser.currencyCreate}" id="currency" name="currency" type="text" th:value="*{{currency}}" />
+		        					<input th:if="${_loggedInUser.currencyCreate} != true" disabled="disabled" id="currency" name="currency" type="text" th:value="*{{currency}}" />
+		        					
+		        				</td>
 		        				<td th:if="${currencyException}"><div class="alert alert-error" th:text="#{${currencyValidationErrorMessage}}"></div></td>
 		        		</tr>
 		        		<tr>
 		        		 			<td ><b th:text="#{label.currencyActive}+': '"></b></td>
-		        		   			<td ><input type="checkbox" th:field="*{active}" /></td>
+		        		   			<td >
+		        		   				<input th:if="${_loggedInUser.currencyCreate}" type="checkbox" th:field="*{active}" />
+		        		   				<input th:if="${_loggedInUser.currencyCreate} != true" disabled="disabled" type="checkbox" th:field="*{active}" />
+		        		   			</td>
 		        		</tr>
 
 		        	</table>
